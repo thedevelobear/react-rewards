@@ -1,0 +1,21 @@
+{
+  "name": "react-rewardify",
+  "version": "1.0.0",
+  "main": "index.js",
+  "license": "MIT",
+  "scripts": {
+    "build": "neutrino build",
+    "start": "neutrino start",
+    "lint": "neutrino lint"
+  },
+  "devDependencies": {
+    "@neutrinojs/react-components": "^8.3.0",
+    "@neutrinojs/standardjs": "^8.3.0",
+    "antd": "^3.10.7",
+    "neutrino": "^8.3.0",
+    "prop-types": "^15.6.2",
+    "react": "^16.6.1",
+    "react-dom": "^16.6.1",
+    "react-pose": "^4.0.1"
+  }
+}
