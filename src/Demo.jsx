@@ -2,38 +2,19 @@ import React, { Component } from 'react'
 import Reward from './components/Reward'
 import 'antd/dist/antd.css'
 import Button from 'antd/lib/button'
-import posed from 'react-pose'
 import ConfigSlider from './Slider'
-
-const ButtonSpringAnim = posed.div({
-  clicked: {
-    y: 5,
-    transition: {
-      type: 'spring',
-      stiffness: 200,
-      damping: 2
-    }
-  },
-  resting: {
-    y: 0,
-    transition: {
-      type: 'spring',
-      stiffness: 200,
-      damping: 2
-    }
-  }
-})
 
 export default class App extends Component {
   state = {
-    active: false,
     fakingRequest: false,
     angle: 90,
     decay: 0.91,
     spread: 360,
     startVelocity: 15,
     elementCount: 27,
-    lifetime: 200
+    elementSize: 15,
+    lifetime: 200,
+    springAnimation: true
   }
 
   fakeRequest = () => {
@@ -41,27 +22,38 @@ export default class App extends Component {
       fakingRequest: true
     })
     setTimeout(() => {
-      this.setState({ active: true }, () => {
-        setTimeout(() => {
-          this.setState({ fakingRequest: false, active: false })
-        }, 100)
-      })
+      this.setState({ fakingRequest: false })
+      this.reward.rewardMe()
     }, 1500)
   }
 
-  // TODO: Debounce below methods
   lifetimeChange = (value) => { this.setState({ lifetime: value }) }
   angleChange = (value) => { this.setState({ angle: value }) }
-  decayChange = (value) => { this.setState({ decay: value }) }
+  decayChange = (value) => { if (!isNaN(value)) { this.setState({ decay: value }) } }
   spreadChange = (value) => { this.setState({ spread: value }) }
   startVelocityChange = (value) => { this.setState({ startVelocity: value }) }
   elementCountChange = (value) => { this.setState({ elementCount: value }) }
+  elementSizeChange = (value) => { this.setState({ elementSize: value }) }
 
   render () {
-    const { fakingRequest, active, lifetime, angle, decay, spread, startVelocity, elementCount } = this.state
+    const { fakingRequest, lifetime, angle, decay, spread, startVelocity, elementCount, springAnimation, elementSize } = this.state
     return (
       <div style={containerStyle}>
-        <ButtonSpringAnim pose={active ? 'clicked' : 'resting'} >
+        <Reward
+          ref={(ref) => { this.reward = ref }}
+          active={fakingRequest}
+          type='emoji'
+          config={{
+            lifetime,
+            angle,
+            decay,
+            spread,
+            startVelocity,
+            elementCount,
+            elementSize,
+            springAnimation
+          }}
+        >
           <Button
             type='primary'
             shape='circle'
@@ -69,21 +61,8 @@ export default class App extends Component {
             icon='smile'
             size='large'
             onClick={this.fakeRequest}
-          >
-            <Reward
-              active={active}
-              type='confetti'
-              config={{
-                lifetime,
-                angle,
-                decay,
-                spread,
-                startVelocity,
-                elementCount
-              }}
-            />
-          </Button>
-        </ButtonSpringAnim>
+          />
+        </Reward>
         <div style={cardStyle}>
           <ConfigSlider title='lifetime' inputValue={lifetime} min={0} max={360} onChange={this.lifetimeChange} />
           <ConfigSlider title='angle' inputValue={angle} min={0} max={360} onChange={this.angleChange} />
@@ -91,6 +70,7 @@ export default class App extends Component {
           <ConfigSlider title='spread' inputValue={spread} min={0} max={360} onChange={this.spreadChange} />
           <ConfigSlider title='startVelocity' inputValue={startVelocity} min={1} max={100} onChange={this.startVelocityChange} />
           <ConfigSlider title='elementCount' inputValue={elementCount} min={1} max={256} onChange={this.elementCountChange} />
+          <ConfigSlider title='elementSize' inputValue={elementSize} min={1} max={50} onChange={this.elementSizeChange} />
         </div>
       </div>
     )

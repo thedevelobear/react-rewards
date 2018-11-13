@@ -6,15 +6,15 @@ const defaultColors = [
   '#fdff6a'
 ]
 
-function createElements (root, elementCount, colors) {
+function createElements (root, elementCount, elementSize, colors) {
   return Array
     .from({ length: elementCount })
     .map((_, index) => {
       const element = document.createElement('span')
       const color = colors[index % colors.length]
       element.style['background-color'] = color
-      element.style.width = '10px'
-      element.style.height = '10px'
+      element.style.width = `${elementSize}px`
+      element.style.height = `${elementSize}px`
       element.style.position = 'absolute'
       root.appendChild(element)
       return element
@@ -81,11 +81,12 @@ export function confetti (root, {
   spread = 360,
   startVelocity = 15,
   elementCount = 27,
+  elementSize = 15,
   lifetime = 200,
   colors = defaultColors,
   random = Math.random
 } = {}) {
-  const elements = createElements(root, elementCount, colors)
+  const elements = createElements(root, elementCount, elementSize, colors)
   const fettis = elements.map((element) => ({
     element,
     physics: randomPhysics(angle, spread, startVelocity, random)

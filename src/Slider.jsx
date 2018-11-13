@@ -13,6 +13,7 @@ class ConfigSlider extends PureComponent {
           <Slider
             min={min}
             max={max}
+            step={step || 1}
             onChange={this.props.onChange}
             value={typeof inputValue === 'number' ? inputValue : 0}
           />

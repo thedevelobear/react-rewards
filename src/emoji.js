@@ -4,15 +4,14 @@ const defaultEmoji = [
   '🎉'
 ]
 
-function createElements (root, elementCount, emoji) {
+function createElements (root, elementCount, elementSize, emoji) {
   return Array
     .from({ length: elementCount })
     .map((_, index) => {
       const element = document.createElement('span')
       const emojiIcon = emoji[index % emoji.length]
       element.innerHTML = emojiIcon
-      element.style.width = '15px'
-      element.style.height = '15px'
+      element.style.fontSize = `${elementSize}px`
       element.style.position = 'absolute'
       root.appendChild(element)
       return element
@@ -78,11 +77,12 @@ export function emoji (root, {
   spread = 45,
   startVelocity = 35,
   elementCount = 50,
+  elementSize = 25,
   lifetime = 200,
   emoji = defaultEmoji,
   random = Math.random
 } = {}) {
-  const elements = createElements(root, elementCount, emoji)
+  const elements = createElements(root, elementCount, elementSize, emoji)
   const mojis = elements.map((element) => ({
     element,
     physics: randomPhysics(angle, spread, startVelocity, random)
