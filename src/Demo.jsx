@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import Reward from 'react-rewards'
+import Reward from './components/Reward'
 import 'antd/dist/antd.css'
 import Button from 'antd/lib/button'
 import Switch from 'antd/lib/switch'
@@ -77,7 +77,6 @@ export default class App extends Component {
         <img style={logoStyle} src={logo} />
         <Reward
           ref={(ref) => { this.reward = ref }}
-          active={fakingRequest}
           type={type ? 'emoji' : 'confetti'}
           config={{
             lifetime,

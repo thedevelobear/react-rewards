@@ -41,6 +41,8 @@ export default class Reward extends Component {
         break
       }
       default: {
+        this.handleAnimation()
+        confetti(...props)
         break
       }
     }
