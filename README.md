@@ -53,4 +53,4 @@ Config object:
 
 
 
-The particles physics were based on react-dom-confetti package.
+This package was based on React-Pose and react-dom-confetti.
