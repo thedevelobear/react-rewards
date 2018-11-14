@@ -2,11 +2,13 @@
 
 [![npm version](https://badge.fury.io/js/react-rewards.svg)](https://badge.fury.io/js/react-rewards) [![forthebadge](http://forthebadge.com/badges/makes-people-smile.svg)](http://forthebadge.com)
 
-Install this package from npm by typing ```npm install react-rewards``` or ```yarn add react-rewards``` while in your package.json directory.
-
 ## Usage
 
-This component lets you reward your users with the rain of confettis or flying emoji in seconds. In order to make it rain, you need to wrap your button of choice with the **\<Reward\>** component, fire the **rewardMe()** method from the refs and voilà.
+Install from npm by typing ```npm install react-rewards``` or ```yarn add react-rewards``` while in your package.json directory.
+
+This package lets you reward your users with the rain of confettis or flying emoji in seconds. In order to make it rain, you need to wrap your button of choice with the **\<Reward\>** component, fire the **rewardMe()** method from the refs and voilà.
+
+![react-rewards gif](react-rewards.gif?raw=true "react-rewards")
 
 ```js
 import Reward from 'react-rewards';
