@@ -6,6 +6,7 @@ import Switch from 'antd/lib/switch'
 import Row from 'antd/lib/row'
 import Col from 'antd/lib/col'
 import ConfigSlider from './Slider'
+import logo from '../react-rewards.png'
 
 export default class App extends Component {
   state = {
@@ -55,6 +56,7 @@ export default class App extends Component {
     } = this.state
     return (
       <div style={containerStyle}>
+        <img style={logoStyle} src={logo} />
         <Reward
           ref={(ref) => { this.reward = ref }}
           active={fakingRequest}
@@ -99,7 +101,7 @@ export default class App extends Component {
 }
 
 const containerStyle = {
-  height: '100vh',
+  minHeight: '100vh',
   width: '100vw',
   display: 'flex',
   flexDirection: 'column',
@@ -113,6 +115,12 @@ const containerStyle = {
   backgroundPosition: '0 0, 100% 0',
   backgroundRepeat: 'no-repeat',
   overflowY: 'hidden'
+}
+
+const logoStyle = {
+  width: '90%',
+  maxWidth: 400,
+  paddingBottom: 100
 }
 
 const cardStyle = {
