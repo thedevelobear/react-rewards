@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import posed from 'react-pose'
-import { confetti } from '../../confetti'
-import { emoji } from '../../emoji'
+import { confetti } from '../Confetti'
+import { emoji } from '../Emoji'
 
 const SpringAnim = posed.div({
   clicked: {

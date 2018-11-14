@@ -2,10 +2,14 @@ import React, { Component } from 'react'
 import Reward from './components/Reward'
 import 'antd/dist/antd.css'
 import Button from 'antd/lib/button'
+import Switch from 'antd/lib/switch'
+import Row from 'antd/lib/row'
+import Col from 'antd/lib/col'
 import ConfigSlider from './Slider'
 
 export default class App extends Component {
   state = {
+    type: true,
     fakingRequest: false,
     angle: 90,
     decay: 0.91,
@@ -27,6 +31,7 @@ export default class App extends Component {
     }, 1500)
   }
 
+  typeChange = (value) => { this.setState({ type: value }) }
   lifetimeChange = (value) => { this.setState({ lifetime: value }) }
   angleChange = (value) => { this.setState({ angle: value }) }
   decayChange = (value) => { if (!isNaN(value)) { this.setState({ decay: value }) } }
@@ -36,13 +41,24 @@ export default class App extends Component {
   elementSizeChange = (value) => { this.setState({ elementSize: value }) }
 
   render () {
-    const { fakingRequest, lifetime, angle, decay, spread, startVelocity, elementCount, springAnimation, elementSize } = this.state
+    const {
+      type,
+      fakingRequest,
+      lifetime,
+      angle,
+      decay,
+      spread,
+      startVelocity,
+      elementCount,
+      springAnimation,
+      elementSize
+    } = this.state
     return (
       <div style={containerStyle}>
         <Reward
           ref={(ref) => { this.reward = ref }}
           active={fakingRequest}
-          type='emoji'
+          type={type ? 'emoji' : 'confetti'}
           config={{
             lifetime,
             angle,
@@ -58,12 +74,17 @@ export default class App extends Component {
             type='primary'
             shape='circle'
             loading={fakingRequest}
-            icon='smile'
+            icon={type ? 'like' : 'trophy'}
             size='large'
             onClick={this.fakeRequest}
           />
         </Reward>
         <div style={cardStyle}>
+          <Row style={rowStyle}>
+            <Col style={colStyle} span={24}>
+              <Switch checkedChildren='👍' unCheckedChildren='🎉' defaultChecked onChange={this.typeChange} />
+            </Col>
+          </Row>
           <ConfigSlider title='lifetime' inputValue={lifetime} min={0} max={360} onChange={this.lifetimeChange} />
           <ConfigSlider title='angle' inputValue={angle} min={0} max={360} onChange={this.angleChange} />
           <ConfigSlider title='decay' inputValue={decay} min={0} max={1} step={0.01} onChange={this.decayChange} />
@@ -98,4 +119,14 @@ const cardStyle = {
   width: '90%',
   maxWidth: 600,
   marginTop: 160
+}
+
+const rowStyle = {
+  marginBottom: 20
+}
+
+const colStyle = {
+  display: 'flex',
+  alignItems: 'center',
+  justifyContent: 'center'
 }
