@@ -8,7 +8,9 @@ Install from npm by typing ```npm install react-rewards``` or ```yarn add react-
 
 This package lets you reward your users with the rain of confettis or flying emoji in seconds. In order to make it rain, you need to wrap your button of choice with the **\<Reward\>** component, fire the **rewardMe()** method from the refs and voilà.
 
-![react-rewards gif](react-rewards.gif?raw=true "react-rewards")
+<p align="center">
+<img alt='react-rewards demo' src="react-rewards.gif"/>
+</p>
 
 ```js
 import Reward from 'react-rewards';
