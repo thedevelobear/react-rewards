@@ -1,13 +1,14 @@
+const pi = Math.PI
 const defaultColors = [
-  '#a864fd',
-  '#29cdff',
-  '#78ff44',
-  '#ff718d',
-  '#fdff6a'
+  '#A45BF1',
+  '#25C6F6',
+  '#72F753',
+  '#F76C88',
+  '#F5F770'
 ]
 
-function createElements (root, elementCount, elementSize, colors) {
-  return Array
+const createElements = (root, elementCount, elementSize, zIndex, colors) => (
+  Array
     .from({ length: elementCount })
     .map((_, index) => {
       const element = document.createElement('span')
@@ -16,26 +17,29 @@ function createElements (root, elementCount, elementSize, colors) {
       element.style.width = `${elementSize}px`
       element.style.height = `${elementSize}px`
       element.style.position = 'absolute'
+      element.style.zIndex = zIndex
       root.appendChild(element)
       return element
     })
-}
+)
 
-function randomPhysics (angle, spread, startVelocity, random) {
-  const radAngle = angle * (Math.PI / 180)
-  const radSpread = spread * (Math.PI / 180)
+const radiansFrom = degrees => degrees * (pi / 180)
+
+const generatePhysics = (angle, spread, startVelocity, random) => {
+  const radAngle = radiansFrom(angle)
+  const radSpread = radiansFrom(spread)
   return {
     x: 0,
     y: 0,
     wobble: random() * 10,
     velocity: (startVelocity * 0.5) + (random() * startVelocity),
     angle2D: -radAngle + ((0.5 * radSpread) - (random() * radSpread)),
-    angle3D: -(Math.PI / 4) + (random() * (Math.PI / 2)),
-    tiltAngle: random() * Math.PI
+    angle3D: -(pi / 4) + (random() * (pi / 2)),
+    tiltAngle: random() * pi
   }
 }
 
-function updateFetti (fetti, progress, decay) {
+const updateFetti = (fetti, progress, decay) => {
   fetti.physics.x += Math.cos(fetti.physics.angle2D) * fetti.physics.velocity
   fetti.physics.y += Math.sin(fetti.physics.angle2D) * fetti.physics.velocity
   fetti.physics.z += Math.sin(fetti.physics.angle3D) * fetti.physics.velocity
@@ -53,11 +57,11 @@ function updateFetti (fetti, progress, decay) {
   fetti.element.style.opacity = 1 - progress
 }
 
-function animate (root, fettis, decay, lifetime) {
+const animate = (root, fettis, decay, lifetime) => {
   const totalTicks = lifetime
   let tick = 0
 
-  function update () {
+  const update = () => {
     fettis.forEach((fetti) => updateFetti(fetti, tick / totalTicks, decay))
 
     tick += 1
@@ -75,22 +79,24 @@ function animate (root, fettis, decay, lifetime) {
   requestAnimationFrame(update)
 }
 
-export function confetti (root, {
-  angle = 90,
-  decay = 0.91,
-  spread = 360,
-  startVelocity = 15,
-  elementCount = 27,
-  elementSize = 15,
-  lifetime = 200,
+const confetti = (root, {
+  elementCount = 50,
+  elementSize = 8,
   colors = defaultColors,
+  angle = 90,
+  spread = 45,
+  decay = 0.9,
+  lifetime = 200,
+  startVelocity = 35,
+  zIndex = 0,
   random = Math.random
-} = {}) {
-  const elements = createElements(root, elementCount, elementSize, colors)
+} = {}) => {
+  const elements = createElements(root, elementCount, elementSize, zIndex, colors)
   const fettis = elements.map((element) => ({
     element,
-    physics: randomPhysics(angle, spread, startVelocity, random)
+    physics: generatePhysics(angle, spread, startVelocity, random)
   }))
 
   animate(root, fettis, decay, lifetime)
 }
+export default confetti

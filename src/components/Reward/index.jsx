@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import posed from 'react-pose'
-import { confetti } from '../Confetti'
-import { emoji } from '../Emoji'
+import confetti from '../Confetti'
+import emoji from '../Emoji'
 
 const SpringAnim = posed.div({
   clicked: {
@@ -28,15 +28,16 @@ export default class Reward extends Component {
   }
 
   rewardMe = () => {
+    const props = [this.container, this.props.config]
     switch (this.props.type) {
       case 'confetti': {
         this.handleAnimation()
-        confetti(this.container, this.props.config)
+        confetti(...props)
         break
       }
       case 'emoji': {
         this.handleAnimation()
-        emoji(this.container, this.props.config)
+        emoji(...props)
         break
       }
       default: {
@@ -46,18 +47,16 @@ export default class Reward extends Component {
   }
 
   handleAnimation = () => {
-    setTimeout(() => {
-      this.setState({ animate: true }, () => {
-        setTimeout(() => {
-          this.setState({ animate: false })
-        }, 100)
-      })
-    }, 100)
+    this.setState({ animate: true }, () => {
+      setTimeout(() => {
+        this.setState({ animate: false })
+      }, 100)
+    })
   }
 
   render () {
-    const { config, children } = this.props
-    const { springAnimation } = config
+    const { config = {}, children } = this.props
+    const { springAnimation = true } = config
     const { animate } = this.state
     return (
       <span>

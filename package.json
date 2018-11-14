@@ -1,8 +1,15 @@
 {
-  "name": "react-rewardify",
-  "version": "1.0.0",
-  "main": "index.js",
+  "name": "react-rewards",
+  "author": "Jakub Szewczyk <jakub.szewczykk@gmail.com>",
+  "version": "1.0.2",
+  "main": "build/index.js",
   "license": "MIT",
+  "repository": {
+    "url": "https://github.com/thedevelobear/react-rewards"
+  },
+  "files": [
+    "/build"
+  ],
   "scripts": {
     "build": "neutrino build",
     "start": "neutrino start",
@@ -16,6 +23,7 @@
     "prop-types": "^15.6.2",
     "react": "^16.6.1",
     "react-dom": "^16.6.1",
-    "react-pose": "^4.0.1"
+    "react-pose": "^4.0.1",
+    "react-rewards": "^1.0.2"
   }
 }

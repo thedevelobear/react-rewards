@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import Reward from './components/Reward'
+import Reward from 'react-rewards'
 import 'antd/dist/antd.css'
 import Button from 'antd/lib/button'
 import Switch from 'antd/lib/switch'
@@ -8,19 +8,36 @@ import Col from 'antd/lib/col'
 import ConfigSlider from './Slider'
 import logo from '../react-rewards.png'
 
+const confettiDefaults = {
+  type: false,
+  fakingRequest: false,
+  angle: 90,
+  decay: 0.91,
+  spread: 45,
+  startVelocity: 35,
+  elementCount: 40,
+  elementSize: 8,
+  lifetime: 200,
+  zIndex: 10,
+  springAnimation: true
+}
+
+const emojiDefaults = {
+  type: true,
+  fakingRequest: false,
+  angle: 90,
+  decay: 0.91,
+  spread: 100,
+  startVelocity: 20,
+  elementCount: 15,
+  elementSize: 20,
+  lifetime: 200,
+  zIndex: 10,
+  springAnimation: true
+}
+
 export default class App extends Component {
-  state = {
-    type: true,
-    fakingRequest: false,
-    angle: 90,
-    decay: 0.91,
-    spread: 360,
-    startVelocity: 15,
-    elementCount: 27,
-    elementSize: 15,
-    lifetime: 200,
-    springAnimation: true
-  }
+  state = { ...confettiDefaults }
 
   fakeRequest = () => {
     this.setState({
@@ -32,7 +49,7 @@ export default class App extends Component {
     }, 1500)
   }
 
-  typeChange = (value) => { this.setState({ type: value }) }
+  typeChange = (value) => { this.setState(value ? { ...emojiDefaults } : { ...confettiDefaults }) }
   lifetimeChange = (value) => { this.setState({ lifetime: value }) }
   angleChange = (value) => { this.setState({ angle: value }) }
   decayChange = (value) => { if (!isNaN(value)) { this.setState({ decay: value }) } }
@@ -51,8 +68,9 @@ export default class App extends Component {
       spread,
       startVelocity,
       elementCount,
-      springAnimation,
-      elementSize
+      elementSize,
+      zIndex,
+      springAnimation
     } = this.state
     return (
       <div style={containerStyle}>
@@ -69,6 +87,7 @@ export default class App extends Component {
             startVelocity,
             elementCount,
             elementSize,
+            zIndex,
             springAnimation
           }}
         >
@@ -84,7 +103,7 @@ export default class App extends Component {
         <div style={cardStyle}>
           <Row style={rowStyle}>
             <Col style={colStyle} span={24}>
-              <Switch checkedChildren='👍' unCheckedChildren='🎉' defaultChecked onChange={this.typeChange} />
+              <Switch checkedChildren='👍' unCheckedChildren='🎉' onChange={this.typeChange} />
             </Col>
           </Row>
           <ConfigSlider title='lifetime' inputValue={lifetime} min={0} max={360} onChange={this.lifetimeChange} />
