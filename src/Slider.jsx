@@ -3,7 +3,7 @@ import { Slider, InputNumber, Row, Col } from 'antd'
 
 class ConfigSlider extends PureComponent {
   render () {
-    const { min, max, step, inputValue } = this.props
+    const { min, max, step, inputValue, disabled } = this.props
     return (
       <Row>
         <Col span={5}>
@@ -16,6 +16,7 @@ class ConfigSlider extends PureComponent {
             step={step || 1}
             onChange={this.props.onChange}
             value={typeof inputValue === 'number' ? inputValue : 0}
+            disabled={disabled}
           />
         </Col>
         <Col span={4}>
@@ -26,6 +27,7 @@ class ConfigSlider extends PureComponent {
             style={inputStyle}
             value={inputValue}
             onChange={this.props.onChange}
+            disabled={disabled}
           />
         </Col>
       </Row>

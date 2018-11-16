@@ -3,6 +3,7 @@ import Reward from './components/Reward'
 import 'antd/dist/antd.css'
 import Button from 'antd/lib/button'
 import Switch from 'antd/lib/switch'
+import Radio from 'antd/lib/radio'
 import Row from 'antd/lib/row'
 import Col from 'antd/lib/col'
 import ConfigSlider from './Slider'
@@ -37,15 +38,19 @@ const emojiDefaults = {
 }
 
 export default class App extends Component {
-  state = { ...confettiDefaults }
+  state = {
+    ...confettiDefaults,
+    rewardPunish: 'reward'
+  }
 
   fakeRequest = () => {
+    const { rewardPunish } = this.state
     this.setState({
       fakingRequest: true
     })
     setTimeout(() => {
-      this.setState({ fakingRequest: false })
-      this.reward.rewardMe()
+      this.setState({ fakingRequest: false, success: true })
+      rewardPunish === 'reward' ? this.reward.rewardMe() : this.reward.punishMe()
     }, 1500)
   }
 
@@ -57,6 +62,7 @@ export default class App extends Component {
   startVelocityChange = (value) => { this.setState({ startVelocity: value }) }
   elementCountChange = (value) => { this.setState({ elementCount: value }) }
   elementSizeChange = (value) => { this.setState({ elementSize: value }) }
+  rewardPunishChange = (e) => { this.setState({ rewardPunish: e.target.value }) }
 
   render () {
     const {
@@ -70,8 +76,10 @@ export default class App extends Component {
       elementCount,
       elementSize,
       zIndex,
-      springAnimation
+      springAnimation,
+      rewardPunish
     } = this.state
+    const disabled = rewardPunish === 'punish'
     return (
       <div style={containerStyle}>
         <img style={logoStyle} src={logo} />
@@ -102,16 +110,24 @@ export default class App extends Component {
         <div style={cardStyle}>
           <Row style={rowStyle}>
             <Col style={colStyle} span={24}>
-              <Switch checkedChildren='👍' unCheckedChildren='🎉' onChange={this.typeChange} />
+              <Switch checkedChildren='👍' unCheckedChildren='🎉' onChange={this.typeChange} disabled={disabled} />
             </Col>
           </Row>
-          <ConfigSlider title='lifetime' inputValue={lifetime} min={0} max={360} onChange={this.lifetimeChange} />
-          <ConfigSlider title='angle' inputValue={angle} min={0} max={360} onChange={this.angleChange} />
-          <ConfigSlider title='decay' inputValue={decay} min={0} max={1} step={0.01} onChange={this.decayChange} />
-          <ConfigSlider title='spread' inputValue={spread} min={0} max={360} onChange={this.spreadChange} />
-          <ConfigSlider title='startVelocity' inputValue={startVelocity} min={1} max={100} onChange={this.startVelocityChange} />
-          <ConfigSlider title='elementCount' inputValue={elementCount} min={1} max={256} onChange={this.elementCountChange} />
-          <ConfigSlider title='elementSize' inputValue={elementSize} min={1} max={50} onChange={this.elementSizeChange} />
+          <Row style={rowStyle}>
+            <Col style={colStyle} span={24}>
+              <Radio.Group defaultValue='reward' buttonStyle='solid' onChange={this.rewardPunishChange}>
+                <Radio.Button value='reward'>Reward</Radio.Button>
+                <Radio.Button value='punish'>Punish</Radio.Button>
+              </Radio.Group>
+            </Col>
+          </Row>
+          <ConfigSlider title='lifetime' inputValue={lifetime} min={0} max={360} onChange={this.lifetimeChange} disabled={disabled} />
+          <ConfigSlider title='angle' inputValue={angle} min={0} max={360} onChange={this.angleChange} disabled={disabled} />
+          <ConfigSlider title='decay' inputValue={decay} min={0} max={1} step={0.01} onChange={this.decayChange} disabled={disabled} />
+          <ConfigSlider title='spread' inputValue={spread} min={0} max={360} onChange={this.spreadChange} disabled={disabled} />
+          <ConfigSlider title='startVelocity' inputValue={startVelocity} min={1} max={100} onChange={this.startVelocityChange} disabled={disabled} />
+          <ConfigSlider title='elementCount' inputValue={elementCount} min={1} max={256} onChange={this.elementCountChange} disabled={disabled} />
+          <ConfigSlider title='elementSize' inputValue={elementSize} min={1} max={50} onChange={this.elementSizeChange} disabled={disabled} />
         </div>
       </div>
     )

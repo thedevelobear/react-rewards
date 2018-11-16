@@ -22,9 +22,29 @@ const SpringAnim = posed.div({
   }
 })
 
+const PunishAnim = posed.div({
+  punished: {
+    x: 5,
+    transition: {
+      type: 'spring',
+      stiffness: 200,
+      damping: 2
+    }
+  },
+  notPunished: {
+    x: 0,
+    transition: {
+      type: 'spring',
+      stiffness: 200,
+      damping: 2
+    }
+  }
+})
+
 export default class Reward extends Component {
   state = {
-    animate: false
+    animate: false,
+    punish: false
   }
 
   rewardMe = () => {
@@ -48,6 +68,10 @@ export default class Reward extends Component {
     }
   }
 
+  punishMe = () => {
+    this.handlePunishAnimation()
+  }
+
   handleAnimation = () => {
     this.setState({ animate: true }, () => {
       setTimeout(() => {
@@ -56,16 +80,26 @@ export default class Reward extends Component {
     })
   }
 
+  handlePunishAnimation = () => {
+    this.setState({ punish: true }, () => {
+      setTimeout(() => {
+        this.setState({ punish: false })
+      }, 100)
+    })
+  }
+
   render () {
     const { config = {}, children } = this.props
     const { springAnimation = true } = config
-    const { animate } = this.state
+    const { animate, punish } = this.state
     return (
       <span>
         <div ref={(ref) => { this.container = ref }} />
-        <SpringAnim pose={springAnimation && (animate ? 'clicked' : 'resting')}>
-          {children}
-        </SpringAnim>
+        <PunishAnim pose={springAnimation && (punish ? 'punished' : 'notPunished')}>
+          <SpringAnim pose={springAnimation && (animate ? 'clicked' : 'resting')}>
+            {children}
+          </SpringAnim>
+        </PunishAnim>
       </span>
     )
   }

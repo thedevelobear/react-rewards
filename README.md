@@ -6,7 +6,7 @@
 
 Install from npm by typing ```npm install react-rewards``` or ```yarn add react-rewards``` while in your package.json directory.
 
-This package lets you reward your users with the rain of confettis or flying emoji in seconds. In order to make it rain, you need to wrap your button of choice with the **\<Reward\>** component, fire the **rewardMe()** method from the refs and voilà.
+This package lets you easily add microinteractions to your app and reward users with the rain of confettis or flying emoji in seconds. In order to make it rain, you need to wrap your button of choice with the **\<Reward\>** component, fire the **rewardMe()** method from the refs and voilà. You can also "punish" the user by calling the **punishMe()** method and showing him that something went wrong. 
 
 <p align="center">
 <img alt='react-rewards demo' src="react-rewards.gif"/>
@@ -23,8 +23,11 @@ import Reward from 'react-rewards';
   <button onClick={this.fetchSomeData} />
 </Reward>
 
-// in fetchSomeData
+// in fetchSomeData:
+// to reward a user with confetti/emoji rain:
 this.reward.rewardMe();
+// to "punish" user :
+this.reward.punishMe();
 ```
 
 ### Props & config
