@@ -2,6 +2,8 @@
 
 [![npm version](https://badge.fury.io/js/react-rewards.svg)](https://badge.fury.io/js/react-rewards) [![forthebadge](http://forthebadge.com/badges/makes-people-smile.svg)](http://forthebadge.com)
 
+### Demo available <a href="https://zx3royl4pm.codesandbox.io/" target="_blank">here!</a>
+
 ## Usage
 
 Install from npm by typing ```npm install react-rewards``` or ```yarn add react-rewards``` while in your package.json directory.
