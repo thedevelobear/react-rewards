@@ -6,6 +6,8 @@
 
 ## Usage
 
+Why should I even use that? Read my blog post and you will know – https://www.thedevelobear.com/post/microinteractions/
+
 Install from npm by typing ```npm install react-rewards``` or ```yarn add react-rewards``` while in your package.json directory.
 
 This package lets you easily add microinteractions to your app and reward users with the rain of confettis or flying emoji in seconds. In order to make it rain, you need to wrap your button of choice with the **\<Reward\>** component, fire the **rewardMe()** method from the refs and voilà. You can also "punish" the user by calling the **punishMe()** method and showing him that something went wrong. 
