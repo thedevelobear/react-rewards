@@ -1,6 +1,6 @@
 ![react-rewards logo](react-rewards.png?raw=true "react-rewards")
 
-[![npm version](https://badge.fury.io/js/react-rewards.svg)](https://badge.fury.io/js/react-rewards) [![forthebadge](http://forthebadge.com/badges/makes-people-smile.svg)](http://forthebadge.com)
+[![npm version](https://badge.fury.io/js/react-rewards.svg)](https://badge.fury.io/js/react-rewards) [![forthebadge](https://forthebadge.com/images/badges/makes-people-smile.svg)](https://forthebadge.com)
 
 ### Demo available <a href="https://zx3royl4pm.codesandbox.io/" target="_blank">here!</a>
 
