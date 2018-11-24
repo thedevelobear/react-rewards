@@ -3,9 +3,17 @@ import posed from 'react-pose'
 import confetti from '../Confetti'
 import emoji from '../Emoji'
 
-const SpringAnim = posed.div({
-  clicked: {
+const Animation = posed.div({
+  rewarded: {
     y: 5,
+    transition: {
+      type: 'spring',
+      stiffness: 200,
+      damping: 2
+    }
+  },
+  punished: {
+    x: 5,
     transition: {
       type: 'spring',
       stiffness: 200,
@@ -22,29 +30,9 @@ const SpringAnim = posed.div({
   }
 })
 
-const PunishAnim = posed.div({
-  punished: {
-    x: 5,
-    transition: {
-      type: 'spring',
-      stiffness: 200,
-      damping: 2
-    }
-  },
-  notPunished: {
-    x: 0,
-    transition: {
-      type: 'spring',
-      stiffness: 200,
-      damping: 2
-    }
-  }
-})
-
 export default class Reward extends Component {
   state = {
-    animate: false,
-    punish: false
+    animationState: 'resting'
   }
 
   rewardMe = () => {
@@ -73,33 +61,31 @@ export default class Reward extends Component {
   }
 
   handleAnimation = () => {
-    this.setState({ animate: true }, () => {
-      setTimeout(() => {
-        this.setState({ animate: false })
-      }, 100)
-    })
+    this.setState({ animationState: 'rewarded' })
+    rest()
   }
 
   handlePunishAnimation = () => {
-    this.setState({ punish: true }, () => {
-      setTimeout(() => {
-        this.setState({ punish: false })
-      }, 100)
-    })
+    this.setState({ animationState: 'punished' })
+    rest()
+  }
+  
+  rest(){
+    setTimeout(() => {
+      this.setState({ animationState: 'resting' })
+    }, 100)
   }
 
   render () {
     const { config = {}, children } = this.props
     const { springAnimation = true } = config
-    const { animate, punish } = this.state
+    const { animationState } = this.state
     return (
       <span>
         <div ref={(ref) => { this.container = ref }} />
-        <PunishAnim pose={springAnimation && (punish ? 'punished' : 'notPunished')}>
-          <SpringAnim pose={springAnimation && (animate ? 'clicked' : 'resting')}>
+        <Animation pose={animationState)}>
             {children}
-          </SpringAnim>
-        </PunishAnim>
+        </Animation>
       </span>
     )
   }
