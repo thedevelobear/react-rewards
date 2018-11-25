@@ -1,8 +1,12 @@
 ![react-rewards logo](react-rewards.png?raw=true "react-rewards")
 
-[![npm version](https://badge.fury.io/js/react-rewards.svg)](https://badge.fury.io/js/react-rewards) [![forthebadge](http://forthebadge.com/badges/makes-people-smile.svg)](http://forthebadge.com)
+[![npm version](https://badge.fury.io/js/react-rewards.svg)](https://badge.fury.io/js/react-rewards) [![forthebadge](https://forthebadge.com/images/badges/makes-people-smile.svg)](https://forthebadge.com)
+
+### Demo available <a href="https://zx3royl4pm.codesandbox.io/" target="_blank">here!</a>
 
 ## Usage
+
+Why should I even use that? Read my blog post and you will know – https://www.thedevelobear.com/post/microinteractions/
 
 Install from npm by typing ```npm install react-rewards``` or ```yarn add react-rewards``` while in your package.json directory.
 
