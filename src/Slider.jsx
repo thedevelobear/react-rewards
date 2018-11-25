@@ -1,5 +1,8 @@
 import React, { PureComponent } from 'react'
-import { Slider, InputNumber, Row, Col } from 'antd'
+import Slider from 'antd/lib/slider'
+import InputNumber from 'antd/lib/input-number'
+import Row from 'antd/lib/row'
+import Col from 'antd/lib/col'
 
 class ConfigSlider extends PureComponent {
   render () {

@@ -1,45 +1,52 @@
 import React, { Component } from 'react'
 import Reward from './components/Reward'
-import 'antd/dist/antd.css'
 import Button from 'antd/lib/button'
-import Switch from 'antd/lib/switch'
 import Radio from 'antd/lib/radio'
 import Row from 'antd/lib/row'
 import Col from 'antd/lib/col'
 import ConfigSlider from './Slider'
 import logo from '../react-rewards.png'
+import 'antd/dist/antd.css'
 
-const confettiDefaults = {
-  type: false,
-  fakingRequest: false,
-  angle: 90,
-  decay: 0.91,
-  spread: 45,
-  startVelocity: 35,
-  elementCount: 40,
-  elementSize: 8,
-  lifetime: 200,
-  zIndex: 10,
-  springAnimation: true
-}
-
-const emojiDefaults = {
-  type: true,
-  fakingRequest: false,
-  angle: 90,
-  decay: 0.91,
-  spread: 100,
-  startVelocity: 20,
-  elementCount: 15,
-  elementSize: 20,
-  lifetime: 200,
-  zIndex: 10,
-  springAnimation: true
+const defaults = {
+  confetti: {
+    type: 'confetti',
+    fakingRequest: false,
+    angle: 90,
+    decay: 0.91,
+    spread: 45,
+    startVelocity: 35,
+    elementCount: 40,
+    elementSize: 8,
+    lifetime: 200,
+    zIndex: 10,
+    springAnimation: true
+  },
+  emoji: {
+    type: 'emoji',
+    fakingRequest: false,
+    angle: 90,
+    decay: 0.91,
+    spread: 100,
+    startVelocity: 20,
+    elementCount: 15,
+    elementSize: 20,
+    lifetime: 200,
+    zIndex: 10,
+    springAnimation: true
+  },
+  memphis: {
+    type: 'memphis',
+    fakingRequest: false,
+    lifetime: 200,
+    zIndex: 10,
+    springAnimation: true
+  }
 }
 
 export default class App extends Component {
   state = {
-    ...confettiDefaults,
+    ...defaults.confetti,
     rewardPunish: 'reward'
   }
 
@@ -54,7 +61,7 @@ export default class App extends Component {
     }, 1500)
   }
 
-  typeChange = (value) => { this.setState(value ? { ...emojiDefaults } : { ...confettiDefaults }) }
+  rewardTypeChange = (e) => { console.log(defaults[e.target.value]); this.setState({ type: e.target.value, ...defaults[e.target.value] }) }
   lifetimeChange = (value) => { this.setState({ lifetime: value }) }
   angleChange = (value) => { this.setState({ angle: value }) }
   decayChange = (value) => { if (!isNaN(value)) { this.setState({ decay: value }) } }
@@ -85,7 +92,7 @@ export default class App extends Component {
         <img style={logoStyle} src={logo} />
         <Reward
           ref={(ref) => { this.reward = ref }}
-          type={type ? 'emoji' : 'confetti'}
+          type={type}
           config={{
             lifetime,
             angle,
@@ -110,7 +117,11 @@ export default class App extends Component {
         <div style={cardStyle}>
           <Row style={rowStyle}>
             <Col style={colStyle} span={24}>
-              <Switch checkedChildren='👍' unCheckedChildren='🎉' onChange={this.typeChange} disabled={disabled} />
+              <Radio.Group defaultValue='confetti' buttonStyle='solid' onChange={this.rewardTypeChange} disabled={disabled}>
+                <Radio.Button value='confetti'>Confetti 🎉</Radio.Button>
+                <Radio.Button value='emoji'>Emoji 👍</Radio.Button>
+                <Radio.Button value='memphis'>Memphis 🔸</Radio.Button>
+              </Radio.Group>
             </Col>
           </Row>
           <Row style={rowStyle}>

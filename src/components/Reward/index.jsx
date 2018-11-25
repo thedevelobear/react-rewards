@@ -2,67 +2,64 @@ import React, { Component } from 'react'
 import posed from 'react-pose'
 import confetti from '../Confetti'
 import emoji from '../Emoji'
+import memphis from '../Memphis'
+
+const transition = {
+  type: 'spring',
+  stiffness: 200,
+  damping: 2
+}
 
 const SpringAnim = posed.div({
-  clicked: {
+  confetti: {
     y: 5,
-    transition: {
-      type: 'spring',
-      stiffness: 200,
-      damping: 2
-    }
+    transition: { ...transition }
+  },
+  emoji: {
+    y: 5,
+    transition: { ...transition }
+  },
+  memphis: {
+    scale: 1.1,
+    transition: { ...transition }
+  },
+  punished: {
+    x: 5,
+    transition: { ...transition }
   },
   resting: {
     y: 0,
-    transition: {
-      type: 'spring',
-      stiffness: 200,
-      damping: 2
-    }
-  }
-})
-
-const PunishAnim = posed.div({
-  punished: {
-    x: 5,
-    transition: {
-      type: 'spring',
-      stiffness: 200,
-      damping: 2
-    }
-  },
-  notPunished: {
     x: 0,
-    transition: {
-      type: 'spring',
-      stiffness: 200,
-      damping: 2
-    }
+    scale: 1,
+    transition: { ...transition }
   }
 })
 
 export default class Reward extends Component {
   state = {
-    animate: false,
-    punish: false
+    state: 'resting'
   }
 
   rewardMe = () => {
-    const props = [this.container, this.props.config]
-    switch (this.props.type) {
+    const { type, config } = this.props
+    const props = [this.container, config]
+    switch (type) {
       case 'confetti': {
-        this.handleAnimation()
+        this.handleAnimation(type)
         confetti(...props)
         break
       }
       case 'emoji': {
-        this.handleAnimation()
+        this.handleAnimation(type)
         emoji(...props)
         break
       }
+      case 'memphis': {
+        this.handleAnimation(type)
+        memphis(...props)
+        break
+      }
       default: {
-        this.handleAnimation()
-        confetti(...props)
         break
       }
     }
@@ -72,34 +69,34 @@ export default class Reward extends Component {
     this.handlePunishAnimation()
   }
 
-  handleAnimation = () => {
-    this.setState({ animate: true }, () => {
-      setTimeout(() => {
-        this.setState({ animate: false })
-      }, 100)
+  rest = () => {
+    setTimeout(() => {
+      this.setState({ state: 'resting' })
+    }, 100)
+  }
+
+  handleAnimation = (type) => {
+    this.setState({ state: type }, () => {
+      this.rest()
     })
   }
 
   handlePunishAnimation = () => {
-    this.setState({ punish: true }, () => {
-      setTimeout(() => {
-        this.setState({ punish: false })
-      }, 100)
+    this.setState({ state: 'punished' }, () => {
+      this.rest()
     })
   }
 
   render () {
     const { config = {}, children } = this.props
     const { springAnimation = true } = config
-    const { animate, punish } = this.state
+    const { state } = this.state
     return (
       <span>
         <div ref={(ref) => { this.container = ref }} />
-        <PunishAnim pose={springAnimation && (punish ? 'punished' : 'notPunished')}>
-          <SpringAnim pose={springAnimation && (animate ? 'clicked' : 'resting')}>
-            {children}
-          </SpringAnim>
-        </PunishAnim>
+        <SpringAnim pose={springAnimation && state}>
+          {children}
+        </SpringAnim>
       </span>
     )
   }

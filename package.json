@@ -3,6 +3,7 @@
   "author": "Jakub Szewczyk <jakub.szewczykk@gmail.com>",
   "version": "1.0.3",
   "main": "build/index.js",
+  "homepage": "https://thedevelobear.github.io/react-rewards/",
   "license": "MIT",
   "repository": {
     "url": "https://github.com/thedevelobear/react-rewards"
@@ -12,13 +13,17 @@
   ],
   "scripts": {
     "build": "neutrino build",
+    "build:demo": "neutrino build --use @neutrinojs/react",
     "start": "neutrino start",
     "lint": "neutrino lint"
   },
-  "devDependencies": {
+  "dependencies": {
+    "@neutrinojs/react": "^8.3.0",
     "@neutrinojs/react-components": "^8.3.0",
     "@neutrinojs/standardjs": "^8.3.0",
-    "antd": "^3.10.7",
+    "@neutrinojs/style-loader": "^8.3.0",
+    "antd": "3.10.8",
+    "lottie-web": "^5.4.2",
     "neutrino": "^8.3.0",
     "prop-types": "^15.6.2",
     "react": "^16.6.1",
