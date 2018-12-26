@@ -1,7 +1,8 @@
 {
   "name": "react-rewards",
   "author": "Jakub Szewczyk <jakub.szewczykk@gmail.com>",
-  "version": "1.0.4",
+  "version": "1.0.6",
+  "description": "This package lets you easily add microinteractions to your app and reward users with the rain of confettis or flying emoji in seconds.",
   "main": "build/index.js",
   "homepage": "https://thedevelobear.github.io/react-rewards/",
   "license": "MIT",
@@ -11,6 +12,14 @@
   "files": [
     "/build"
   ],
+  "keywords": [
+    "react",
+    "react-component",
+    "confetti",
+    "memphis",
+    "emoji",
+    "react-rewards"
+  ],
   "scripts": {
     "build": "neutrino build",
     "build:demo": "neutrino build --use @neutrinojs/react",
@@ -18,16 +27,19 @@
     "lint": "neutrino lint"
   },
   "dependencies": {
+    "lottie-web": "^5.4.2",
+    "react-pose": "^4.0.1",
+    "react-rewards": "^1.0.5"
+  },
+  "devDependencies": {
     "@neutrinojs/react": "^8.3.0",
     "@neutrinojs/react-components": "^8.3.0",
     "@neutrinojs/standardjs": "^8.3.0",
     "@neutrinojs/style-loader": "^8.3.0",
     "antd": "3.10.8",
-    "lottie-web": "^5.4.2",
     "neutrino": "^8.3.0",
     "prop-types": "^15.6.2",
     "react": "^16.6.1",
-    "react-dom": "^16.6.1",
-    "react-pose": "^4.0.1"
+    "react-dom": "^16.6.1"
   }
 }
