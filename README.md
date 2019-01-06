@@ -6,6 +6,8 @@
 
 ## Usage
 
+This package was built using React-Pose, react-dom-confetti and Lottie-web.
+
 Why should I even use that? Read my blog post and you will know – https://www.thedevelobear.com/post/microinteractions/
 
 Install from npm by typing ```npm install react-rewards``` or ```yarn add react-rewards``` while in your package.json directory.
@@ -59,7 +61,3 @@ Config object:
 | springAnimation | bool   | whether the button should be animated                  | true                      |
 | colors          | array  | An array of colors used when generating confettis      |                           |
 | emoji           | array  | An array of emoji used when generating emoji particles |                           |
-
-
-
-This package was build using React-Pose and react-dom-confetti and Lottie-web.
