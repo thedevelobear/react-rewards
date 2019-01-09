@@ -1,7 +1,7 @@
 {
   "name": "react-rewards",
   "author": "Jakub Szewczyk <jakub.szewczykk@gmail.com>",
-  "version": "1.0.6",
+  "version": "1.0.7",
   "description": "This package lets you easily add microinteractions to your app and reward users with the rain of confettis or flying emoji in seconds.",
   "main": "build/index.js",
   "homepage": "https://thedevelobear.github.io/react-rewards/",

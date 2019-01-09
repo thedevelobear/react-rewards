@@ -39,21 +39,22 @@ const generatePhysics = (angle, spread, startVelocity, random) => {
   }
 }
 
-const updateFetti = (fetti, progress, decay) => {
+const updateFetti = (fetti, progress, decay, index) => {
   fetti.physics.x += Math.cos(fetti.physics.angle2D) * fetti.physics.velocity
   fetti.physics.y += Math.sin(fetti.physics.angle2D) * fetti.physics.velocity
   fetti.physics.z += Math.sin(fetti.physics.angle3D) * fetti.physics.velocity
-  fetti.physics.wobble += 0.1
+  fetti.physics.wobble += 0.05
   fetti.physics.velocity *= decay
-  fetti.physics.y += 3
-  fetti.physics.tiltAngle += 0.1
+  fetti.physics.y += 3.5
+  fetti.physics.tiltAngle += 0.15
 
   const { x, y, tiltAngle, wobble } = fetti.physics
-  const wobbleX = x + (10 * Math.cos(wobble))
-  const wobbleY = y + (10 * Math.sin(wobble))
+  const wobbleX = index % 2 === 0 ? x + (6 * Math.sin(wobble) + progress) : x + (12 * Math.cos(wobble) + progress)
+  const wobbleY = y + (5 * Math.sin(wobble))
   const transform = `translate3d(${wobbleX}px, ${wobbleY}px, 0) rotate3d(1, 1, 1, ${tiltAngle}rad)`
 
   fetti.element.style.transform = transform
+  fetti.element.style.scale = 1 - 0.2 * progress
   fetti.element.style.opacity = 1 - progress
 }
 
@@ -62,7 +63,7 @@ const animate = (root, fettis, decay, lifetime) => {
   let tick = 0
 
   const update = () => {
-    fettis.forEach((fetti) => updateFetti(fetti, tick / totalTicks, decay))
+    fettis.forEach((fetti, index) => updateFetti(fetti, tick / totalTicks, decay, index))
 
     tick += 1
     if (tick < totalTicks) {
