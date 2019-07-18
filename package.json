@@ -27,8 +27,8 @@
     "lint": "neutrino lint"
   },
   "dependencies": {
-    "lottie-web": "^5.4.2",
-    "react-pose": "^4.0.1",
+    "lottie-web": "^5.5.6",
+    "react-pose": "^4.0.8",
     "react-rewards": "^1.0.5"
   },
   "devDependencies": {
@@ -36,10 +36,10 @@
     "@neutrinojs/react-components": "^8.3.0",
     "@neutrinojs/standardjs": "^8.3.0",
     "@neutrinojs/style-loader": "^8.3.0",
-    "antd": "3.10.8",
+    "antd": "^3.20.3",
     "neutrino": "^8.3.0",
-    "prop-types": "^15.6.2",
-    "react": "^16.6.1",
-    "react-dom": "^16.6.1"
+    "prop-types": "^15.7.2",
+    "react": "^16.8.6",
+    "react-dom": "^16.8.6"
   }
 }
