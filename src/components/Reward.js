@@ -1,8 +1,8 @@
 import React, { Component } from 'react'
 import posed from 'react-pose'
-import confetti from '../Confetti'
-import emoji from '../Emoji'
-import memphis from '../Memphis'
+import confetti from './Confetti'
+import emoji from './Emoji'
+import memphis from './Memphis'
 
 const transition = {
   type: 'spring',
@@ -92,12 +92,12 @@ export default class Reward extends Component {
     const { springAnimation = true } = config
     const { state } = this.state
     return (
-      <span>
+      <React.Fragment>
         <div ref={(ref) => { this.container = ref }} />
         <SpringAnim pose={springAnimation && state}>
           {children}
         </SpringAnim>
-      </span>
+      </React.Fragment>
     )
   }
 }

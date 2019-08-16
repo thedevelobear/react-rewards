@@ -1,11 +1,11 @@
 import React, { Component } from 'react'
-import Reward from './components/Reward'
+import Reward from 'react-rewards'
 import Button from 'antd/lib/button'
 import Radio from 'antd/lib/radio'
 import Row from 'antd/lib/row'
 import Col from 'antd/lib/col'
 import ConfigSlider from './Slider'
-import logo from '../react-rewards.png'
+import logo from './react-rewards.png'
 import 'antd/dist/antd.css'
 
 const defaults = {
@@ -116,7 +116,7 @@ export default class App extends Component {
     const disabled = rewardPunish === 'punish'
     return (
       <div style={containerStyle}>
-        <img style={logoStyle} src={logo} />
+        <img alt="React rewards logo" style={logoStyle} src={logo} />
         <Reward
           ref={ref => {
             this.reward = ref
@@ -152,9 +152,9 @@ export default class App extends Component {
                 onChange={this.rewardTypeChange}
                 disabled={disabled}
               >
-                <Radio.Button value='confetti'>Confetti 🎉</Radio.Button>
-                <Radio.Button value='emoji'>Emoji 👍</Radio.Button>
-                <Radio.Button value='memphis'>Memphis 🔸</Radio.Button>
+                <Radio.Button value='confetti'>Confetti <span role="img" aria-label="confetti switch">🎉</span></Radio.Button>
+                <Radio.Button value='emoji'>Emoji <span role="img" aria-label="emoji switch">👍</span></Radio.Button>
+                <Radio.Button value='memphis'>Memphis <span role="img" aria-label="memphis switch">🔸</span></Radio.Button>
               </Radio.Group>
             </Col>
           </Row>

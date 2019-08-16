@@ -1,8 +1,7 @@
 import lottie from 'lottie-web'
-import memphisAnimation from './memphis.json'
-import './index.css'
+import './memphis.css'
 
-const memphis = (container, props) => {
+const memphis = (container) => {
   lottie.loadAnimation({
     container: container,
     renderer: 'svg',
@@ -11,7 +10,7 @@ const memphis = (container, props) => {
     },
     loop: false,
     autoplay: true,
-    animationData: memphisAnimation,
+    animationData: [],
     onComplete: lottie.destroy()
   })
 }
