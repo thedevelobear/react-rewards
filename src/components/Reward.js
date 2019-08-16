@@ -13,25 +13,25 @@ const transition = {
 const SpringAnim = posed.div({
   confetti: {
     y: 5,
-    transition: { ...transition }
+    transition,
   },
   emoji: {
     y: 5,
-    transition: { ...transition }
+    transition,
   },
   memphis: {
     scale: 1.1,
-    transition: { ...transition }
+    transition,
   },
   punished: {
     x: 5,
-    transition: { ...transition }
+    transition,
   },
   resting: {
     y: 0,
     x: 0,
     scale: 1,
-    transition: { ...transition }
+    transition,
   }
 })
 

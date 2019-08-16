@@ -18560,20 +18560,6 @@ var createClass = function () {
   };
 }();
 
-var _extends = Object.assign || function (target) {
-  for (var i = 1; i < arguments.length; i++) {
-    var source = arguments[i];
-
-    for (var key in source) {
-      if (Object.prototype.hasOwnProperty.call(source, key)) {
-        target[key] = source[key];
-      }
-    }
-  }
-
-  return target;
-};
-
 var inherits = function (subClass, superClass) {
   if (typeof superClass !== "function" && superClass !== null) {
     throw new TypeError("Super expression must either be null or a function, not " + typeof superClass);
@@ -18607,25 +18593,25 @@ var transition = {
 var SpringAnim = posed.div({
   confetti: {
     y: 5,
-    transition: _extends({}, transition)
+    transition: transition
   },
   emoji: {
     y: 5,
-    transition: _extends({}, transition)
+    transition: transition
   },
   memphis: {
     scale: 1.1,
-    transition: _extends({}, transition)
+    transition: transition
   },
   punished: {
     x: 5,
-    transition: _extends({}, transition)
+    transition: transition
   },
   resting: {
     y: 0,
     x: 0,
     scale: 1,
-    transition: _extends({}, transition)
+    transition: transition
   }
 });
 
