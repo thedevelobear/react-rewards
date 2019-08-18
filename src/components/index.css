@@ -1,0 +1,7 @@
+.absolute-player {
+    width: 800px!important;
+    position: absolute;
+    bottom: 0;
+    height: 800px!important;
+    transform: translate3d(-413px, 409px, 10px) !important;
+}

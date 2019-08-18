@@ -1,0 +1,12 @@
+.absolute-player {
+    width: 800px;
+    position: absolute;
+    background: aquamarine;
+    bottom: 0;
+    height: 800px;
+    transform: translate3d(-413px, 409px, 10px);
+}
+
+.some-css {
+    background: blue;
+}

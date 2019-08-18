@@ -1,5 +1,7 @@
 import React, { Component } from 'react'
+import PropTypes from 'prop-types'
 import posed from 'react-pose'
+
 import confetti from './Confetti'
 import emoji from './Emoji'
 import memphis from './Memphis'
@@ -13,25 +15,25 @@ const transition = {
 const SpringAnim = posed.div({
   confetti: {
     y: 5,
-    transition,
+    transition
   },
   emoji: {
     y: 5,
-    transition,
+    transition
   },
   memphis: {
     scale: 1.1,
-    transition,
+    transition
   },
   punished: {
     x: 5,
-    transition,
+    transition
   },
   resting: {
     y: 0,
     x: 0,
     scale: 1,
-    transition,
+    transition
   }
 })
 
@@ -56,7 +58,7 @@ export default class Reward extends Component {
       }
       case 'memphis': {
         this.handleAnimation(type)
-        memphis(...props)
+        memphis(this.lottieContainer, config)
         break
       }
       default: {
@@ -87,17 +89,29 @@ export default class Reward extends Component {
     })
   }
 
-  render () {
+  render() {
     const { config = {}, children } = this.props
     const { springAnimation = true } = config
     const { state } = this.state
     return (
       <React.Fragment>
         <div ref={(ref) => { this.container = ref }} />
+        <div style={lottieContainerStyles} ref={(ref) => { this.lottieContainer = ref }} />
         <SpringAnim pose={springAnimation && state}>
           {children}
         </SpringAnim>
       </React.Fragment>
     )
   }
+}
+
+const lottieContainerStyles = { position: 'relative' }
+
+Reward.propTypes = {
+  type: PropTypes.string.isRequired,
+  config: PropTypes.object,
+  children: PropTypes.oneOfType([
+    PropTypes.arrayOf(PropTypes.node),
+    PropTypes.node
+  ]).isRequired
 }

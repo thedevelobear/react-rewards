@@ -1,16 +1,18 @@
 import lottie from 'lottie-web'
-import './memphis.css'
+import animationData from './memphisAnimationData.js'
+
+import './index.css'
 
 const memphis = (container) => {
   lottie.loadAnimation({
     container: container,
     renderer: 'svg',
     rendererSettings: {
-      className: 'absolutePlayer'
+      className: 'absolute-player'
     },
     loop: false,
     autoplay: true,
-    animationData: [],
+    animationData: animationData,
     onComplete: lottie.destroy()
   })
 }

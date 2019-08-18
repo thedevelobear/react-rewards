@@ -1,4 +1,4 @@
-const pi = Math.PI
+const PI = Math.PI
 const defaultEmoji = [
   '👍',
   '😊',
@@ -20,7 +20,7 @@ const createElements = (root, elementCount, elementSize, zIndex, emoji) => (
     })
 )
 
-const radiansFrom = degrees => degrees * (pi / 180)
+const radiansFrom = degrees => degrees * (PI / 180)
 
 const generatePhysics = (angle, spread, startVelocity, random) => {
   const radAngle = radiansFrom(angle)
@@ -31,8 +31,8 @@ const generatePhysics = (angle, spread, startVelocity, random) => {
     wobble: random() * 10,
     velocity: (startVelocity * 0.5) + (random() * startVelocity),
     angle2D: -radAngle + ((0.5 * radSpread) - (random() * radSpread)),
-    angle3D: -(pi / 4) + (random() * (pi / 2)),
-    tiltAngle: random() * pi
+    angle3D: -(PI / 4) + (random() * (PI / 2)),
+    tiltAngle: random() * PI
   }
 }
 
@@ -62,7 +62,7 @@ const animate = (root, mojis, decay, lifetime) => {
 
     tick += 1
     if (tick < totalTicks) {
-      requestAnimationFrame(update)
+      window.requestAnimationFrame(update)
     } else {
       mojis.forEach((fetti) => {
         if (fetti.element.parentNode === root) {
@@ -72,7 +72,7 @@ const animate = (root, mojis, decay, lifetime) => {
     }
   }
 
-  requestAnimationFrame(update)
+  window.requestAnimationFrame(update)
 }
 
 const emoji = (root, {
