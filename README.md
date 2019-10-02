@@ -48,7 +48,7 @@ Basic props:
 
 Config object: 
 
-| name            | type   | description                                            | default (confett / emoji) |
+| name            | type   | description                                            | default (confetti / emoji) |
 |-----------------|--------|--------------------------------------------------------|---------------------------|
 | lifetime        | number | time of life of each particle in ms                    | 200 / 200                 |
 | angle           | number | initial direction of particles in degrees              | 90 / 90                   |
