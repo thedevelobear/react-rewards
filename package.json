@@ -1,7 +1,7 @@
 {
   "name": "react-rewards",
-  "version": "1.1.1",
-  "description": "This package lets you easily add microinteractions to your app and reward users with the rain of confettis or flying emoji in seconds.",
+  "version": "1.1.2",
+  "description": "This package lets you easily add micro-interactions to your app and reward users with the rain of confetti or flying emoji in seconds.",
   "author": "thedevelobear",
   "license": "MIT",
   "homepage": "https://thedevelobear.github.io/react-rewards/",

@@ -1,4 +1,5 @@
 import React, { PureComponent, createContext, createElement, forwardRef, Component, cloneElement, Children } from 'react';
+import PropTypes from 'prop-types';
 
 /*! *****************************************************************************
 Copyright (c) Microsoft Corporation. All rights reserved.
@@ -4411,7 +4412,7 @@ var PoseGroup = (function (_super) {
     return PoseGroup;
 }(Component));
 
-var pi = Math.PI;
+var PI = Math.PI;
 var defaultColors = ['#A45BF1', '#25C6F6', '#72F753', '#F76C88', '#F5F770'];
 
 var createElements = function createElements(root, elementCount, elementSize, zIndex, colors) {
@@ -4429,7 +4430,7 @@ var createElements = function createElements(root, elementCount, elementSize, zI
 };
 
 var radiansFrom = function radiansFrom(degrees) {
-  return degrees * (pi / 180);
+  return degrees * (PI / 180);
 };
 
 var generatePhysics = function generatePhysics(angle, spread, startVelocity, random) {
@@ -4441,8 +4442,8 @@ var generatePhysics = function generatePhysics(angle, spread, startVelocity, ran
     wobble: random() * 10,
     velocity: startVelocity * 0.5 + random() * startVelocity,
     angle2D: -radAngle + (0.5 * radSpread - random() * radSpread),
-    angle3D: -(pi / 4) + random() * (pi / 2),
-    tiltAngle: random() * pi
+    angle3D: -(PI / 4) + random() * (PI / 2),
+    tiltAngle: random() * PI
   };
 };
 
@@ -4481,7 +4482,7 @@ var animate = function animate(root, fettis, decay, lifetime) {
 
     tick += 1;
     if (tick < totalTicks) {
-      requestAnimationFrame(update);
+      window.requestAnimationFrame(update);
     } else {
       fettis.forEach(function (fetti) {
         if (fetti.element.parentNode === root) {
@@ -4491,7 +4492,7 @@ var animate = function animate(root, fettis, decay, lifetime) {
     }
   };
 
-  requestAnimationFrame(update);
+  window.requestAnimationFrame(update);
 };
 
 var confetti = function confetti(root) {
@@ -4528,7 +4529,7 @@ var confetti = function confetti(root) {
   animate(root, fettis, decay, lifetime);
 };
 
-var pi$1 = Math.PI;
+var PI$1 = Math.PI;
 var defaultEmoji = ['👍', '😊', '🎉'];
 
 var createElements$1 = function createElements(root, elementCount, elementSize, zIndex, emoji) {
@@ -4545,7 +4546,7 @@ var createElements$1 = function createElements(root, elementCount, elementSize, 
 };
 
 var radiansFrom$1 = function radiansFrom(degrees) {
-  return degrees * (pi$1 / 180);
+  return degrees * (PI$1 / 180);
 };
 
 var generatePhysics$1 = function generatePhysics(angle, spread, startVelocity, random) {
@@ -4557,8 +4558,8 @@ var generatePhysics$1 = function generatePhysics(angle, spread, startVelocity, r
     wobble: random() * 10,
     velocity: startVelocity * 0.5 + random() * startVelocity,
     angle2D: -radAngle + (0.5 * radSpread - random() * radSpread),
-    angle3D: -(pi$1 / 4) + random() * (pi$1 / 2),
-    tiltAngle: random() * pi$1
+    angle3D: -(PI$1 / 4) + random() * (PI$1 / 2),
+    tiltAngle: random() * PI$1
   };
 };
 
@@ -4594,7 +4595,7 @@ var animate$1 = function animate(root, mojis, decay, lifetime) {
 
     tick += 1;
     if (tick < totalTicks) {
-      requestAnimationFrame(update);
+      window.requestAnimationFrame(update);
     } else {
       mojis.forEach(function (fetti) {
         if (fetti.element.parentNode === root) {
@@ -4604,7 +4605,7 @@ var animate$1 = function animate(root, mojis, decay, lifetime) {
     }
   };
 
-  requestAnimationFrame(update);
+  window.requestAnimationFrame(update);
 };
 
 var emoji = function emoji(root) {
@@ -21984,6 +21985,20 @@ var createClass = function () {
   };
 }();
 
+var _extends = Object.assign || function (target) {
+  for (var i = 1; i < arguments.length; i++) {
+    var source = arguments[i];
+
+    for (var key in source) {
+      if (Object.prototype.hasOwnProperty.call(source, key)) {
+        target[key] = source[key];
+      }
+    }
+  }
+
+  return target;
+};
+
 var inherits = function (subClass, superClass) {
   if (typeof superClass !== "function" && superClass !== null) {
     throw new TypeError("Super expression must either be null or a function, not " + typeof superClass);
@@ -22108,20 +22123,21 @@ var Reward = function (_Component) {
       var _this2 = this;
 
       var _props = this.props,
-          _props$config = _props.config,
-          config = _props$config === undefined ? {} : _props$config,
+          config = _props.config,
           children = _props.children;
       var _config$springAnimati = config.springAnimation,
-          springAnimation = _config$springAnimati === undefined ? true : _config$springAnimati;
+          springAnimation = _config$springAnimati === undefined ? true : _config$springAnimati,
+          _config$containerStyl = config.containerStyle,
+          containerStyle = _config$containerStyl === undefined ? {} : _config$containerStyl;
       var state = this.state.state;
 
       return React.createElement(
         React.Fragment,
         null,
-        React.createElement('div', { ref: function ref(_ref2) {
+        React.createElement('div', { style: containerStyle, ref: function ref(_ref2) {
             _this2.container = _ref2;
           } }),
-        React.createElement('div', { style: { position: 'relative' }, ref: function ref(_ref3) {
+        React.createElement('div', { style: _extends({}, containerStyle, lottieContainerStyles), ref: function ref(_ref3) {
             _this2.lottieContainer = _ref3;
           } }),
         React.createElement(
@@ -22134,6 +22150,19 @@ var Reward = function (_Component) {
   }]);
   return Reward;
 }(Component);
+
+
+var lottieContainerStyles = { position: 'relative' };
+
+Reward.propTypes = {
+  type: PropTypes.string.isRequired,
+  config: PropTypes.object,
+  children: PropTypes.oneOfType([PropTypes.arrayOf(PropTypes.node), PropTypes.node]).isRequired
+};
+
+Reward.defaultProps = {
+  config: {}
+};
 
 export default Reward;
 //# sourceMappingURL=index.es.js.map

@@ -90,13 +90,13 @@ export default class Reward extends Component {
   }
 
   render() {
-    const { config = {}, children } = this.props
-    const { springAnimation = true } = config
+    const { config, children } = this.props
+    const { springAnimation = true, containerStyle = {} } = config
     const { state } = this.state
     return (
       <React.Fragment>
-        <div ref={(ref) => { this.container = ref }} />
-        <div style={lottieContainerStyles} ref={(ref) => { this.lottieContainer = ref }} />
+        <div style={containerStyle} ref={(ref) => { this.container = ref }} />
+        <div style={{...containerStyle, ...lottieContainerStyles}} ref={(ref) => { this.lottieContainer = ref }} />
         <SpringAnim pose={springAnimation && state}>
           {children}
         </SpringAnim>
@@ -114,4 +114,8 @@ Reward.propTypes = {
     PropTypes.arrayOf(PropTypes.node),
     PropTypes.node
   ]).isRequired
+}
+
+Reward.defaultProps = {
+  config: {}
 }
