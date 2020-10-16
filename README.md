@@ -2,7 +2,7 @@
 
 [![npm version](https://badge.fury.io/js/react-rewards.svg)](https://badge.fury.io/js/react-rewards) [![forthebadge](https://forthebadge.com/images/badges/makes-people-smile.svg)](https://forthebadge.com)
 
-### Demo available <a href="https://fmjo9.csb.app/" target="_blank">here!</a>
+### Demo available <a href="https://thedevelobear.github.io/react-rewards/" target="_blank">here!</a>
 
 ## Usage
 
