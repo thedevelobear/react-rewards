@@ -1,63 +1,131 @@
-![react-rewards logo](react-rewards.png?raw=true "react-rewards")
+![react-rewards logo](assets/react-rewards.png?raw=true "react-rewards")
 
 [![npm version](https://badge.fury.io/js/react-rewards.svg)](https://badge.fury.io/js/react-rewards) [![forthebadge](https://forthebadge.com/images/badges/makes-people-smile.svg)](https://forthebadge.com)
 
-### Demo available <a href="https://thedevelobear.github.io/react-rewards/" target="_blank">here!</a>
+This package was inspired by react-dom-confetti.
 
-## Usage
+**react-rewards** lets you add micro-interactions to your app, and rewards users with the rain of confetti, emoji or balloons in seconds.
+Firing confetti all over the page may seem like a questionable idea, but keep in mind that rewarding users for their actions is not.
+If a huge cloud of smiling emoji doesn't fit your application well, try changing the physics config to make it more subtle.
 
-This package was built using React-Pose, react-dom-confetti and Lottie-web.
+You can read more on the subject of micro-interactions in my blog post – https://www.thedevelobear.com/post/microinteractions/
 
-Why should I use that? Read my blog post and you will know – https://www.thedevelobear.com/post/microinteractions/
+#### Confetti
+<p align="center">
+<img alt='confetti demo gif' src="assets/confetti.gif"/>
+</p>
+
+#### Balloons
+<p align="center">
+<img alt='balloons demo gif' src="assets/balloons.gif"/>
+</p>
+
+#### Emoji
+<p align="center">
+<img alt='emoji demo gif' src="assets/emoji.gif"/>
+</p>
+
+## Installation
 
 Install from npm by typing ```npm install react-rewards``` or ```yarn add react-rewards``` while in your package.json directory.
 
-This package lets you add microinteractions to your app, and rewards users with the rain of confettis, flying emoji or memphis design particles in seconds. In order to make it rain, you need to wrap your button of choice with the **\<Reward\>** component, fire the **rewardMe()** method from the refs and voilà. You can also "punish" the user by calling the **punishMe()** method and showing them that something went wrong. 
+## Usage
 
-<p align="center">
-<img alt='react-rewards demo' src="react-rewards.gif"/>
-</p>
+In order to use the rewards, you'll need to provide an element that will become the origin of the animation. 
+Animation particles are set to position: 'fixed' by default, but this can be changed through a config object.
+You can place the element inside a button, center it and use angle = 90 to shoot up from the button.
+You can place it on top of the viewport with position: "fixed" and change the angle to 270, to shoot downwards.
 
+#### Single reward
 ```js
-import Reward from 'react-rewards';
-
-// in render
-<Reward
-  ref={(ref) => { this.reward = ref }}
-  type='emoji'
+import { useReward } from 'react-rewards';
+...
+const { reward, isAnimating } = useReward('rewardId', 'confetti');
+...
+<button
+    disabled={isAnimating}
+    onClick={reward}
 >
-  <button onClick={this.fetchSomeData} />
-</Reward>
+    <span id="rewardId" />
+    🎉
+</button>
+```
 
-// in fetchSomeData:
-// to reward a user with confetti/emoji/memphis rain:
-this.reward.rewardMe();
-// to "punish" user :
-this.reward.punishMe();
+#### Multiple rewards
+TIP: You can use the same ID to shoot from the same spot, or provide separate elements with unique IDs.
+```js
+import { useReward } from 'react-rewards';
+...
+const {reward: confettiReward, isAnimating: isConfettiAnimating} = useReward('confettiReward', 'confetti');
+const {reward: balloonsReward, isAnimating: isBalloonsAnimating} = useReward('balloonsReward', 'balloons');
+...
+<button
+    disabled={isConfettiAnimating || isBalloonsAnimating}
+    onClick={() => {
+        confettiReward();
+        balloonsReward();
+    }}
+>
+    <span id="confettiReward" />
+    <span id="balloonsReward" />
+    🎉
+</button>
 ```
 
 ### Props & config
 
-Basic props:
+useReward params:
 
 | name            | type   | description                                            | required   |default      |
 |-----------------|--------|--------------------------------------------------------|------------|-------------|
-| ref             | func   | function that creates a ref of the reward component    | yes        |             |
-| type            | string | 'confetti', 'emoji' or 'memphis'                       | no         |'confetti'   |
+| id              | string | A unique id of the element you want to shoot from      | yes        |             |
+| type            | string | 'confetti' | 'balloons' | 'emoji'                      | yes        |'confetti'   |
 | config          | object | a configuration object described below                 | no         |see below    |
 
-Config object: 
+Confetti config object: 
 
-| name            | type   | description                                            | default (confetti / emoji) |
+| name            | type   | description                                            | default                   |
 |-----------------|--------|--------------------------------------------------------|---------------------------|
-| lifetime        | number | time of life of each particle in ms                    | 200 / 200                 |
-| angle           | number | initial direction of particles in degrees              | 90 / 90                   |
-| decay           | number | how much the velocity decreases with each frame        | 0.91 / 0.91               |
-| spread          | number | spread of particles in degrees                         | 45 / 100                  |
-| startVelocity   | number | initial velocity of particles                          | 35 / 20                   |
-| elementCount    | number | particles quantity                                     | 40 / 15                   |
-| elementSize     | number | particle size in px                                    | 8 / 20                    |
-| zIndex          | number | z-index of particles                                   | 10 / 10                   |
-| springAnimation | bool   | whether the button should be animated                  | true                      |
-| colors          | array  | An array of colors used when generating confettis      |                           |
-| emoji           | array  | An array of emoji used when generating emoji particles |                           |
+| lifetime        | number | time of life                                           | 200                       |
+| angle           | number | initial direction of particles in degrees              | 90                        |
+| decay           | number | how much the velocity decreases with each frame        | 0.94                      |
+| spread          | number | spread of particles in degrees                         | 45                        |
+| startVelocity   | number | initial velocity of particles                          | 35                        |
+| elementCount    | number | particles quantity                                     | 50                        |
+| elementSize     | number | particle size in px                                    | 8                         |
+| zIndex          | number | z-index of particles                                   | 0                         |
+| position        | string | one of CSSProperties['position'] - e.g. "absolute"     | "fixed"                   |
+| colors          | string[]| An array of colors used when generating confetti       |['#A45BF1', '#25C6F6', '#72F753', '#F76C88', '#F5F770']|
+| onAnimationComplete | () => void | A function that runs when animation completes  | undefined                 |
+
+Balloons config object:
+
+| name            | type   | description                                            | default                   |
+|-----------------|--------|--------------------------------------------------------|---------------------------|
+| lifetime        | number | time of life                                           | 600                       |
+| angle           | number | initial direction of balloons in degrees               | 90                        |
+| decay           | number | how much the velocity decreases with each frame        | 0.999                     |
+| spread          | number | spread of balloons in degrees                          | 50                        |
+| startVelocity   | number | initial velocity of the balloons                       | 3                         |
+| elementCount    | number | balloons quantity                                      | 10                        |
+| elementSize     | number | balloons size in px                                    | 20                        |
+| zIndex          | number | z-index of balloons                                    | 0                         |
+| position        | string | one of CSSProperties['position'] - e.g. "absolute"     | "fixed"                   |
+| colors          | string[]| An array of colors used when generating balloons       |['#A45BF1', '#25C6F6', '#72F753', '#F76C88', '#F5F770']|
+| onAnimationComplete | () => void | A function that runs when animation completes  | undefined                 |
+
+Emoji config object:
+
+| name            | type   | description                                            | default                   |
+|-----------------|--------|--------------------------------------------------------|---------------------------|
+| lifetime        | number | time of life                                           | 200                       |
+| angle           | number | initial direction of emoji in degrees                  | 90                        |
+| decay           | number | how much the velocity decreases with each frame        | 0.94                      |
+| spread          | number | spread of emoji in degrees                             | 45                        |
+| startVelocity   | number | initial velocity of emoji                              | 35                        |
+| elementCount    | number | emoji quantity                                         | 20                        |
+| elementSize     | number | emoji size in px                                       | 25                        |
+| zIndex          | number | z-index of emoji                                       | 0                         |
+| position        | string | one of CSSProperties['position'] - e.g. "absolute"     | "fixed"                   |
+| emoji           | string[]| An array of emoji to shoot                            |['🤓', '😊', '🥳']          |
+| onAnimationComplete | () => void | A function that runs when animation completes  | undefined                 |
