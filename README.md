@@ -2,9 +2,13 @@
 
 [![npm version](https://badge.fury.io/js/react-rewards.svg)](https://badge.fury.io/js/react-rewards) [![forthebadge](https://forthebadge.com/images/badges/makes-people-smile.svg)](https://forthebadge.com)
 
+:evergreen_tree: **Tree-shakeable**
+:female_detective: **Built with TypeScript**
+:package: **3.6kB gzipped**
+
 This package was inspired by react-dom-confetti.
 
-**react-rewards** lets you add micro-interactions to your app, and rewards users with the rain of confetti, emoji or balloons in seconds.
+**React-rewards** lets you add micro-interactions to your app, and rewards users with the rain of confetti, emoji or balloons in seconds.
 Firing confetti all over the page may seem like a questionable idea, but keep in mind that rewarding users for their actions is not.
 If a huge cloud of smiling emoji doesn't fit your application well, try changing the physics config to make it more subtle.
 
@@ -31,10 +35,13 @@ Install from npm by typing ```npm install react-rewards``` or ```yarn add react-
 
 ## Usage
 
-In order to use the rewards, you'll need to provide an element that will become the origin of the animation. 
-Animation particles are set to position: 'fixed' by default, but this can be changed through a config object.
-You can place the element inside a button, center it and use angle = 90 to shoot up from the button.
+In order to use the rewards, you'll need to provide an element that will become the origin of the animation. This element needs to have an ID that matches the one used inside the hook - it can be anywhere in the DOM as long as the IDs match.
+
+You can place the element inside a button, center it and shoot up from the button.
 You can place it on top of the viewport with position: "fixed" and change the angle to 270, to shoot downwards.
+Experiment, try, **have fun!**
+
+Animation particles are set to position: 'fixed' by default, but this can be changed through a config object.
 
 #### Single reward
 ```js
