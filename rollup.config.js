@@ -1,39 +1,25 @@
-import babel from 'rollup-plugin-babel'
-import commonjs from 'rollup-plugin-commonjs'
-import external from 'rollup-plugin-peer-deps-external'
-import postcss from 'rollup-plugin-postcss'
-import resolve from 'rollup-plugin-node-resolve'
-import url from 'rollup-plugin-url'
-import json from 'rollup-plugin-json'
-import svgr from '@svgr/rollup'
+import dts from 'rollup-plugin-dts'
+import esbuild from 'rollup-plugin-esbuild'
+import svg from 'rollup-plugin-svg';
 
-import pkg from './package.json'
+const name = require('./package.json').main.replace(/\.js$/, '')
 
-export default {
-  input: 'src/index.js',
-  output: [
-    {
-      file: pkg.main,
-      format: 'cjs',
-      sourcemap: true
-    },
-    {
-      file: pkg.module,
-      format: 'es',
-      sourcemap: true
-    }
-  ],
-  plugins: [
-    external(),
-    postcss(),
-    url(),
-    svgr(),
-    babel({
-      exclude: 'node_modules/**',
-      plugins: [ 'external-helpers' ]
-    }),
-    resolve(),
-    commonjs(),
-    json()
-  ]
-}
+const ext = format =>
+    format === 'dts' ? 'd.ts' : format === 'cjs' ? 'js' : 'es.js'
+
+const bundle = format => ({
+  input: 'src/index.ts',
+  output: {
+    file: `${name}.${ext(format)}`,
+    format: format === 'cjs' ? 'cjs' : 'es',
+    sourcemap: format !== 'dts',
+  },
+  plugins: format === 'dts' ? [dts()] : [svg(), esbuild({minify: true})],
+  external: id => !/^[./]/.test(id),
+})
+
+export default [
+  bundle('es'),
+  bundle('cjs'),
+  bundle('dts'),
+]

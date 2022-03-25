@@ -1,0 +1,32 @@
+{
+//  "target": "esnext",
+//  "compilerOptions": {
+//    "esModuleInterop": true,
+//    "strict": true,
+//    "skipLibCheck": true,
+//    "jsx": "react-jsx",
+//    "module": "ESNext",
+//    "declaration": true,
+//    "declarationDir": "types",
+//    "sourceMap": true,
+//    "inlineSources": true,
+//    "outDir": "dist",
+//    "moduleResolution": "node",
+//    "emitDeclarationOnly": true,
+//    "allowSyntheticDefaultImports": true,
+//    "forceConsistentCasingInFileNames": true,
+//    "suppressImplicitAnyIndexErrors": true
+//  },
+  "compilerOptions": {
+    "esModuleInterop": true,
+//    "lib": ["es2018"],
+    "strict": true,
+    "target": "esnext",
+    "module": "commonjs",
+    "moduleResolution": "node",
+    "noUnusedLocals": true,
+    "forceConsistentCasingInFileNames": true,
+    "suppressImplicitAnyIndexErrors": true
+  },
+  "include": ["src", "src/svg.d.ts"]
+}

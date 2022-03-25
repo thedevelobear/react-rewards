@@ -5,6 +5,8 @@ node_modules
 # Yarn Integrity file
 .yarn-integrity
 
+dist
+
 # Logs
 logs
 *.log
