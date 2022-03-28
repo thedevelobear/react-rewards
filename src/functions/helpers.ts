@@ -64,3 +64,13 @@ export const generatePhysics = (
     differentiator,
   };
 };
+
+export const getContainerById = (id: string) => {
+  const container = document.getElementById(id);
+  if (!container) {
+    console.error(
+      `Element with an ID of ${id} could not be found. Please provide a valid ID.`
+    );
+  }
+  return container;
+};
