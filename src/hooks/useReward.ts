@@ -1,33 +1,12 @@
-import { useLayoutEffect, useState } from 'react';
+import { useState } from 'react';
 import { confetti } from '../components/Confetti/Confetti';
 import { emoji } from '../components/Emoji/Emoji';
 import { balloons } from '../components/Balloons/Balloons';
 import { UseRewardType } from './useReward.types';
+import { getContainerById } from '../functions/helpers';
 
 export const useReward: UseRewardType = (id, type, config) => {
-  const [container, setContainer] = useState<Element>();
   const [isAnimating, setIsAnimating] = useState<boolean>(false);
-
-  const elementNotFoundMessage = `Element with an ID of ${id} could not be found. Please provide a valid ID.`;
-  const typeNotFoundMessage = `${type} is not a valid react-rewards type.`;
-
-  useLayoutEffect(() => {
-    const foundContainer = document.getElementById(id);
-    if (foundContainer) {
-      setContainer(foundContainer);
-    } else {
-      console.error(elementNotFoundMessage);
-    }
-  }, [id, elementNotFoundMessage]);
-
-  if (!container) {
-    return {
-      reward: () => {
-        console.error(elementNotFoundMessage);
-      },
-      isAnimating: false,
-    };
-  }
 
   const internalAnimatingCallback = () => {
     setIsAnimating(false);
@@ -37,27 +16,40 @@ export const useReward: UseRewardType = (id, type, config) => {
   switch (type) {
     case 'confetti': {
       reward = () => {
+        const foundContainer = getContainerById(id);
+
+        if (!foundContainer) return;
+
         setIsAnimating(true);
-        confetti(container, internalAnimatingCallback, config);
+        confetti(foundContainer, internalAnimatingCallback, config);
       };
       break;
     }
     case 'emoji': {
       reward = () => {
+        const foundContainer = getContainerById(id);
+
+        if (!foundContainer) return;
+
         setIsAnimating(true);
-        emoji(container, internalAnimatingCallback, config);
+        emoji(foundContainer, internalAnimatingCallback, config);
       };
       break;
     }
     case 'balloons': {
       reward = () => {
+        const foundContainer = getContainerById(id);
+
+        if (!foundContainer) return;
+
         setIsAnimating(true);
-        balloons(container, internalAnimatingCallback, config);
+        balloons(foundContainer, internalAnimatingCallback, config);
       };
       break;
     }
     default: {
-      reward = () => console.error(typeNotFoundMessage);
+      reward = () =>
+        console.error(`${type} is not a valid react-rewards type.`);
     }
   }
   return { reward, isAnimating };
