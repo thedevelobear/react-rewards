@@ -69,7 +69,11 @@ const updateParticle = (
   }
 };
 
-export const confetti = (root: Element, config?: ConfettiConfig) => {
+export const confetti = (
+  root: Element,
+  internalAnimatingCallback: () => void,
+  config?: ConfettiConfig
+) => {
   const options = config || {};
   const {
     elementCount = 50,
@@ -101,6 +105,7 @@ export const confetti = (root: Element, config?: ConfettiConfig) => {
     if (typeof onAnimationComplete === 'function') {
       onAnimationComplete();
     }
+    internalAnimatingCallback();
   };
 
   animate({
