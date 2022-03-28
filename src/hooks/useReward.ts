@@ -38,8 +38,7 @@ export const useReward: UseRewardType = (id, type, config) => {
     case 'confetti': {
       reward = () => {
         setIsAnimating(true);
-        confetti(container, config);
-        setIsAnimating(false);
+        confetti(container, internalAnimatingCallback, config);
       };
       break;
     }
