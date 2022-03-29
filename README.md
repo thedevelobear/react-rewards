@@ -39,11 +39,14 @@ In order to use the rewards, you'll need to provide an element that will become 
 
 You can place the element inside a button, center it and shoot up from the button.
 You can place it on top of the viewport with position: "fixed" and change the angle to 270, to shoot downwards.
-Experiment, try, **have fun!**
+Try, experiment, **have fun!**
 
 Animation particles are set to position: 'fixed' by default, but this can be changed through a config object.
 
 #### Single reward
+
+**TIP:** Try using `<span id=“rewardId” style={{width: 2, height: 2, background: “red”}} />` to place the element correctly, wherever you want. Then just remove the styles.
+
 ```js
 import { useReward } from 'react-rewards';
 ...
@@ -59,7 +62,7 @@ const { reward, isAnimating } = useReward('rewardId', 'confetti');
 ```
 
 #### Multiple rewards
-TIP: You can use the same ID to shoot from the same spot, or provide separate elements with unique IDs.
+**TIP:** You can use the same ID to shoot from the same spot, or provide separate elements with unique IDs.
 ```js
 import { useReward } from 'react-rewards';
 ...
