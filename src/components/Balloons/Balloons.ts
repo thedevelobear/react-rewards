@@ -10,8 +10,6 @@ import balloon from './balloon.svg';
 const defaultColors = ['#A45BF1', '#25C6F6', '#72F753', '#F76C88', '#F5F770'];
 const factors = [-0.6, -0.3, 0, 0.3, 0.6];
 
-// TODO: MAKE POSITION FIXED COME FROM CONFIG
-
 const handlePopBalloon = (
   event: MouseEvent,
   element: Element,
