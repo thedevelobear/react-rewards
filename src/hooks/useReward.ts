@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useCallback, useState } from 'react';
 import { confetti } from '../components/Confetti/Confetti';
 import { emoji } from '../components/Emoji/Emoji';
 import { balloons } from '../components/Balloons/Balloons';
@@ -12,45 +12,24 @@ export const useReward: UseRewardType = (id, type, config) => {
     setIsAnimating(false);
   };
 
-  let reward;
-  switch (type) {
-    case 'confetti': {
-      reward = () => {
-        const foundContainer = getContainerById(id);
-
-        if (!foundContainer) return;
-
-        setIsAnimating(true);
+  const reward = useCallback(() => {
+    const foundContainer = getContainerById(id);
+    if (!foundContainer) return;
+    setIsAnimating(true);
+    switch (type) {
+      case 'confetti':
         confetti(foundContainer, internalAnimatingCallback, config);
-      };
-      break;
-    }
-    case 'emoji': {
-      reward = () => {
-        const foundContainer = getContainerById(id);
-
-        if (!foundContainer) return;
-
-        setIsAnimating(true);
+        break;
+      case 'emoji':
         emoji(foundContainer, internalAnimatingCallback, config);
-      };
-      break;
-    }
-    case 'balloons': {
-      reward = () => {
-        const foundContainer = getContainerById(id);
-
-        if (!foundContainer) return;
-
-        setIsAnimating(true);
+        break;
+      case 'balloons':
         balloons(foundContainer, internalAnimatingCallback, config);
-      };
-      break;
-    }
-    default: {
-      reward = () =>
+        break;
+      default:
         console.error(`${type} is not a valid react-rewards type.`);
     }
-  }
+  }, [config, id, type]);
+
   return { reward, isAnimating };
 };
