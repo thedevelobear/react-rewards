@@ -2,6 +2,7 @@ export type ParticlePhysics = {
   x: number;
   y: number;
   z: number;
+  height: number;
   wobble: number;
   velocity: number;
   angle2D: number;
