@@ -29,6 +29,10 @@ You can read more on the subject of micro-interactions in my blog post – https
 <img alt='emoji demo gif' src="assets/emoji.gif"/>
 </p>
 
+#### Fireworks
+
+TBD
+
 ## Installation
 
 Install from npm by typing ```npm install react-rewards``` or ```yarn add react-rewards``` while in your package.json directory.
@@ -86,11 +90,11 @@ const {reward: balloonsReward, isAnimating: isBalloonsAnimating} = useReward('ba
 
 useReward params:
 
-| name            | type   | description                                            | required   |default      |
-|-----------------|--------|--------------------------------------------------------|------------|-------------|
-| id              | string | A unique id of the element you want to shoot from      | yes        |             |
-| type            | string | 'confetti' | 'balloons' | 'emoji'                      | yes        |'confetti'   |
-| config          | object | a configuration object described below                 | no         |see below    |
+| name   | type   | description                                       | required    | default    |
+|--------|--------|---------------------------------------------------|-------------|------------|
+| id     | string | A unique id of the element you want to shoot from | yes         |            |
+| type   | string | `'confetti'` / `'balloons'` / `'emoji'` / `'fireworks'` | yes   | 'confetti' |
+| config | object | a configuration object described below            | no          | see below  |
 
 Confetti config object: 
 
@@ -139,3 +143,20 @@ Emoji config object:
 | position        | string | one of CSSProperties['position'] - e.g. "absolute"     | "fixed"                   |
 | emoji           | string[]| An array of emoji to shoot                            |['🤓', '😊', '🥳']          |
 | onAnimationComplete | () => void | A function that runs when animation completes  | undefined                 |
+
+Fireworks config object:
+
+| name                | type   | description                                        | default                                     |
+|---------------------|--------|----------------------------------------------------|---------------------------------------------|
+| lifetime            | number | time of life                                       | 200                                         |
+| angle               | number | initial direction of particles in degrees          | 65 <= random <= 115                         |
+| decay               | number | how much the velocity decreases with each frame    | 0.94                                        |
+| spread              | number | spread of particles in degrees                     | 45                                          |
+| startVelocity       | number | initial velocity of particles                      | 10 <= random <= 30                          |
+| maxHeight           | number | maximum height of firework                         | 20 <= random <= 50                          |
+| elementCount        | number | particles quantity                                 | 50                                          |
+| elementSize         | number | particle size in px                                | 4                                           |
+| zIndex              | number | z-index of particles                               | 0                                           |
+| position            | string | one of CSSProperties['position'] - e.g. "absolute" | "fixed"                                     |
+| colors              | string[]| An array of colors to choose one in random from   | ['#ffff00', '#40ffff', '#00ff00', '#ff00ff'] |
+| onAnimationComplete | () => void | A function that runs when animation completes  | undefined                                   |
