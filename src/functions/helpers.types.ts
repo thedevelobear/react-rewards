@@ -4,8 +4,14 @@ export type AnimateFunctionArgs = {
   root: Element;
   particles: Particles;
   decay: number;
+  rotate?: boolean;
   lifetime: number;
-  updateParticle: (particle: Particle, progress: number, decay: number) => void;
+  updateParticle: (
+    particle: Particle,
+    progress: number,
+    decay: number,
+    rotate?: boolean
+  ) => void;
   onFinish: () => void;
 };
 
