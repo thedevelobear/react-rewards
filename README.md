@@ -132,6 +132,7 @@ Emoji config object:
 | angle           | number | initial direction of emoji in degrees                  | 90                        |
 | decay           | number | how much the velocity decreases with each frame        | 0.94                      |
 | spread          | number | spread of emoji in degrees                             | 45                        |
+| rotate          | boolean| toggle rotation animation                              | true                      |
 | startVelocity   | number | initial velocity of emoji                              | 35                        |
 | elementCount    | number | emoji quantity                                         | 20                        |
 | elementSize     | number | emoji size in px                                       | 25                        |
