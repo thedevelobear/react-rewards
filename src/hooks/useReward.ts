@@ -1,4 +1,4 @@
-import { useCallback, useState } from 'react';
+import { useCallback, useState, useEffect } from 'react';
 import { confetti } from '../components/Confetti/Confetti';
 import { emoji } from '../components/Emoji/Emoji';
 import { balloons } from '../components/Balloons/Balloons';
@@ -7,12 +7,19 @@ import { getContainerById } from '../functions/helpers';
 
 export const useReward: UseRewardType = (id, type, config) => {
   const [isAnimating, setIsAnimating] = useState<boolean>(false);
-
+  const [isMounted, setIsMounted] = useState<boolean>(false);
+  
+  useEffect(() => {
+    setIsMounted(true);
+    return () => setIsMounted(false);
+  }, []);
+  
   const internalAnimatingCallback = () => {
     setIsAnimating(false);
   };
 
   const reward = useCallback(() => {
+    if (!isMounted) return;
     const foundContainer = getContainerById(id);
     if (!foundContainer) return;
     setIsAnimating(true);
