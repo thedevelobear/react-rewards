@@ -11,11 +11,11 @@ export const useReward: UseRewardType = (id, type, config) => {
   useEffect(() => {
     setIsMounted(true);
     return () => setIsMounted(false);
-  }, []); 
+  }, []);
   const internalAnimatingCallback = () => {
     setIsAnimating(false);
   };
-  
+
   const reward = useCallback(() => {
     if (!isMounted) return;
     const foundContainer = getContainerById(id);
