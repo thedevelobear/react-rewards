@@ -8,16 +8,14 @@ import { getContainerById } from '../functions/helpers';
 export const useReward: UseRewardType = (id, type, config) => {
   const [isAnimating, setIsAnimating] = useState<boolean>(false);
   const [isMounted, setIsMounted] = useState<boolean>(false);
-  
   useEffect(() => {
     setIsMounted(true);
     return () => setIsMounted(false);
-  }, []);
-  
+  }, []); 
   const internalAnimatingCallback = () => {
     setIsAnimating(false);
   };
-
+  
   const reward = useCallback(() => {
     if (!isMounted) return;
     const foundContainer = getContainerById(id);
@@ -36,7 +34,7 @@ export const useReward: UseRewardType = (id, type, config) => {
       default:
         console.error(`${type} is not a valid react-rewards type.`);
     }
-  }, [config, id, type]);
+  }, [config, id, type, isMounted]);
 
   return { reward, isAnimating };
 };
