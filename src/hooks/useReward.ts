@@ -10,7 +10,6 @@ export const useReward: UseRewardType = (id, type, config) => {
   const [isMounted, setIsMounted] = useState<boolean>(false);
   useEffect(() => {
     setIsMounted(true);
-    return () => setIsMounted(false);
   }, []);
   const internalAnimatingCallback = () => {
     setIsAnimating(false);
