@@ -89,7 +89,7 @@ useReward params:
 | name            | type   | description                                            | required   |default      |
 |-----------------|--------|--------------------------------------------------------|------------|-------------|
 | id              | string | A unique id of the element you want to shoot from      | yes        |             |
-| type            | string | 'confetti' / 'balloons' / 'emoji'                      | yes        |'confetti'   |
+| type            | string | 'confetti' / 'balloons' / 'emoji'                      | yes        |             |
 | config          | object | a configuration object described below                 | no         |see below    |
 
 Confetti config object: 
