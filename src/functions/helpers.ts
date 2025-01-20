@@ -6,28 +6,41 @@ export const animate: AnimateFunction = ({
   decay,
   rotate,
   lifetime,
+  fps,
   updateParticle,
   onFinish,
 }) => {
   const totalTicks = lifetime;
   let tick = 0;
+  let lastTime = 0;
+  const interval = 1000 / fps;
 
-  const update = () => {
-    particles.forEach((particle) =>
-      updateParticle(particle, tick / totalTicks, decay, rotate)
-    );
+  const update = (timestamp: number) => {
+    if (!lastTime) lastTime = timestamp;
 
-    tick += 1;
-    if (tick < totalTicks) {
-      window.requestAnimationFrame(update);
-    } else {
-      particles.forEach((particle) => {
-        if (particle.element.parentNode === root) {
-          return root.removeChild(particle.element);
-        }
-      });
-      onFinish();
+    const elapsed = timestamp - lastTime;
+
+    if (elapsed >= interval) {
+      lastTime = timestamp - (elapsed % interval);
+
+      particles.forEach((particle) =>
+        updateParticle(particle, tick / totalTicks, decay, rotate)
+      );
+
+      tick += 1;
+
+      if (tick >= totalTicks) {
+        particles.forEach((particle) => {
+          if (particle.element.parentNode === root) {
+            root.removeChild(particle.element);
+          }
+        });
+        onFinish();
+        return;
+      }
     }
+
+    window.requestAnimationFrame(update);
   };
 
   window.requestAnimationFrame(update);

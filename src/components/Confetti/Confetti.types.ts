@@ -10,4 +10,5 @@ export type ConfettiConfig = {
   position?: string;
   colors?: string[];
   onAnimationComplete?: () => void;
+  fps?: number;
 };

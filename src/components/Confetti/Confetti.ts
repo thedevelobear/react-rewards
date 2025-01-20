@@ -86,6 +86,7 @@ export const confetti = (
     startVelocity = 35,
     zIndex = 0,
     position = 'fixed',
+    fps = 60,
     onAnimationComplete,
   } = options;
   const spanElements = createElements(
@@ -113,6 +114,7 @@ export const confetti = (
     particles,
     decay,
     lifetime,
+    fps,
     updateParticle,
     onFinish,
   });
