@@ -4,6 +4,7 @@ export const animate: AnimateFunction = ({
   root,
   particles,
   decay,
+  rotate,
   lifetime,
   updateParticle,
   onFinish,
@@ -13,7 +14,7 @@ export const animate: AnimateFunction = ({
 
   const update = () => {
     particles.forEach((particle) =>
-      updateParticle(particle, tick / totalTicks, decay)
+      updateParticle(particle, tick / totalTicks, decay, rotate)
     );
 
     tick += 1;
