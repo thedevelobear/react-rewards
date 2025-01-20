@@ -10,7 +10,7 @@
   "types": "dist/react-rewards.d.ts",
   "homepage": "https://github.com/thedevelobear/react-rewards",
   "repository": {
-    "url": "https://github.com/thedevelobear/react-rewards"
+    "url": "git+https://github.com/thedevelobear/react-rewards.git"
   },
   "keywords": [
     "react",
