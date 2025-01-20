@@ -6,6 +6,7 @@ export type AnimateFunctionArgs = {
   decay: number;
   rotate?: boolean;
   lifetime: number;
+  fps: number;
   updateParticle: (
     particle: Particle,
     progress: number,

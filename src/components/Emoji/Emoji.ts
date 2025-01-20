@@ -54,11 +54,9 @@ const updateParticle = (
     ? `rotate3d(0, 0, 1, ${differentiator % 2 ? tiltAngle : -1 * tiltAngle}rad)`
     : '';
 
-  const transformStyles = [translateStyle, rotateStyle]
+  particle.element.style.transform = [translateStyle, rotateStyle]
     .filter(Boolean)
     .join(' ');
-
-  particle.element.style.transform = transformStyles;
 
   if (progress > 0.5) {
     particle.element.style.opacity = `${2 - 2 * progress}`;
@@ -83,6 +81,7 @@ export const emoji = (
     zIndex = 0,
     position = 'fixed',
     rotate = true,
+    fps = 60,
     onAnimationComplete,
   } = options;
   const spanElements = createElements(
@@ -111,6 +110,7 @@ export const emoji = (
     decay,
     rotate,
     lifetime,
+    fps,
     updateParticle,
     onFinish,
   });

@@ -10,4 +10,5 @@ export type BalloonsConfig = {
   position?: string;
   colors?: string[];
   onAnimationComplete?: () => void;
+  fps?: number;
 };

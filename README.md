@@ -94,24 +94,26 @@ useReward params:
 
 Confetti config object: 
 
-| name            | type   | description                                            | default                   |
-|-----------------|--------|--------------------------------------------------------|---------------------------|
-| lifetime        | number | time of life                                           | 200                       |
-| angle           | number | initial direction of particles in degrees              | 90                        |
-| decay           | number | how much the velocity decreases with each frame        | 0.94                      |
-| spread          | number | spread of particles in degrees                         | 45                        |
-| startVelocity   | number | initial velocity of particles                          | 35                        |
-| elementCount    | number | particles quantity                                     | 50                        |
-| elementSize     | number | particle size in px                                    | 8                         |
-| zIndex          | number | z-index of particles                                   | 0                         |
-| position        | string | one of CSSProperties['position'] - e.g. "absolute"     | "fixed"                   |
-| colors          | string[]| An array of colors used when generating confetti       |['#A45BF1', '#25C6F6', '#72F753', '#F76C88', '#F5F770']|
-| onAnimationComplete | () => void | A function that runs when animation completes  | undefined                 |
+| name                | type   | description                                        | default                                                 |
+|---------------------|--------|----------------------------------------------------|---------------------------------------------------------|
+| fps                 | number | frames per second                                  | 60                                                      |
+| lifetime            | number | time of life                                       | 200                                                     |
+| angle               | number | initial direction of particles in degrees          | 90                                                      |
+| decay               | number | how much the velocity decreases with each frame    | 0.94                                                    |
+| spread              | number | spread of particles in degrees                     | 45                                                      |
+| startVelocity       | number | initial velocity of particles                      | 35                                                      |
+| elementCount        | number | particles quantity                                 | 50                                                      |
+| elementSize         | number | particle size in px                                | 8                                                       |
+| zIndex              | number | z-index of particles                               | 0                                                       |
+| position            | string | one of CSSProperties['position'] - e.g. "absolute" | "fixed"                                                 |
+| colors              | string[]| An array of colors used when generating confetti   | ['#A45BF1', '#25C6F6', '#72F753', '#F76C88', '#F5F770'] |
+| onAnimationComplete | () => void | A function that runs when animation completes      | undefined                                               |
 
 Balloons config object:
 
 | name            | type   | description                                            | default                   |
 |-----------------|--------|--------------------------------------------------------|---------------------------|
+| fps                 | number | frames per second                                  | 60                        |
 | lifetime        | number | time of life                                           | 600                       |
 | angle           | number | initial direction of balloons in degrees               | 90                        |
 | decay           | number | how much the velocity decreases with each frame        | 0.999                     |
@@ -128,6 +130,7 @@ Emoji config object:
 
 | name            | type   | description                                            | default                   |
 |-----------------|--------|--------------------------------------------------------|---------------------------|
+| fps                 | number | frames per second                                  | 60                        |
 | lifetime        | number | time of life                                           | 200                       |
 | angle           | number | initial direction of emoji in degrees                  | 90                        |
 | decay           | number | how much the velocity decreases with each frame        | 0.94                      |
@@ -138,5 +141,5 @@ Emoji config object:
 | elementSize     | number | emoji size in px                                       | 25                        |
 | zIndex          | number | z-index of emoji                                       | 0                         |
 | position        | string | one of CSSProperties['position'] - e.g. "absolute"     | "fixed"                   |
-| emoji           | string[]| An array of emoji to shoot                            |['🤓', '😊', '🥳']          |
+| emoji           | string[]| An array of emoji to shoot                            |['🤓', '😊', '🥳']         |
 | onAnimationComplete | () => void | A function that runs when animation completes  | undefined                 |

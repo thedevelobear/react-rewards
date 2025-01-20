@@ -11,4 +11,5 @@ export type EmojiConfig = {
   emoji?: string[];
   rotate?: boolean;
   onAnimationComplete?: () => void;
+  fps?: number;
 };
