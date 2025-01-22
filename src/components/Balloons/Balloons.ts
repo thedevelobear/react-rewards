@@ -94,6 +94,7 @@ export const balloons = (
     zIndex = 0,
     position = 'fixed',
     colors = defaultColors,
+    fps = 60,
     onAnimationComplete,
   } = options;
   const spanElements = createElements(
@@ -116,5 +117,5 @@ export const balloons = (
     internalAnimatingCallback();
   };
 
-  animate({ root, particles, decay, lifetime, updateParticle, onFinish });
+  animate({ root, particles, decay, lifetime, fps, updateParticle, onFinish });
 };

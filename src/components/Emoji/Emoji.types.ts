@@ -9,5 +9,7 @@ export type EmojiConfig = {
   zIndex?: number;
   position?: string;
   emoji?: string[];
+  rotate?: boolean;
   onAnimationComplete?: () => void;
+  fps?: number;
 };

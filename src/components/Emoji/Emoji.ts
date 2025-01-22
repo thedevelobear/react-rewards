@@ -30,7 +30,8 @@ const createElements = (
 const updateParticle = (
   particle: Particle,
   progress: number,
-  decay: number
+  decay: number,
+  rotate?: boolean
 ) => {
   const { x, y, tiltAngle, angle2D, velocity, differentiator, wobble } =
     particle.physics;
@@ -47,9 +48,15 @@ const updateParticle = (
     (factors[differentiator] * progress * wobble * wobble +
       20 * Math.sin(wobble / 4));
 
-  particle.element.style.transform = `translate3d(${wobbleX}px, ${y}px, 0) rotate3d(0, 0, 1, ${
-    differentiator % 2 ? tiltAngle : -1 * tiltAngle
-  }rad)`;
+  const translateStyle = `translate3d(${wobbleX}px, ${y}px, 0)`;
+
+  const rotateStyle = rotate
+    ? `rotate3d(0, 0, 1, ${differentiator % 2 ? tiltAngle : -1 * tiltAngle}rad)`
+    : '';
+
+  particle.element.style.transform = [translateStyle, rotateStyle]
+    .filter(Boolean)
+    .join(' ');
 
   if (progress > 0.5) {
     particle.element.style.opacity = `${2 - 2 * progress}`;
@@ -73,6 +80,8 @@ export const emoji = (
     startVelocity = 35,
     zIndex = 0,
     position = 'fixed',
+    rotate = true,
+    fps = 60,
     onAnimationComplete,
   } = options;
   const spanElements = createElements(
@@ -99,7 +108,9 @@ export const emoji = (
     root,
     particles,
     decay,
+    rotate,
     lifetime,
+    fps,
     updateParticle,
     onFinish,
   });
