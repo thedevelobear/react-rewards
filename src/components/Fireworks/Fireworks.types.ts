@@ -10,5 +10,6 @@ export type FireworksConfig = {
   position?: string;
   colors?: string[];
   maxHeight?: number;
+  fps?: number;
   onAnimationComplete?: () => void;
 };

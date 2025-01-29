@@ -7,7 +7,7 @@ import {
 } from '../../functions/helpers';
 import { Particle } from '../../Main.types';
 
-const defaultColors = ['#ffff00', '#40ffff', '#00ff00', '#ff00ff'];
+const defaultColors = ['#D71328', '#D73C70', '#E1DF45', '#BF00FF'];
 const factors = [-0.6, -0.3, 0, 0.3, 0.6];
 
 const createElements = (
@@ -20,11 +20,15 @@ const createElements = (
 ) =>
   Array.from({ length: elementCount }).map((_, index) => {
     const element = document.createElement('span');
+    const step = 100 / (elementCount - 1);
     element.style.backgroundColor = color;
     element.style.width = `${elementSize}px`;
     element.style.height = `${elementSize}px`;
+    element.style.borderRadius = '100%';
     element.style.position = position;
     element.style.zIndex = `${zIndex}`;
+    element.style.opacity = `${Math.trunc(index * step) / 100 / 4}`;
+
     root.appendChild(element);
     return { element, differentiator: getRandomInt(0, factors.length) };
   });
@@ -34,34 +38,34 @@ const updateParticle = (
   progress: number,
   decay: number
 ) => {
-  const { x, y, wobble, angle2D, tiltAngle, height, velocity, differentiator } =
+  const { x, y, wobble, angle2D, tiltAngle, height, velocity } =
     particle.physics;
 
-  if (progress > 0.25) {
-    // explosion
-    particle.physics.x += Math.cos(angle2D) * velocity;
-    particle.physics.y += Math.sin(angle2D) * velocity + 3.5;
+  const exploded = progress > 0.25;
+
+  if (exploded) {
+    particle.physics.x -= 0.15 * wobble * Math.cos(angle2D * 2) * velocity;
+    particle.physics.y -= 0.15 * wobble * Math.sin(angle2D * 2) * velocity;
     particle.physics.velocity *= decay;
+
+    particle.element.style.opacity =
+      Math.random() >= 0.6 ? '0' : `${2 - 2 * progress}`;
+    particle.element.style.boxShadow = `0 0 10px ${particle.element.style.backgroundColor}, 0 0 20px ${particle.element.style.backgroundColor}`;
   } else {
     // bomb flying up
     particle.physics.velocity = progress * height * decay;
+    particle.physics.x -= 1.5 * Math.cos(tiltAngle) * velocity;
+    particle.physics.y -= 1.5 * Math.sin(tiltAngle) * velocity;
+
+    particle.element.style.opacity = `${progress ** 2}`;
+
+    particle.element.style.boxShadow = `0 0 ${progress * 10}px ${
+      particle.element.style.backgroundColor
+    }, 0 0 ${progress * 10}px ${particle.element.style.backgroundColor}`;
   }
-  particle.physics.x -= Math.cos(tiltAngle) * velocity;
-  particle.physics.y -= Math.sin(tiltAngle) * velocity;
 
-  const wobbleX =
-    x +
-    (progress > 0.25
-      ? factors[differentiator] * progress * wobble * wobble
-      : 0);
-  const wobbleY = y + (progress > 0.25 ? -10 * wobble : 0);
-
-  particle.element.style.transform = `translate3d(${wobbleX}px, ${wobbleY}px, 0)`;
-  particle.element.style.scale = `${1 - 0.2 * progress}`;
-
-  if (progress > 0.5) {
-    particle.element.style.opacity = `${2 - 2 * progress}`;
-  }
+  particle.element.style.transform = `translate3d(${x}px, ${y}px, 0)`;
+  particle.element.style.scale = `${1 - 0.1 * progress}`;
 };
 
 export const fireworks = (
@@ -71,17 +75,18 @@ export const fireworks = (
 ) => {
   const options = config || {};
   const {
-    elementCount = 50,
-    elementSize = 4,
+    elementCount = 100,
+    elementSize = 3,
     colors = defaultColors,
     angle = getRandomInt(65, 115),
-    spread = 45,
+    spread = 250,
     decay = 0.94,
     lifetime = 200,
     maxHeight = getRandomInt(20, 50),
-    startVelocity = getRandomInt(10, 30),
+    startVelocity = getRandomInt(20, 30),
     zIndex = 0,
     position = 'fixed',
+    fps = 60,
     onAnimationComplete,
   } = options;
   const spanElements = createElements(
@@ -90,7 +95,7 @@ export const fireworks = (
     elementSize,
     zIndex,
     position,
-    colors[getRandomInt(0, colors.length - 1)]
+    colors[getRandomInt(0, colors.length)]
   );
   const particles = spanElements.map(({ element, differentiator }) => {
     const physics = generatePhysics(90, spread, startVelocity, differentiator);
@@ -114,6 +119,7 @@ export const fireworks = (
     particles,
     decay,
     lifetime,
+    fps,
     updateParticle,
     onFinish,
   });
