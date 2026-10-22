@@ -4,16 +4,34 @@ import type { Rng } from '@/core/math';
 export type BlendMode = 'normal' | 'additive';
 
 /**
- * One sprite an effect draws. Colour is baked into the sprite, because
- * particles have no tint. The atlas rasterises each source once.
+ * One sprite an effect draws, sized in CSS pixels. A particle is drawn at
+ * this size times its scale. Colour is baked into the sprite, because
+ * particles have no tint. The atlas rasterises each source once per size and
+ * pixel ratio (ADR 0020).
  */
 export type SpriteSource =
-  | { readonly shape: 'rect' | 'circle'; readonly color: string }
-  | { readonly emoji: string }
-  | { readonly svg: string }
   | {
+      readonly shape: 'rect';
+      readonly color: string;
+      readonly width: number;
+      readonly height: number;
+    }
+  /** `size` is the diameter. */
+  | { readonly shape: 'circle'; readonly color: string; readonly size: number }
+  /** `size` is the font size. */
+  | { readonly emoji: string; readonly size: number }
+  | { readonly svg: string; readonly width: number; readonly height: number }
+  | {
+      /** Identifies the drawing in the atlas cache. */
       readonly key: string;
-      readonly draw: (ctx: CanvasRenderingContext2D, size: number) => void;
+      readonly width: number;
+      readonly height: number;
+      /** Paints the box from (0, 0) to (width, height). `ctx` is pre-scaled. */
+      readonly draw: (
+        ctx: CanvasRenderingContext2D,
+        width: number,
+        height: number
+      ) => void;
     };
 
 /** The fields every effect's config has. */
