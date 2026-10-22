@@ -10,6 +10,7 @@ const ci = Boolean(process.env.CI);
 export default defineConfig({
   testDir: 'e2e',
   testMatch: '**/*.ts',
+  testIgnore: '**/util.ts',
   forbidOnly: ci,
   reporter: ci ? 'github' : 'list',
   use: {
