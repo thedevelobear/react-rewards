@@ -52,6 +52,7 @@ What gets easier, what gets harder, and what has to happen next.
 ### Benchmarks
 | Benchmark | What |
 |---|---|
+| [2026-10-22-v2-baseline](benchmarks/2026-10-22-v2-baseline.md) | v2.1.0 at 50, 500 and 2000 elements per effect. The reference point for the new engine. |
 
 ### Guides
 None yet. `guides/adding-an-effect.md` arrives in PR 12.
