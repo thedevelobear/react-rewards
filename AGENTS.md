@@ -14,6 +14,8 @@ Each PR in the plan's progress table is usually done in a fresh session. To cont
 4. Before writing code, ask the maintainer the open questions the plan assigns to this PR. Record each answer as an ADR, and remove the question from the table.
 5. When the PR is done, set its status to "In review", stop, and report to the maintainer. Don't push branches or open PRs unless the maintainer asks.
 
+Fixes to a merged PR go on a `v3/fix-topic` branch from `origin/feat/v3-scaffolding`. They take no number. List them in the plan's "Follow-up fixes" table, not in the progress table.
+
 ## While you work
 - Record decisions and plan changes in `docs/`, in the same PR as the code: a new ADR for each decision, and an update to the active plan's progress table and to any section the work changes. Nothing that matters should live only in chat or in PR comments.
 - If something is unclear, or the plan contradicts itself, ask the maintainer before deciding.

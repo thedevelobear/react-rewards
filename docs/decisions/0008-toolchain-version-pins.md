@@ -1,6 +1,6 @@
 # 0008. Toolchain version pins
 
-- **Status:** Accepted
+- **Status:** Accepted. The CI bullet is superseded by [0014](0014-pnpm-setup-action.md).
 - **Date:** 2026-10-22
 
 ## Context

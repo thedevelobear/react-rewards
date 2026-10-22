@@ -1,6 +1,6 @@
 # 0011. CI runs on Node 26, and `.nvmrc` pins it
 
-- **Status:** Accepted
+- **Status:** Accepted. The `actions/setup-node` bullet is superseded by [0014](0014-pnpm-setup-action.md).
 - **Date:** 2026-10-22
 
 ## Context
