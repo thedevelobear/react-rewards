@@ -9,7 +9,7 @@
 ## Decision
 - `demo/` is a private pnpm workspace package built with Rsbuild and `@rsbuild/plugin-react`, rendering with React 19 in Strict Mode.
 - Until PR 8 its buttons call `fire()` directly. PR 8 switches them to `useReward`, and PRs 9 to 11 restyle the same app.
-- The demo has its own `tsconfig.json`. The root `typecheck` script checks it too.
+- The demo has its own `tsconfig.json` and `typecheck` script. It type-checks against the built package's declarations ([ADR 0031](0031-demo-imports-built-package.md)), so CI runs it after `pnpm build`, and the root `typecheck` stays library-only.
 
 ## Consequences
 - Nothing is rewritten between PR 5 and the site. The demo exercises Strict Mode from the start.
