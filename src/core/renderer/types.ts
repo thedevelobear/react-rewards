@@ -4,6 +4,9 @@ import type { Pool } from '@/core/pool';
 
 export type RendererKind = 'webgl' | 'canvas';
 
+/** Which renderer to use. `'auto'` prefers WebGL2 and falls back (ADR 0033). */
+export type RendererPreference = 'auto' | RendererKind;
+
 /** One burst's particles, ready to draw. */
 export interface Batch {
   readonly pool: Pool;
@@ -21,6 +24,8 @@ export interface Frame {
 
 export interface Renderer {
   readonly kind: RendererKind;
+  /** The canvas it draws on. The overlay puts it on the page. */
+  readonly canvas: HTMLCanvasElement;
   /** Sizes the drawing buffer to `width` by `height` CSS pixels at `dpr`. */
   resize(width: number, height: number, dpr: number): void;
   /** Clears the canvas, then draws the frame. */

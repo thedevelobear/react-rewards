@@ -113,8 +113,11 @@ export const createStage = ({ loop, overlay, atlas }: StageOptions): Stage => {
       return burst;
     }
     // Claimed before the sprites load, so the overlay can't be removed, and
-    // the atlas cleared, while they do.
-    const lease = overlay.acquire(options.zIndex ?? DEFAULT_Z_INDEX);
+    // the atlas cleared, while they do. A lost context ends the burst like
+    // an effect error would, or skips it if it hadn't started (ADR 0036).
+    const lease = overlay.acquire(options.zIndex ?? DEFAULT_Z_INDEX, () =>
+      end(entry ? 'complete' : 'skipped')
+    );
     if (!lease) {
       end('skipped');
       return burst;

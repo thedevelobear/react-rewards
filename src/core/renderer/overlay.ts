@@ -5,8 +5,14 @@ import type { Renderer } from './types';
 export const IDLE_TIMEOUT = 5000;
 
 export interface OverlayOptions {
-  /** Creates the renderer for a new canvas. */
-  readonly createRenderer?: (canvas: HTMLCanvasElement) => Renderer | undefined;
+  /**
+   * Creates a renderer on canvases from `createCanvas`, which calls `onLost`
+   * if its context is lost. Defaults to the `'auto'` choice.
+   */
+  readonly createRenderer?: (
+    createCanvas: () => HTMLCanvasElement,
+    onLost: () => void
+  ) => Renderer | undefined;
   /** Milliseconds before an unused overlay is removed. */
   readonly idleTimeout?: number;
   /** Called after an unused overlay has been removed with its renderer. */
@@ -25,13 +31,22 @@ export interface Overlay {
    * Claims the overlay for one burst. Shows the canvas, creating it and its
    * renderer on first use, at the highest `zIndex` among current claims.
    * Returns undefined, and adds nothing to the page, when no renderer is
-   * available.
+   * available. If the renderer's context is lost, every claim ends and its
+   * `onLost` is called (ADR 0036).
    */
-  acquire(zIndex: number): OverlayLease | undefined;
+  acquire(zIndex: number, onLost?: () => void): OverlayLease | undefined;
+}
+
+interface Claim {
+  readonly zIndex: number;
+  readonly onLost: (() => void) | undefined;
 }
 
 const STYLE =
   'position:fixed;inset:0;width:100%;height:100%;pointer-events:none;';
+
+const createDefaultCanvas = (): HTMLCanvasElement =>
+  document.createElement('canvas');
 
 /**
  * Creates the page's particle overlay: one fixed, full-viewport canvas on
@@ -41,11 +56,12 @@ const STYLE =
  */
 export const createOverlay = (options: OverlayOptions = {}): Overlay => {
   const {
-    createRenderer = createDefaultRenderer,
+    createRenderer = (createCanvas, onLost) =>
+      createDefaultRenderer('auto', createCanvas, onLost),
     idleTimeout = IDLE_TIMEOUT,
     onUnmount,
   } = options;
-  const leases = new Set<{ zIndex: number }>();
+  const leases = new Set<Claim>();
   let canvas: HTMLCanvasElement | undefined;
   let renderer: Renderer | undefined;
   let observer: ResizeObserver | undefined;
@@ -66,11 +82,14 @@ export const createOverlay = (options: OverlayOptions = {}): Overlay => {
   };
 
   const mount = (): Renderer | undefined => {
-    const element = document.createElement('canvas');
+    const created = createRenderer(createDefaultCanvas, () => {
+      // A renderer that was already removed has nothing left to end.
+      if (renderer === created) lose();
+    });
+    if (!created) return undefined;
+    const element = created.canvas;
     element.setAttribute('aria-hidden', 'true');
     element.style.cssText = STYLE;
-    const created = createRenderer(element);
-    if (!created) return undefined;
     document.body.appendChild(element);
     canvas = element;
     renderer = created;
@@ -93,10 +112,22 @@ export const createOverlay = (options: OverlayOptions = {}): Overlay => {
     onUnmount?.();
   };
 
+  /**
+   * Ends every claim and removes the canvas at once, so the next burst
+   * starts on a fresh one (ADR 0036).
+   */
+  const lose = (): void => {
+    const lost = [...leases];
+    leases.clear();
+    clearTimeout(idleTimer);
+    unmount();
+    for (const lease of lost) lease.onLost?.();
+  };
+
   const highestZ = (): number =>
     Math.max(...[...leases].map((lease) => lease.zIndex));
 
-  const release = (lease: { zIndex: number }): void => {
+  const release = (lease: Claim): void => {
     if (!leases.delete(lease) || !canvas) return;
     if (leases.size > 0) {
       canvas.style.zIndex = String(highestZ());
@@ -108,12 +139,12 @@ export const createOverlay = (options: OverlayOptions = {}): Overlay => {
   };
 
   return {
-    acquire: (zIndex) => {
+    acquire: (zIndex, onLost) => {
       clearTimeout(idleTimer);
       idleTimer = undefined;
       const current = renderer ?? mount();
       if (!current || !canvas) return undefined;
-      const lease = { zIndex };
+      const lease: Claim = { zIndex, onLost };
       leases.add(lease);
       canvas.style.display = '';
       canvas.style.zIndex = String(highestZ());

@@ -9,7 +9,7 @@ A WebGL context can be lost at any time: after a GPU reset or driver update, or 
 A lost context only comes back if the page calls `preventDefault()` on `webglcontextlost`, and then only when the browser fires `webglcontextrestored`, which may never happen.
 
 ## Decision
-- On `webglcontextlost`, every running burst ends as `'complete'` and `onComplete` is called. That is how an effect that throws in `update` ends ([ADR 0030](0030-effect-errors-swallowed.md)): its simulation had started, so it isn't `'skipped'` ([ADR 0025](0025-cancel-skips-on-complete.md)).
+- On `webglcontextlost`, every running burst ends as `'complete'` and `onComplete` is called. That is how an effect that throws in `update` ends ([ADR 0030](0030-effect-errors-swallowed.md)): its simulation had started, so it isn't `'skipped'` ([ADR 0025](0025-cancel-skips-on-complete.md)). A burst still waiting for its sprites hasn't started, so it ends as `'skipped'`, and `onComplete` is called too.
 - The overlay then removes the canvas and its renderer at once, even if no burst was running. The renderer doesn't call `preventDefault()` and doesn't wait for `webglcontextrestored`.
 - The next burst mounts a fresh canvas and picks a renderer as `setRenderer` says ([ADR 0033](0033-strict-public-set-renderer.md)). Under `'auto'` that is WebGL2 first and Canvas 2D if WebGL2 can't be created. Under `'webgl'`, the burst is skipped if WebGL2 can't be created.
 
