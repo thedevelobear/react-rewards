@@ -58,7 +58,10 @@ What gets easier, what gets harder, and what has to happen next.
 | [0016](decisions/0016-keep-rstest.md) | Rstest stays the test runner | Accepted |
 | [0017](decisions/0017-isolated-declarations.md) | `isolatedDeclarations` is on | Accepted |
 | [0018](decisions/0018-core-simulation-module.md) | Particle stepping lives in `core/simulation/` | Accepted |
-| [0019](decisions/0019-particle-contract.md) | Particle fields, units and stepping in the effect contract | Proposed |
+| [0019](decisions/0019-particle-contract.md) | Particle fields, units and stepping in the effect contract | Accepted. Sprite sources refined by 0020 |
+| [0020](decisions/0020-sprite-sizes.md) | Sprite sources carry their size in CSS pixels | Accepted |
+| [0021](decisions/0021-async-atlas.md) | The atlas loads sprites asynchronously, and a burst waits for them | Accepted |
+| [0022](decisions/0022-happy-dom-tests.md) | Tests that need a DOM run in happy-dom, from PR 4 | Accepted |
 
 ### Benchmarks
 | Benchmark | What |

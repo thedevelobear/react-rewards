@@ -1,6 +1,6 @@
 # 0019. Particle fields, units and stepping in the effect contract
 
-- **Status:** Proposed. It becomes Accepted when the maintainer merges PR 3. The next PR's first commit updates this line.
+- **Status:** Accepted. The sprite sources are refined by [0020](0020-sprite-sizes.md).
 - **Date:** 2026-10-22
 
 ## Context
