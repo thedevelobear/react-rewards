@@ -73,7 +73,7 @@ export const confetti = (
   root: Element,
   internalAnimatingCallback: () => void,
   config?: ConfettiConfig
-) => {
+): void => {
   const options = config || {};
   const {
     elementCount = 50,

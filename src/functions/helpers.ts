@@ -1,3 +1,4 @@
+import type { ParticlePhysics } from '../Main.types';
 import type { AnimateFunction } from './helpers.types';
 
 export const animate: AnimateFunction = ({
@@ -46,11 +47,12 @@ export const animate: AnimateFunction = ({
   window.requestAnimationFrame(update);
 };
 
-export const { PI } = Math;
+export const PI: number = Math.PI;
 
-export const degreesToRadians = (degrees: number) => degrees * (PI / 180);
+export const degreesToRadians = (degrees: number): number =>
+  degrees * (PI / 180);
 
-export const getRandomInt = (min: number, max: number) => {
+export const getRandomInt = (min: number, max: number): number => {
   const minVal = Math.ceil(min);
   const maxVal = Math.floor(max);
   return Math.floor(Math.random() * (maxVal - minVal)) + minVal;
@@ -61,7 +63,7 @@ export const generatePhysics = (
   spread: number,
   startVelocity: number,
   differentiator: number
-) => {
+): ParticlePhysics & { height: number } => {
   const radAngle = degreesToRadians(angle);
   const radSpread = degreesToRadians(spread);
   const { random } = Math;
@@ -79,7 +81,7 @@ export const generatePhysics = (
   };
 };
 
-export const getContainerById = (id: string) => {
+export const getContainerById = (id: string): HTMLElement | null => {
   const container = document.getElementById(id);
   if (!container) {
     console.error(

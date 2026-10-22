@@ -67,7 +67,7 @@ export const emoji = (
   root: Element,
   internalAnimatingCallback: () => void,
   config?: EmojiConfig
-) => {
+): void => {
   const options = config || {};
   const {
     elementCount = 20,

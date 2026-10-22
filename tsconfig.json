@@ -8,6 +8,8 @@
     "strict": true,
     "noUncheckedIndexedAccess": true,
     "verbatimModuleSyntax": true,
+    "isolatedDeclarations": true,
+    "declaration": true,
     "noUnusedLocals": true,
     "noEmit": true,
     "skipLibCheck": true,

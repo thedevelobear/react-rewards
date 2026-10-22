@@ -77,7 +77,7 @@ export const balloons = (
   root: Element,
   internalAnimatingCallback: () => void,
   config?: BalloonsConfig
-) => {
+): void => {
   const options = config || {};
   const {
     angle = 90,
