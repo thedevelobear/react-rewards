@@ -47,6 +47,55 @@
           }
         }
       }
+    },
+    {
+      "includes": ["src/effects/**", "!src/effects/**/test.ts"],
+      "linter": {
+        "rules": {
+          "style": {
+            "noRestrictedImports": {
+              "level": "error",
+              "options": {
+                "patterns": [
+                  {
+                    "group": [
+                      "**",
+                      "!./**",
+                      "!@/core/define-effect",
+                      "!@/core/math"
+                    ],
+                    "message": "Effects import only from @/core/define-effect, @/core/math and their own folder (plan step 1c)."
+                  }
+                ]
+              }
+            }
+          }
+        }
+      }
+    },
+    {
+      "includes": ["src/core/**"],
+      "linter": {
+        "rules": {
+          "style": {
+            "noRestrictedImports": {
+              "level": "error",
+              "options": {
+                "paths": {
+                  "react": "core/ is framework-agnostic and never imports React (plan step 1c).",
+                  "react-dom": "core/ is framework-agnostic and never imports React (plan step 1c)."
+                },
+                "patterns": [
+                  {
+                    "group": ["@/effects/**", "@/react/**", "react/**"],
+                    "message": "core/ never imports effects or the React layer (plan step 1b, rule 8)."
+                  }
+                ]
+              }
+            }
+          }
+        }
+      }
     }
   ]
 }
