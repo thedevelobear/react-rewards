@@ -43,3 +43,6 @@ Use Node 26, as pinned in `.nvmrc`. CI runs on the same version ([ADR 0011](docs
 | `pnpm dev` | Rslib build in watch mode. |
 | `pnpm lint:package` | publint and attw (`--profile esm-only`) on the packed package. Run `pnpm build` first. |
 | `pnpm size` | size-limit: the minified, gzipped size of `dist/index.js`, without React. Reports only, no budget ([ADR 0013](docs/decisions/0013-size-limit-report-only.md)). Run `pnpm build` first. |
+| `pnpm e2e` | Builds the library and `demo/`, then runs the Playwright spec in headless Chromium ([ADR 0006](docs/decisions/0006-bare-demo-as-e2e-target.md)). Install the browser once with `pnpm --filter demo exec playwright install chromium`. |
+| `pnpm --filter demo dev` | The demo's dev server. The demo uses the built package, so run `pnpm dev` next to it ([ADR 0031](docs/decisions/0031-demo-imports-built-package.md)). |
+| `pnpm --filter demo typecheck` | Type-checks `demo/` against the built declarations. Run `pnpm build` first. |

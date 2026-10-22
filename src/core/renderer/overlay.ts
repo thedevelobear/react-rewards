@@ -9,6 +9,8 @@ export interface OverlayOptions {
   readonly createRenderer?: (canvas: HTMLCanvasElement) => Renderer | undefined;
   /** Milliseconds before an unused overlay is removed. */
   readonly idleTimeout?: number;
+  /** Called after an unused overlay has been removed with its renderer. */
+  readonly onUnmount?: () => void;
 }
 
 /** One burst's claim on the overlay. */
@@ -38,8 +40,11 @@ const STYLE =
  * idle page pays nothing. Nothing touches the DOM until the first `acquire`.
  */
 export const createOverlay = (options: OverlayOptions = {}): Overlay => {
-  const { createRenderer = createDefaultRenderer, idleTimeout = IDLE_TIMEOUT } =
-    options;
+  const {
+    createRenderer = createDefaultRenderer,
+    idleTimeout = IDLE_TIMEOUT,
+    onUnmount,
+  } = options;
   const leases = new Set<{ zIndex: number }>();
   let canvas: HTMLCanvasElement | undefined;
   let renderer: Renderer | undefined;
@@ -85,6 +90,7 @@ export const createOverlay = (options: OverlayOptions = {}): Overlay => {
     renderer = undefined;
     canvas = undefined;
     size = '';
+    onUnmount?.();
   };
 
   const highestZ = (): number =>
@@ -116,12 +122,4 @@ export const createOverlay = (options: OverlayOptions = {}): Overlay => {
       return { renderer: current, release: () => release(lease) };
     },
   };
-};
-
-let shared: Overlay | undefined;
-
-/** The page's one overlay, created on first use. */
-export const getOverlay = (): Overlay => {
-  shared ??= createOverlay();
-  return shared;
 };

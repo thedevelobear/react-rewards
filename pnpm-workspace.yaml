@@ -1,4 +1,6 @@
-# Settings only. PR 5 adds demo/ as a workspace package.
+# The preview site and browser-test target (ADR 0006).
+packages:
+  - demo
 
 # Write exact versions on pnpm add (ADR 0015).
 saveExact: true

@@ -62,6 +62,15 @@ What gets easier, what gets harder, and what has to happen next.
 | [0020](decisions/0020-sprite-sizes.md) | Sprite sources carry their size in CSS pixels | Accepted |
 | [0021](decisions/0021-async-atlas.md) | The atlas loads sprites asynchronously, and a burst waits for them | Accepted |
 | [0022](decisions/0022-happy-dom-tests.md) | Tests that need a DOM run in happy-dom, from PR 4 | Accepted |
+| [0023](decisions/0023-fire-options-beside-config.md) | `fire()` takes burst options beside the effect's config | Accepted |
+| [0024](decisions/0024-physical-config-units.md) | Effect configs use physical units | Accepted |
+| [0025](decisions/0025-cancel-skips-on-complete.md) | `cancel()` doesn't call `onComplete`, and `finished` says how a burst ended | Accepted |
+| [0026](decisions/0026-modernised-confetti.md) | Confetti is redesigned, not a copy of v2's look | Accepted |
+| [0027](decisions/0027-react-demo-from-pr-5.md) | `demo/` is a React 19 and Rsbuild app from PR 5 | Accepted |
+| [0028](decisions/0028-public-exports-from-pr-5.md) | The public exports after PR 5 | Accepted |
+| [0029](decisions/0029-default-z-index.md) | The overlay's `zIndex` defaults to 2147483647 | Accepted |
+| [0030](decisions/0030-effect-errors-swallowed.md) | Errors thrown by an effect are swallowed | Accepted |
+| [0031](decisions/0031-demo-imports-built-package.md) | `demo/` imports the built package | Accepted |
 
 ### Benchmarks
 | Benchmark | What |

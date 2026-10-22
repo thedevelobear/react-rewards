@@ -154,6 +154,22 @@ describe('createOverlay', () => {
     lease?.release();
   });
 
+  it('calls onUnmount once it has been removed', () => {
+    let unmounts = 0;
+    const overlay = createOverlay({
+      createRenderer: () => createFakeRenderer().renderer,
+      onUnmount: () => {
+        unmounts += 1;
+      },
+    });
+    overlay.acquire(0)?.release();
+    rs.advanceTimersByTime(IDLE_TIMEOUT - 1);
+    expect(unmounts).toBe(0);
+    rs.advanceTimersByTime(1);
+    expect(unmounts).toBe(1);
+    expect(document.querySelectorAll('canvas')).toHaveLength(0);
+  });
+
   it('mounts a fresh canvas and renderer after it was removed', () => {
     const { overlay, created, canvases } = setup();
     overlay.acquire(0)?.release();

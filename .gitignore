@@ -7,6 +7,10 @@ node_modules
 
 dist
 
+# Playwright output
+test-results
+playwright-report
+
 # Logs
 logs
 *.log

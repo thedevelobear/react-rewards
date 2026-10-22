@@ -28,5 +28,11 @@ jobs:
       - run: pnpm typecheck
       - run: pnpm test
       - run: pnpm build
+      # The demo uses the built package (ADR 0031).
+      - run: pnpm --filter demo typecheck
+      - run: pnpm --filter demo build
       - run: pnpm lint:package
       - run: pnpm size
+      # Browser tests against the built demo (ADR 0006).
+      - run: pnpm --filter demo exec playwright install --with-deps chromium
+      - run: pnpm --filter demo e2e
