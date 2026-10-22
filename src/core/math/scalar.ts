@@ -12,3 +12,20 @@ export const degToRad = (degrees: number): number => degrees * (Math.PI / 180);
  */
 export const damp = (value: number, rate: number, dt: number): number =>
   value * Math.exp(-rate * dt);
+
+/**
+ * A velocity after `dt` seconds of constant `acceleration` (such as gravity)
+ * and linear `drag` (per second, as in `damp`). It is exact, so the result
+ * is the same at any frame rate. Applying the acceleration and the drag as
+ * two separate steps instead drifts by a few pixels per second at 30 Hz.
+ */
+export const accelerate = (
+  velocity: number,
+  acceleration: number,
+  drag: number,
+  dt: number
+): number => {
+  if (drag === 0) return velocity + acceleration * dt;
+  const terminal = acceleration / drag;
+  return terminal + (velocity - terminal) * Math.exp(-drag * dt);
+};

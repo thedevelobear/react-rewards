@@ -1,5 +1,6 @@
 import { describe, expect, it } from '@rstest/core';
 import {
+  accelerate,
   clamp,
   createRng,
   damp,
@@ -118,5 +119,22 @@ describe('scalar helpers', () => {
     expect(run(30)).toBeCloseTo(expected, 9);
     expect(run(60)).toBeCloseTo(expected, 9);
     expect(run(144)).toBeCloseTo(expected, 9);
+  });
+
+  it('accelerates under drag by the same amount however a second is split', () => {
+    const run = (steps: number): number => {
+      let velocity = -700;
+      for (let i = 0; i < steps; i++) {
+        velocity = accelerate(velocity, 900, 1.5, 1 / steps);
+      }
+      return velocity;
+    };
+    const expected = 600 + (-700 - 600) * Math.exp(-1.5);
+    expect(run(30)).toBeCloseTo(expected, 9);
+    expect(run(144)).toBeCloseTo(expected, 9);
+  });
+
+  it('accelerates linearly without drag', () => {
+    expect(accelerate(10, 900, 0, 0.5)).toBe(460);
   });
 });

@@ -10,4 +10,4 @@ export {
 } from './easing';
 export type { Rng } from './rng';
 export { createRng } from './rng';
-export { clamp, damp, degToRad, lerp } from './scalar';
+export { accelerate, clamp, damp, degToRad, lerp } from './scalar';
