@@ -38,7 +38,7 @@ Use Node 26, as pinned in `.nvmrc`. CI runs on the same version ([ADR 0011](docs
 | `pnpm lint` | Biome: lint, import order and formatting check. Markdown is not formatted. |
 | `pnpm format` | Biome: write formatting. |
 | `pnpm typecheck` | TypeScript 7, no emit. |
-| `pnpm test` | Rstest in Node: `src/**/test.ts`. |
+| `pnpm test` | Rstest: `src/**/test.ts` in Node, and `src/**/dom-test.ts` in happy-dom ([ADR 0022](docs/decisions/0022-happy-dom-tests.md)). |
 | `pnpm build` | Rslib: ESM build and declarations into `dist/`. |
 | `pnpm dev` | Rslib build in watch mode. |
 | `pnpm lint:package` | publint and attw (`--profile esm-only`) on the packed package. Run `pnpm build` first. |
