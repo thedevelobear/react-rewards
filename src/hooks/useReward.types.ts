@@ -1,6 +1,6 @@
-import { ConfettiConfig } from '../components/Confetti/Confetti.types';
-import { EmojiConfig } from '../components/Emoji/Emoji.types';
-import { BalloonsConfig } from '../components/Balloons/Balloons.types';
+import type { BalloonsConfig } from '../components/Balloons/Balloons.types';
+import type { ConfettiConfig } from '../components/Confetti/Confetti.types';
+import type { EmojiConfig } from '../components/Emoji/Emoji.types';
 
 export interface RewardConfigs {
   confetti: ConfettiConfig;

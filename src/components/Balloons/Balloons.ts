@@ -1,20 +1,16 @@
-import { BalloonsConfig } from './Balloons.types';
 import {
   animate,
   generatePhysics,
   getRandomInt,
 } from '../../functions/helpers';
-import { Particle } from '../../Main.types';
-import balloon from './balloon.svg';
+import type { Particle } from '../../Main.types';
+import type { BalloonsConfig } from './Balloons.types';
+import balloon from './balloon.svg?raw';
 
 const defaultColors = ['#A45BF1', '#25C6F6', '#72F753', '#F76C88', '#F5F770'];
 const factors = [-0.6, -0.3, 0, 0.3, 0.6];
 
-const handlePopBalloon = (
-  event: MouseEvent,
-  element: Element,
-  root: Element
-) => {
+const handlePopBalloon = (element: Element, root: Element) => {
   if (element.parentNode === root) {
     root.removeChild(element);
   }
@@ -33,12 +29,12 @@ const createElements = (
     element.innerHTML = balloon;
     element.style.width = `${elementSize}px`;
     element.style.position = position;
-    element.style.color = colors[index % colors.length];
+    element.style.color = colors[index % colors.length] ?? '';
     element.style.zIndex = `${zIndex}`;
     element.addEventListener(
       'click',
-      (event: MouseEvent) => {
-        handlePopBalloon(event, element, root);
+      () => {
+        handlePopBalloon(element, root);
       },
       { once: true }
     );
@@ -62,7 +58,7 @@ const updateParticle = (
 
   const wobbleX =
     x +
-    (factors[differentiator] * progress * wobble * wobble +
+    ((factors[differentiator] ?? 0) * progress * wobble * wobble +
       20 * Math.sin(wobble));
 
   particle.element.style.transform = `translate3d(${wobbleX}px, ${y}px, 0) rotate3d(0, 0, 1, ${

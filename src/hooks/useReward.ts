@@ -1,18 +1,17 @@
 import { useCallback, useState } from 'react';
+import { balloons } from '../components/Balloons/Balloons';
 import { confetti } from '../components/Confetti/Confetti';
 import { emoji } from '../components/Emoji/Emoji';
-import { balloons } from '../components/Balloons/Balloons';
-import { UseRewardType } from './useReward.types';
 import { getContainerById } from '../functions/helpers';
+import type { UseRewardType } from './useReward.types';
 
 export const useReward: UseRewardType = (id, type, config) => {
   const [isAnimating, setIsAnimating] = useState<boolean>(false);
 
-  const internalAnimatingCallback = () => {
-    setIsAnimating(false);
-  };
-
   const reward = useCallback(() => {
+    const internalAnimatingCallback = () => {
+      setIsAnimating(false);
+    };
     const foundContainer = getContainerById(id);
     if (!foundContainer) return;
     setIsAnimating(true);

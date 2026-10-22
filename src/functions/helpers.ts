@@ -1,4 +1,4 @@
-import { AnimateFunction } from './helpers.types';
+import type { AnimateFunction } from './helpers.types';
 
 export const animate: AnimateFunction = ({
   root,
@@ -23,9 +23,9 @@ export const animate: AnimateFunction = ({
     if (elapsed >= interval) {
       lastTime = timestamp - (elapsed % interval);
 
-      particles.forEach((particle) =>
-        updateParticle(particle, tick / totalTicks, decay, rotate)
-      );
+      particles.forEach((particle) => {
+        updateParticle(particle, tick / totalTicks, decay, rotate);
+      });
 
       tick += 1;
 

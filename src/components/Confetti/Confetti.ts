@@ -1,10 +1,10 @@
-import { ConfettiConfig } from './Confetti.types';
 import {
   animate,
   generatePhysics,
   getRandomInt,
 } from '../../functions/helpers';
-import { Particle } from '../../Main.types';
+import type { Particle } from '../../Main.types';
+import type { ConfettiConfig } from './Confetti.types';
 
 const defaultColors = ['#A45BF1', '#25C6F6', '#72F753', '#F76C88', '#F5F770'];
 const factors = [-0.6, -0.3, 0, 0.3, 0.6];
@@ -19,7 +19,7 @@ const createElements = (
 ) =>
   Array.from({ length: elementCount }).map((_, index) => {
     const element = document.createElement('span');
-    element.style['background-color'] = colors[index % colors.length];
+    element.style.backgroundColor = colors[index % colors.length] ?? '';
     element.style.width = `${elementSize}px`;
     element.style.height = `${elementSize}px`;
     element.style.position = position;
@@ -54,7 +54,7 @@ const updateParticle = (
 
   const wobbleX =
     x +
-    (factors[differentiator] * progress * wobble * wobble +
+    ((factors[differentiator] ?? 0) * progress * wobble * wobble +
       20 * (differentiator % 2 ? Math.sin(wobble / 4) : Math.cos(wobble / 4)));
 
   const wobbleY = y + 5 * Math.sin(wobble);

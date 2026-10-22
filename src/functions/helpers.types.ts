@@ -1,4 +1,4 @@
-import { Particle, Particles } from '../Main.types';
+import type { Particle, Particles } from '../Main.types';
 
 export type AnimateFunctionArgs = {
   root: Element;

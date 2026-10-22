@@ -47,7 +47,7 @@ What gets easier, what gets harder, and what has to happen next.
 | [0005](decisions/0005-effect-contract-scope.md) | The 3.0 effect contract has `spawn` and `update` only | Accepted |
 | [0006](decisions/0006-bare-demo-as-e2e-target.md) | A bare `demo/` page is the browser-test target from PR 5 | Accepted |
 | [0007](decisions/0007-no-rename-step.md) | No rename-only step for the v2 files | Accepted |
-| [0008](decisions/0008-toolchain-version-pins.md) | Toolchain version pins (pnpm 12.15.0, Rslib 1.0.3) | Accepted |
+| [0008](decisions/0008-toolchain-version-pins.md) | Toolchain version pins (pnpm 12.15.0, Rslib 1.0.3), and how to run pnpm 12 | Accepted |
 
 ### Benchmarks
 | Benchmark | What |

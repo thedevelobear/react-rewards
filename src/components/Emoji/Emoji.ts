@@ -1,10 +1,10 @@
-import { EmojiConfig } from './Emoji.types';
 import {
   animate,
   generatePhysics,
   getRandomInt,
 } from '../../functions/helpers';
-import { Particle } from '../../Main.types';
+import type { Particle } from '../../Main.types';
+import type { EmojiConfig } from './Emoji.types';
 
 const defaultEmoji = ['🤓', '😊', '🥳'];
 const factors = [-0.6, -0.3, 0, 0.3, 0.6];
@@ -19,7 +19,7 @@ const createElements = (
 ) =>
   Array.from({ length: elementCount }).map((_, index) => {
     const element = document.createElement('span');
-    element.innerHTML = emojis[index % emojis.length];
+    element.innerHTML = emojis[index % emojis.length] ?? '';
     element.style.fontSize = `${elementSize + getRandomInt(0, 4)}px`;
     element.style.position = position;
     element.style.zIndex = `${zIndex}`;
@@ -45,7 +45,7 @@ const updateParticle = (
 
   const wobbleX =
     x +
-    (factors[differentiator] * progress * wobble * wobble +
+    ((factors[differentiator] ?? 0) * progress * wobble * wobble +
       20 * Math.sin(wobble / 4));
 
   const translateStyle = `translate3d(${wobbleX}px, ${y}px, 0)`;
