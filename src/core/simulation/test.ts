@@ -17,7 +17,7 @@ const testEffect = (overrides: Partial<EffectDefinition<TestConfig>> = {}) =>
     name: 'test',
     blend: 'normal',
     defaults: { count: 3, lifetime: 1000 },
-    sprites: () => [{ shape: 'rect', color: '#000' }],
+    sprites: () => [{ shape: 'rect', color: '#000', width: 4, height: 4 }],
     spawn: () => {},
     update: () => {},
     ...overrides,
@@ -255,7 +255,7 @@ describe('frame-rate independence', () => {
     name: 'falling',
     blend: 'normal',
     defaults: { count: 50, lifetime: 5000, gravity: 900, drag: 1.5 },
-    sprites: () => [{ shape: 'rect', color: '#000' }],
+    sprites: () => [{ shape: 'rect', color: '#000', width: 4, height: 4 }],
     spawn: (p, _config, rng) => {
       const angle = degToRad(90 + rng.range(-45, 45));
       const speed = rng.range(300, 900);

@@ -6,7 +6,11 @@ const sparkle = defineEffect({
   blend: 'additive',
   defaults: { count: 20, lifetime: 1000, colors: ['#fff', '#ff0'], speed: 100 },
   sprites: (config) =>
-    config.colors.map((color) => ({ shape: 'circle' as const, color })),
+    config.colors.map((color) => ({
+      shape: 'circle' as const,
+      color,
+      size: 6,
+    })),
   spawn: (p, config, rng) => {
     p.vx = rng.range(-config.speed, config.speed);
     p.sprite = rng.int(0, config.colors.length);
@@ -28,8 +32,8 @@ describe('defineEffect', () => {
       speed: 100,
     });
     expect(sparkle.sprites(resolveConfig(sparkle))).toEqual([
-      { shape: 'circle', color: '#fff' },
-      { shape: 'circle', color: '#ff0' },
+      { shape: 'circle', color: '#fff', size: 6 },
+      { shape: 'circle', color: '#ff0', size: 6 },
     ]);
   });
 
@@ -44,7 +48,7 @@ describe('defineEffect', () => {
       name: 'copy',
       blend: 'normal',
       defaults,
-      sprites: () => [{ emoji: '🎉' }],
+      sprites: () => [{ emoji: '🎉', size: 24 }],
       spawn: () => {},
       update: () => {},
     });
