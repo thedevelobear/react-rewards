@@ -48,6 +48,11 @@ What gets easier, what gets harder, and what has to happen next.
 | [0006](decisions/0006-bare-demo-as-e2e-target.md) | A bare `demo/` page is the browser-test target from PR 5 | Accepted |
 | [0007](decisions/0007-no-rename-step.md) | No rename-only step for the v2 files | Accepted |
 | [0008](decisions/0008-toolchain-version-pins.md) | Toolchain version pins (pnpm 12.15.0, Rslib 1.0.3), and how to run pnpm 12 | Accepted |
+| [0009](decisions/0009-no-squash-merges.md) | v3 PRs are merged without squashing | Accepted |
+| [0010](decisions/0010-unminified-dist.md) | The published build is not minified | Accepted |
+| [0011](decisions/0011-node-26-in-ci.md) | CI runs on Node 26, and `.nvmrc` pins it | Accepted |
+| [0012](decisions/0012-pass-with-no-tests-until-pr-3.md) | Rstest passes with no test files until PR 3 | Accepted |
+| [0013](decisions/0013-size-limit-report-only.md) | size-limit reports the bundle size, with no budget | Accepted |
 
 ### Benchmarks
 | Benchmark | What |
