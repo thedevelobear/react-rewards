@@ -123,11 +123,3 @@ export const createOverlay = (options: OverlayOptions = {}): Overlay => {
     },
   };
 };
-
-let shared: Overlay | undefined;
-
-/** The page's one overlay, created on first use. */
-export const getOverlay = (): Overlay => {
-  shared ??= createOverlay();
-  return shared;
-};

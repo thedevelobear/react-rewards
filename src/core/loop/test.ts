@@ -1,32 +1,6 @@
 import { afterEach, describe, expect, it } from '@rstest/core';
-import { createLoop, type FrameScheduler, getLoop, MAX_DT } from '@/core/loop';
-
-/** A scheduler driven by hand: `tick(time)` runs the pending frame. */
-const createFakeScheduler = () => {
-  let pending: ((time: number) => void) | undefined;
-  let handles = 0;
-  const scheduler: FrameScheduler = {
-    request: (callback) => {
-      pending = callback;
-      handles += 1;
-      return handles;
-    },
-    cancel: () => {
-      pending = undefined;
-    },
-  };
-  return {
-    scheduler,
-    get pending() {
-      return pending !== undefined;
-    },
-    tick: (time: number) => {
-      const callback = pending;
-      pending = undefined;
-      callback?.(time);
-    },
-  };
-};
+import { createLoop, getLoop, MAX_DT } from '@/core/loop';
+import { createFakeScheduler } from '@/test-utils';
 
 describe('createLoop', () => {
   it('schedules frames only while it has callbacks', () => {
