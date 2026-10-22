@@ -11,8 +11,10 @@ import { resolveOrigin } from '@/core/origin';
 import {
   type Batch,
   createOverlay,
+  createRenderer,
   type Overlay,
   type Renderer,
+  type RendererPreference,
 } from '@/core/renderer';
 import { createSimulation, type Simulation } from '@/core/simulation';
 import type { Burst, BurstEnd, FireOptions } from './types';
@@ -113,8 +115,11 @@ export const createStage = ({ loop, overlay, atlas }: StageOptions): Stage => {
       return burst;
     }
     // Claimed before the sprites load, so the overlay can't be removed, and
-    // the atlas cleared, while they do.
-    const lease = overlay.acquire(options.zIndex ?? DEFAULT_Z_INDEX);
+    // the atlas cleared, while they do. A lost context ends the burst like
+    // an effect error would, or skips it if it hadn't started (ADR 0036).
+    const lease = overlay.acquire(options.zIndex ?? DEFAULT_Z_INDEX, () =>
+      end(entry ? 'complete' : 'skipped')
+    );
     if (!lease) {
       end('skipped');
       return burst;
@@ -161,19 +166,37 @@ export const createStage = ({ loop, overlay, atlas }: StageOptions): Stage => {
   return { fire };
 };
 
-let shared: Stage | undefined;
+let preference: RendererPreference = 'auto';
+let shared: { stage: Stage; overlay: Overlay } | undefined;
 
 const getStage = (): Stage => {
   if (!shared) {
     const atlas = createAtlas();
-    shared = createStage({
-      loop: getLoop(),
-      atlas,
+    const overlay = createOverlay({
+      createRenderer: (createCanvas, onLost) =>
+        createRenderer(preference, createCanvas, onLost),
       // An idle page drops its sprites along with its canvas (ADR 0020).
-      overlay: createOverlay({ onUnmount: () => atlas.clear() }),
+      onUnmount: () => atlas.clear(),
     });
+    shared = {
+      stage: createStage({ loop: getLoop(), atlas, overlay }),
+      overlay,
+    };
   }
-  return shared;
+  return shared.stage;
+};
+
+/**
+ * Chooses the page's renderer. `'auto'`, the default, uses WebGL2 and falls
+ * back to Canvas 2D. `'webgl'` and `'canvas'` force one, and bursts are
+ * skipped when the browser can't provide it. The choice applies from the
+ * next burst: bursts already running finish on the current renderer
+ * (ADR 0033).
+ */
+export const setRenderer = (next: RendererPreference): void => {
+  if (next === preference) return;
+  preference = next;
+  shared?.overlay.reset();
 };
 
 /**

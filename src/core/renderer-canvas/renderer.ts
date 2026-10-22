@@ -18,6 +18,7 @@ export const createCanvasRenderer = (
 
   return {
     kind: 'canvas',
+    canvas,
     resize: (width, height, ratio) => {
       dpr = ratio;
       canvas.width = Math.round(width * ratio);

@@ -1,13 +1,18 @@
-import { type MouseEvent, useRef, useState } from 'react';
+import { type ChangeEvent, type MouseEvent, useRef, useState } from 'react';
 import {
   type Burst,
   type BurstEnd,
   confetti,
   fire,
   type Origin,
+  type RendererPreference,
+  setRenderer,
 } from 'react-rewards';
 
 type Status = 'idle' | 'running' | BurstEnd;
+
+/** The seed of the burst that plays the same way every time. */
+const SEED = 1;
 
 /**
  * A bare page for trying effects by hand and for the browser tests, which
@@ -16,10 +21,11 @@ type Status = 'idle' | 'running' | BurstEnd;
  */
 export const App = () => {
   const [status, setStatus] = useState<Status>('idle');
+  const [renderer, setRendererChoice] = useState<RendererPreference>('auto');
   const bursts = useRef(new Set<Burst>());
 
-  const play = (origin: Origin) => {
-    const burst = fire(confetti, { origin });
+  const play = (origin: Origin, seed?: number) => {
+    const burst = fire(confetti, { origin, seed });
     bursts.current.add(burst);
     setStatus('running');
     burst.finished.then((how) => {
@@ -32,6 +38,9 @@ export const App = () => {
   const playFromTarget = (event: MouseEvent<HTMLButtonElement>) =>
     play(event.currentTarget);
 
+  const playSeeded = (event: MouseEvent<HTMLButtonElement>) =>
+    play(event.currentTarget, SEED);
+
   const playAtPointer = (event: MouseEvent<HTMLButtonElement>) =>
     // A keyboard click has no pointer position, so it fires from the button.
     play(
@@ -42,6 +51,12 @@ export const App = () => {
 
   const cancelAll = () => {
     for (const burst of bursts.current) burst.cancel();
+  };
+
+  const chooseRenderer = (event: ChangeEvent<HTMLSelectElement>) => {
+    const next = event.currentTarget.value as RendererPreference;
+    setRenderer(next);
+    setRendererChoice(next);
   };
 
   return (
@@ -59,6 +74,32 @@ export const App = () => {
           Cancel all
         </button>
         <output data-testid="status">{status}</output>
+      </section>
+
+      <section>
+        <h2>Renderer</h2>
+        <p>
+          The choice applies from the next burst. A forced renderer that the
+          browser can't provide skips the burst. The seeded burst plays the same
+          way every time, so the renderers can be compared.
+        </p>
+        <div className="row">
+          <label>
+            Renderer{' '}
+            <select
+              data-testid="renderer"
+              value={renderer}
+              onChange={chooseRenderer}
+            >
+              <option value="auto">Auto</option>
+              <option value="webgl">WebGL2</option>
+              <option value="canvas">Canvas 2D</option>
+            </select>
+          </label>
+          <button type="button" data-testid="fire-seeded" onClick={playSeeded}>
+            Seeded confetti
+          </button>
+        </div>
       </section>
 
       <section>

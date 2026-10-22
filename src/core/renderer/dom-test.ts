@@ -1,23 +1,22 @@
 import { afterEach, beforeEach, describe, expect, it, rs } from '@rstest/core';
 import {
   createOverlay,
-  createRenderer,
   IDLE_TIMEOUT,
+  type OverlayOptions,
   type Renderer,
 } from '@/core/renderer';
-import { createFakeContext } from '@/test-utils';
 
-const createFakeRenderer = () => {
-  const calls: unknown[][] = [];
-  const renderer: Renderer = {
-    kind: 'canvas',
-    resize: (...args) => calls.push(['resize', ...args]),
-    draw: () => calls.push(['draw']),
-    clear: () => calls.push(['clear']),
-    dispose: () => calls.push(['dispose']),
-  };
-  return { renderer, calls };
-};
+const createFakeRenderer = (
+  canvas: HTMLCanvasElement,
+  calls: unknown[][]
+): Renderer => ({
+  kind: 'canvas',
+  canvas,
+  resize: (...args) => calls.push(['resize', ...args]),
+  draw: () => calls.push(['draw']),
+  clear: () => calls.push(['clear']),
+  dispose: () => calls.push(['dispose']),
+});
 
 class FakeResizeObserver {
   static instances: FakeResizeObserver[] = [];
@@ -71,20 +70,26 @@ afterEach(() => {
   document.body.innerHTML = '';
 });
 
-const setup = () => {
-  const fake = createFakeRenderer();
-  let created = 0;
+const setup = (options: Pick<OverlayOptions, 'onUnmount'> = {}) => {
+  const calls: unknown[][] = [];
+  const renderers: Renderer[] = [];
+  const losers: (() => void)[] = [];
   const overlay = createOverlay({
-    createRenderer: () => {
-      created += 1;
-      return fake.renderer;
+    ...options,
+    createRenderer: (createCanvas, onLost) => {
+      const renderer = createFakeRenderer(createCanvas(), calls);
+      renderers.push(renderer);
+      losers.push(onLost);
+      return renderer;
     },
   });
   return {
     overlay,
-    calls: fake.calls,
-    renderer: fake.renderer,
-    created: () => created,
+    calls,
+    renderers,
+    created: () => renderers.length,
+    /** Loses the context of the `index`th renderer, the latest by default. */
+    lose: (index = renderers.length - 1) => losers[index]?.(),
     canvases: () => [...document.querySelectorAll('canvas')],
   };
 };
@@ -96,11 +101,12 @@ describe('createOverlay', () => {
   });
 
   it('mounts one fixed, click-through, aria-hidden canvas on body', () => {
-    const { overlay, calls, renderer, canvases } = setup();
+    const { overlay, calls, renderers, canvases } = setup();
     const lease = overlay.acquire(10);
-    expect(lease?.renderer).toBe(renderer);
+    expect(lease?.renderer).toBe(renderers[0]);
 
     const [canvas] = canvases();
+    expect(canvas).toBe(renderers[0]?.canvas);
     expect(canvas?.parentElement).toBe(document.body);
     expect(canvas?.getAttribute('aria-hidden')).toBe('true');
     expect(canvas?.style.position).toBe('fixed');
@@ -156,8 +162,7 @@ describe('createOverlay', () => {
 
   it('calls onUnmount once it has been removed', () => {
     let unmounts = 0;
-    const overlay = createOverlay({
-      createRenderer: () => createFakeRenderer().renderer,
+    const { overlay } = setup({
       onUnmount: () => {
         unmounts += 1;
       },
@@ -232,18 +237,96 @@ describe('createOverlay', () => {
     expect(overlay.acquire(0)).toBeUndefined();
     expect(document.querySelectorAll('canvas')).toHaveLength(0);
   });
-});
 
-describe('createRenderer', () => {
-  it('returns undefined when the canvas has no 2D context', () => {
-    const canvas = document.createElement('canvas');
-    expect(createRenderer(canvas)).toBeUndefined();
+  it('removes an idle canvas at once on reset (ADR 0033)', () => {
+    let unmounts = 0;
+    const { overlay, calls, created, canvases } = setup({
+      onUnmount: () => {
+        unmounts += 1;
+      },
+    });
+    overlay.reset();
+    expect(unmounts).toBe(0);
+
+    overlay.acquire(0)?.release();
+    overlay.reset();
+    expect(canvases()).toHaveLength(0);
+    expect(calls.at(-1)).toEqual(['dispose']);
+    expect(unmounts).toBe(1);
+    rs.advanceTimersByTime(IDLE_TIMEOUT);
+    expect(unmounts).toBe(1);
+
+    overlay.acquire(0);
+    expect(created()).toBe(2);
   });
 
-  it('returns the Canvas 2D renderer when it has one', () => {
-    const canvas = document.createElement('canvas');
-    const { ctx } = createFakeContext();
-    rs.spyOn(canvas, 'getContext').mockReturnValue(ctx as never);
-    expect(createRenderer(canvas)?.kind).toBe('canvas');
+  it('on reset, keeps a canvas in use until its last claim ends', () => {
+    const { overlay, calls, created, canvases } = setup();
+    const first = overlay.acquire(0);
+    overlay.reset();
+    // A burst that starts meanwhile joins the current canvas.
+    const second = overlay.acquire(0);
+    expect(created()).toBe(1);
+
+    first?.release();
+    expect(canvases()).toHaveLength(1);
+    second?.release();
+    expect(canvases()).toHaveLength(0);
+    expect(calls.at(-1)).toEqual(['dispose']);
+
+    overlay.acquire(0)?.release();
+    expect(created()).toBe(2);
+    // A fresh canvas idles as usual.
+    expect(canvases()[0]?.style.display).toBe('none');
+  });
+
+  it('ends every claim and removes the canvas when the context is lost', () => {
+    let unmounts = 0;
+    const { overlay, calls, lose, canvases } = setup({
+      onUnmount: () => {
+        unmounts += 1;
+      },
+    });
+    const ended: string[] = [];
+    const first = overlay.acquire(0, () => ended.push('first'));
+    overlay.acquire(0, () => ended.push('second'));
+    lose();
+    expect(ended).toEqual(['first', 'second']);
+    expect(canvases()).toHaveLength(0);
+    expect(calls.at(-1)).toEqual(['dispose']);
+    expect(unmounts).toBe(1);
+
+    // The claims have ended, so releasing one does nothing.
+    first?.release();
+    rs.advanceTimersByTime(IDLE_TIMEOUT);
+    expect(calls.at(-1)).toEqual(['dispose']);
+    expect(unmounts).toBe(1);
+  });
+
+  it('removes an idle canvas whose context is lost, and mounts a new one', () => {
+    const { overlay, created, lose, canvases } = setup();
+    overlay.acquire(0)?.release();
+    lose();
+    expect(canvases()).toHaveLength(0);
+    overlay.acquire(0);
+    expect(created()).toBe(2);
+    expect(canvases()).toHaveLength(1);
+  });
+
+  it('ignores a loss reported by a renderer it already removed', () => {
+    let unmounts = 0;
+    const { overlay, lose, canvases } = setup({
+      onUnmount: () => {
+        unmounts += 1;
+      },
+    });
+    overlay.acquire(0)?.release();
+    rs.advanceTimersByTime(IDLE_TIMEOUT);
+    const ended: string[] = [];
+    overlay.acquire(0, () => ended.push('lease'));
+    lose(0);
+    expect(ended).toEqual([]);
+    expect(unmounts).toBe(1);
+    expect(canvases()).toHaveLength(1);
   });
 });

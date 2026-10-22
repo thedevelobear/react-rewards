@@ -41,6 +41,7 @@ const setup = (
   const frames: DrawnBatch[][] = [];
   const renderer: Renderer = {
     kind: 'canvas',
+    canvas: {} as HTMLCanvasElement,
     resize: () => {},
     draw: ({ batches }) => {
       frames.push(
@@ -57,11 +58,13 @@ const setup = (
     dispose: () => {},
   };
   const leases: { zIndex: number; released: boolean }[] = [];
+  const losers: (() => void)[] = [];
   const overlay: Overlay = {
-    acquire: (zIndex) => {
+    acquire: (zIndex, onLost) => {
       if (options.renderer === false) return undefined;
       const lease = { zIndex, released: false };
       leases.push(lease);
+      if (onLost) losers.push(onLost);
       return {
         renderer,
         release: () => {
@@ -69,6 +72,7 @@ const setup = (
         },
       };
     },
+    reset: () => {},
   };
   const { createCanvas } = createFakeCanvases();
   const atlas = createAtlas({ createCanvas, ...options.atlas });
@@ -80,6 +84,10 @@ const setup = (
     frames,
     leases,
     counts: () => frames.map((frame) => frame.map((batch) => batch.count)),
+    /** Loses the renderer's context, as the overlay reports it. */
+    lose: () => {
+      for (const onLost of losers.splice(0)) onLost();
+    },
     /** Runs the next frame, `ms` after the previous one. */
     tick: (ms = 1000 / 60) => {
       time += ms;
@@ -306,6 +314,23 @@ describe('createStage', () => {
     expect(counts()).toEqual([[3], [3]]);
     expect(await broken.finished).toBe('complete');
     expect(calls.count).toBe(1);
+  });
+
+  it('ends bursts when the context is lost: started ones complete (ADR 0036)', async () => {
+    const { stage, loop, counts, lose, tick } = setup();
+    const { calls, onComplete } = counter();
+    const running = stage.fire(testEffect(), { origin, onComplete });
+    await settle();
+    tick();
+    const loading = stage.fire(testEffect(), { origin, onComplete });
+    lose();
+    expect(await running.finished).toBe('complete');
+    expect(await loading.finished).toBe('skipped');
+    expect(calls.count).toBe(2);
+    expect(loop.running).toBe(false);
+    await settle();
+    tick();
+    expect(counts()).toEqual([[2]]);
   });
 
   it('calls onComplete in a microtask, never inside fire()', async () => {

@@ -71,6 +71,11 @@ What gets easier, what gets harder, and what has to happen next.
 | [0029](decisions/0029-default-z-index.md) | The overlay's `zIndex` defaults to 2147483647 | Accepted |
 | [0030](decisions/0030-effect-errors-swallowed.md) | Errors thrown by an effect are swallowed | Accepted |
 | [0031](decisions/0031-demo-imports-built-package.md) | `demo/` imports the built package | Accepted |
+| [0032](decisions/0032-build-tsconfig-without-tests.md) | The build leaves test declarations out of `dist/` | Accepted |
+| [0033](decisions/0033-strict-public-set-renderer.md) | `setRenderer` is public, and a forced renderer never falls back | Accepted |
+| [0034](decisions/0034-merge-neighbouring-batches.md) | WebGL merges only neighbouring batches with the same blend mode | Accepted |
+| [0035](decisions/0035-parity-diff-with-pixelmatch.md) | The parity spec compares screenshots with pixelmatch | Accepted |
+| [0036](decisions/0036-context-loss-replaces-canvas.md) | A lost WebGL context ends running bursts and replaces the canvas | Proposed |
 
 ### Benchmarks
 | Benchmark | What |
