@@ -33,22 +33,6 @@
   },
   "overrides": [
     {
-      "includes": [
-        "src/components/**",
-        "src/functions/**",
-        "src/hooks/**",
-        "src/Main.types.ts"
-      ],
-      "linter": {
-        "rules": {
-          "style": {
-            "useFilenamingConvention": "off",
-            "useNamingConvention": "off"
-          }
-        }
-      }
-    },
-    {
       "includes": ["src/effects/**", "!src/effects/**/test.ts"],
       "linter": {
         "rules": {
