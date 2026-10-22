@@ -33,3 +33,6 @@ jobs:
       - run: pnpm --filter demo build
       - run: pnpm lint:package
       - run: pnpm size
+      # Browser tests against the built demo (ADR 0006).
+      - run: pnpm --filter demo exec playwright install --with-deps chromium
+      - run: pnpm --filter demo e2e

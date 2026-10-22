@@ -6,7 +6,8 @@
     "dev": "rsbuild dev",
     "build": "rsbuild build",
     "preview": "rsbuild preview",
-    "typecheck": "tsc --noEmit"
+    "typecheck": "tsc --noEmit",
+    "e2e": "playwright test"
   },
   "dependencies": {
     "react": "19.3.1",
@@ -14,8 +15,10 @@
     "react-rewards": "workspace:*"
   },
   "devDependencies": {
+    "@playwright/test": "1.64.1",
     "@rsbuild/core": "2.2.14",
     "@rsbuild/plugin-react": "2.1.1",
+    "@types/node": "26.6.5",
     "@types/react": "19.3.0",
     "@types/react-dom": "19.3.0"
   }

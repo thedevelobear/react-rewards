@@ -12,5 +12,5 @@
     "noEmit": true,
     "skipLibCheck": true
   },
-  "include": ["src", "rsbuild.config.ts"]
+  "include": ["src", "e2e", "rsbuild.config.ts", "playwright.config.ts"]
 }
