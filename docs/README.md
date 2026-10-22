@@ -58,6 +58,7 @@ What gets easier, what gets harder, and what has to happen next.
 | [0016](decisions/0016-keep-rstest.md) | Rstest stays the test runner | Accepted |
 | [0017](decisions/0017-isolated-declarations.md) | `isolatedDeclarations` is on | Accepted |
 | [0018](decisions/0018-core-simulation-module.md) | Particle stepping lives in `core/simulation/` | Accepted |
+| [0019](decisions/0019-particle-contract.md) | Particle fields, units and stepping in the effect contract | Proposed |
 
 ### Benchmarks
 | Benchmark | What |
