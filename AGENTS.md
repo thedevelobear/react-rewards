@@ -32,3 +32,5 @@ The repo pins pnpm 12.15.0 in `packageManager`. A global pnpm 12, or pnpm 10.34.
 | `pnpm test` | Rstest in Node: `src/**/test.ts`. |
 | `pnpm build` | Rslib: ESM build and declarations into `dist/`. |
 | `pnpm dev` | Rslib build in watch mode. |
+| `pnpm lint:package` | publint and attw (`--profile esm-only`) on the packed package. Run `pnpm build` first. |
+| `pnpm size` | size-limit: the minified, gzipped size of `dist/index.js`, without React. Reports only, no budget ([ADR 0013](docs/decisions/0013-size-limit-report-only.md)). Run `pnpm build` first. |

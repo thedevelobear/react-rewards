@@ -1,0 +1,7 @@
+[
+  {
+    "name": "react-rewards",
+    "path": "dist/index.js",
+    "gzip": true
+  }
+]
