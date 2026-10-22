@@ -185,19 +185,19 @@ importers:
         specifier: 14.2.0
         version: 14.2.0(size-limit@14.2.0)
       '@types/react':
-        specifier: ^19.3.0
+        specifier: 19.3.0
         version: 19.3.0
       publint:
         specifier: 0.3.25
         version: 0.3.25
       react:
-        specifier: ^19.3.1
+        specifier: 19.3.1
         version: 19.3.1
       size-limit:
         specifier: 14.2.0
         version: 14.2.0
       typescript:
-        specifier: ^7.0.2
+        specifier: 7.0.2
         version: 7.0.2
 
 packages:

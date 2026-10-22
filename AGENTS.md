@@ -21,6 +21,7 @@ Fixes to a merged PR go on a `v3/fix-topic` branch from `origin/feat/v3-scaffold
 - If something is unclear, or the plan contradicts itself, ask the maintainer before deciding.
 - Work lands as small PRs, one at a time. v3 PRs target the integration branch `feat/v3-scaffolding`, not `master`.
 - PRs are merged without squashing ([ADR 0009](docs/decisions/0009-no-squash-merges.md)). Make every commit a self-contained step that builds and passes lint.
+- Dependencies use exact versions, and `pnpm add` writes them that way. Peer dependencies stay ranges ([ADR 0015](docs/decisions/0015-exact-dependency-versions.md)).
 
 ## Commands
 The repo pins pnpm 12.15.0 in `packageManager`. A global pnpm 12, or pnpm 10.34.7 or later, runs it. Older pnpm versions and Corepack cannot ([ADR 0008](docs/decisions/0008-toolchain-version-pins.md)). If `pnpm` fails with `ERR_PNPM_NO_MATCHING_VERSION`, run `npx pnpm@12.15.0 <command>` or update the global pnpm.
