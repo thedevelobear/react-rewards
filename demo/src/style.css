@@ -23,7 +23,8 @@ section {
   gap: 12px;
 }
 
-button {
+button,
+select {
   font: inherit;
   padding: 8px 16px;
   cursor: pointer;
