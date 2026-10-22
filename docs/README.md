@@ -56,6 +56,8 @@ What gets easier, what gets harder, and what has to happen next.
 | [0014](decisions/0014-pnpm-setup-action.md) | CI sets up pnpm and Node with `pnpm/setup` | Accepted |
 | [0015](decisions/0015-exact-dependency-versions.md) | Dependencies use exact versions | Accepted |
 | [0016](decisions/0016-keep-rstest.md) | Rstest stays the test runner | Accepted |
+| [0017](decisions/0017-isolated-declarations.md) | `isolatedDeclarations` is on | Accepted |
+| [0018](decisions/0018-core-simulation-module.md) | Particle stepping lives in `core/simulation/` | Accepted |
 
 ### Benchmarks
 | Benchmark | What |
