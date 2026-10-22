@@ -2,42 +2,9 @@ import { describe, expect, it } from '@rstest/core';
 import { createAtlas } from '@/core/atlas';
 import type { SpriteSource } from '@/core/define-effect';
 import { createRng } from '@/core/math';
+import { createFakeCanvases, createFakeContext } from '@/test-utils';
 import { createPacker } from './packer';
 import { drawSprite, EMOJI_BOX, spriteKey, spriteSize } from './raster';
-
-type Call = [name: string, ...args: unknown[]];
-
-/** A 2D context that records every method call and property write. */
-const createFakeContext = () => {
-  const calls: Call[] = [];
-  const state: Record<string | symbol, unknown> = {};
-  const ctx = new Proxy(
-    {},
-    {
-      get: (_, prop) =>
-        prop in state
-          ? state[prop]
-          : (...args: unknown[]) => calls.push([String(prop), ...args]),
-      set: (_, prop, value) => {
-        state[prop] = value;
-        calls.push([`${String(prop)}=`, value]);
-        return true;
-      },
-    }
-  ) as CanvasRenderingContext2D;
-  return { ctx, calls };
-};
-
-const createFakeCanvases = () => {
-  const canvases: { width: number; height: number; calls: Call[] }[] = [];
-  const createCanvas = (width: number, height: number) => {
-    const { ctx, calls } = createFakeContext();
-    const canvas = { width, height, calls, getContext: () => ctx };
-    canvases.push(canvas);
-    return canvas as unknown as HTMLCanvasElement;
-  };
-  return { canvases, createCanvas };
-};
 
 const rect = (color = '#f00', width = 8, height = 5): SpriteSource => ({
   shape: 'rect',
