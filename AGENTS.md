@@ -29,5 +29,6 @@ The repo pins pnpm 12.15.0 in `packageManager`. A global pnpm 12, or pnpm 10.34.
 | `pnpm lint` | Biome: lint, import order and formatting check. Markdown is not formatted. |
 | `pnpm format` | Biome: write formatting. |
 | `pnpm typecheck` | TypeScript 7, no emit. |
+| `pnpm test` | Rstest in Node: `src/**/test.ts`. |
 | `pnpm build` | Rslib: ESM build and declarations into `dist/`. |
 | `pnpm dev` | Rslib build in watch mode. |
