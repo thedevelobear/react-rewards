@@ -35,6 +35,12 @@ export interface Overlay {
    * `onLost` is called (ADR 0036).
    */
   acquire(zIndex: number, onLost?: () => void): OverlayLease | undefined;
+  /**
+   * Drops the canvas and renderer so the next burst creates new ones, for a
+   * new renderer choice (ADR 0033). An idle overlay is removed at once. One
+   * in use is removed when its last claim ends, instead of being hidden.
+   */
+  reset(): void;
 }
 
 interface Claim {
@@ -67,6 +73,8 @@ export const createOverlay = (options: OverlayOptions = {}): Overlay => {
   let observer: ResizeObserver | undefined;
   let idleTimer: ReturnType<typeof setTimeout> | undefined;
   let size = '';
+  /** Set by `reset` while claims hold the overlay. */
+  let stale = false;
 
   /** Matches the renderer to the canvas's CSS size and the pixel ratio. */
   const resize = (): void => {
@@ -109,6 +117,7 @@ export const createOverlay = (options: OverlayOptions = {}): Overlay => {
     renderer = undefined;
     canvas = undefined;
     size = '';
+    stale = false;
     onUnmount?.();
   };
 
@@ -133,6 +142,10 @@ export const createOverlay = (options: OverlayOptions = {}): Overlay => {
       canvas.style.zIndex = String(highestZ());
       return;
     }
+    if (stale) {
+      unmount();
+      return;
+    }
     renderer?.clear();
     canvas.style.display = 'none';
     idleTimer = setTimeout(unmount, idleTimeout);
@@ -151,6 +164,15 @@ export const createOverlay = (options: OverlayOptions = {}): Overlay => {
       // Measure now, so the first frame isn't drawn into a stale buffer.
       resize();
       return { renderer: current, release: () => release(lease) };
+    },
+    reset: () => {
+      if (!renderer) return;
+      if (leases.size > 0) {
+        stale = true;
+        return;
+      }
+      clearTimeout(idleTimer);
+      unmount();
     },
   };
 };

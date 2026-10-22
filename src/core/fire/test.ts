@@ -72,6 +72,7 @@ const setup = (
         },
       };
     },
+    reset: () => {},
   };
   const { createCanvas } = createFakeCanvases();
   const atlas = createAtlas({ createCanvas, ...options.atlas });

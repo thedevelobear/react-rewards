@@ -238,6 +238,48 @@ describe('createOverlay', () => {
     expect(document.querySelectorAll('canvas')).toHaveLength(0);
   });
 
+  it('removes an idle canvas at once on reset (ADR 0033)', () => {
+    let unmounts = 0;
+    const { overlay, calls, created, canvases } = setup({
+      onUnmount: () => {
+        unmounts += 1;
+      },
+    });
+    overlay.reset();
+    expect(unmounts).toBe(0);
+
+    overlay.acquire(0)?.release();
+    overlay.reset();
+    expect(canvases()).toHaveLength(0);
+    expect(calls.at(-1)).toEqual(['dispose']);
+    expect(unmounts).toBe(1);
+    rs.advanceTimersByTime(IDLE_TIMEOUT);
+    expect(unmounts).toBe(1);
+
+    overlay.acquire(0);
+    expect(created()).toBe(2);
+  });
+
+  it('on reset, keeps a canvas in use until its last claim ends', () => {
+    const { overlay, calls, created, canvases } = setup();
+    const first = overlay.acquire(0);
+    overlay.reset();
+    // A burst that starts meanwhile joins the current canvas.
+    const second = overlay.acquire(0);
+    expect(created()).toBe(1);
+
+    first?.release();
+    expect(canvases()).toHaveLength(1);
+    second?.release();
+    expect(canvases()).toHaveLength(0);
+    expect(calls.at(-1)).toEqual(['dispose']);
+
+    overlay.acquire(0)?.release();
+    expect(created()).toBe(2);
+    // A fresh canvas idles as usual.
+    expect(canvases()[0]?.style.display).toBe('none');
+  });
+
   it('ends every claim and removes the canvas when the context is lost', () => {
     let unmounts = 0;
     const { overlay, calls, lose, canvases } = setup({
