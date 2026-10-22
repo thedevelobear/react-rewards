@@ -23,6 +23,8 @@ Each PR in the plan's progress table is usually done in a fresh session. To cont
 ## Commands
 The repo pins pnpm 12.15.0 in `packageManager`. A global pnpm 12, or pnpm 10.34.7 or later, runs it. Older pnpm versions and Corepack cannot ([ADR 0008](docs/decisions/0008-toolchain-version-pins.md)). If `pnpm` fails with `ERR_PNPM_NO_MATCHING_VERSION`, run `npx pnpm@12.15.0 <command>` or update the global pnpm.
 
+Use Node 26, as pinned in `.nvmrc`. CI runs on the same version ([ADR 0011](docs/decisions/0011-node-26-in-ci.md)).
+
 | Command | What it does |
 |---|---|
 | `pnpm install` | Install dependencies. |
