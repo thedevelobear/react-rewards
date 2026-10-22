@@ -4,6 +4,7 @@
   "description": "This package lets you easily add micro-interactions to your app and reward users with the rain of confetti, emoji or balloons.",
   "author": "thedevelobear",
   "license": "MIT",
+  "packageManager": "pnpm@12.15.0",
   "main": "dist/react-rewards.js",
   "jsnext:main": "dist/react-rewards.es.js",
   "module": "dist/react-rewards.es.js",
@@ -29,7 +30,7 @@
     "watch": "rollup -c -w",
     "lint": "eslint ./src",
     "lint:fix": "eslint ./src --fix",
-    "prepublish": "yarn lint && rm -rf dist && NODE_ENV=production yarn build"
+    "prepublish": "pnpm lint && rm -rf dist && NODE_ENV=production pnpm build"
   },
   "peerDependencies": {
     "react": ">=15",
