@@ -9,12 +9,16 @@ react-rewards is a small React library of reward micro-interactions (confetti, e
 ## Picking up the next PR
 Each PR in the plan's progress table is usually done in a fresh session. To continue:
 1. Run `git fetch`. Find the first PR in the progress table that isn't merged.
-2. If its branch (`v3/NN-topic`) exists, continue on it. Otherwise create it from `origin/feat/v3-scaffolding`.
+2. If its branch (`v3/NN-topic`) exists, continue on it. Otherwise create it from the integration branch without tracking it:
+   ```sh
+   git switch --no-track -c v3/NN-topic origin/feat/v3-scaffolding
+   ```
+   Without `--no-track`, git makes `feat/v3-scaffolding` the branch's upstream. A plain push, including VS Code's Push button, then lands the commits on the integration branch with no PR. When the maintainer asks for a push, use `git push -u origin v3/NN-topic`.
 3. If the previous PR is merged but still listed as "In review", mark it "Merged" with its PR number, and set any ADR it left as "Proposed" to "Accepted" (unless the maintainer changed it). Do this in the first commit of the new branch.
 4. Before writing code, ask the maintainer the open questions the plan assigns to this PR. Record each answer as an ADR, and remove the question from the table.
 5. When the PR is done, set its status to "In review", stop, and report to the maintainer. Don't push branches or open PRs unless the maintainer asks.
 
-Fixes to a merged PR go on a `v3/fix-topic` branch from `origin/feat/v3-scaffolding`. They take no number. List them in the plan's "Follow-up fixes" table, not in the progress table.
+Fixes to a merged PR go on a `v3/fix-topic` branch, created and pushed the same way as in step 2. They take no number. List them in the plan's "Follow-up fixes" table, not in the progress table.
 
 ## While you work
 - Record decisions and plan changes in `docs/`, in the same PR as the code: a new ADR for each decision, and an update to the active plan's progress table and to any section the work changes. Nothing that matters should live only in chat or in PR comments.
