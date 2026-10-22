@@ -1,12 +1,7 @@
 import type { Effect, EffectConfig, UpdateContext } from '@/core/define-effect';
-import { createRng, type Rng } from '@/core/math';
+import { createRng, type Point, type Rng } from '@/core/math';
 import { createPool, type Pool } from '@/core/pool';
 import { ParticleView } from './view';
-
-export interface Point {
-  x: number;
-  y: number;
-}
 
 export interface SimulationOptions {
   /** Where particles spawn, in viewport CSS pixels. */

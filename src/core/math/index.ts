@@ -11,3 +11,4 @@ export {
 export type { Rng } from './rng';
 export { createRng } from './rng';
 export { accelerate, clamp, damp, degToRad, lerp } from './scalar';
+export type { Point } from './types';
