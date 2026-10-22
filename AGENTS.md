@@ -10,7 +10,7 @@ react-rewards is a small React library of reward micro-interactions (confetti, e
 Each PR in the plan's progress table is usually done in a fresh session. To continue:
 1. Run `git fetch`. Find the first PR in the progress table that isn't merged.
 2. If its branch (`v3/NN-topic`) exists, continue on it. Otherwise create it from `origin/feat/v3-scaffolding`.
-3. If the previous PR is merged but still listed as "In review", mark it "Merged" with its PR number. Do this in the first commit of the new branch.
+3. If the previous PR is merged but still listed as "In review", mark it "Merged" with its PR number, and set any ADR it left as "Proposed" to "Accepted" (unless the maintainer changed it). Do this in the first commit of the new branch.
 4. Before writing code, ask the maintainer the open questions the plan assigns to this PR. Record each answer as an ADR, and remove the question from the table.
 5. When the PR is done, set its status to "In review", stop, and report to the maintainer. Don't push branches or open PRs unless the maintainer asks.
 
