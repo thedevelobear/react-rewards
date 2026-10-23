@@ -21,3 +21,10 @@
   top: 10px;
   right: 10px;
 }
+
+/* Narrow code scrolls under the copy button, so it starts below it. */
+@media (max-width: 720px) {
+  .code-block-pre {
+    padding-top: 52px;
+  }
+}
