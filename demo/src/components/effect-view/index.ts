@@ -1,0 +1,1 @@
+export { EffectView } from './component';

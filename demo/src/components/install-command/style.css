@@ -1,0 +1,58 @@
+.install {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.install-managers {
+  display: flex;
+  gap: 2px;
+  min-width: 0;
+  margin: 0;
+  padding: 0;
+  border: 0;
+}
+
+.install-manager {
+  height: 28px;
+  padding: 0 12px;
+  border: 1px solid transparent;
+  border-radius: var(--radius-control);
+  background: none;
+  color: var(--text-muted);
+  font-family: var(--font-mono);
+  font-size: 12px;
+  cursor: pointer;
+  transition: color var(--duration-fast) var(--ease-out);
+}
+
+.install-manager:hover {
+  color: var(--text);
+}
+
+.install-manager[aria-pressed="true"] {
+  border-color: var(--border);
+  background: var(--card);
+  box-shadow: var(--raised);
+  color: var(--text);
+}
+
+.install-panel {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 10px 10px 10px 20px;
+  background: var(--code-background);
+}
+
+.install-command {
+  min-width: 0;
+  overflow-x: auto;
+  color: var(--code-foreground);
+  font-family: var(--font-mono);
+  font-size: 13px;
+  font-weight: 400;
+  letter-spacing: 0;
+  white-space: nowrap;
+}

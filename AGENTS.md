@@ -4,7 +4,7 @@ react-rewards is a small React library of reward micro-interactions (confetti, e
 
 ## Before you start
 1. Read [`docs/README.md`](docs/README.md), then the active plan it links to.
-2. Check [`docs/decisions/`](docs/decisions/) for anything your change touches. Don't silently re-decide something recorded there. If a decision needs to change, propose a new ADR.
+2. Check [`docs/decisions/`](docs/decisions/) for anything your change touches. Don't silently re-decide something recorded there. If a decision needs to change, propose a new ADR. For the preview site, also read [`demo/README.md`](demo/README.md).
 
 ## Picking up the next PR
 Each PR in the plan's progress table is usually done in a fresh session. To continue:
@@ -15,13 +15,14 @@ Each PR in the plan's progress table is usually done in a fresh session. To cont
    ```
    Without `--no-track`, git makes `feat/v3-scaffolding` the branch's upstream. A plain push, including VS Code's Push button, then lands the commits on the integration branch with no PR. When the maintainer asks for a push, use `git push -u origin v3/NN-topic`.
 3. If the previous PR is merged but still listed as "In review", mark it "Merged" with its PR number, and set any ADR it left as "Proposed" to "Accepted" (unless the maintainer changed it). Do this in the first commit of the new branch.
-4. Before writing code, ask the maintainer the open questions the plan assigns to this PR. Record each answer as an ADR, and remove the question from the table.
+4. Before writing code, ask the maintainer the open questions the plan assigns to this PR. Record each answer as an ADR (or in `demo/README.md`, if it is about the site's design), and remove the question from the table.
 5. When the PR is done, set its status to "In review", stop, and report to the maintainer. Don't push branches or open PRs unless the maintainer asks.
 
 Fixes to a merged PR go on a `v3/fix-topic` branch, created and pushed the same way as in step 2. They take no number. List them in the plan's "Follow-up fixes" table, not in the progress table.
 
 ## While you work
 - Record decisions and plan changes in `docs/`, in the same PR as the code: a new ADR for each decision, and an update to the active plan's progress table and to any section the work changes. Nothing that matters should live only in chat or in PR comments.
+- ADRs are for the library: its API, engine, build and tests, and the repo's process. Decisions about the preview site's design and content go in `demo/README.md`, edited in place, not in ADRs ([ADR 0046](docs/decisions/0046-adrs-cover-the-library.md)). How the library is tested in a browser, and how `demo/` builds against it, are still ADRs.
 - If something is unclear, or the plan contradicts itself, ask the maintainer before deciding.
 - Work lands as small PRs, one at a time. v3 PRs target the integration branch `feat/v3-scaffolding`, not `master`.
 - PRs are merged without squashing ([ADR 0009](docs/decisions/0009-no-squash-merges.md)). Make every commit a self-contained step that builds and passes lint.

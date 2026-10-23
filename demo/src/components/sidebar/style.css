@@ -1,6 +1,9 @@
 .sidebar {
   position: sticky;
   top: var(--header-height);
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
   align-self: start;
   padding: 40px 0;
 }
@@ -43,7 +46,8 @@
   transform: translateX(2px);
 }
 
-/* The gradient marks the active item as a bar, not as text (ADR 0049). */
+/* The gradient marks the active item as a bar, not as text (README, "Header
+   and sidebar"). */
 .sidebar-item[aria-current="page"]::before {
   content: "";
   position: absolute;
@@ -55,12 +59,21 @@
   background: linear-gradient(to bottom, var(--accent), var(--accent-2));
 }
 
-/* On phones the list becomes a row of pills that scrolls sideways. */
+/* On phones every group's links share one row of pills that scrolls
+   sideways (README, "Header and sidebar"). */
 @media (max-width: 720px) {
   .sidebar {
     position: static;
-    padding: 12px 0;
+    flex-direction: row;
+    gap: 8px;
+    padding: 12px 16px;
+    overflow-x: auto;
     border-bottom: 1px solid var(--border-subtle);
+    scrollbar-width: none;
+  }
+
+  .sidebar-group {
+    flex: none;
   }
 
   .sidebar-heading {
@@ -70,9 +83,6 @@
   .sidebar-list {
     flex-direction: row;
     gap: 8px;
-    padding: 0 16px;
-    overflow-x: auto;
-    scrollbar-width: none;
   }
 
   .sidebar-item {

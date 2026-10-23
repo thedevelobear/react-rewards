@@ -1,0 +1,64 @@
+/* Scrolls sideways on phones, so the page doesn't (README, "Props table"). */
+.props-table-frame {
+  overflow-x: auto;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+}
+
+.props-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 13px;
+  text-align: left;
+}
+
+.props-table th,
+.props-table td {
+  padding: 10px 16px;
+  border-bottom: 1px solid var(--border-subtle);
+  vertical-align: top;
+}
+
+.props-table thead th {
+  background: var(--surface);
+  color: var(--text-muted);
+  font-size: 12px;
+  font-weight: 500;
+  white-space: nowrap;
+}
+
+.props-table tbody tr:last-child > * {
+  border-bottom: 0;
+}
+
+.props-table tbody tr {
+  transition: background-color var(--duration-fast) var(--ease-out);
+}
+
+.props-table tbody tr:hover {
+  background: var(--surface);
+}
+
+.props-table tbody th {
+  font-weight: 500;
+}
+
+.props-table-code {
+  font-family: var(--font-mono);
+  font-size: 12px;
+  letter-spacing: 0;
+}
+
+/* A long default, such as a list of colours, wraps. */
+.props-table td.props-table-code {
+  min-width: 120px;
+  overflow-wrap: anywhere;
+}
+
+.props-table-muted {
+  color: var(--text-muted);
+}
+
+.props-table td:last-child {
+  min-width: 240px;
+}

@@ -1,14 +1,25 @@
 import { useEffect } from 'react';
+import { EffectView } from '@/components/effect-view';
+import { GettingStarted } from '@/components/getting-started';
 import { Header } from '@/components/header';
 import { PageTitle } from '@/components/page-title';
-import { Preview } from '@/components/preview';
-import { Sidebar } from '@/components/sidebar';
+import { Sidebar, type SidebarGroup } from '@/components/sidebar';
 import { effects, findEffect } from '@/data/effects';
+import { gettingStarted, guides } from '@/data/guides';
 import { useHash } from '@/hooks/use-hash';
 
-/** The preview site. The browser specs use the fixture page (ADR 0045). */
+const GROUPS: readonly SidebarGroup[] = [
+  { heading: 'Guides', links: guides },
+  { heading: 'Effects', links: effects },
+];
+
+/**
+ * The preview site. A hash that names no effect shows Getting started
+ * (README, "Routing"). The browser specs use the fixture page (ADR 0045).
+ */
 export const App = () => {
-  const page = findEffect(useHash());
+  const effect = findEffect(useHash());
+  const page = effect ?? gettingStarted;
 
   useEffect(() => {
     document.title = `${page.label} · react-rewards`;
@@ -18,12 +29,17 @@ export const App = () => {
     <>
       <Header />
       <div className="layout">
-        <Sidebar effects={effects} current={page.name} />
+        <Sidebar groups={GROUPS} current={page.name} />
         <main className="content">
           <PageTitle title={page.label} description={page.description} />
-          {page.use((typed) => (
-            <Preview page={typed} />
-          ))}
+          {effect ? (
+            // Keyed by the effect, so its settings and tab start afresh.
+            effect.use((typed) => (
+              <EffectView key={typed.effect.name} page={typed} />
+            ))
+          ) : (
+            <GettingStarted />
+          )}
         </main>
       </div>
     </>

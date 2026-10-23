@@ -38,6 +38,14 @@ svg {
   display: block;
 }
 
+/* Code inside text, such as a prop name in a description. */
+:not(pre) > code {
+  font-family: var(--font-mono);
+  font-size: 0.92em;
+  letter-spacing: 0;
+  color: var(--text);
+}
+
 :focus-visible {
   outline: 2px solid var(--accent);
   outline-offset: 2px;

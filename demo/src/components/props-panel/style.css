@@ -1,0 +1,297 @@
+/* reactbits' "preview options": cells in a frame (plan step 3). */
+.props-panel {
+  container-type: inline-size;
+}
+
+.props-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 8px;
+}
+
+@container (max-width: 640px) {
+  .props-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@container (max-width: 400px) {
+  .props-grid {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+
+.props-field {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: 10px;
+  min-width: 0;
+  margin: 0;
+  padding: 12px 14px;
+}
+
+/* Swatches and chips (README, "Props panel"). */
+.props-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+/* A list takes a whole row. A fieldset can't be a flex container everywhere,
+   so its legend floats to sit above the list. */
+.props-field-wide {
+  display: block;
+  grid-column: 1 / -1;
+}
+
+.props-field-wide > legend {
+  float: left;
+  width: 100%;
+  margin-bottom: 10px;
+  padding: 0;
+}
+
+.props-field-wide > .props-list {
+  clear: both;
+}
+
+.props-field-head {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 8px;
+}
+
+.props-field-name,
+.props-field-value {
+  font-family: var(--font-mono);
+  font-size: 12px;
+}
+
+.props-field-value {
+  color: var(--text-muted);
+  font-variant-numeric: tabular-nums;
+}
+
+.props-field-unit {
+  margin-left: 2px;
+}
+
+/* A 4px track, filled up to the thumb. The fill's width is set inline. */
+.props-range {
+  width: 100%;
+  height: 16px;
+  margin: 0;
+  background:
+    linear-gradient(var(--accent), var(--accent)) left center / 0 4px no-repeat,
+    linear-gradient(var(--border), var(--border)) center / 100% 4px no-repeat;
+  cursor: pointer;
+  appearance: none;
+}
+
+.props-range::-webkit-slider-thumb {
+  width: 14px;
+  height: 14px;
+  border: 2px solid var(--card);
+  border-radius: 50%;
+  background: var(--accent);
+  box-shadow: 0 0 0 1px var(--accent);
+  appearance: none;
+}
+
+.props-range::-moz-range-thumb {
+  width: 10px;
+  height: 10px;
+  border: 2px solid var(--card);
+  border-radius: 50%;
+  background: var(--accent);
+  box-shadow: 0 0 0 1px var(--accent);
+}
+
+/* A checkbox drawn as a switch. */
+.props-switch {
+  flex-direction: row;
+  align-items: center;
+  cursor: pointer;
+}
+
+.props-switch-input {
+  position: relative;
+  flex: none;
+  width: 32px;
+  height: 18px;
+  margin: 0;
+  border-radius: var(--radius-full);
+  background: var(--text-muted);
+  cursor: pointer;
+  appearance: none;
+  transition: background-color var(--duration-fast) var(--ease-out);
+}
+
+.props-switch-input::before {
+  content: "";
+  position: absolute;
+  top: 2px;
+  left: 2px;
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  background: var(--card);
+  transition: transform var(--duration-fast) var(--ease-out);
+}
+
+.props-switch-input:checked {
+  background: var(--accent);
+}
+
+.props-switch-input:checked::before {
+  transform: translateX(14px);
+}
+
+.props-swatch,
+.props-chip {
+  position: relative;
+  display: grid;
+  place-items: center;
+  width: var(--control-height);
+  height: var(--control-height);
+  border-radius: var(--radius-control);
+}
+
+.props-swatch-input {
+  width: 100%;
+  height: 100%;
+  padding: 0;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-control);
+  background: none;
+  cursor: pointer;
+}
+
+.props-swatch-input::-webkit-color-swatch-wrapper {
+  padding: 2px;
+}
+
+.props-swatch-input::-webkit-color-swatch {
+  border: 0;
+  border-radius: calc(var(--radius-control) - 3px);
+}
+
+.props-swatch-input::-moz-color-swatch {
+  border: 0;
+  border-radius: calc(var(--radius-control) - 3px);
+}
+
+/* The + tile is a colour input with nothing of its own showing. */
+.props-add {
+  border: 1px dashed var(--border);
+  color: var(--text-muted);
+  transition: color var(--duration-fast) var(--ease-out);
+}
+
+.props-add:hover {
+  color: var(--text);
+}
+
+.props-add .props-swatch-input {
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+}
+
+.props-add:focus-within {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+
+.props-chip {
+  border: 1px solid var(--border);
+  background: var(--surface);
+  font-size: 18px;
+  line-height: 1;
+}
+
+.props-remove {
+  position: absolute;
+  top: -6px;
+  right: -6px;
+  display: grid;
+  place-items: center;
+  width: 16px;
+  height: 16px;
+  padding: 0;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-full);
+  background: var(--card);
+  color: var(--text-muted);
+  font-size: 11px;
+  line-height: 1;
+  cursor: pointer;
+}
+
+.props-remove:hover {
+  color: var(--text);
+}
+
+.props-remove:disabled {
+  color: var(--text-dimmed);
+  cursor: default;
+}
+
+.props-chip-form {
+  display: flex;
+  gap: 8px;
+}
+
+.props-chip-input {
+  width: 104px;
+  height: var(--control-height);
+  padding: 0 10px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-control);
+  background: var(--card);
+  color: var(--text);
+  font: inherit;
+  font-size: 12px;
+}
+
+.props-chip-input::placeholder {
+  color: var(--text-dimmed);
+}
+
+.props-chip-submit {
+  width: var(--control-height);
+  height: var(--control-height);
+  padding: 0;
+  border: 1px dashed var(--border);
+  border-radius: var(--radius-control);
+  background: none;
+  color: var(--text-muted);
+  cursor: pointer;
+}
+
+.props-chip-submit:hover {
+  color: var(--text);
+}
+
+.props-reset {
+  height: var(--control-height);
+  padding: 0 12px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-control);
+  background: var(--card);
+  box-shadow: var(--raised);
+  font-size: 12px;
+  cursor: pointer;
+  transition: background-color var(--duration-fast) var(--ease-out);
+}
+
+.props-reset:hover:enabled {
+  background: var(--surface);
+}
+
+.props-reset:disabled {
+  color: var(--text-dimmed);
+  cursor: default;
+}

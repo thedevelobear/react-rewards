@@ -1,0 +1,51 @@
+.tabs {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+/* A segmented control, in a --surface track. */
+.tabs-list {
+  display: inline-flex;
+  align-self: flex-start;
+  gap: 2px;
+  padding: 3px;
+  border: 1px solid var(--border);
+  border-radius: calc(var(--radius-control) + 4px);
+  background: var(--surface);
+}
+
+.tabs-tab {
+  height: calc(var(--control-height) - 4px);
+  padding: 0 14px;
+  border: 1px solid transparent;
+  border-radius: var(--radius-control);
+  background: none;
+  color: var(--text-muted);
+  font-size: 13px;
+  cursor: pointer;
+  transition:
+    color var(--duration-fast) var(--ease-out),
+    background-color var(--duration-fast) var(--ease-out);
+}
+
+.tabs-tab:hover {
+  color: var(--text);
+}
+
+.tabs-tab[aria-selected="true"] {
+  border-color: var(--border);
+  background: var(--card);
+  box-shadow: var(--raised);
+  color: var(--text);
+}
+
+.tabs-panel {
+  display: flex;
+  flex-direction: column;
+  gap: 40px;
+}
+
+.tabs-panel[hidden] {
+  display: none;
+}

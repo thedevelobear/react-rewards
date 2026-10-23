@@ -4,6 +4,9 @@ import { bandAbove, expectDrawn, overlay } from './util';
 /** The key `useTheme` and the pre-paint script in `index.html` share. */
 const THEME_KEY = 'react-rewards:theme';
 
+/** The key `usePackageManager` stores the choice under. */
+const PACKAGE_MANAGER_KEY = 'react-rewards:package-manager';
+
 /** `--bg` in each theme, as computed. */
 const BACKGROUND = { light: 'rgb(255, 255, 255)', dark: 'rgb(13, 14, 16)' };
 
@@ -14,7 +17,7 @@ const dataTheme = (page: Page) =>
   page.evaluate(() => document.documentElement.dataset.theme ?? null);
 
 test('"Reward me" draws on the overlay', async ({ page }) => {
-  await page.goto('/');
+  await page.goto('/#confetti');
   const button = page.getByTestId('reward');
   const { drawn } = await expectDrawn(await bandAbove(page, button, 120));
   await button.click();
@@ -22,9 +25,9 @@ test('"Reward me" draws on the overlay', async ({ page }) => {
   await drawn();
 });
 
-test('the hash picks the effect (ADR 0046)', async ({ page }) => {
+test('the hash picks the effect', async ({ page }) => {
   const heading = page.getByRole('heading', { level: 1 });
-  const nav = page.getByRole('navigation', { name: 'Effects' });
+  const nav = page.getByRole('navigation', { name: 'Pages' });
 
   await page.goto('/#emoji');
   await expect(heading).toHaveText('Emoji');
@@ -42,7 +45,75 @@ test('the hash picks the effect (ADR 0046)', async ({ page }) => {
   await expect(heading).toHaveText('Emoji');
 
   await page.goto('/#nothing');
-  await expect(heading).toHaveText('Confetti');
+  await expect(heading).toHaveText('Getting started');
+});
+
+test('Getting started is the home page', async ({ page }) => {
+  const heading = page.getByRole('heading', { level: 1 });
+  await page.goto('/');
+  await expect(heading).toHaveText('Getting started');
+  await expect(page).toHaveTitle('Getting started · react-rewards');
+  await expect(
+    page
+      .getByRole('navigation', { name: 'Pages' })
+      .getByRole('link', { name: 'Getting started' })
+  ).toHaveAttribute('aria-current', 'page');
+  await expect(page.getByTestId('install-command')).toHaveText(
+    'pnpm add react-rewards'
+  );
+  await expect(page.locator('pre')).toContainText('useReward(ref, confetti);');
+
+  // An effect's page has no install command, and the logo leads home.
+  await page.goto('/#emoji');
+  await expect(page.getByTestId('install-command')).toHaveCount(0);
+  await page.getByRole('link', { name: 'react-rewards', exact: true }).click();
+  await expect(page).toHaveURL(/#getting-started$/);
+  await expect(heading).toHaveText('Getting started');
+});
+
+test('the install command follows the package manager, and a reload keeps it', async ({
+  page,
+}) => {
+  await page.goto('/');
+  const command = page.getByTestId('install-command');
+  await expect(command).toHaveText('pnpm add react-rewards');
+
+  const npm = page.getByRole('button', { name: 'npm', exact: true });
+  await npm.click();
+  await expect(npm).toHaveAttribute('aria-pressed', 'true');
+  await expect(command).toHaveText('npm install react-rewards');
+  expect(
+    await page.evaluate((key) => localStorage.getItem(key), PACKAGE_MANAGER_KEY)
+  ).toBe('npm');
+
+  await page.reload();
+  await expect(command).toHaveText('npm install react-rewards');
+});
+
+test('the install command and the example can be copied', async ({
+  context,
+  page,
+}) => {
+  await context.grantPermissions(['clipboard-read', 'clipboard-write']);
+  const clipboard = () => page.evaluate(() => navigator.clipboard.readText());
+  await page.goto('/');
+
+  await page.getByRole('button', { name: 'Copy the install command' }).click();
+  expect(await clipboard()).toBe('pnpm add react-rewards');
+  await page.getByRole('button', { name: 'Copy the example' }).click();
+  expect(await clipboard()).toContain('useReward(ref, confetti);');
+});
+
+test('Getting started fits a phone without scrolling sideways', async ({
+  page,
+}) => {
+  await page.setViewportSize({ width: 375, height: 800 });
+  await page.goto('/');
+  expect(
+    await page.evaluate(
+      () => document.documentElement.scrollWidth - window.innerWidth
+    )
+  ).toBe(0);
 });
 
 test('a stored theme applies before the app runs', async ({ page }) => {

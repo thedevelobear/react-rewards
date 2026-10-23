@@ -27,3 +27,40 @@
     padding: 24px 16px 48px;
   }
 }
+
+/* A titled part of the page, such as the props panel or the snippet. */
+.section {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.section-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+}
+
+.section-title {
+  font-size: 1.6rem;
+  font-weight: 600;
+  line-height: 1.2;
+  letter-spacing: -0.01em;
+}
+
+/* reactbits' frame: a --surface track around panels (plan step 3). */
+.frame {
+  padding: 4px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  background: var(--surface);
+}
+
+/* A panel in a frame. Its radius is the frame's minus the padding and border. */
+.frame-panel {
+  border: 1px solid var(--border);
+  border-radius: calc(var(--radius-lg) - 5px);
+  background: var(--card);
+  box-shadow: var(--raised);
+}

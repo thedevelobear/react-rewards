@@ -1,6 +1,6 @@
 # 0002. docs/ is the decision record
 
-- **Status:** Accepted
+- **Status:** Accepted. Scope narrowed to the library by [0046](0046-adrs-cover-the-library.md)
 - **Date:** 2026-10-22
 
 ## Context

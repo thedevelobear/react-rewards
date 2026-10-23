@@ -5,7 +5,10 @@ interface PageTitleProps {
   readonly description: string;
 }
 
-/** The effect's name on a gradient band, and a line about it (ADR 0050). */
+/**
+ * The page's name on a gradient band, and a line about it (README, "Page
+ * title").
+ */
 export const PageTitle = ({ title, description }: PageTitleProps) => (
   <div className="page-title">
     <h1 className="page-title-heading">
