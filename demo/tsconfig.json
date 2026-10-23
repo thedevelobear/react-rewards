@@ -10,7 +10,10 @@
     "verbatimModuleSyntax": true,
     "noUnusedLocals": true,
     "noEmit": true,
-    "skipLibCheck": true
+    "skipLibCheck": true,
+    "paths": {
+      "@/*": ["./src/*"]
+    }
   },
   "include": ["src", "e2e", "rsbuild.config.ts", "playwright.config.ts"]
 }

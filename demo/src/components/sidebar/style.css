@@ -1,0 +1,96 @@
+.sidebar {
+  position: sticky;
+  top: var(--header-height);
+  align-self: start;
+  padding: 40px 0;
+}
+
+.sidebar-heading {
+  margin-bottom: 8px;
+  padding-left: 14px;
+  color: var(--text-muted);
+  font-size: 12px;
+}
+
+.sidebar-list {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.sidebar-item {
+  position: relative;
+  display: block;
+  padding: 6px 14px;
+  color: var(--text-muted);
+  font-size: 0.85rem;
+  font-weight: 400;
+  text-decoration: none;
+  transition:
+    color var(--duration-fast) var(--ease-out),
+    transform var(--duration-fast) var(--ease-out);
+}
+
+.sidebar-item:hover,
+.sidebar-item[aria-current="page"] {
+  color: var(--accent-text);
+}
+
+.sidebar-item:hover {
+  transform: translateX(2px);
+}
+
+/* The gradient marks the active item as a bar, not as text (ADR 0049). */
+.sidebar-item[aria-current="page"]::before {
+  content: "";
+  position: absolute;
+  top: 6px;
+  bottom: 6px;
+  left: 0;
+  width: 2px;
+  border-radius: 1px;
+  background: linear-gradient(to bottom, var(--accent), var(--accent-2));
+}
+
+/* On phones the list becomes a row of pills that scrolls sideways. */
+@media (max-width: 720px) {
+  .sidebar {
+    position: static;
+    padding: 12px 0;
+    border-bottom: 1px solid var(--border-subtle);
+  }
+
+  .sidebar-heading {
+    display: none;
+  }
+
+  .sidebar-list {
+    flex-direction: row;
+    gap: 8px;
+    padding: 0 16px;
+    overflow-x: auto;
+    scrollbar-width: none;
+  }
+
+  .sidebar-item {
+    padding: 4px 12px;
+    border: 1px solid var(--border);
+    border-radius: var(--radius-full);
+    white-space: nowrap;
+  }
+
+  .sidebar-item:hover {
+    transform: none;
+  }
+
+  .sidebar-item[aria-current="page"] {
+    border-color: var(--accent);
+  }
+
+  .sidebar-item[aria-current="page"]::before {
+    display: none;
+  }
+}
