@@ -91,11 +91,14 @@ What gets easier, what gets harder, and what has to happen next.
 | [0047](decisions/0047-burst-renderer.md) | A burst says which renderer it was given | Proposed |
 | [0048](decisions/0048-benchmark-script-in-demo.md) | The benchmark harness is a script in `demo/` | Proposed |
 | [0049](decisions/0049-pages-deploy-from-integration-branch.md) | The site deploys to GitHub Pages from the integration branch until the release | Proposed |
+| [0050](decisions/0050-no-canvas-particle-cap.md) | The Canvas 2D fallback has no particle cap | Proposed |
+| [0051](decisions/0051-no-engine-optimisations-after-benchmark.md) | Off-screen culling and the particle view's accessors stay as they are | Proposed |
 
 ### Benchmarks
 | Benchmark | What |
 |---|---|
 | [2026-10-22-v2-baseline](benchmarks/2026-10-22-v2-baseline.md) | v2.1.0 at 50, 500 and 2000 elements per effect. The reference point for the new engine. |
+| [2026-10-23-v3-engine](benchmarks/2026-10-23-v3-engine.md) | The v3 engine at 500, 5000 and 20000 particles per effect, on WebGL and Canvas 2D. |
 
 ### Guides
 None yet. `guides/adding-an-effect.md` arrives in PR 12.
