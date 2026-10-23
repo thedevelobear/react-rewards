@@ -42,6 +42,7 @@
     "lint:package": "publint --pack npm && attw --pack . --profile esm-only",
     "size": "size-limit",
     "e2e": "pnpm build && pnpm --filter demo build && pnpm --filter demo e2e",
+    "bench": "pnpm build && pnpm --filter demo build && pnpm --filter demo bench",
     "prepublishOnly": "pnpm typecheck && pnpm test && pnpm build"
   },
   "peerDependencies": {

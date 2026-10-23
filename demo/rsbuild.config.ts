@@ -10,6 +10,12 @@ export default defineConfig({
       fixtures: './src/fixtures/main.tsx',
     },
   },
+  output: {
+    // Relative URLs, so the site works under GitHub Pages' project path.
+    // './' would make the CSS's font URLs relative to the CSS file's folder
+    // (ADR 0049).
+    assetPrefix: 'auto',
+  },
   html: {
     // The site's template applies the stored theme before the first paint.
     template: ({ entryName }) =>

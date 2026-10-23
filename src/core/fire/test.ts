@@ -120,6 +120,7 @@ describe('createStage', () => {
     const burst = stage.fire(testEffect(), { origin, onComplete });
     expect(leases).toEqual([{ zIndex: DEFAULT_Z_INDEX, released: false }]);
     expect(loop.running).toBe(false);
+    expect(burst.renderer).toBe('canvas');
 
     await settle();
     expect(loop.running).toBe(true);
@@ -243,6 +244,7 @@ describe('createStage', () => {
     expect(await skipped.finished).toBe('skipped');
     expect(calls.count).toBe(1);
     expect(leases).toEqual([]);
+    expect(skipped.renderer).toBeUndefined();
 
     stage.fire(testEffect(), { origin, respectReducedMotion: false });
     expect(leases).toHaveLength(1);
@@ -253,6 +255,7 @@ describe('createStage', () => {
     const burst = stage.fire(testEffect(), { origin: { current: null } });
     expect(await burst.finished).toBe('skipped');
     expect(leases).toEqual([]);
+    expect(burst.renderer).toBeUndefined();
   });
 
   it('skips when no renderer is available', async () => {
@@ -261,6 +264,7 @@ describe('createStage', () => {
     const burst = stage.fire(testEffect(), { origin, onComplete });
     expect(await burst.finished).toBe('skipped');
     expect(calls.count).toBe(1);
+    expect(burst.renderer).toBeUndefined();
   });
 
   it('skips when a sprite fails to load, and releases the overlay', async () => {
@@ -274,6 +278,8 @@ describe('createStage', () => {
     expect(await burst.finished).toBe('skipped');
     expect(leases[0]?.released).toBe(true);
     expect(loop.running).toBe(false);
+    // It had claimed the overlay before its sprites failed (ADR 0047).
+    expect(burst.renderer).toBe('canvas');
   });
 
   it('skips an effect that throws in sprites or spawn', async () => {

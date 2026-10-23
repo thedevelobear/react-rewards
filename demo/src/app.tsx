@@ -4,8 +4,9 @@ import { GettingStarted } from '@/components/getting-started';
 import { Header } from '@/components/header';
 import { PageTitle } from '@/components/page-title';
 import { Sidebar, type SidebarGroup } from '@/components/sidebar';
+import { StressTest } from '@/components/stress-test';
 import { effects, findEffect } from '@/data/effects';
-import { gettingStarted, guides } from '@/data/guides';
+import { findGuide, gettingStarted, guides, stressTest } from '@/data/guides';
 import { useHash } from '@/hooks/use-hash';
 
 const GROUPS: readonly SidebarGroup[] = [
@@ -14,12 +15,14 @@ const GROUPS: readonly SidebarGroup[] = [
 ];
 
 /**
- * The preview site. A hash that names no effect shows Getting started
- * (README, "Routing"). The browser specs use the fixture page (ADR 0045).
+ * The preview site. A hash that names no page shows Getting started (README,
+ * "Routing"). The browser specs use the fixture page (ADR 0045).
  */
 export const App = () => {
-  const effect = findEffect(useHash());
-  const page = effect ?? gettingStarted;
+  const hash = useHash();
+  const effect = findEffect(hash);
+  const guide = findGuide(hash) ?? gettingStarted;
+  const page = effect ?? guide;
 
   useEffect(() => {
     document.title = `${page.label} · react-rewards`;
@@ -37,6 +40,8 @@ export const App = () => {
             effect.use((typed) => (
               <EffectView key={typed.effect.name} page={typed} />
             ))
+          ) : guide === stressTest ? (
+            <StressTest />
           ) : (
             <GettingStarted />
           )}

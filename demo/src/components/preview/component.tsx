@@ -1,5 +1,5 @@
-import { useRef } from 'react';
-import { type EffectConfig, useReward } from 'react-rewards';
+import { type ReactNode, useRef } from 'react';
+import { type Burst, type EffectConfig, useReward } from 'react-rewards';
 import type { EffectPage } from '@/data/effects';
 import './style.css';
 
@@ -7,6 +7,10 @@ interface PreviewProps<C extends EffectConfig> {
   readonly page: EffectPage<C>;
   /** The props panel's settings. */
   readonly config: Readonly<C>;
+  /** Called with each burst the button starts. */
+  readonly onBurst?: (burst: Burst) => void;
+  /** Shown over the stage, such as the stress test's readout. */
+  readonly children?: ReactNode;
 }
 
 /**
@@ -17,6 +21,8 @@ interface PreviewProps<C extends EffectConfig> {
 export const Preview = <C extends EffectConfig>({
   page,
   config,
+  onBurst,
+  children,
 }: PreviewProps<C>) => {
   const ref = useRef<HTMLButtonElement>(null);
   const { reward } = useReward(ref, page.effect, config);
@@ -27,10 +33,15 @@ export const Preview = <C extends EffectConfig>({
         type="button"
         className="preview-button"
         data-testid="reward"
-        onClick={() => reward()}
+        onClick={() => {
+          // Not `onBurst?.(reward())`, which skips `reward()` without one.
+          const burst = reward();
+          onBurst?.(burst);
+        }}
       >
         Reward me
       </button>
+      {children}
     </div>
   );
 };

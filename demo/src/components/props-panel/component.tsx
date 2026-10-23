@@ -1,4 +1,4 @@
-import { useId } from 'react';
+import { type ReactNode, useId } from 'react';
 import type { EffectConfig } from 'react-rewards';
 import {
   type Field,
@@ -46,6 +46,13 @@ const Control = <C extends EffectConfig>({
   }
 };
 
+/** The panel's frame and grid, around its controls. */
+export const ControlGrid = ({ children }: { readonly children: ReactNode }) => (
+  <div className="frame props-panel">
+    <div className="props-grid">{children}</div>
+  </div>
+);
+
 /**
  * reactbits' "preview options": a control per setting, generated from the
  * effect's controls, so a new effect needs no panel code (plan step 3).
@@ -74,17 +81,15 @@ export const PropsPanel = <C extends EffectConfig>({
           Reset
         </button>
       </div>
-      <div className="frame props-panel">
-        <div className="props-grid">
-          {fields.map((field) => (
-            <Control
-              key={field.key}
-              field={field}
-              onChange={(value) => onChange(field.key, value)}
-            />
-          ))}
-        </div>
-      </div>
+      <ControlGrid>
+        {fields.map((field) => (
+          <Control
+            key={field.key}
+            field={field}
+            onChange={(value) => onChange(field.key, value)}
+          />
+        ))}
+      </ControlGrid>
     </section>
   );
 };

@@ -15,5 +15,11 @@
       "@/*": ["./src/*"]
     }
   },
-  "include": ["src", "e2e", "rsbuild.config.ts", "playwright.config.ts"]
+  "include": [
+    "src",
+    "e2e",
+    "bench",
+    "rsbuild.config.ts",
+    "playwright.config.ts"
+  ]
 }

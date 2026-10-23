@@ -11,6 +11,9 @@ dist
 test-results
 playwright-report
 
+# The benchmark's full results (ADR 0048)
+demo/bench/results.json
+
 # Logs
 logs
 *.log
