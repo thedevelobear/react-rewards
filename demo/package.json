@@ -7,7 +7,8 @@
     "build": "rsbuild build",
     "preview": "rsbuild preview",
     "typecheck": "tsc --noEmit",
-    "e2e": "playwright test"
+    "e2e": "playwright test",
+    "bench": "node bench/run.ts"
   },
   "dependencies": {
     "@fontsource-variable/geist": "5.3.0",
