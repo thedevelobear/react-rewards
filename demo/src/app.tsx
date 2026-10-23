@@ -1,10 +1,4 @@
-import {
-  type ChangeEvent,
-  type MouseEvent,
-  type ReactNode,
-  useRef,
-  useState,
-} from 'react';
+import { type ChangeEvent, type ReactNode, useRef, useState } from 'react';
 import {
   type Burst,
   type BurstEnd,
@@ -13,7 +7,6 @@ import {
   type Effect,
   type EffectConfig,
   emoji,
-  type Origin,
   type RendererPreference,
   type RewardOptions,
   setRenderer,
@@ -30,10 +23,12 @@ interface RewardButtonProps<C extends EffectConfig> {
   readonly options?: RewardOptions;
   readonly testId: string;
   readonly className?: string;
-  /** Where the burst starts. Without it, it starts from the button. */
-  readonly origin?: (
-    event: MouseEvent<HTMLButtonElement>
-  ) => Origin | undefined;
+  /**
+   * Passes the click to `reward`, so the burst starts at the pointer, or at
+   * the button for a keyboard click (ADR 0044). Without it, the burst starts
+   * at the button.
+   */
+  readonly atPointer?: boolean;
   /** Called with each burst the button starts. */
   readonly onBurst: (burst: Burst) => void;
   readonly children: ReactNode;
@@ -48,7 +43,7 @@ const RewardButton = <C extends EffectConfig>({
   options,
   testId,
   className,
-  origin,
+  atPointer = false,
   onBurst,
   children,
 }: RewardButtonProps<C>) => {
@@ -61,16 +56,12 @@ const RewardButton = <C extends EffectConfig>({
       className={className}
       data-testid={testId}
       data-animating={isAnimating}
-      onClick={(event) => onBurst(reward(origin?.(event)))}
+      onClick={(event) => onBurst(atPointer ? reward(event) : reward())}
     >
       {children}
     </button>
   );
 };
-
-/** A keyboard click has no pointer position, so it fires from the button. */
-const pointer = (event: MouseEvent<HTMLButtonElement>): Origin | undefined =>
-  event.detail === 0 ? undefined : { x: event.clientX, y: event.clientY };
 
 /**
  * A bare page for trying effects by hand and for the browser tests, which
@@ -197,7 +188,7 @@ export const App = () => {
         <h2>From the pointer</h2>
         <RewardButton
           effect={confetti}
-          origin={pointer}
+          atPointer
           className="pad"
           testId="fire-at-pointer"
           onBurst={track}
