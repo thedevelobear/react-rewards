@@ -2,7 +2,11 @@ import { type ChangeEvent, type MouseEvent, useRef, useState } from 'react';
 import {
   type Burst,
   type BurstEnd,
+  balloon,
   confetti,
+  type Effect,
+  type EffectConfig,
+  emoji,
   fire,
   type Origin,
   type RendererPreference,
@@ -24,8 +28,12 @@ export const App = () => {
   const [renderer, setRendererChoice] = useState<RendererPreference>('auto');
   const bursts = useRef(new Set<Burst>());
 
-  const play = (origin: Origin, seed?: number) => {
-    const burst = fire(confetti, { origin, seed });
+  const play = <C extends EffectConfig>(
+    effect: Effect<C>,
+    origin: Origin,
+    seed?: number
+  ) => {
+    const burst = fire(effect, { origin, seed });
     bursts.current.add(burst);
     setStatus('running');
     burst.finished.then((how) => {
@@ -35,15 +43,19 @@ export const App = () => {
     });
   };
 
-  const playFromTarget = (event: MouseEvent<HTMLButtonElement>) =>
-    play(event.currentTarget);
+  /** Fires `effect` from the clicked button. */
+  const playFrom =
+    <C extends EffectConfig>(effect: Effect<C>) =>
+    (event: MouseEvent<HTMLButtonElement>) =>
+      play(effect, event.currentTarget);
 
   const playSeeded = (event: MouseEvent<HTMLButtonElement>) =>
-    play(event.currentTarget, SEED);
+    play(confetti, event.currentTarget, SEED);
 
   const playAtPointer = (event: MouseEvent<HTMLButtonElement>) =>
     // A keyboard click has no pointer position, so it fires from the button.
     play(
+      confetti,
       event.detail === 0
         ? event.currentTarget
         : { x: event.clientX, y: event.clientY }
@@ -66,9 +78,23 @@ export const App = () => {
         <button
           type="button"
           data-testid="fire-confetti"
-          onClick={playFromTarget}
+          onClick={playFrom(confetti)}
         >
           Confetti
+        </button>
+        <button
+          type="button"
+          data-testid="fire-emoji"
+          onClick={playFrom(emoji)}
+        >
+          Emoji
+        </button>
+        <button
+          type="button"
+          data-testid="fire-balloon"
+          onClick={playFrom(balloon)}
+        >
+          Balloon
         </button>
         <button type="button" data-testid="cancel-all" onClick={cancelAll}>
           Cancel all
@@ -112,7 +138,7 @@ export const App = () => {
           <button
             type="button"
             data-testid="fire-clipped"
-            onClick={playFromTarget}
+            onClick={playFrom(confetti)}
           >
             Confetti
           </button>
