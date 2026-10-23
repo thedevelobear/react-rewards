@@ -1,0 +1,49 @@
+name: Pages
+
+# Deploys the site from the integration branch until the release, when PR 12
+# moves the trigger to master (ADR 0049).
+on:
+  push:
+    branches: [feat/v3-scaffolding]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+# One deployment at a time. A newer push waits instead of cancelling one in
+# progress.
+concurrency:
+  group: pages
+  cancel-in-progress: false
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+      # pnpm from packageManager, Node from .nvmrc, then a frozen install
+      # (ADR 0014).
+      - uses: pnpm/setup@v3
+        with:
+          node-version-file: .nvmrc
+          cache: true
+          require-lockfile: true
+      # The demo uses the built package (ADR 0031).
+      - run: pnpm build
+      - run: pnpm --filter demo build
+      - uses: actions/upload-pages-artifact@v5
+        with:
+          path: demo/dist
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    permissions:
+      pages: write
+      id-token: write
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - id: deployment
+        uses: actions/deploy-pages@v5

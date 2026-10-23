@@ -12,7 +12,7 @@ Options considered: deploy on every push to the integration branch, and move the
 - `.github/workflows/pages.yml` builds the library and the demo, and deploys `demo/dist/` with `actions/upload-pages-artifact` and `actions/deploy-pages`, on every push to `feat/v3-scaffolding`. It can also be started by hand, from any branch, with `workflow_dispatch`.
 - It sets up pnpm and Node as CI does ([ADR 0014](0014-pnpm-setup-action.md)). It doesn't repeat CI's checks.
 - One deployment runs at a time, and a newer push doesn't cancel one in progress.
-- The demo's assets use relative URLs (`output.assetPrefix: './'`), so the site works under the project path, `/react-rewards/`, and on any other host. The hash routing needs no base path ([demo README, Routing](../../demo/README.md#routing)).
+- The demo's assets use relative URLs (`output.assetPrefix: 'auto'`), so the site works under the project path, `/react-rewards/`, and on any other host. The hash routing needs no base path ([demo README, Routing](../../demo/README.md#routing)). `'./'` isn't used: it gives the stylesheet font URLs such as `./static/font/…`, which resolve against the stylesheet's own folder, `static/css/`. `'auto'` writes `../../static/font/…` there, and was checked by serving the build under `/react-rewards/`.
 - The fixture page is deployed too. The site doesn't link to it ([ADR 0045](0045-fixture-page.md)).
 - PR 12 moves the trigger to `master`, when v3 merges into it.
 
