@@ -15,7 +15,7 @@ The preview site for react-rewards, and the page the browser specs run against. 
 The site documents the library, so its design decisions are kept here rather than in `docs/decisions/` ([ADR 0046](../docs/decisions/0046-adrs-cover-the-library.md)). Each says what was chosen and why. When the site changes, edit the decision in place, in the same PR. The visual direction (type, tokens, colours and motion) is in step 3 of the [v3 plan](../docs/plans/2026-10-22-v3-rewrite.md).
 
 ### Routing
-- The URL hash names the page: `#getting-started`, `#confetti`, `#emoji`, `#balloon`. An effect's hash is its `name`, not its label, so Balloons is `#balloon`.
+- The URL hash names the page: `#getting-started`, `#stress-test`, `#confetti`, `#emoji`, `#balloon`. An effect's hash is its `name`, not its label, so Balloons is `#balloon`.
 - An empty or unknown hash shows Getting started. The URL is left as it is.
 - `hooks/use-hash` reads the hash with `useSyncExternalStore` and the `hashchange` event. There is no router.
 - The document title follows the page, for example "Confetti · react-rewards".
@@ -29,6 +29,18 @@ Why: GitHub Pages serves static files only, so path routes such as `/emoji` woul
 
 Why: the install command installs the whole library, so it is shown once rather than on every effect.
 
+### Stress test
+- A page under Guides, after Getting started, that shows the engine's headroom. Its title is "Stress test".
+- Its Customize section has three settings: the effect (Confetti, Emoji, Balloons), the count (a slider from 100 to 20000 in steps of 100, starting at 5000) and the renderer (Auto, WebGL, Canvas 2D). The burst uses the effect's defaults apart from the count.
+- The renderer calls `setRenderer`, which applies to the whole page, so leaving the Stress test sets it back to Auto. Effect pages always use Auto.
+- The preview is the effect pages' preview. Its top right corner holds the readout, a small mono tag. Before a burst it reads "Ready". While a burst runs, it shows the burst's renderer ([ADR 0047](../docs/decisions/0047-burst-renderer.md)) and the fps over the last half second. After the burst, it shows the burst's average fps. A burst skipped before it got a renderer reads "Skipped", for example under reduced motion, or when the forced renderer isn't available.
+- The fps is the number of `requestAnimationFrame` callbacks a second. The page counts them only while a burst runs.
+- The effect pages have no readout and no renderer setting. Their count sliders keep their own ranges.
+- The site has no card showing that bursts aren't clipped. The fixture page has one, which the smoke spec checks ([ADR 0045](../docs/decisions/0045-fixture-page.md)).
+- The benchmark harness drives this page through its controls ([ADR 0048](../docs/decisions/0048-benchmark-script-in-demo.md)), so a change to it has to keep their `data-testid`s.
+
+Why: one page for performance keeps the effect pages about the API, and keeps their sliders fine enough for everyday counts.
+
 ### Header and sidebar
 - The logo is the README's `assets/react-rewards.png`, trimmed to its visible pixels and scaled to 56 px tall (265×56 px, 16 kB). It is shown 28 px tall, so it is sharp on 2x screens. It was made with macOS `sips`, and a new logo needs the same:
   ```sh
@@ -36,7 +48,7 @@ Why: the install command installs the whole library, so it is shown once rather 
   sips --resampleHeight 56 crop.png --out demo/src/components/header/logo.png
   ```
 - The logo's alt text is "react-rewards", and it links to `#getting-started`. Biome's `useValidAnchor` rejects `href="#"`. Its orange-to-purple gradient is outside the site's palette, which is fine for a logo: logos are exempt from WCAG's contrast minimum.
-- The sidebar is a navigation labelled "Pages", with two groups: "Guides", holding Getting started, and "Effects". Each heading labels its list. Items are plain links, and the current one has `aria-current="page"`.
+- The sidebar is a navigation labelled "Pages", with two groups: "Guides", holding Getting started and Stress test, and "Effects". Each heading labels its list. Items are plain links, and the current one has `aria-current="page"`.
 - The active item has `--accent-text` text and a 2px `--accent-gradient` bar beside it. On phones every group's links share one row of pills that scrolls sideways, and the active pill has a 1px `--accent` border instead of the bar.
 
 Why: sidebar items are small text, which needs 4.5:1. Gradient text fails on white (the amber end is 1.6:1). `--accent-text` is 5.1:1 in light mode and 6.5:1 in dark mode. The gradient fills shapes (buttons, the bar, the title's band) and never colours text.
