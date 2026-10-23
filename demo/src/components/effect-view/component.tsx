@@ -1,6 +1,7 @@
 import { useId } from 'react';
 import type { EffectConfig } from 'react-rewards';
 import { CodeBlock } from '@/components/code-block';
+import { InstallCommand } from '@/components/install-command';
 import { Preview } from '@/components/preview';
 import { PropsPanel } from '@/components/props-panel';
 import { PropsTable } from '@/components/props-table';
@@ -20,6 +21,7 @@ export const EffectView = <C extends EffectConfig>({
   page,
 }: EffectViewProps<C>) => {
   const { config, set, reset } = useConfig(page.effect);
+  const installHeading = useId();
   const usageHeading = useId();
   const settings = fields(page, config);
 
@@ -42,12 +44,20 @@ export const EffectView = <C extends EffectConfig>({
           id: 'code',
           label: 'Code',
           panel: (
-            <section className="section" aria-labelledby={usageHeading}>
-              <h2 id={usageHeading} className="section-title">
-                Usage
-              </h2>
-              <CodeBlock code={snippet(page, config)} label="the snippet" />
-            </section>
+            <>
+              <section className="section" aria-labelledby={installHeading}>
+                <h2 id={installHeading} className="section-title">
+                  Installation
+                </h2>
+                <InstallCommand />
+              </section>
+              <section className="section" aria-labelledby={usageHeading}>
+                <h2 id={usageHeading} className="section-title">
+                  Usage
+                </h2>
+                <CodeBlock code={snippet(page, config)} label="the snippet" />
+              </section>
+            </>
           ),
         },
       ]}
