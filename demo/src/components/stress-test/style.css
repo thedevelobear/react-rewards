@@ -1,0 +1,17 @@
+/* A small mono tag in the preview's corner (plan step 3). */
+.stress-readout {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  padding: 2px 8px;
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  background: var(--surface);
+  color: var(--text-muted);
+  font-family: var(--font-mono);
+  font-size: 11px;
+  font-variant-numeric: tabular-nums;
+  line-height: 16px;
+  letter-spacing: 0;
+  white-space: nowrap;
+}

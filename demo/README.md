@@ -33,11 +33,11 @@ Why: the install command installs the whole library, so it is shown once rather 
 - A page under Guides, after Getting started, that shows the engine's headroom. Its title is "Stress test".
 - Its Customize section has three settings: the effect (Confetti, Emoji, Balloons), the count (a slider from 100 to 20000 in steps of 100, starting at 5000) and the renderer (Auto, WebGL, Canvas 2D). The burst uses the effect's defaults apart from the count.
 - The renderer calls `setRenderer`, which applies to the whole page, so leaving the Stress test sets it back to Auto. Effect pages always use Auto.
-- The preview is the effect pages' preview. Its top right corner holds the readout, a small mono tag. Before a burst it reads "Ready". While a burst runs, it shows the burst's renderer ([ADR 0047](../docs/decisions/0047-burst-renderer.md)) and the fps over the last half second. After the burst, it shows the burst's average fps. A burst skipped before it got a renderer reads "Skipped", for example under reduced motion, or when the forced renderer isn't available.
+- The preview is the effect pages' preview. Its top right corner holds the readout, a small mono tag. Before a burst it reads "Ready". While a burst runs, it shows the burst's renderer ([ADR 0047](../docs/decisions/0047-burst-renderer.md)) and the fps over the last half second. After the burst, it shows the average fps over the whole burst, followed by "avg". Bursts fired while one runs are counted with it. A burst that is skipped reads "Skipped", for example under reduced motion, or when the forced renderer isn't available.
 - The fps is the number of `requestAnimationFrame` callbacks a second. The page counts them only while a burst runs.
 - The effect pages have no readout and no renderer setting. Their count sliders keep their own ranges.
 - The site has no card showing that bursts aren't clipped. The fixture page has one, which the smoke spec checks ([ADR 0045](../docs/decisions/0045-fixture-page.md)).
-- The benchmark harness drives this page through its controls ([ADR 0048](../docs/decisions/0048-benchmark-script-in-demo.md)), so a change to it has to keep their `data-testid`s.
+- The benchmark harness drives this page through its controls ([ADR 0048](../docs/decisions/0048-benchmark-script-in-demo.md)). A change to the page has to keep the settings' names, the button's and the readout's `data-testid`s, and the readout's `data-state`, or update the harness.
 
 Why: one page for performance keeps the effect pages about the API, and keeps their sliders fine enough for everyday counts.
 

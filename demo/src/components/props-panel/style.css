@@ -38,22 +38,63 @@
   gap: 8px;
 }
 
-/* A list takes a whole row. A fieldset can't be a flex container everywhere,
-   so its legend floats to sit above the list. */
-.props-field-wide {
+/* A fieldset can't be a flex container everywhere, so its legend floats to
+   sit above its controls. */
+fieldset.props-field {
   display: block;
-  grid-column: 1 / -1;
 }
 
-.props-field-wide > legend {
+fieldset.props-field > legend {
   float: left;
   width: 100%;
   margin-bottom: 10px;
   padding: 0;
 }
 
-.props-field-wide > .props-list {
+fieldset.props-field > legend + * {
   clear: both;
+}
+
+/* A list takes a whole row. */
+.props-field-wide {
+  grid-column: 1 / -1;
+}
+
+/* A choice's options sit on a ghost track, and the chosen one is raised. */
+.props-choice {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 2px;
+  padding: 2px;
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-control);
+  background: var(--surface);
+}
+
+.props-choice-option {
+  flex: 1 1 auto;
+  height: calc(var(--control-height) - 6px);
+  padding: 0 8px;
+  border: 1px solid transparent;
+  border-radius: calc(var(--radius-control) - 3px);
+  background: none;
+  color: var(--text-muted);
+  font-family: var(--font-mono);
+  font-size: 12px;
+  white-space: nowrap;
+  cursor: pointer;
+  transition: color var(--duration-fast) var(--ease-out);
+}
+
+.props-choice-option:hover {
+  color: var(--text);
+}
+
+.props-choice-option[aria-pressed="true"] {
+  border-color: var(--border);
+  background: var(--card);
+  box-shadow: var(--raised);
+  color: var(--text);
 }
 
 .props-field-head {
