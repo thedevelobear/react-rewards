@@ -15,6 +15,11 @@ export default defineConfig({
       extends: withRslibConfig(),
       include: ['src/**/dom-test.{ts,tsx}'],
       testEnvironment: 'happy-dom',
+      // The hook's tests use JSX. Without the React plugin, SWC compiles it
+      // for the classic runtime, which needs `React` in scope.
+      tools: {
+        swc: { jsc: { transform: { react: { runtime: 'automatic' } } } },
+      },
     },
   ],
 });

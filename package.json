@@ -54,10 +54,14 @@
     "@rstest/adapter-rslib": "0.12.4",
     "@rstest/core": "0.12.4",
     "@size-limit/preset-small-lib": "14.2.0",
+    "@testing-library/dom": "10.4.2",
+    "@testing-library/react": "16.3.3",
     "@types/react": "19.3.0",
+    "@types/react-dom": "19.3.0",
     "happy-dom": "20.14.6",
     "publint": "0.3.25",
     "react": "19.3.1",
+    "react-dom": "19.3.1",
     "size-limit": "14.2.0",
     "typescript": "7.0.2"
   }
