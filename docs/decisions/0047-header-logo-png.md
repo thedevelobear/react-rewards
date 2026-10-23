@@ -1,6 +1,6 @@
 # 0047. The header shows the existing logo PNG
 
-- **Status:** Accepted
+- **Status:** Accepted. The logo's link is refined by [0055](0055-getting-started-home-page.md)
 - **Date:** 2026-10-23
 
 ## Context

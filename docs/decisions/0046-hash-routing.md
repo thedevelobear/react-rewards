@@ -1,6 +1,6 @@
 # 0046. The site picks the effect from the URL hash
 
-- **Status:** Accepted
+- **Status:** Accepted. The page for an empty or unknown hash is refined by [0055](0055-getting-started-home-page.md)
 - **Date:** 2026-10-23
 
 ## Context

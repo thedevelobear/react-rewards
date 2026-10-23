@@ -85,8 +85,8 @@ What gets easier, what gets harder, and what has to happen next.
 | [0043](decisions/0043-hook-tests-with-testing-library.md) | The hook's tests use Testing Library | Accepted |
 | [0044](decisions/0044-reward-handles-pointer-events.md) | `reward` passed as an event handler fires from the pointer | Accepted |
 | [0045](decisions/0045-fixture-page.md) | The browser-test fixtures move to a second page, `fixtures.html` | Accepted |
-| [0046](decisions/0046-hash-routing.md) | The site picks the effect from the URL hash | Accepted |
-| [0047](decisions/0047-header-logo-png.md) | The header shows the existing logo PNG | Accepted |
+| [0046](decisions/0046-hash-routing.md) | The site picks the effect from the URL hash | Accepted. The page for an empty or unknown hash is refined by 0055 |
+| [0047](decisions/0047-header-logo-png.md) | The header shows the existing logo PNG | Accepted. The logo's link is refined by 0055 |
 | [0048](decisions/0048-no-replay-button.md) | The preview has no replay button | Accepted |
 | [0049](decisions/0049-active-item-accent-text.md) | The active sidebar item uses accent text and a gradient bar | Accepted |
 | [0050](decisions/0050-title-marker-band.md) | The page title is highlighted by a gradient band behind it | Accepted |
@@ -94,6 +94,7 @@ What gets easier, what gets harder, and what has to happen next.
 | [0052](decisions/0052-list-settings-as-swatches.md) | List settings are edited as swatches and chips | Accepted |
 | [0053](decisions/0053-code-colours-from-tokens.md) | The code colours are tokens in `tokens.css` | Accepted |
 | [0054](decisions/0054-props-table-with-descriptions.md) | The props table lists the effect's config, with descriptions | Accepted |
+| [0055](decisions/0055-getting-started-home-page.md) | A Getting started page is the site's home, and holds the install command | Accepted |
 
 ### Benchmarks
 | Benchmark | What |
