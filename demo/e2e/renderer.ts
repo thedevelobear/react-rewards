@@ -32,6 +32,7 @@ const seededFrame = async (page: Page, renderer: 'webgl' | 'canvas') => {
   // frame times.
   await page.clock.runFor(PLAY_TIME);
   expect(await overlayKind(page)).toBe(renderer);
+  await expect(page.getByTestId('renderer-given')).toHaveText(renderer);
   const png = await screenshot(page);
   await page.getByTestId('cancel-all').click();
   return png;
@@ -117,6 +118,7 @@ test.describe('without WebGL2', () => {
     await button.click();
     await drawn();
     expect(await overlayKind(page)).toBe('canvas');
+    await expect(page.getByTestId('renderer-given')).toHaveText('canvas');
   });
 
   test("a forced 'webgl' skips the burst (ADR 0033)", async ({ page }) => {
@@ -124,5 +126,7 @@ test.describe('without WebGL2', () => {
     await page.getByTestId('fire-confetti').click();
     await expect(page.getByTestId('status')).toHaveText('skipped');
     await expect(overlay(page)).toHaveCount(0);
+    // Skipped before it got a renderer (ADR 0047).
+    await expect(page.getByTestId('renderer-given')).toHaveText('none');
   });
 });

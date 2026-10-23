@@ -7,6 +7,7 @@ import {
   type Effect,
   type EffectConfig,
   emoji,
+  type RendererKind,
   type RendererPreference,
   type RewardOptions,
   setRenderer,
@@ -71,6 +72,8 @@ const RewardButton = <C extends EffectConfig>({
 export const App = () => {
   const [status, setStatus] = useState<Status>('idle');
   const [renderer, setRendererChoice] = useState<RendererPreference>('auto');
+  /** The renderer the last burst was given (ADR 0047). */
+  const [given, setGiven] = useState<RendererKind | 'none'>('none');
   const [mounted, setMounted] = useState(true);
   const bursts = useRef(new Set<Burst>());
 
@@ -78,6 +81,7 @@ export const App = () => {
   const track = (burst: Burst) => {
     bursts.current.add(burst);
     setStatus('running');
+    setGiven(burst.renderer ?? 'none');
     burst.finished.then((how) => {
       bursts.current.delete(burst);
       // With bursts still running, the page stays 'running'.
@@ -142,6 +146,9 @@ export const App = () => {
           >
             Seeded confetti
           </RewardButton>
+          <span>
+            Last burst: <output data-testid="renderer-given">{given}</output>
+          </span>
         </div>
       </section>
 

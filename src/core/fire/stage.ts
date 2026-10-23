@@ -106,13 +106,18 @@ export const createStage = ({ loop, overlay, atlas }: StageOptions): Stage => {
       resolve(how);
     };
 
-    const burst: Burst = { cancel: () => end('cancelled'), finished };
+    /** The burst handed back, with the renderer it claimed (ADR 0047). */
+    const burst = (renderer?: Renderer): Burst => ({
+      cancel: () => end('cancelled'),
+      finished,
+      renderer: renderer?.kind,
+    });
 
     const respectReducedMotion = options.respectReducedMotion ?? true;
     const origin = resolveOrigin(options.origin);
     if ((respectReducedMotion && prefersReducedMotion()) || !origin) {
       end('skipped');
-      return burst;
+      return burst();
     }
     // Claimed before the sprites load, so the overlay can't be removed, and
     // the atlas cleared, while they do. A lost context ends the burst like
@@ -122,7 +127,7 @@ export const createStage = ({ loop, overlay, atlas }: StageOptions): Stage => {
     );
     if (!lease) {
       end('skipped');
-      return burst;
+      return burst();
     }
     release = lease.release;
 
@@ -133,7 +138,7 @@ export const createStage = ({ loop, overlay, atlas }: StageOptions): Stage => {
       sources = effect.sprites(config);
     } catch {
       end('skipped');
-      return burst;
+      return burst(lease.renderer);
     }
 
     atlas.load(sources, pixelRatio()).then(
@@ -160,7 +165,7 @@ export const createStage = ({ loop, overlay, atlas }: StageOptions): Stage => {
       },
       () => end('skipped')
     );
-    return burst;
+    return burst(lease.renderer);
   };
 
   return { fire };

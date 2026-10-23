@@ -1,5 +1,6 @@
 import type { EffectConfig } from '@/core/define-effect';
 import type { Origin } from '@/core/origin';
+import type { RendererKind } from '@/core/renderer';
 
 /**
  * How a burst ended. `'skipped'` means it ended before its simulation
@@ -35,4 +36,10 @@ export interface Burst {
   cancel(): void;
   /** Resolves once the burst has ended, with how it ended. Never rejects. */
   readonly finished: Promise<BurstEnd>;
+  /**
+   * The renderer the burst was given, set before `fire()` returns. Undefined
+   * when the burst was skipped before it got one: under reduced motion, from
+   * an empty ref, or with no renderer available (ADR 0047).
+   */
+  readonly renderer: RendererKind | undefined;
 }

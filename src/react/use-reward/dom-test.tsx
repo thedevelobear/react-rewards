@@ -46,7 +46,11 @@ rs.mock('@/core/fire', () => ({
       },
     };
     fired.push(call);
-    return { cancel: () => call.end('cancelled'), finished };
+    return {
+      cancel: () => call.end('cancelled'),
+      finished,
+      renderer: 'webgl',
+    };
   },
 }));
 
