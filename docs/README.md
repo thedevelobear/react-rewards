@@ -81,8 +81,9 @@ What gets easier, what gets harder, and what has to happen next.
 | [0039](decisions/0039-buoyant-balloon.md) | Balloons are redesigned, and rise by negative gravity | Accepted |
 | [0040](decisions/0040-stable-reward.md) | `reward` is stable, and each call reads the latest arguments | Accepted |
 | [0041](decisions/0041-hook-burst-options-argument.md) | The hook takes the burst options as a fourth argument | Accepted |
-| [0042](decisions/0042-reward-returns-burst.md) | `reward()` returns the burst, and rewards stack | Accepted |
+| [0042](decisions/0042-reward-returns-burst.md) | `reward()` returns the burst, and rewards stack | Accepted. Origin refined by 0044 |
 | [0043](decisions/0043-hook-tests-with-testing-library.md) | The hook's tests use Testing Library | Accepted |
+| [0044](decisions/0044-reward-handles-pointer-events.md) | `reward` passed as an event handler fires from the pointer | Accepted |
 
 ### Benchmarks
 | Benchmark | What |

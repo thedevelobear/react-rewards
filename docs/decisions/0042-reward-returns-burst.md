@@ -1,6 +1,6 @@
 # 0042. `reward()` returns the burst, and rewards stack
 
-- **Status:** Accepted
+- **Status:** Accepted. The `origin` bullet is refined by [0044](0044-reward-handles-pointer-events.md).
 - **Date:** 2026-10-23
 
 ## Context
