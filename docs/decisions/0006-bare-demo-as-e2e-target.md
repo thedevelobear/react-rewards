@@ -1,6 +1,6 @@
 # 0006. A bare `demo/` page is the browser-test target from PR 5
 
-- **Status:** Accepted
+- **Status:** Accepted. The page the specs open is refined by [0045](0045-fixture-page.md).
 - **Date:** 2026-10-22
 
 ## Context
