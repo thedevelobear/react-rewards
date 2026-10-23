@@ -1,0 +1,92 @@
+/*
+ * The site's design tokens (plan step 3). Shape, type and motion follow
+ * reactbits.dev; the colours are the blog's. Light values sit on :root. The
+ * dark values are set twice, for the switcher's dark choice and for the
+ * system's dark mode when the switcher is on "system", so keep the two dark
+ * blocks the same.
+ */
+:root {
+  color-scheme: light;
+
+  --bg: #ffffff;
+  --card: #ffffff;
+  --surface: #fafafa;
+  --border: #e4e4e7;
+  --border-subtle: #ededf0;
+  --text: #090a0b;
+  --text-muted: #697277;
+  --text-dimmed: #9eabb3;
+  --accent: #ff5f6d;
+  --accent-2: #ffc371;
+  --accent-gradient: linear-gradient(to right, #ff5f6d, #ffc371);
+  --accent-text: #cc3344;
+  /* Text on a gradient fill, in both themes. */
+  --ink: #090a0b;
+  /* Behind the page title (ADR 0050). */
+  --title-band: var(--accent-gradient);
+  /* Raised surfaces: no shadow in light mode. */
+  --raised: none;
+
+  --font-sans: "Geist Variable", system-ui, sans-serif;
+  --font-mono: "Geist Mono Variable", ui-monospace, monospace;
+
+  --radius-xs: 6px;
+  --radius-sm: 10px;
+  --radius-md: 12px;
+  --radius-lg: 14px;
+  --radius-xl: 24px;
+  --radius-full: 999px;
+  --radius-control: 7px;
+  --control-height: 32px;
+  --header-height: 60px;
+
+  --ease-out: cubic-bezier(0.23, 1, 0.32, 1);
+  --duration-press: 0.12s;
+  --duration-fast: 0.15s;
+  --duration-base: 0.2s;
+  --duration-slow: 0.3s;
+}
+
+:root[data-theme="dark"] {
+  color-scheme: dark;
+
+  --bg: #0d0e10;
+  --card: #16171a;
+  --surface: #ffffff0a;
+  --border: #26282c;
+  --border-subtle: #1f2124;
+  --text: #f4f4f5;
+  --text-muted: #9eabb3;
+  --text-dimmed: #697277;
+  --accent-text: #ff5f6d;
+  --title-band: linear-gradient(to right, #ff5f6d59, #ffc37159);
+  --raised: inset 0 1px 0 #ffffff12;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    color-scheme: dark;
+
+    --bg: #0d0e10;
+    --card: #16171a;
+    --surface: #ffffff0a;
+    --border: #26282c;
+    --border-subtle: #1f2124;
+    --text: #f4f4f5;
+    --text-muted: #9eabb3;
+    --text-dimmed: #697277;
+    --accent-text: #ff5f6d;
+    --title-band: linear-gradient(to right, #ff5f6d59, #ffc37159);
+    --raised: inset 0 1px 0 #ffffff12;
+  }
+}
+
+/* The UI stops moving. The effects honour reduced motion themselves. */
+@media (prefers-reduced-motion: reduce) {
+  :root {
+    --duration-press: 0s;
+    --duration-fast: 0s;
+    --duration-base: 0s;
+    --duration-slow: 0s;
+  }
+}
