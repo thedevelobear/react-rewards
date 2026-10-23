@@ -18,7 +18,7 @@ Options considered:
   sips -c 604 2857 --cropOffset 151 16 assets/react-rewards.png --out crop.png
   sips --resampleHeight 56 crop.png --out demo/src/components/header/logo.png
   ```
-- Its alt text is "react-rewards", and it links to the site's first effect (`href="#"`, [ADR 0046](0046-hash-routing.md)).
+- Its alt text is "react-rewards", and it links to the first effect's hash, `#confetti` ([ADR 0046](0046-hash-routing.md)). It isn't `href="#"`, because Biome's `useValidAnchor` rule rejects that.
 - `assets/react-rewards.png` stays as it is.
 
 ## Consequences

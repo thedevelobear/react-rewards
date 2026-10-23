@@ -1,4 +1,5 @@
 import { useEffect } from 'react';
+import { Header } from '@/components/header';
 import { PageTitle } from '@/components/page-title';
 import { Preview } from '@/components/preview';
 import { Sidebar } from '@/components/sidebar';
@@ -14,14 +15,17 @@ export const App = () => {
   }, [page.label]);
 
   return (
-    <div className="layout">
-      <Sidebar effects={effects} current={page.name} />
-      <main className="content">
-        <PageTitle title={page.label} description={page.description} />
-        {page.use((typed) => (
-          <Preview page={typed} />
-        ))}
-      </main>
-    </div>
+    <>
+      <Header />
+      <div className="layout">
+        <Sidebar effects={effects} current={page.name} />
+        <main className="content">
+          <PageTitle title={page.label} description={page.description} />
+          {page.use((typed) => (
+            <Preview page={typed} />
+          ))}
+        </main>
+      </div>
+    </>
   );
 };

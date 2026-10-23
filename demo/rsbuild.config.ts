@@ -11,6 +11,9 @@ export default defineConfig({
     },
   },
   html: {
+    // The site's template applies the stored theme before the first paint.
+    template: ({ entryName }) =>
+      entryName === 'index' ? './index.html' : undefined,
     title: ({ entryName }) =>
       entryName === 'fixtures' ? 'react-rewards fixtures' : 'react-rewards',
   },
