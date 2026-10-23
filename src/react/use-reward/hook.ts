@@ -8,7 +8,36 @@ import {
 import type { Effect, EffectConfig } from '@/core/define-effect';
 import { type Burst, fire } from '@/core/fire';
 import type { Origin } from '@/core/origin';
-import type { RewardOptions, RewardTarget, UseRewardResult } from './types';
+import type {
+  PositionedEvent,
+  RewardOptions,
+  RewardTarget,
+  UseRewardResult,
+} from './types';
+
+const finite = (value: unknown): value is number => Number.isFinite(value);
+
+/**
+ * Where a reward starts. An event with a pointer position, such as the click
+ * when `reward` is the handler, starts at the pointer. A click from the
+ * keyboard or `element.click()` has `detail` 0 and no real position, so it
+ * starts at the target, as does anything else that isn't an origin. The
+ * checks run on what JavaScript callers pass too (ADR 0044).
+ */
+const startOf = (
+  arg: Origin | PositionedEvent | undefined,
+  target: RewardTarget
+): Origin => {
+  if (typeof arg !== 'object' || arg === null) return target;
+  if ('clientX' in arg) {
+    const keyboard = arg.type === 'click' && arg.detail === 0;
+    return !keyboard && finite(arg.clientX) && finite(arg.clientY)
+      ? { x: arg.clientX, y: arg.clientY }
+      : target;
+  }
+  if ('getBoundingClientRect' in arg || 'current' in arg) return arg;
+  return finite(arg.x) && finite(arg.y) ? arg : target;
+};
 
 /**
  * Plays `effect` from `target` each time `reward()` is called. `config`
@@ -43,11 +72,11 @@ export const useReward = <C extends EffectConfig>(
   }, [bursts]);
 
   const reward = useCallback(
-    (origin?: Origin): Burst => {
+    (origin?: Origin | PositionedEvent): Burst => {
       const { target, effect, config, options } = latest.current;
       const burst = fire(effect, {
         ...options,
-        origin: origin ?? target,
+        origin: startOf(origin, target),
         config,
       });
       bursts.add(burst);

@@ -1,8 +1,15 @@
 import { afterEach, describe, expect, it, rs } from '@rstest/core';
-import { act, cleanup, render, renderHook } from '@testing-library/react';
+import {
+  act,
+  cleanup,
+  fireEvent,
+  render,
+  renderHook,
+} from '@testing-library/react';
 import { StrictMode, useEffect } from 'react';
 import { defineEffect, type Effect } from '@/core/define-effect';
 import type { Burst, BurstEnd, FireOptions } from '@/core/fire';
+import type { Origin } from '@/core/origin';
 import {
   type RewardOptions,
   type RewardTarget,
@@ -78,6 +85,19 @@ const Parent = () => {
   );
 };
 
+/** The target of `HandlerButton`'s hook. */
+const handlerTarget = { current: null };
+
+/** A button that passes its events straight to `reward` (ADR 0044). */
+const HandlerButton = () => {
+  const { reward } = useReward(handlerTarget, first);
+  return (
+    <button type="button" onClick={reward} onPointerDown={reward}>
+      Reward
+    </button>
+  );
+};
+
 afterEach(() => {
   // Rstest has no test globals, so Testing Library can't clean up itself.
   cleanup();
@@ -117,6 +137,57 @@ describe('useReward', () => {
     await act(async () => burst?.cancel());
     expect(fired[0]?.how).toBe('cancelled');
     expect(await burst?.finished).toBe('cancelled');
+  });
+
+  it('fires from the pointer when it handles a click', () => {
+    const { getByRole } = render(<HandlerButton />);
+    fireEvent.click(getByRole('button'), {
+      clientX: 30,
+      clientY: 40,
+      detail: 1,
+    });
+    expect(fired[0]?.options.origin).toEqual({ x: 30, y: 40 });
+  });
+
+  it('fires from the target for a click from the keyboard', () => {
+    const { getByRole } = render(<HandlerButton />);
+    // A keyboard click, like element.click(), has detail 0.
+    fireEvent.click(getByRole('button'), { clientX: 0, clientY: 0, detail: 0 });
+    expect(fired[0]?.options.origin).toBe(handlerTarget);
+  });
+
+  it('fires from the pointer for other pointer events and DOM events', () => {
+    const { getByRole } = render(<HandlerButton />);
+    // Pointer events always have detail 0.
+    fireEvent.pointerDown(getByRole('button'), { clientX: 5, clientY: 6 });
+    const { result } = renderHook(() => useReward({ current: null }, first));
+    act(() => {
+      result.current.reward(
+        new MouseEvent('click', { clientX: 7, clientY: 8, detail: 1 })
+      );
+    });
+    expect(fired.map((call) => call.options.origin)).toEqual([
+      { x: 5, y: 6 },
+      { x: 7, y: 8 },
+    ]);
+  });
+
+  it('fires from the target for anything that is not an origin', () => {
+    const target = { current: null };
+    const { result } = renderHook(() => useReward(target, first));
+    const others: unknown[] = [
+      { x: Number.NaN, y: 1 },
+      { clientX: 1, clientY: Number.POSITIVE_INFINITY },
+      { type: 'change' },
+      'button',
+      null,
+    ];
+    act(() => {
+      // As plain JavaScript could call it.
+      for (const other of others) result.current.reward(other as Origin);
+    });
+    expect(fired).toHaveLength(others.length);
+    for (const call of fired) expect(call.options.origin).toBe(target);
   });
 
   it('keeps reward stable, and each call uses the latest arguments', () => {
