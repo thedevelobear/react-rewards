@@ -41,3 +41,11 @@ export const sameValue = (a: unknown, b: unknown): boolean =>
 /** Whether `value` is a list of strings, such as `colors`. */
 export const isStringList = (value: unknown): value is readonly string[] =>
   Array.isArray(value) && value.every((item) => typeof item === 'string');
+
+/** `text` as a single-quoted string literal. */
+export const quote = (text: string): string =>
+  `'${text.replaceAll('\\', '\\\\').replaceAll("'", "\\'")}'`;
+
+/** `value` as TypeScript source, for the snippet and the props table. */
+export const formatValue = (value: unknown): string =>
+  isStringList(value) ? `[${value.map(quote).join(', ')}]` : String(value);
