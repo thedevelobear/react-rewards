@@ -1,4 +1,10 @@
-import { type ChangeEvent, type MouseEvent, useRef, useState } from 'react';
+import {
+  type ChangeEvent,
+  type MouseEvent,
+  type ReactNode,
+  useRef,
+  useState,
+} from 'react';
 import {
   type Burst,
   type BurstEnd,
@@ -7,16 +13,64 @@ import {
   type Effect,
   type EffectConfig,
   emoji,
-  fire,
   type Origin,
   type RendererPreference,
+  type RewardOptions,
   setRenderer,
+  useReward,
 } from 'react-rewards';
 
 type Status = 'idle' | 'running' | BurstEnd;
 
 /** The seed of the burst that plays the same way every time. */
 const SEED = 1;
+
+interface RewardButtonProps<C extends EffectConfig> {
+  readonly effect: Effect<C>;
+  readonly options?: RewardOptions;
+  readonly testId: string;
+  readonly className?: string;
+  /** Where the burst starts. Without it, it starts from the button. */
+  readonly origin?: (
+    event: MouseEvent<HTMLButtonElement>
+  ) => Origin | undefined;
+  /** Called with each burst the button starts. */
+  readonly onBurst: (burst: Burst) => void;
+  readonly children: ReactNode;
+}
+
+/**
+ * A button that plays `effect` through `useReward`. `data-animating` shows
+ * the hook's `isAnimating`.
+ */
+const RewardButton = <C extends EffectConfig>({
+  effect,
+  options,
+  testId,
+  className,
+  origin,
+  onBurst,
+  children,
+}: RewardButtonProps<C>) => {
+  const ref = useRef<HTMLButtonElement>(null);
+  const { reward, isAnimating } = useReward(ref, effect, undefined, options);
+  return (
+    <button
+      ref={ref}
+      type="button"
+      className={className}
+      data-testid={testId}
+      data-animating={isAnimating}
+      onClick={(event) => onBurst(reward(origin?.(event)))}
+    >
+      {children}
+    </button>
+  );
+};
+
+/** A keyboard click has no pointer position, so it fires from the button. */
+const pointer = (event: MouseEvent<HTMLButtonElement>): Origin | undefined =>
+  event.detail === 0 ? undefined : { x: event.clientX, y: event.clientY };
 
 /**
  * A bare page for trying effects by hand and for the browser tests, which
@@ -26,14 +80,11 @@ const SEED = 1;
 export const App = () => {
   const [status, setStatus] = useState<Status>('idle');
   const [renderer, setRendererChoice] = useState<RendererPreference>('auto');
+  const [mounted, setMounted] = useState(true);
   const bursts = useRef(new Set<Burst>());
 
-  const play = <C extends EffectConfig>(
-    effect: Effect<C>,
-    origin: Origin,
-    seed?: number
-  ) => {
-    const burst = fire(effect, { origin, seed });
+  /** Shows the page's bursts in the status output. */
+  const track = (burst: Burst) => {
     bursts.current.add(burst);
     setStatus('running');
     burst.finished.then((how) => {
@@ -42,24 +93,6 @@ export const App = () => {
       if (bursts.current.size === 0) setStatus(how);
     });
   };
-
-  /** Fires `effect` from the clicked button. */
-  const playFrom =
-    <C extends EffectConfig>(effect: Effect<C>) =>
-    (event: MouseEvent<HTMLButtonElement>) =>
-      play(effect, event.currentTarget);
-
-  const playSeeded = (event: MouseEvent<HTMLButtonElement>) =>
-    play(confetti, event.currentTarget, SEED);
-
-  const playAtPointer = (event: MouseEvent<HTMLButtonElement>) =>
-    // A keyboard click has no pointer position, so it fires from the button.
-    play(
-      confetti,
-      event.detail === 0
-        ? event.currentTarget
-        : { x: event.clientX, y: event.clientY }
-    );
 
   const cancelAll = () => {
     for (const burst of bursts.current) burst.cancel();
@@ -75,27 +108,15 @@ export const App = () => {
     <main>
       <h1>react-rewards</h1>
       <section className="row">
-        <button
-          type="button"
-          data-testid="fire-confetti"
-          onClick={playFrom(confetti)}
-        >
+        <RewardButton effect={confetti} testId="fire-confetti" onBurst={track}>
           Confetti
-        </button>
-        <button
-          type="button"
-          data-testid="fire-emoji"
-          onClick={playFrom(emoji)}
-        >
+        </RewardButton>
+        <RewardButton effect={emoji} testId="fire-emoji" onBurst={track}>
           Emoji
-        </button>
-        <button
-          type="button"
-          data-testid="fire-balloon"
-          onClick={playFrom(balloon)}
-        >
+        </RewardButton>
+        <RewardButton effect={balloon} testId="fire-balloon" onBurst={track}>
           Balloon
-        </button>
+        </RewardButton>
         <button type="button" data-testid="cancel-all" onClick={cancelAll}>
           Cancel all
         </button>
@@ -122,9 +143,14 @@ export const App = () => {
               <option value="canvas">Canvas 2D</option>
             </select>
           </label>
-          <button type="button" data-testid="fire-seeded" onClick={playSeeded}>
+          <RewardButton
+            effect={confetti}
+            options={{ seed: SEED }}
+            testId="fire-seeded"
+            onBurst={track}
+          >
             Seeded confetti
-          </button>
+          </RewardButton>
         </div>
       </section>
 
@@ -135,26 +161,49 @@ export const App = () => {
           <code>transform</code>. Particles should still fly out of the box.
         </p>
         <div className="clip" data-testid="clip-fixture">
+          <RewardButton effect={confetti} testId="fire-clipped" onBurst={track}>
+            Confetti
+          </RewardButton>
+        </div>
+      </section>
+
+      <section>
+        <h2>Unmounting</h2>
+        <p>
+          Unmounting the button cancels the bursts it started, so they stop at
+          once.
+        </p>
+        <div className="row">
+          {mounted && (
+            <RewardButton
+              effect={confetti}
+              testId="fire-unmountable"
+              onBurst={track}
+            >
+              Confetti
+            </RewardButton>
+          )}
           <button
             type="button"
-            data-testid="fire-clipped"
-            onClick={playFrom(confetti)}
+            data-testid="toggle-mounted"
+            onClick={() => setMounted(!mounted)}
           >
-            Confetti
+            {mounted ? 'Unmount' : 'Mount'}
           </button>
         </div>
       </section>
 
       <section>
         <h2>From the pointer</h2>
-        <button
-          type="button"
+        <RewardButton
+          effect={confetti}
+          origin={pointer}
           className="pad"
-          data-testid="fire-at-pointer"
-          onClick={playAtPointer}
+          testId="fire-at-pointer"
+          onBurst={track}
         >
           Click anywhere here
-        </button>
+        </RewardButton>
       </section>
     </main>
   );
