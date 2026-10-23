@@ -15,3 +15,5 @@ export type { Origin } from '@/core/origin';
 export type { RendererPreference } from '@/core/renderer';
 export type { ConfettiConfig } from '@/effects/confetti';
 export { confetti } from '@/effects/confetti';
+export type { EmojiConfig } from '@/effects/emoji';
+export { emoji } from '@/effects/emoji';
