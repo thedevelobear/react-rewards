@@ -1,0 +1,1 @@
+export { PropsPanel } from './component';
