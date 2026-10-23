@@ -19,3 +19,9 @@ export type { ConfettiConfig } from '@/effects/confetti';
 export { confetti } from '@/effects/confetti';
 export type { EmojiConfig } from '@/effects/emoji';
 export { emoji } from '@/effects/emoji';
+export type {
+  RewardOptions,
+  RewardTarget,
+  UseRewardResult,
+} from '@/react/use-reward';
+export { useReward } from '@/react/use-reward';
