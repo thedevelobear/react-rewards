@@ -75,7 +75,10 @@ What gets easier, what gets harder, and what has to happen next.
 | [0033](decisions/0033-strict-public-set-renderer.md) | `setRenderer` is public, and a forced renderer never falls back | Accepted |
 | [0034](decisions/0034-merge-neighbouring-batches.md) | WebGL merges only neighbouring batches with the same blend mode | Accepted |
 | [0035](decisions/0035-parity-diff-with-pixelmatch.md) | The parity spec compares screenshots with pixelmatch | Accepted |
-| [0036](decisions/0036-context-loss-replaces-canvas.md) | A lost WebGL context ends running bursts and replaces the canvas | Proposed |
+| [0036](decisions/0036-context-loss-replaces-canvas.md) | A lost WebGL context ends running bursts and replaces the canvas | Accepted |
+| [0037](decisions/0037-balloon-effect-name.md) | The balloons effect is named `balloon` | Accepted |
+| [0038](decisions/0038-modernised-emoji.md) | Emoji is redesigned, not a copy of v2's look | Accepted |
+| [0039](decisions/0039-buoyant-balloon.md) | Balloons are redesigned, and rise by negative gravity | Accepted |
 
 ### Benchmarks
 | Benchmark | What |

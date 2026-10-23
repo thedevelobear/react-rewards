@@ -1,6 +1,6 @@
 # 0036. A lost WebGL context ends running bursts and replaces the canvas
 
-- **Status:** Proposed
+- **Status:** Accepted
 - **Date:** 2026-10-22
 
 ## Context
