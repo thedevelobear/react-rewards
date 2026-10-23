@@ -1,0 +1,1 @@
+export { useHash } from './hook';

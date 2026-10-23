@@ -1,0 +1,51 @@
+.preview {
+  position: relative;
+  display: grid;
+  place-items: center;
+  min-height: 400px;
+  overflow: hidden;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  background: var(--card);
+  box-shadow: var(--raised);
+}
+
+/* reactbits' dot grid, fading out towards the edges. */
+.preview::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background-image: radial-gradient(
+    circle,
+    var(--text-dimmed) 1px,
+    transparent 1.5px
+  );
+  background-size: 20px 20px;
+  mask-image: radial-gradient(ellipse at center, #000 20%, transparent 75%);
+  opacity: 0.6;
+  pointer-events: none;
+}
+
+.preview-button {
+  /* Above the dot grid. */
+  position: relative;
+  height: 40px;
+  padding: 0 20px;
+  border: 0;
+  border-radius: var(--radius-full);
+  background: var(--accent-gradient);
+  color: var(--ink);
+  font-weight: 600;
+  cursor: pointer;
+  transition:
+    transform var(--duration-press) var(--ease-out),
+    filter var(--duration-fast) var(--ease-out);
+}
+
+.preview-button:hover {
+  filter: brightness(1.05);
+}
+
+.preview-button:active {
+  transform: scale(0.97);
+}

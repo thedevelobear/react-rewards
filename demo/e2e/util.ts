@@ -1,5 +1,8 @@
 import { expect, type Locator, type Page } from '@playwright/test';
 
+/** The bare page with the fixtures the specs use (ADR 0045). */
+export const FIXTURES = '/fixtures.html';
+
 /** The overlay is the only canvas, directly on body (plan step 1c). */
 export const overlay = (page: Page): Locator => page.locator('body > canvas');
 

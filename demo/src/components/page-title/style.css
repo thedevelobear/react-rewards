@@ -1,0 +1,22 @@
+.page-title {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.page-title-heading {
+  font-size: 3rem;
+  font-weight: 600;
+  line-height: 1;
+  letter-spacing: -2px;
+}
+
+/* A highlighter band behind the lower third of the letters (ADR 0050). */
+.page-title-band {
+  padding: 0 0.06em;
+  background: var(--title-band) 0 88% / 100% 0.36em no-repeat;
+}
+
+.page-title-description {
+  color: var(--text-muted);
+}

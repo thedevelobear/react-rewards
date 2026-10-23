@@ -1,0 +1,25 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta
+      name="description"
+      content="Reward micro-interactions for React: confetti, emoji and balloons."
+    />
+    <script>
+      // Applies the stored theme before the first paint, so the page never
+      // shows the other theme first. "system" stores nothing. The key is the
+      // one useTheme writes.
+      try {
+        const theme = localStorage.getItem('react-rewards:theme');
+        if (theme === 'light' || theme === 'dark') {
+          document.documentElement.dataset.theme = theme;
+        }
+      } catch {
+        // Storage is blocked, so the system theme applies.
+      }
+    </script>
+  </head>
+  <body>
+    <div id="<%= mountId %>"></div>
+  </body>
+</html>

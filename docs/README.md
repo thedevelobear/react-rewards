@@ -45,7 +45,7 @@ What gets easier, what gets harder, and what has to happen next.
 | [0003](decisions/0003-integration-branch.md) | v3 lands through the `feat/v3-scaffolding` integration branch | Accepted |
 | [0004](decisions/0004-esm-only-output.md) | Publish ESM only | Accepted |
 | [0005](decisions/0005-effect-contract-scope.md) | The 3.0 effect contract has `spawn` and `update` only | Accepted |
-| [0006](decisions/0006-bare-demo-as-e2e-target.md) | A bare `demo/` page is the browser-test target from PR 5 | Accepted |
+| [0006](decisions/0006-bare-demo-as-e2e-target.md) | A bare `demo/` page is the browser-test target from PR 5 | Accepted. The page the specs open is refined by 0045 |
 | [0007](decisions/0007-no-rename-step.md) | No rename-only step for the v2 files | Accepted |
 | [0008](decisions/0008-toolchain-version-pins.md) | Toolchain version pins (pnpm 12.15.0, Rslib 1.0.3), and how to run pnpm 12 | Accepted. CI bullet superseded by 0014 |
 | [0009](decisions/0009-no-squash-merges.md) | v3 PRs are merged without squashing | Accepted |
@@ -84,6 +84,12 @@ What gets easier, what gets harder, and what has to happen next.
 | [0042](decisions/0042-reward-returns-burst.md) | `reward()` returns the burst, and rewards stack | Accepted. Origin refined by 0044 |
 | [0043](decisions/0043-hook-tests-with-testing-library.md) | The hook's tests use Testing Library | Accepted |
 | [0044](decisions/0044-reward-handles-pointer-events.md) | `reward` passed as an event handler fires from the pointer | Accepted |
+| [0045](decisions/0045-fixture-page.md) | The browser-test fixtures move to a second page, `fixtures.html` | Accepted |
+| [0046](decisions/0046-hash-routing.md) | The site picks the effect from the URL hash | Accepted |
+| [0047](decisions/0047-header-logo-png.md) | The header shows the existing logo PNG | Accepted |
+| [0048](decisions/0048-no-replay-button.md) | The preview has no replay button | Accepted |
+| [0049](decisions/0049-active-item-accent-text.md) | The active sidebar item uses accent text and a gradient bar | Accepted |
+| [0050](decisions/0050-title-marker-band.md) | The page title is highlighted by a gradient band behind it | Accepted |
 
 ### Benchmarks
 | Benchmark | What |

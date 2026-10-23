@@ -1,8 +1,8 @@
 import { expect, type Locator, test } from '@playwright/test';
-import { bandAbove, expectDrawn, overlay } from './util';
+import { bandAbove, expectDrawn, FIXTURES, overlay } from './util';
 
 test.beforeEach(async ({ page }) => {
-  await page.goto('/');
+  await page.goto(FIXTURES);
 });
 
 test('a burst draws on one overlay canvas, hidden once it ends', async ({

@@ -1,7 +1,7 @@
 import { expect, type Page, test } from '@playwright/test';
 import pixelmatch from 'pixelmatch';
 import { PNG } from 'pngjs';
-import { bandAbove, expectDrawn, overlay, overlayKind } from './util';
+import { bandAbove, expectDrawn, FIXTURES, overlay, overlayKind } from './util';
 
 /** Hides the page, so a screenshot shows only the overlay. */
 const OVERLAY_ONLY = 'main { visibility: hidden; }';
@@ -41,7 +41,7 @@ test('both renderers draw the same seeded frame (ADR 0035)', async ({
   page,
 }, testInfo) => {
   await page.clock.install({ time: 0 });
-  await page.goto('/');
+  await page.goto(FIXTURES);
   await page.clock.pauseAt(1000);
   const blank = await screenshot(page);
   const webgl = await seededFrame(page, 'webgl');
@@ -72,7 +72,7 @@ test('both renderers draw the same seeded frame (ADR 0035)', async ({
 test('a lost context ends the burst, and the next one draws (ADR 0036)', async ({
   page,
 }) => {
-  await page.goto('/');
+  await page.goto(FIXTURES);
   const button = page.getByTestId('fire-confetti');
   await button.click();
   await expect(overlay(page)).toHaveCount(1);
@@ -108,7 +108,7 @@ test.describe('without WebGL2', () => {
         return Reflect.apply(getContext, this, [type, ...rest]);
       } as typeof getContext;
     });
-    await page.goto('/');
+    await page.goto(FIXTURES);
   });
 
   test("'auto' falls back to Canvas 2D and still plays", async ({ page }) => {
