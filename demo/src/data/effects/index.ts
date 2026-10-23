@@ -1,4 +1,5 @@
 export { effects, findEffect } from './list';
+export { snippet } from './snippet';
 export type {
   AnyControl,
   AnyEffectPage,

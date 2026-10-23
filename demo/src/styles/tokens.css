@@ -27,6 +27,23 @@
   /* Raised surfaces: no shadow in light mode. */
   --raised: none;
 
+  /*
+   * The snippet's colours, for shiki's CSS-variables theme (ADR 0053). Each
+   * keeps 4.5:1 on --card. Those that point at other tokens follow the theme
+   * through them.
+   */
+  --code-background: var(--card);
+  --code-foreground: var(--text);
+  --code-token-keyword: var(--accent-text);
+  --code-token-string: #9a5800;
+  --code-token-string-expression: var(--code-token-string);
+  --code-token-constant: #c2410c;
+  --code-token-function: var(--code-foreground);
+  --code-token-parameter: var(--code-foreground);
+  --code-token-punctuation: var(--text-muted);
+  --code-token-comment: var(--text-muted);
+  --code-token-link: var(--code-token-keyword);
+
   --font-sans: "Geist Variable", system-ui, sans-serif;
   --font-mono: "Geist Mono Variable", ui-monospace, monospace;
 
@@ -61,6 +78,8 @@
   --accent-text: #ff5f6d;
   --title-band: linear-gradient(to right, #ff5f6d59, #ffc37159);
   --raised: inset 0 1px 0 #ffffff12;
+  --code-token-string: var(--accent-2);
+  --code-token-constant: #ff916f;
 }
 
 @media (prefers-color-scheme: dark) {
@@ -78,6 +97,8 @@
     --accent-text: #ff5f6d;
     --title-band: linear-gradient(to right, #ff5f6d59, #ffc37159);
     --raised: inset 0 1px 0 #ffffff12;
+    --code-token-string: var(--accent-2);
+    --code-token-constant: #ff916f;
   }
 }
 

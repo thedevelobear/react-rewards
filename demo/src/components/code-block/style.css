@@ -1,0 +1,23 @@
+.code-block {
+  position: relative;
+  background: var(--code-background);
+}
+
+.code-block-pre {
+  margin: 0;
+  padding: 16px 20px;
+  overflow-x: auto;
+  color: var(--code-foreground);
+  font-family: var(--font-mono);
+  font-size: 13px;
+  font-weight: 400;
+  line-height: 1.7;
+  letter-spacing: 0;
+  tab-size: 2;
+}
+
+.code-block-actions {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+}
