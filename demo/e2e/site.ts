@@ -48,6 +48,29 @@ test('the hash picks the effect (ADR 0046)', async ({ page }) => {
   await expect(heading).toHaveText('Getting started');
 });
 
+test('Getting started is the home page (ADR 0055)', async ({ page }) => {
+  const heading = page.getByRole('heading', { level: 1 });
+  await page.goto('/');
+  await expect(heading).toHaveText('Getting started');
+  await expect(page).toHaveTitle('Getting started · react-rewards');
+  await expect(
+    page
+      .getByRole('navigation', { name: 'Pages' })
+      .getByRole('link', { name: 'Getting started' })
+  ).toHaveAttribute('aria-current', 'page');
+  await expect(page.getByTestId('install-command')).toHaveText(
+    'pnpm add react-rewards'
+  );
+  await expect(page.locator('pre')).toContainText('useReward(ref, confetti);');
+
+  // An effect's page has no install command, and the logo leads home.
+  await page.goto('/#emoji');
+  await expect(page.getByTestId('install-command')).toHaveCount(0);
+  await page.getByRole('link', { name: 'react-rewards', exact: true }).click();
+  await expect(page).toHaveURL(/#getting-started$/);
+  await expect(heading).toHaveText('Getting started');
+});
+
 test('the install command follows the package manager, and a reload keeps it', async ({
   page,
 }) => {
@@ -65,6 +88,32 @@ test('the install command follows the package manager, and a reload keeps it', a
 
   await page.reload();
   await expect(command).toHaveText('npm install react-rewards');
+});
+
+test('the install command and the example can be copied', async ({
+  context,
+  page,
+}) => {
+  await context.grantPermissions(['clipboard-read', 'clipboard-write']);
+  const clipboard = () => page.evaluate(() => navigator.clipboard.readText());
+  await page.goto('/');
+
+  await page.getByRole('button', { name: 'Copy the install command' }).click();
+  expect(await clipboard()).toBe('pnpm add react-rewards');
+  await page.getByRole('button', { name: 'Copy the example' }).click();
+  expect(await clipboard()).toContain('useReward(ref, confetti);');
+});
+
+test('Getting started fits a phone without scrolling sideways', async ({
+  page,
+}) => {
+  await page.setViewportSize({ width: 375, height: 800 });
+  await page.goto('/');
+  expect(
+    await page.evaluate(
+      () => document.documentElement.scrollWidth - window.innerWidth
+    )
+  ).toBe(0);
 });
 
 test('a stored theme applies before the app runs', async ({ page }) => {
