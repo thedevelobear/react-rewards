@@ -4,6 +4,9 @@ import { bandAbove, expectDrawn, overlay } from './util';
 /** The key `useTheme` and the pre-paint script in `index.html` share. */
 const THEME_KEY = 'react-rewards:theme';
 
+/** The key `usePackageManager` stores the choice under. */
+const PACKAGE_MANAGER_KEY = 'react-rewards:package-manager';
+
 /** `--bg` in each theme, as computed. */
 const BACKGROUND = { light: 'rgb(255, 255, 255)', dark: 'rgb(13, 14, 16)' };
 
@@ -14,7 +17,7 @@ const dataTheme = (page: Page) =>
   page.evaluate(() => document.documentElement.dataset.theme ?? null);
 
 test('"Reward me" draws on the overlay', async ({ page }) => {
-  await page.goto('/');
+  await page.goto('/#confetti');
   const button = page.getByTestId('reward');
   const { drawn } = await expectDrawn(await bandAbove(page, button, 120));
   await button.click();
@@ -24,7 +27,7 @@ test('"Reward me" draws on the overlay', async ({ page }) => {
 
 test('the hash picks the effect (ADR 0046)', async ({ page }) => {
   const heading = page.getByRole('heading', { level: 1 });
-  const nav = page.getByRole('navigation', { name: 'Effects' });
+  const nav = page.getByRole('navigation', { name: 'Pages' });
 
   await page.goto('/#emoji');
   await expect(heading).toHaveText('Emoji');
@@ -42,7 +45,26 @@ test('the hash picks the effect (ADR 0046)', async ({ page }) => {
   await expect(heading).toHaveText('Emoji');
 
   await page.goto('/#nothing');
-  await expect(heading).toHaveText('Confetti');
+  await expect(heading).toHaveText('Getting started');
+});
+
+test('the install command follows the package manager, and a reload keeps it', async ({
+  page,
+}) => {
+  await page.goto('/');
+  const command = page.getByTestId('install-command');
+  await expect(command).toHaveText('pnpm add react-rewards');
+
+  const npm = page.getByRole('button', { name: 'npm', exact: true });
+  await npm.click();
+  await expect(npm).toHaveAttribute('aria-pressed', 'true');
+  await expect(command).toHaveText('npm install react-rewards');
+  expect(
+    await page.evaluate((key) => localStorage.getItem(key), PACKAGE_MANAGER_KEY)
+  ).toBe('npm');
+
+  await page.reload();
+  await expect(command).toHaveText('npm install react-rewards');
 });
 
 test('a stored theme applies before the app runs', async ({ page }) => {

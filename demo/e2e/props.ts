@@ -2,9 +2,6 @@ import { expect, type Page, test } from '@playwright/test';
 import { PNG } from 'pngjs';
 import { bandAbove } from './util';
 
-/** The key `usePackageManager` stores the choice under. */
-const PACKAGE_MANAGER_KEY = 'react-rewards:package-manager';
-
 /** `--accent-text` in each theme, as computed: the keyword colour. */
 const KEYWORD = { light: 'rgb(204, 51, 68)', dark: 'rgb(255, 95, 109)' };
 
@@ -35,7 +32,7 @@ const hasBlue = (png: PNG) => {
 test('the props panel sets the snippet, and Reset restores the defaults (ADR 0051)', async ({
   page,
 }) => {
-  await page.goto('/');
+  await page.goto('/#confetti');
   const reset = page.getByRole('button', { name: 'Reset' });
   await expect(reset).toBeDisabled();
 
@@ -54,7 +51,7 @@ test('the props panel sets the snippet, and Reset restores the defaults (ADR 005
 });
 
 test('the preview fires with the panel’s settings', async ({ page }) => {
-  await page.goto('/');
+  await page.goto('/#confetti');
   // The defaults have no pure blue, so a blue piece comes from the panel.
   for (let i = 0; i < 4; i++) {
     await page.getByRole('button', { name: 'Remove colour 1' }).click();
@@ -78,7 +75,7 @@ test('the preview fires with the panel’s settings', async ({ page }) => {
 test('colours are swatches that can be changed, removed and added (ADR 0052)', async ({
   page,
 }) => {
-  await page.goto('/');
+  await page.goto('/#confetti');
   await page.getByRole('button', { name: 'Remove colour 2' }).click();
   await page.getByLabel('Add a colour').fill('#123abc');
   await page.getByLabel('Colour 1', { exact: true }).fill('#ff0000');
@@ -106,11 +103,11 @@ test('emoji are chips, and the switch sets a boolean (ADR 0052)', async ({
 test('another effect starts with its defaults, on the Preview tab', async ({
   page,
 }) => {
-  await page.goto('/');
+  await page.goto('/#confetti');
   await slider(page, 'count').fill('120');
   await openCode(page);
   await page
-    .getByRole('navigation', { name: 'Effects' })
+    .getByRole('navigation', { name: 'Pages' })
     .getByRole('link', { name: 'Emoji' })
     .click();
   await expect(tab(page, 'Preview')).toHaveAttribute('aria-selected', 'true');
@@ -121,7 +118,7 @@ test('another effect starts with its defaults, on the Preview tab', async ({
 test('the tabs follow the arrow, Home and End keys (ADR 0051)', async ({
   page,
 }) => {
-  await page.goto('/');
+  await page.goto('/#confetti');
   const preview = tab(page, 'Preview');
   const code = tab(page, 'Code');
   await preview.focus();
@@ -145,7 +142,7 @@ test('the snippet takes its colours from the theme’s tokens (ADR 0053)', async
   page,
 }) => {
   await page.emulateMedia({ colorScheme: 'light' });
-  await page.goto('/');
+  await page.goto('/#confetti');
   const code = await openCode(page);
   await expect(code).toHaveAttribute('data-highlighted', 'true');
   const keyword = code.locator('span span', { hasText: /^import$/ }).first();
@@ -154,34 +151,13 @@ test('the snippet takes its colours from the theme’s tokens (ADR 0053)', async
   await expect(keyword).toHaveCSS('color', KEYWORD.dark);
 });
 
-test('the install command follows the package manager, and a reload keeps it', async ({
-  page,
-}) => {
-  await page.goto('/');
-  await openCode(page);
-  const command = page.getByTestId('install-command');
-  await expect(command).toHaveText('pnpm add react-rewards');
-
-  const npm = page.getByRole('button', { name: 'npm', exact: true });
-  await npm.click();
-  await expect(npm).toHaveAttribute('aria-pressed', 'true');
-  await expect(command).toHaveText('npm install react-rewards');
-  expect(
-    await page.evaluate((key) => localStorage.getItem(key), PACKAGE_MANAGER_KEY)
-  ).toBe('npm');
-
-  await page.reload();
-  await openCode(page);
-  await expect(command).toHaveText('npm install react-rewards');
-});
-
-test('the copy buttons put the snippet and the command on the clipboard', async ({
+test('the copy button puts the snippet on the clipboard', async ({
   context,
   page,
 }) => {
   await context.grantPermissions(['clipboard-read', 'clipboard-write']);
   const clipboard = () => page.evaluate(() => navigator.clipboard.readText());
-  await page.goto('/');
+  await page.goto('/#confetti');
   await slider(page, 'count').fill('120');
   await openCode(page);
 
@@ -191,9 +167,6 @@ test('the copy buttons put the snippet and the command on the clipboard', async 
   const copied = await clipboard();
   expect(copied).toContain('    count: 120,\n');
   expect(copied.endsWith('};\n')).toBe(true);
-
-  await page.getByRole('button', { name: 'Copy the install command' }).click();
-  expect(await clipboard()).toBe('pnpm add react-rewards');
 });
 
 test('the props table lists every setting with its default (ADR 0054)', async ({
@@ -211,9 +184,11 @@ test('the props table lists every setting with its default (ADR 0054)', async ({
   );
 });
 
-test('both tabs fit a phone without scrolling sideways', async ({ page }) => {
+test('both of an effect’s tabs fit a phone without scrolling sideways', async ({
+  page,
+}) => {
   await page.setViewportSize({ width: 375, height: 800 });
-  await page.goto('/');
+  await page.goto('/#confetti');
   const overflow = () =>
     page.evaluate(
       () => document.documentElement.scrollWidth - window.innerWidth
