@@ -32,7 +32,7 @@ const move = (key: string, index: number, count: number) => {
 /**
  * The WAI-ARIA tabs pattern. Every panel stays mounted, and the ones not
  * shown are `hidden`, so leaving a tab doesn't unmount what it holds
- * (ADR 0051).
+ * (README, "Preview and Code tabs").
  */
 export const Tabs = ({ label, tabs }: TabsProps) => {
   const base = useId();

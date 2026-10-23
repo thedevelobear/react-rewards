@@ -9,7 +9,7 @@ const EXAMPLE = effects[0].use((page) => snippet(page, page.effect.defaults));
 
 /**
  * The home page's sections: the install command, which every effect
- * shares, and a first example (ADR 0055).
+ * shares, and a first example (README, "Getting started").
  */
 export const GettingStarted = () => {
   const installHeading = useId();

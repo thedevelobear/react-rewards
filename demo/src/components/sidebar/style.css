@@ -46,7 +46,8 @@
   transform: translateX(2px);
 }
 
-/* The gradient marks the active item as a bar, not as text (ADR 0049). */
+/* The gradient marks the active item as a bar, not as text (README, "Header
+   and sidebar"). */
 .sidebar-item[aria-current="page"]::before {
   content: "";
   position: absolute;
@@ -59,7 +60,7 @@
 }
 
 /* On phones every group's links share one row of pills that scrolls
-   sideways (ADR 0055). */
+   sideways (README, "Header and sidebar"). */
 @media (max-width: 720px) {
   .sidebar {
     position: static;

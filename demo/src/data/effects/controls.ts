@@ -2,7 +2,7 @@ import type { Control } from './types';
 
 /*
  * Controls that read the same for every effect. The descriptions are the
- * JSDoc in each effect's `types.ts` (ADR 0054).
+ * JSDoc in each effect's `types.ts` (README, "Props table").
  */
 
 export const angle: Control<number> = {

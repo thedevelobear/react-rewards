@@ -17,7 +17,7 @@ Options considered:
 - The demo package builds two pages from two Rsbuild entries. `index.html` (entry `index`) is the preview site. `fixtures.html` (entry `fixtures`) is the bare page from PRs 5 to 8.
 - The bare page moves to `demo/src/fixtures/{main.tsx,app.tsx,style.css}` with its content, `data-testid`s and plain styles unchanged. It doesn't use the site's tokens, fonts or components, so a site change can't move a fixture.
 - `e2e/smoke.ts` and `e2e/renderer.ts` open `/fixtures.html`. They still find elements by `data-testid`.
-- A new `e2e/site.ts` covers the site itself: the "Reward me" button draws, the hash picks the effect ([ADR 0046](0046-hash-routing.md)), and a stored theme is applied before the app's script runs.
+- A new `e2e/site.ts` covers the site itself: the "Reward me" button draws, the hash picks the effect (`demo/README.md`, "Routing"), and a stored theme is applied before the app's script runs.
 - The site doesn't link to the fixture page.
 
 ## Consequences

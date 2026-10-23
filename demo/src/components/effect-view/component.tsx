@@ -13,8 +13,9 @@ interface EffectViewProps<C extends EffectConfig> {
 }
 
 /**
- * One effect's Preview and Code tabs (ADR 0051). The site gives each effect
- * its own instance, so the settings start from the defaults.
+ * One effect's Preview and Code tabs (README, "Preview and Code tabs"). The
+ * site gives each effect its own instance, so the settings start from the
+ * defaults.
  */
 export const EffectView = <C extends EffectConfig>({
   page,

@@ -9,7 +9,7 @@ const REPOSITORY = 'https://github.com/thedevelobear/react-rewards';
 /** The logo, a link to the repository and the theme switcher. */
 export const Header = () => (
   <header className="header">
-    {/* The logo goes home (ADR 0055). */}
+    {/* The logo goes home (README, "Header and sidebar"). */}
     <a className="header-logo" href={`#${gettingStarted.name}`}>
       <img src={logo} alt="react-rewards" width={265} height={56} />
     </a>

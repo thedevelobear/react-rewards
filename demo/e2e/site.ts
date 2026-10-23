@@ -25,7 +25,7 @@ test('"Reward me" draws on the overlay', async ({ page }) => {
   await drawn();
 });
 
-test('the hash picks the effect (ADR 0046)', async ({ page }) => {
+test('the hash picks the effect', async ({ page }) => {
   const heading = page.getByRole('heading', { level: 1 });
   const nav = page.getByRole('navigation', { name: 'Pages' });
 
@@ -48,7 +48,7 @@ test('the hash picks the effect (ADR 0046)', async ({ page }) => {
   await expect(heading).toHaveText('Getting started');
 });
 
-test('Getting started is the home page (ADR 0055)', async ({ page }) => {
+test('Getting started is the home page', async ({ page }) => {
   const heading = page.getByRole('heading', { level: 1 });
   await page.goto('/');
   await expect(heading).toHaveText('Getting started');

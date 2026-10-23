@@ -1,4 +1,4 @@
-/* Scrolls sideways on phones, so the page doesn't (ADR 0054). */
+/* Scrolls sideways on phones, so the page doesn't (README, "Props table"). */
 .props-table-frame {
   overflow-x: auto;
   border: 1px solid var(--border);

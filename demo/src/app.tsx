@@ -15,7 +15,7 @@ const GROUPS: readonly SidebarGroup[] = [
 
 /**
  * The preview site. A hash that names no effect shows Getting started
- * (ADR 0055). The browser specs use the fixture page (ADR 0045).
+ * (README, "Routing"). The browser specs use the fixture page (ADR 0045).
  */
 export const App = () => {
   const effect = findEffect(useHash());

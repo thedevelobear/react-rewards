@@ -12,7 +12,7 @@ interface PreviewProps<C extends EffectConfig> {
 /**
  * The stage for one effect: a dot grid and a button that fires the effect
  * from its centre, with the props panel's settings. There is no replay
- * button (ADR 0048).
+ * button (README, "Preview and Code tabs").
  */
 export const Preview = <C extends EffectConfig>({
   page,

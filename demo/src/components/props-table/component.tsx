@@ -22,7 +22,7 @@ interface PropsTableProps<C extends EffectConfig> {
   readonly fields: readonly Field<C>[];
 }
 
-/** Every setting of the effect, with its default (ADR 0054). */
+/** Every setting of the effect, with its default (README, "Props table"). */
 export const PropsTable = <C extends EffectConfig>({
   fields,
 }: PropsTableProps<C>) => {

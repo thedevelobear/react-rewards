@@ -12,6 +12,8 @@ The layout and its rules are set in [ADR 0002](decisions/0002-docs-as-decision-r
 
 A PR that makes or changes a decision adds the ADR and updates the active plan in the same PR.
 
+ADRs record decisions about the library: its API, engine, build and tests, and the repo's process. Decisions about the preview site's design and content are kept in [`demo/README.md`](../demo/README.md) instead, and edited in place ([ADR 0046](decisions/0046-adrs-cover-the-library.md)).
+
 ### ADR template
 ```md
 # NNNN. Title stating the decision
@@ -41,7 +43,7 @@ What gets easier, what gets harder, and what has to happen next.
 | # | Decision | Status |
 |---|---|---|
 | [0001](decisions/0001-v3-direction.md) | v3 direction: toolchain, engine and API | Accepted |
-| [0002](decisions/0002-docs-as-decision-record.md) | docs/ is the decision record | Accepted |
+| [0002](decisions/0002-docs-as-decision-record.md) | docs/ is the decision record | Accepted. Scope narrowed to the library by 0046 |
 | [0003](decisions/0003-integration-branch.md) | v3 lands through the `feat/v3-scaffolding` integration branch | Accepted |
 | [0004](decisions/0004-esm-only-output.md) | Publish ESM only | Accepted |
 | [0005](decisions/0005-effect-contract-scope.md) | The 3.0 effect contract has `spawn` and `update` only | Accepted |
@@ -85,16 +87,7 @@ What gets easier, what gets harder, and what has to happen next.
 | [0043](decisions/0043-hook-tests-with-testing-library.md) | The hook's tests use Testing Library | Accepted |
 | [0044](decisions/0044-reward-handles-pointer-events.md) | `reward` passed as an event handler fires from the pointer | Accepted |
 | [0045](decisions/0045-fixture-page.md) | The browser-test fixtures move to a second page, `fixtures.html` | Accepted |
-| [0046](decisions/0046-hash-routing.md) | The site picks the effect from the URL hash | Accepted. The page for an empty or unknown hash is refined by 0055 |
-| [0047](decisions/0047-header-logo-png.md) | The header shows the existing logo PNG | Accepted. The logo's link is refined by 0055 |
-| [0048](decisions/0048-no-replay-button.md) | The preview has no replay button | Accepted |
-| [0049](decisions/0049-active-item-accent-text.md) | The active sidebar item uses accent text and a gradient bar | Accepted |
-| [0050](decisions/0050-title-marker-band.md) | The page title is highlighted by a gradient band behind it | Accepted |
-| [0051](decisions/0051-preview-and-code-tabs.md) | Preview and Code are tabs on the effect's page | Accepted |
-| [0052](decisions/0052-list-settings-as-swatches.md) | List settings are edited as swatches and chips | Accepted |
-| [0053](decisions/0053-code-colours-from-tokens.md) | The code colours are tokens in `tokens.css` | Accepted |
-| [0054](decisions/0054-props-table-with-descriptions.md) | The props table lists the effect's config, with descriptions | Accepted |
-| [0055](decisions/0055-getting-started-home-page.md) | A Getting started page is the site's home, and holds the install command | Accepted |
+| [0046](decisions/0046-adrs-cover-the-library.md) | ADRs record the library, and the site's design lives in `demo/README.md` | Accepted |
 
 ### Benchmarks
 | Benchmark | What |

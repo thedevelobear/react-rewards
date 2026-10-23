@@ -31,7 +31,7 @@
   padding: 12px 14px;
 }
 
-/* Swatches and chips (ADR 0052). */
+/* Swatches and chips (README, "Props panel"). */
 .props-list {
   display: flex;
   flex-wrap: wrap;

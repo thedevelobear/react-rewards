@@ -1,6 +1,6 @@
 import type { Guide } from './types';
 
-/** The home page, shown for an empty or unknown hash (ADR 0055). */
+/** The home page, shown for an empty or unknown hash (README, "Routing"). */
 export const gettingStarted: Guide = {
   name: 'getting-started',
   label: 'Getting started',

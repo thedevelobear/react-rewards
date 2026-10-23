@@ -16,7 +16,7 @@ const property = (key: string, value: unknown) => {
 /**
  * A component that fires the effect with `config`, as the preview does. The
  * config argument has only the values that differ from the effect's
- * defaults, and is left out when none do (ADR 0051).
+ * defaults, and is left out when none do (README, "Preview and Code tabs").
  */
 export const snippet = <C extends EffectConfig>(
   page: EffectPage<C>,

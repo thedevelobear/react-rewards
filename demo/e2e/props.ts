@@ -29,7 +29,7 @@ const hasBlue = (png: PNG) => {
   return false;
 };
 
-test('the props panel sets the snippet, and Reset restores the defaults (ADR 0051)', async ({
+test('the props panel sets the snippet, and Reset restores the defaults', async ({
   page,
 }) => {
   await page.goto('/#confetti');
@@ -72,7 +72,7 @@ test('the preview fires with the panel’s settings', async ({ page }) => {
     .toBe(true);
 });
 
-test('colours are swatches that can be changed, removed and added (ADR 0052)', async ({
+test('colours are swatches that can be changed, removed and added', async ({
   page,
 }) => {
   await page.goto('/#confetti');
@@ -84,9 +84,7 @@ test('colours are swatches that can be changed, removed and added (ADR 0052)', a
   );
 });
 
-test('emoji are chips, and the switch sets a boolean (ADR 0052)', async ({
-  page,
-}) => {
+test('emoji are chips, and the switch sets a boolean', async ({ page }) => {
   await page.goto('/#emoji');
   const field = page.getByLabel('Emoji to add');
   // A family emoji is several code points, and stays whole.
@@ -115,9 +113,7 @@ test('another effect starts with its defaults, on the Preview tab', async ({
   await expect(await openCode(page)).toContainText('useReward(ref, emoji);');
 });
 
-test('the tabs follow the arrow, Home and End keys (ADR 0051)', async ({
-  page,
-}) => {
+test('the tabs follow the arrow, Home and End keys', async ({ page }) => {
   await page.goto('/#confetti');
   const preview = tab(page, 'Preview');
   const code = tab(page, 'Code');
@@ -138,7 +134,7 @@ test('the tabs follow the arrow, Home and End keys (ADR 0051)', async ({
   await expect(page.getByTestId('reward')).toBeVisible();
 });
 
-test('the snippet takes its colours from the theme’s tokens (ADR 0053)', async ({
+test('the snippet takes its colours from the theme’s tokens', async ({
   page,
 }) => {
   await page.emulateMedia({ colorScheme: 'light' });
@@ -169,7 +165,7 @@ test('the copy button puts the snippet on the clipboard', async ({
   expect(copied.endsWith('};\n')).toBe(true);
 });
 
-test('the props table lists every setting with its default (ADR 0054)', async ({
+test('the props table lists every setting with its default', async ({
   page,
 }) => {
   await page.goto('/#balloon');

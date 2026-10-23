@@ -1,6 +1,9 @@
 import type { HighlighterCore } from 'shiki/core';
 
-/** The theme's colours are the `--code-*` tokens in `tokens.css` (ADR 0053). */
+/**
+ * The theme's colours are the `--code-*` tokens in `tokens.css` (README,
+ * "Code colours").
+ */
 export const THEME = 'site';
 
 let loaded: HighlighterCore | null = null;
@@ -11,7 +14,7 @@ export const highlighter = (): HighlighterCore | null => loaded;
 
 /**
  * Loads shiki once, after the first paint, with the JavaScript regex engine
- * and the tsx grammar only (ADR 0053).
+ * and the tsx grammar only (README, "Code colours").
  */
 export const loadHighlighter = (): Promise<HighlighterCore> => {
   loading ??= Promise.all([

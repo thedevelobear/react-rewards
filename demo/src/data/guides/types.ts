@@ -1,4 +1,4 @@
-/** A page of the site that isn't an effect (ADR 0055). */
+/** A page of the site that isn't an effect (README, "Getting started"). */
 export interface Guide {
   /** The URL hash. */
   readonly name: string;

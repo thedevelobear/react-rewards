@@ -12,7 +12,8 @@
   background: var(--bg);
 }
 
-/* The logo PNG is twice this size, for 2x screens (ADR 0047). */
+/* The logo PNG is twice this size, for 2x screens (README, "Header and
+   sidebar"). */
 .header-logo img {
   width: auto;
   height: 28px;

@@ -9,6 +9,6 @@ const read = () => window.location.hash.slice(1);
 
 /**
  * The URL hash without its `#`. It follows links, typed URLs, and the back
- * and forward buttons (ADR 0046).
+ * and forward buttons (README, "Routing").
  */
 export const useHash = (): string => useSyncExternalStore(subscribe, read);

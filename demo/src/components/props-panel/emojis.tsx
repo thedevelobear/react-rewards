@@ -10,14 +10,17 @@ const segmenter = new Intl.Segmenter(undefined, { granularity: 'grapheme' });
 
 /**
  * `text` split into characters, so an emoji made of several code points
- * stays whole. Whitespace is dropped (ADR 0052).
+ * stays whole. Whitespace is dropped (README, "Props panel").
  */
 const characters = (text: string) =>
   Array.from(segmenter.segment(text), ({ segment }) => segment).filter(
     (segment) => segment.trim() !== ''
   );
 
-/** A chip per emoji, and a field that adds what is typed (ADR 0052). */
+/**
+ * A chip per emoji, and a field that adds what is typed (README, "Props
+ * panel").
+ */
 export const Emojis = ({ name, value, onChange }: EmojisProps) => {
   const [text, setText] = useState('');
 

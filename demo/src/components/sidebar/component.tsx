@@ -49,7 +49,7 @@ const Group = ({
   );
 };
 
-/** Links to each page's hash, in groups (ADRs 0046 and 0055). */
+/** Links to each page's hash, in groups (README, "Header and sidebar"). */
 export const Sidebar = ({ groups, current }: SidebarProps) => (
   <nav className="sidebar" aria-label="Pages">
     {groups.map((group) => (

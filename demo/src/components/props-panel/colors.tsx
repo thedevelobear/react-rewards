@@ -8,7 +8,7 @@ interface ColorsProps {
 
 /**
  * A swatch per colour, each the browser's colour input, and a + tile that
- * adds one (ADR 0052).
+ * adds one (README, "Props panel").
  */
 export const Colors = ({ name, value, onChange }: ColorsProps) => {
   const adder = useRef<HTMLInputElement>(null);

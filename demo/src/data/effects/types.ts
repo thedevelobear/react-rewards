@@ -2,7 +2,7 @@ import type { Effect, EffectConfig } from 'react-rewards';
 
 /**
  * How the props panel edits one setting, and what the props table says about
- * it (ADR 0054).
+ * it (README, "Props table").
  */
 interface BaseControl {
   /** The field's JSDoc from the effect's `types.ts`. */
@@ -24,7 +24,10 @@ export interface SwitchControl extends BaseControl {
   readonly kind: 'switch';
 }
 
-/** Swatches for a list of colours, or chips for a list of emoji (ADR 0052). */
+/**
+ * Swatches for a list of colours, or chips for a list of emoji (README,
+ * "Props panel").
+ */
 export interface ListControl extends BaseControl {
   readonly kind: 'colors' | 'emojis';
 }
@@ -66,7 +69,7 @@ export interface EffectPage<C extends EffectConfig> {
  * question 8). `use` hands the typed page to a generic callback.
  */
 export interface AnyEffectPage {
-  /** The effect's `name`, which is also its URL hash (ADR 0046). */
+  /** The effect's `name`, which is also its URL hash (README, "Routing"). */
   readonly name: string;
   readonly label: string;
   readonly description: string;

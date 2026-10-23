@@ -35,7 +35,7 @@ interface CodeBlockProps {
 
 /**
  * reactbits' code panel, highlighted by shiki once it has loaded, and plain
- * until then (ADR 0053).
+ * until then (README, "Code colours").
  */
 export const CodeBlock = ({ code, label }: CodeBlockProps) => {
   const [shiki, setShiki] = useState(highlighter);
