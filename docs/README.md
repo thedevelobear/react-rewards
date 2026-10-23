@@ -90,6 +90,10 @@ What gets easier, what gets harder, and what has to happen next.
 | [0048](decisions/0048-no-replay-button.md) | The preview has no replay button | Accepted |
 | [0049](decisions/0049-active-item-accent-text.md) | The active sidebar item uses accent text and a gradient bar | Accepted |
 | [0050](decisions/0050-title-marker-band.md) | The page title is highlighted by a gradient band behind it | Accepted |
+| [0051](decisions/0051-preview-and-code-tabs.md) | Preview and Code are tabs on the effect's page | Accepted |
+| [0052](decisions/0052-list-settings-as-swatches.md) | List settings are edited as swatches and chips | Accepted |
+| [0053](decisions/0053-code-colours-from-tokens.md) | The code colours are tokens in `tokens.css` | Accepted |
+| [0054](decisions/0054-props-table-with-descriptions.md) | The props table lists the effect's config, with descriptions | Accepted |
 
 ### Benchmarks
 | Benchmark | What |
