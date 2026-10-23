@@ -13,6 +13,8 @@ export { fire, setRenderer } from '@/core/fire';
 export type { Rng } from '@/core/math';
 export type { Origin } from '@/core/origin';
 export type { RendererPreference } from '@/core/renderer';
+export type { BalloonConfig } from '@/effects/balloon';
+export { balloon } from '@/effects/balloon';
 export type { ConfettiConfig } from '@/effects/confetti';
 export { confetti } from '@/effects/confetti';
 export type { EmojiConfig } from '@/effects/emoji';
