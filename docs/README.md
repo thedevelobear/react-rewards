@@ -79,6 +79,10 @@ What gets easier, what gets harder, and what has to happen next.
 | [0037](decisions/0037-balloon-effect-name.md) | The balloons effect is named `balloon` | Accepted |
 | [0038](decisions/0038-modernised-emoji.md) | Emoji is redesigned, not a copy of v2's look | Accepted |
 | [0039](decisions/0039-buoyant-balloon.md) | Balloons are redesigned, and rise by negative gravity | Accepted |
+| [0040](decisions/0040-stable-reward.md) | `reward` is stable, and each call reads the latest arguments | Accepted |
+| [0041](decisions/0041-hook-burst-options-argument.md) | The hook takes the burst options as a fourth argument | Accepted |
+| [0042](decisions/0042-reward-returns-burst.md) | `reward()` returns the burst, and rewards stack | Accepted |
+| [0043](decisions/0043-hook-tests-with-testing-library.md) | The hook's tests use Testing Library | Accepted |
 
 ### Benchmarks
 | Benchmark | What |
