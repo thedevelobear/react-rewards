@@ -1,0 +1,41 @@
+name: Publish
+
+# Publishes to npm when a GitHub release is published, with trusted
+# publishing and no npm token (ADR 0054).
+on:
+  release:
+    types: [published]
+
+permissions:
+  contents: read
+
+jobs:
+  publish:
+    # A pre-release isn't published (ADR 0054).
+    if: ${{ !github.event.release.prerelease }}
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      id-token: write
+    steps:
+      - uses: actions/checkout@v7
+      # pnpm from packageManager, Node from .nvmrc, then a frozen install
+      # (ADR 0014).
+      - uses: pnpm/setup@v3
+        with:
+          node-version-file: .nvmrc
+          cache: true
+          require-lockfile: true
+      - name: Check that the tag matches the version
+        env:
+          TAG: ${{ github.event.release.tag_name }}
+        run: |
+          expected="v$(node -p "require('./package.json').version")"
+          if [ "$TAG" != "$expected" ]; then
+            echo "The release tag $TAG doesn't match package.json ($expected)."
+            exit 1
+          fi
+      # npm, not pnpm, authenticates with trusted publishing, and adds
+      # provenance. It runs prepublishOnly: the typecheck, the tests and the
+      # build.
+      - run: npm publish
