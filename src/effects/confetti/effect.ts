@@ -11,27 +11,27 @@ const SWING_MIN = 4;
 const SWING_MAX = 8;
 /**
  * A settled piece's fastest swing across, as a share of its fall speed, for
- * a flutterer and a tumbler. At the defaults a flutterer swings about 19 px
- * to either side, and a tumbler 4 px.
+ * a flutterer and a tumbler. At the defaults a flutterer swings about 11 px
+ * to either side, and a tumbler 2 px.
  */
-const SWAY_FLUTTER = 0.25;
-const SWAY_TUMBLE = 0.1;
+const SWAY_FLUTTER = 0.15;
+const SWAY_TUMBLE = 0.06;
 /**
  * How much the swing slows and speeds the fall, as a share of the fall
  * speed. A flutterer slows a little as it swings out, and dips back in.
  */
-const ARC_FLUTTER = 0.25;
-const ARC_TUMBLE = 0.1;
+const ARC_FLUTTER = 0.15;
+const ARC_TUMBLE = 0.06;
 /** How far a flutterer rocks with its swing, in radians. */
-const ROCK = 0.3;
+const ROCK = 0.2;
 /** How fast a piece spins in flight, per radian per second of swing. */
 const SPIN = 0.5;
 /** How fast a tumbler turns end over end, in radians per second. */
-const TUMBLE = 4;
+const TUMBLE = 3;
 /** How many times a piece flips per swing. */
 const FLIP = 1.4;
 /** The most a tumbler glides sideways, as a share of its fall speed. */
-const GLIDE = 0.5;
+const GLIDE = 0.3;
 /** The slowest and fastest a piece falls, as shares of `gravity / drag`. */
 const FALL_MIN = 0.8;
 const FALL_MAX = 1.2;
@@ -40,7 +40,7 @@ const FALL_MAX = 1.2;
  * top of its flight. It eases in over the whole time, so no moment shows
  * where it starts.
  */
-const SETTLE_FROM = -1.6;
+const SETTLE_FROM = -0.4;
 const SETTLE_TO = 1.6;
 
 /**
@@ -78,8 +78,8 @@ const motion = (s1: number, s3: number, config: ConfettiConfig) => {
 
 /**
  * Paper confetti (ADRs 0026, 0059). Pieces launch in a cone, slow down,
- * spin and flip. From its launch, a piece eases into falling the way paper
- * does, somewhere between two ways: a flutterer sways gently from side to
+ * spin and flip. From just before the top of its flight, a piece eases into
+ * falling the way paper does, somewhere between two ways: a flutterer sways gently from side to
  * side like a leaf, rocking with the sway, while a tumbler turns end over
  * end with a slight wobble and glides to one side. Each piece falls at its
  * own speed, so the burst opens a little as it falls instead of falling in a
@@ -125,8 +125,8 @@ export const confetti: Effect<ConfettiConfig> =
       p.s0 = rng.range(0, Math.PI * 2);
       p.s1 = rng.range(SWING_MIN, SWING_MAX) * (rng.next() < 0.5 ? -1 : 1);
       p.s3 = rng.range(FALL_MIN, FALL_MAX);
-      // A piece has begun to settle by its launch, so its velocity includes
-      // that much swing from the start, as `update` expects.
+      // A piece may have begun to settle by its launch, so its velocity
+      // includes that much swing from the start, as `update` expects.
       const { gravity, fall, sway, arc } = motion(p.s1, p.s3, config);
       const vy = -Math.sin(direction) * speed;
       p.s2 = settled(vy, gravity, fall, config.drag);

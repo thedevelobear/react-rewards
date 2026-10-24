@@ -67,9 +67,9 @@ describe('confetti', () => {
 
   it('launches within the cone, at 0.5 to 1.5 times velocity', () => {
     const config = { count: 200, velocity: 1000 };
-    // A piece launched sideways is at its top, so half settled, and its sway
-    // adds up to 0.5 * 0.25 * 1.2 * 300 = 45 px/s to the launch.
-    const sway = 45;
+    // A piece launched sideways is at its top, so 3.2% settled, and its sway
+    // adds up to 0.032 * 0.15 * 1.2 * 300 = 1.7 px/s to the launch.
+    const sway = 2;
     const right = simulate({ ...config, angle: 0, spread: 0 });
     for (const [i, vx] of field(right, 'vx').entries()) {
       expect(vx).toBeGreaterThanOrEqual(500 - sway);
@@ -118,15 +118,28 @@ describe('confetti', () => {
     expect(Math.max(...scales)).toBeGreaterThan(0.95);
   });
 
-  it('eases into its fall from 1.6 s before its top to 1.6 s after (ADR 0059)', () => {
+  it('flies all but unchanged while it rises (ADR 0059)', () => {
     const simulation = simulate({ count: 200 });
-    // A piece tops out 0.36 to 0.72 s after its launch, so it launches a
-    // little settled. Measured: 0.071 to 0.231.
-    const last = field(simulation, 's2');
-    for (const settled of last) {
-      expect(settled).toBeGreaterThan(0.05);
-      expect(settled).toBeLessThan(0.25);
+    // Measured: 0.00003 settled at most at the launch, and 1.9% at 0.3 s,
+    // 0.64 px/s off its flight.
+    for (const settled of field(simulation, 's2')) {
+      expect(settled).toBeLessThan(1e-4);
     }
+    const launch = field(simulation, 'vx');
+    run(simulation, 0.3);
+    for (const settled of field(simulation, 's2')) {
+      expect(settled).toBeLessThan(0.025);
+    }
+    for (const [i, vx] of field(simulation, 'vx').entries()) {
+      expect(Math.abs(vx - (launch[i] ?? 0) * Math.exp(-3 * 0.3))).toBeLessThan(
+        1.5
+      );
+    }
+  });
+
+  it('eases into its fall from 0.4 s before its top to 1.6 s after', () => {
+    const simulation = simulate({ count: 200 });
+    const last = field(simulation, 's2');
     let step = 0;
     for (let i = 0; i < 144; i++) {
       run(simulation, 1 / 60);
@@ -135,9 +148,9 @@ describe('confetti', () => {
         last[j] = settled;
       }
     }
-    // Measured: no step settles a piece by more than 0.0155, the most an
-    // ease over 3.2 s moves in 1/60 s, so nothing jumps, launch included.
-    expect(step).toBeLessThan(0.016);
+    // Measured: no step settles a piece by more than 0.0248, the most an
+    // ease over 2 s moves in 1/60 s, so nothing jumps.
+    expect(step).toBeLessThan(0.026);
     // The last to top out does so at 0.72 s, so by 2.4 s all have settled.
     expect(last.every((settled) => settled === 1)).toBe(true);
   });
@@ -175,15 +188,15 @@ describe('confetti', () => {
     const keeps = tumblers.filter(
       ({ kind, vx }) => Math.sign(mean(vx)) === Math.sign(kind)
     );
-    // Measured: every flutterer turns back, and every tumbler keeps to its
-    // side.
+    // Measured: 99% of the flutterers turn back, and every tumbler keeps to
+    // its side.
     expect(turns.length / flutterers.length).toBeGreaterThan(0.9);
     expect(keeps.length / tumblers.length).toBeGreaterThan(0.9);
   });
 
   it('ends within 1 px at 30, 60 and 144 Hz after 1 s and 2.5 s', () => {
-    // Measured, against 144 Hz: 0.64 px at 30 Hz and 0.14 px at 60 Hz after
-    // 1 s, and 0.69 px and 0.15 px after 2.5 s, when every piece sways.
+    // Measured, against 144 Hz: 0.62 px at 30 Hz and 0.13 px at 60 Hz after
+    // 1 s, and 0.68 px and 0.15 px after 2.5 s, when every piece sways.
     for (const seconds of [1, 2.5]) {
       const at = (hz: number) => run(simulate({ count: 100 }, 3), seconds, hz);
       const reference = at(144);
@@ -215,8 +228,8 @@ describe('confetti', () => {
     const simulation = run(simulate({ count: 200 }), 1.25);
     const falling = width(simulation);
     run(simulation, 1.25);
-    // Measured: 1.39 times as wide. Falling straight down, 1.02 times.
-    expect(width(simulation)).toBeGreaterThan(falling * 1.2);
+    // Measured: 1.055 times as wide. Falling straight down, 1.024 times.
+    expect(width(simulation)).toBeGreaterThan(falling * 1.04);
   });
 
   it('falls evenly, with no gap in the middle', () => {
@@ -230,7 +243,7 @@ describe('confetti', () => {
       const band = Math.floor(((value - from) / (to - from)) * 5);
       if (band >= 0 && band < 5) bands[band] = (bands[band] ?? 0) + 1;
     }
-    // Measured: 1.16 times the mean band. Gliding to the side a piece was
+    // Measured: 1.02 times the mean band. Gliding to the side a piece was
     // thrown instead left 0.33 times, a gap between two columns.
     const mean = (0.8 * x.length) / 5;
     expect(bands[2]).toBeGreaterThan(0.8 * mean);
@@ -265,30 +278,30 @@ describe('confetti', () => {
       [
         {
           "alpha": 1,
-          "rotation": 4.872,
+          "rotation": 4.922,
           "scaleY": 0.761,
-          "vx": 13.299,
-          "vy": 73.228,
-          "x": -23.699,
-          "y": -124.421,
+          "vx": -21.122,
+          "vy": 60.158,
+          "x": -25.884,
+          "y": -123.495,
         },
         {
           "alpha": 1,
-          "rotation": 2.228,
+          "rotation": 1.92,
           "scaleY": 0.642,
-          "vx": -180.044,
-          "vy": -108.105,
-          "x": -190.368,
-          "y": -262.161,
+          "vx": -158.737,
+          "vy": -85.483,
+          "x": -183.856,
+          "y": -262.655,
         },
         {
           "alpha": 1,
-          "rotation": 3.326,
+          "rotation": 3.386,
           "scaleY": -0.351,
-          "vx": 75.31,
-          "vy": -196.242,
-          "x": 57.366,
-          "y": -422.248,
+          "vx": 46.856,
+          "vy": -207.482,
+          "x": 54.223,
+          "y": -422.926,
         },
       ]
     `);
