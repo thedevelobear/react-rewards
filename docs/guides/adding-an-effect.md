@@ -158,6 +158,7 @@ The site imports the built package ([ADR 0031](../decisions/0031-demo-imports-bu
      effect: sparkle,
      label: 'Sparkle',
      description: 'Sparks that burst out in every direction and fade.',
+     icon: ['M12 3v18M3 12h18'],
      controls: {
        count: { kind: 'range', min: 1, max: 200, step: 1, description: 'Sparks per burst.' },
        // ...one control per field, with the JSDoc from types.ts.
@@ -166,7 +167,9 @@ The site imports the built package ([ADR 0031](../decisions/0031-demo-imports-bu
    ```
 
    The panel edits numbers (`range`), booleans (`switch`), and lists of colours or emoji (`colors`, `emojis`). A setting of another type needs a new control kind in `demo/src/data/effects/types.ts`.
-2. Add the page to `effects` in `demo/src/data/effects/list.ts`. Its sidebar link, its `#sparkle` route, its Preview and Code tabs, its props table and its entry on the Stress test page follow from that ([demo README](../../demo/README.md)).
+
+   `icon` is the sidebar icon, as path data on a 24 px grid, drawn with a 2 px stroke. The preview's button shows it too.
+2. Add the page to `effects` in `demo/src/data/effects/list.ts`. Its sidebar link, its `#sparkle` route, its Preview and Code tabs, its props table, its card on Getting started, its place in the previous and next cards, and its entry on the Stress test page follow from that ([demo README](../../demo/README.md)). The card shows the icon until the effect has a drawing in `demo/src/components/getting-started/art.tsx`.
 3. Add a `RewardButton` with `testId="fire-sparkle"` to the fixture page, `demo/src/fixtures/app.tsx`, and add `'sparkle'` to the loop in `demo/e2e/smoke.ts` that checks each effect draws.
 4. Add it to `EFFECTS` in `demo/bench/run.ts`, with its label on the Stress test page.
 

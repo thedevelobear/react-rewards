@@ -1,10 +1,13 @@
 import { useId } from 'react';
+import { Icon } from '@/components/icon';
 import './style.css';
 
 export interface SidebarLink {
   /** The URL hash, without its `#`. */
   readonly name: string;
   readonly label: string;
+  /** Path data on a 24px grid. */
+  readonly icon: readonly string[];
 }
 
 export interface SidebarGroup {
@@ -33,13 +36,14 @@ const Group = ({
         {heading}
       </p>
       <ul className="sidebar-list" aria-labelledby={id}>
-        {links.map(({ name, label }) => (
+        {links.map(({ name, label, icon }) => (
           <li key={name}>
             <a
               href={`#${name}`}
               className="sidebar-item"
               aria-current={name === current ? 'page' : undefined}
             >
+              <Icon paths={icon} />
               {label}
             </a>
           </li>

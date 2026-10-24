@@ -1,8 +1,9 @@
-import { useEffect } from 'react';
+import { useEffect, useRef } from 'react';
 import { EffectView } from '@/components/effect-view';
 import { GettingStarted } from '@/components/getting-started';
 import { Header } from '@/components/header';
 import { PageTitle } from '@/components/page-title';
+import { Pager } from '@/components/pager';
 import { Sidebar, type SidebarGroup } from '@/components/sidebar';
 import { StressTest } from '@/components/stress-test';
 import { effects, findEffect } from '@/data/effects';
@@ -13,6 +14,9 @@ const GROUPS: readonly SidebarGroup[] = [
   { heading: 'Guides', links: guides },
   { heading: 'Effects', links: effects },
 ];
+
+/** Every page, in the sidebar's order, for the pager. */
+const PAGES = GROUPS.flatMap((group) => group.links);
 
 /**
  * The preview site. A hash that names no page shows Getting started (README,
@@ -28,13 +32,25 @@ export const App = () => {
     document.title = `${page.label} · react-rewards`;
   }, [page.label]);
 
+  // A new page starts at its top, as the pager's links are at the bottom.
+  const shown = useRef(page.name);
+  useEffect(() => {
+    if (shown.current === page.name) return;
+    shown.current = page.name;
+    window.scrollTo(0, 0);
+  }, [page.name]);
+
   return (
     <>
       <Header />
       <div className="layout">
         <Sidebar groups={GROUPS} current={page.name} />
         <main className="content">
-          <PageTitle title={page.label} description={page.description} />
+          <PageTitle
+            group={effect ? 'Effects' : 'Guides'}
+            title={page.label}
+            description={page.description}
+          />
           {effect ? (
             // Keyed by the effect, so its settings and tab start afresh.
             effect.use((typed) => (
@@ -45,6 +61,7 @@ export const App = () => {
           ) : (
             <GettingStarted />
           )}
+          <Pager pages={PAGES} current={page.name} />
         </main>
       </div>
     </>

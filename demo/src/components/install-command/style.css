@@ -1,29 +1,30 @@
-.install {
-  display: flex;
-  flex-direction: column;
-  gap: 4px;
-}
-
+/* A tab per package manager, underlined when chosen. */
 .install-managers {
   display: flex;
-  gap: 2px;
+  flex-wrap: wrap;
+  gap: 4px;
   min-width: 0;
   margin: 0;
-  padding: 0;
+  padding: 0 10px;
   border: 0;
+  border-bottom: 1px solid var(--border);
 }
 
 .install-manager {
-  height: 28px;
+  height: var(--touch-height);
+  margin-bottom: -1px;
   padding: 0 12px;
-  border: 1px solid transparent;
-  border-radius: var(--radius-control);
+  border: 0;
+  border-bottom: 2px solid transparent;
   background: none;
   color: var(--text-muted);
   font-family: var(--font-mono);
-  font-size: 12px;
+  font-size: 13px;
+  letter-spacing: 0;
   cursor: pointer;
-  transition: color var(--duration-fast) var(--ease-out);
+  transition:
+    color var(--duration-fast) var(--ease-out),
+    border-color var(--duration-fast) var(--ease-out);
 }
 
 .install-manager:hover {
@@ -31,28 +32,31 @@
 }
 
 .install-manager[aria-pressed="true"] {
-  border-color: var(--border);
-  background: var(--card);
-  box-shadow: var(--raised);
+  border-bottom-color: var(--accent);
   color: var(--text);
 }
 
 .install-panel {
   display: flex;
   align-items: center;
-  justify-content: space-between;
   gap: 12px;
-  padding: 10px 10px 10px 20px;
+  padding: 6px 6px 6px 20px;
   background: var(--code-background);
+  font-family: var(--font-mono);
+  font-size: 14.5px;
+  letter-spacing: 0;
+}
+
+.install-prompt {
+  margin-right: -4px;
+  color: var(--text-subtle);
+  user-select: none;
 }
 
 .install-command {
+  flex: 1;
   min-width: 0;
   overflow-x: auto;
   color: var(--code-foreground);
-  font-family: var(--font-mono);
-  font-size: 13px;
-  font-weight: 400;
-  letter-spacing: 0;
   white-space: nowrap;
 }

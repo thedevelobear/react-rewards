@@ -8,7 +8,7 @@ const THEME_KEY = 'react-rewards:theme';
 const PACKAGE_MANAGER_KEY = 'react-rewards:package-manager';
 
 /** `--bg` in each theme, as computed. */
-const BACKGROUND = { light: 'rgb(255, 255, 255)', dark: 'rgb(13, 14, 16)' };
+const BACKGROUND = { light: 'rgb(255, 255, 255)', dark: 'rgb(10, 10, 11)' };
 
 const background = (page: Page) =>
   page.evaluate(() => getComputedStyle(document.body).backgroundColor);
@@ -69,6 +69,34 @@ test('Getting started is the home page', async ({ page }) => {
   await page.getByRole('link', { name: 'react-rewards', exact: true }).click();
   await expect(page).toHaveURL(/#getting-started$/);
   await expect(heading).toHaveText('Getting started');
+});
+
+test('the pager leads to the pages before and after, from the top', async ({
+  page,
+}) => {
+  const heading = page.getByRole('heading', { level: 1 });
+  const pager = page.getByRole('navigation', { name: 'Previous and next' });
+
+  await page.goto('/');
+  await expect(pager.getByRole('link')).toHaveCount(1);
+  const next = pager.getByRole('link', { name: 'Next Stress test' });
+  await next.click();
+  await expect(heading).toHaveText('Stress test');
+  await expect.poll(() => page.evaluate(() => window.scrollY)).toBe(0);
+
+  // The last effect has no next page.
+  await page.goto('/#balloon');
+  await expect(pager.getByRole('link')).toHaveCount(1);
+  await pager.getByRole('link', { name: 'Previous Emoji' }).click();
+  await expect(page).toHaveURL(/#emoji$/);
+});
+
+test('the effect cards lead to the effects', async ({ page }) => {
+  const heading = page.getByRole('heading', { level: 1 });
+  await page.goto('/');
+  await page.getByRole('link', { name: /^Emoji / }).click();
+  await expect(page).toHaveURL(/#emoji$/);
+  await expect(heading).toHaveText('Emoji');
 });
 
 test('the install command follows the package manager, and a reload keeps it', async ({

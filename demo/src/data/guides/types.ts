@@ -6,4 +6,6 @@ export interface Guide {
   readonly label: string;
   /** One line under the title. */
   readonly description: string;
+  /** The sidebar icon, as path data on a 24px grid. */
+  readonly icon: readonly string[];
 }

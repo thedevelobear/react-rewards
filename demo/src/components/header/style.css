@@ -2,14 +2,26 @@
   position: sticky;
   top: 0;
   z-index: 1;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 16px;
-  height: var(--header-height);
-  padding: 0 24px;
   border-bottom: 1px solid var(--border);
   background: var(--bg);
+}
+
+/* As wide as the layout, so the actions end where the content does. */
+.header-inner {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  max-width: var(--layout-width);
+  height: calc(var(--header-height) - 1px);
+  margin: 0 auto;
+  padding: 0 24px;
+}
+
+.header-logo {
+  display: flex;
+  align-items: center;
+  min-height: var(--touch-height);
+  margin-top: -10px;
 }
 
 /* The logo PNG is twice this size, for 2x screens (README, "Header and
@@ -19,31 +31,56 @@
   height: 28px;
 }
 
+.header-tag {
+  padding: 3px 8px;
+  border: 1px solid var(--border-strong);
+  border-radius: var(--radius-full);
+  color: var(--text-muted);
+  font-family: var(--font-mono);
+  font-size: 12px;
+  line-height: 1.3;
+  letter-spacing: 0;
+}
+
 .header-actions {
   display: flex;
   align-items: center;
   gap: 8px;
+  margin-left: auto;
 }
 
-.header-link {
-  display: grid;
-  place-items: center;
-  width: var(--control-height);
-  height: var(--control-height);
-  border-radius: var(--radius-control);
-  color: var(--text-muted);
+.header-button {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  height: var(--touch-height);
+  padding: 0 14px;
+  border: 1px solid var(--border-strong);
+  border-radius: var(--radius-md);
+  color: var(--text-secondary);
+  font-size: 14px;
+  font-weight: 500;
+  text-decoration: none;
   transition:
     color var(--duration-fast) var(--ease-out),
     background-color var(--duration-fast) var(--ease-out);
 }
 
-.header-link:hover {
+.header-button:hover {
   background: var(--surface);
   color: var(--text);
 }
 
 @media (max-width: 720px) {
-  .header {
+  .header-inner {
+    gap: 8px;
     padding: 0 16px;
+  }
+}
+
+/* The logo and the actions need the whole width of a small phone. */
+@media (max-width: 380px) {
+  .header-tag {
+    display: none;
   }
 }

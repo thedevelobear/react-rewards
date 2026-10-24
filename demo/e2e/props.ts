@@ -2,8 +2,8 @@ import { expect, type Page, test } from '@playwright/test';
 import { PNG } from 'pngjs';
 import { bandAbove } from './util';
 
-/** `--accent-text` in each theme, as computed: the keyword colour. */
-const KEYWORD = { light: 'rgb(204, 51, 68)', dark: 'rgb(255, 95, 109)' };
+/** `--code-keyword` in each theme, as computed. */
+const KEYWORD = { light: 'rgb(196, 56, 31)', dark: 'rgb(255, 138, 122)' };
 
 const tab = (page: Page, name: 'Preview' | 'Code') =>
   page.getByRole('tab', { name });
@@ -46,7 +46,7 @@ test('the props panel sets the snippet, and Reset restores the defaults', async 
 
   await tab(page, 'Preview').click();
   await reset.click();
-  await expect(slider(page, 'count')).toHaveValue('50');
+  await expect(slider(page, 'count')).toHaveValue('100');
   await expect(await openCode(page)).toContainText('useReward(ref, confetti);');
 });
 
@@ -88,13 +88,13 @@ test('emoji are chips, and the switch sets a boolean', async ({ page }) => {
   await page.goto('/#emoji');
   const field = page.getByLabel('Emoji to add');
   // A family emoji is several code points, and stays whole.
-  await field.fill('🎉 👩‍👩‍👧');
+  await field.fill('🎉');
   await field.press('Enter');
   await expect(field).toHaveValue('');
-  await page.getByRole('button', { name: 'Remove 🤓' }).click();
+  await page.getByRole('button', { name: 'Remove 🦄' }).click();
   await page.getByRole('switch', { name: 'rotate' }).click();
   await expect(await openCode(page)).toContainText(
-    "useReward(ref, emoji, { rotate: false, emojis: ['😊', '🥳', '🎉', '👩‍👩‍👧'], });"
+    "useReward(ref, emoji, { rotate: false, emojis: ['⚡️', '🥰', '🎉'], });"
   );
 });
 

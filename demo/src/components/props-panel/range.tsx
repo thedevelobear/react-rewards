@@ -13,7 +13,7 @@ export const Range = ({ name, control, value, onChange }: RangeProps) => {
   const id = useId();
   const filled = ((value - control.min) / (control.max - control.min)) * 100;
   return (
-    <div className="frame-panel props-field">
+    <div className="props-field">
       <div className="props-field-head">
         <label className="props-field-name" htmlFor={id}>
           {name}

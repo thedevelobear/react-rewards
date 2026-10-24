@@ -37,7 +37,13 @@ export const CopyButton = ({ text, label }: CopyButtonProps) => {
       aria-label={`Copy ${label}`}
       onClick={copy}
     >
-      {copied ? <CheckIcon /> : <CopyIcon />}
+      {copied ? (
+        <span className="copy-button-done">
+          <CheckIcon />
+        </span>
+      ) : (
+        <CopyIcon />
+      )}
       <span aria-live="polite">{copied ? 'Copied' : 'Copy'}</span>
     </button>
   );

@@ -74,14 +74,14 @@ const { reward } = useReward(
 
 | Setting | Unit | `confetti` | `emoji` | `balloon` | What it does |
 |---|---|---|---|---|---|
-| `count` | | `50` | `20` | `10` | Particles per burst. |
-| `size` | CSS px | `8` | `25` | `20` | A piece's width, an emoji's font size, or a balloon's width. |
+| `count` | | `100` | `20` | `16` | Particles per burst. |
+| `size` | CSS px | `10` | `25` | `30` | A piece's width, an emoji's font size, or a balloon's width. |
 | `colors` | | 5 colours | | 5 colours | Each particle picks one. |
 | `emojis` | | | `['🤓', '😊', '🥳']` | | Particles take them in turn. |
 | `angle` | degrees | `90` | `90` | `90` | The launch direction, counter-clockwise from the right. `90` is up. |
-| `spread` | degrees | `45` | `45` | `60` | The width of the launch cone around `angle`. |
-| `velocity` | px/s | `1500` | `1500` | `600` | The average launch speed. |
-| `drag` | per second | `3` | `3` | `2` | Air resistance. Falling particles settle at `gravity / drag`. |
+| `spread` | degrees | `60` | `45` | `90` | The width of the launch cone around `angle`. |
+| `velocity` | px/s | `1500` | `1500` | `300` | The average launch speed. |
+| `drag` | per second | `3` | `3` | `2` | Air resistance. Falling particles settle at about `gravity / drag`. |
 | `gravity` | px/s² | `900` | `900` | `-300` | Downward pull. Negative rises, as balloons do. |
 | `lifetime` | ms | `3000` | `3000` | `5000` | The longest a particle lives. |
 | `rotate` | | | `true` | | Whether emoji tilt and spin. |

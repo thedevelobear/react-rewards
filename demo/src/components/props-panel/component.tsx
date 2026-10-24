@@ -46,16 +46,16 @@ const Control = <C extends EffectConfig>({
   }
 };
 
-/** The panel's frame and grid, around its controls. */
+/** The panel's grid of cells, one per control. */
 export const ControlGrid = ({ children }: { readonly children: ReactNode }) => (
-  <div className="frame props-panel">
+  <div className="props-panel">
     <div className="props-grid">{children}</div>
   </div>
 );
 
 /**
- * reactbits' "preview options": a control per setting, generated from the
- * effect's controls, so a new effect needs no panel code (plan step 3).
+ * A control per setting, generated from the effect's controls, so a new
+ * effect needs no panel code (README, "Props panel").
  */
 export const PropsPanel = <C extends EffectConfig>({
   fields,

@@ -1,29 +1,30 @@
 .theme-switcher {
-  display: inline-flex;
-  align-items: center;
-  gap: 6px;
-  height: var(--control-height);
-  padding: 0 10px;
-  border: 1px solid var(--border);
-  border-radius: var(--radius-control);
-  background: var(--card);
-  box-shadow: var(--raised);
-  font-size: 12px;
+  display: grid;
+  place-items: center;
+  width: var(--touch-height);
+  height: var(--touch-height);
+  padding: 0;
+  border: 1px solid var(--border-strong);
+  border-radius: var(--radius-md);
+  background: none;
+  color: var(--text-secondary);
   cursor: pointer;
   transition:
+    color var(--duration-fast) var(--ease-out),
     background-color var(--duration-fast) var(--ease-out),
     transform var(--duration-press) var(--ease-out);
 }
 
 .theme-switcher:hover {
   background: var(--surface);
+  color: var(--text);
 }
 
 .theme-switcher:active {
   transform: scale(0.97);
 }
 
-/* Read by screen readers only, so the button's name says what it sets. */
+/* Read by screen readers only, so the button's name says what it shows. */
 .theme-switcher-hidden {
   position: absolute;
   width: 1px;

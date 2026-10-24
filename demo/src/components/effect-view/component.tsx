@@ -47,7 +47,11 @@ export const EffectView = <C extends EffectConfig>({
               <h2 id={usageHeading} className="section-title">
                 Usage
               </h2>
-              <CodeBlock code={snippet(page, config)} label="the snippet" />
+              <CodeBlock
+                code={snippet(page, config)}
+                filename="RewardButton.tsx"
+                label="the snippet"
+              />
             </section>
           ),
         },

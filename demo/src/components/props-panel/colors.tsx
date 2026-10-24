@@ -29,7 +29,7 @@ export const Colors = ({ name, value, onChange }: ColorsProps) => {
     onChange(value.filter((_, i) => i !== index));
 
   return (
-    <fieldset className="frame-panel props-field props-field-wide">
+    <fieldset className="props-field props-field-wide">
       <legend className="props-field-name">{name}</legend>
       <div className="props-list">
         {value.map((color, index) => (

@@ -4,29 +4,27 @@
   gap: 24px;
 }
 
-/* A segmented control, in a --surface track. */
+/* A tab per panel, underlined when selected, as the install command's are. */
 .tabs-list {
-  display: inline-flex;
-  align-self: flex-start;
-  gap: 2px;
-  padding: 3px;
-  border: 1px solid var(--border);
-  border-radius: calc(var(--radius-control) + 4px);
-  background: var(--surface);
+  display: flex;
+  gap: 4px;
+  border-bottom: 1px solid var(--border);
 }
 
 .tabs-tab {
-  height: calc(var(--control-height) - 4px);
-  padding: 0 14px;
-  border: 1px solid transparent;
-  border-radius: var(--radius-control);
+  height: var(--touch-height);
+  margin-bottom: -1px;
+  padding: 0 12px;
+  border: 0;
+  border-bottom: 2px solid transparent;
   background: none;
   color: var(--text-muted);
-  font-size: 13px;
+  font-size: 14px;
+  font-weight: 500;
   cursor: pointer;
   transition:
     color var(--duration-fast) var(--ease-out),
-    background-color var(--duration-fast) var(--ease-out);
+    border-color var(--duration-fast) var(--ease-out);
 }
 
 .tabs-tab:hover {
@@ -34,9 +32,7 @@
 }
 
 .tabs-tab[aria-selected="true"] {
-  border-color: var(--border);
-  background: var(--card);
-  box-shadow: var(--raised);
+  border-bottom-color: var(--accent);
   color: var(--text);
 }
 

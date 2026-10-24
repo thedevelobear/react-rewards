@@ -21,7 +21,10 @@ const ICON: Record<Theme, ComponentType> = {
   dark: DarkIcon,
 };
 
-/** One button that cycles the theme: system, light, dark (plan step 3). */
+/**
+ * One icon button that cycles the theme: system, light, dark (README,
+ * "Header and sidebar").
+ */
 export const ThemeSwitcher = () => {
   const { theme, setTheme } = useTheme();
   const Icon = ICON[theme];
@@ -34,8 +37,7 @@ export const ThemeSwitcher = () => {
       onClick={() => setTheme(NEXT[theme])}
     >
       <Icon />
-      <span className="theme-switcher-hidden">Theme: </span>
-      {LABEL[theme]}
+      <span className="theme-switcher-hidden">Theme: {LABEL[theme]}</span>
     </button>
   );
 };
