@@ -15,9 +15,9 @@ const FLUTTER_MIN = 3;
 const FLUTTER_MAX = 6;
 /**
  * The most a piece glides sideways, as a share of `gravity`. At the defaults
- * the fastest pieces drift 180 px/s to the side while falling at 300 px/s.
+ * the fastest pieces drift 240 px/s to the side while falling at 300 px/s.
  */
-const GLIDE = 0.6;
+const GLIDE = 0.8;
 /**
  * The glide eases in as a piece's fall speed goes from the first to the
  * second share of `gravity / drag`. With a drag of 3, that is from about half
@@ -42,8 +42,8 @@ const glideShare = (vy: number, { gravity, drag }: ConfettiConfig) => {
 /**
  * Paper confetti (ADRs 0026, 0059). Pieces launch in a cone, slow down and
  * fall, flip about their horizontal axis, and flutter around a small circle.
- * Once it has been falling for a while, each glides sideways, away from the
- * cone's centre line, so the burst opens instead of falling in a column.
+ * Once it has been falling for a while, each glides to a random side, so the
+ * burst opens evenly instead of falling in a column.
  *
  * Slots: `s0` is the flutter phase and `s1` its speed in radians per second.
  * The sign of `s1` is also the side the piece glides to (negative is left),
@@ -72,20 +72,16 @@ export const confetti: Effect<ConfettiConfig> =
         height: size * ASPECT,
       })),
     spawn: (p, config, rng) => {
-      const offset = rng.range(-0.5, 0.5) * config.spread;
-      const direction = degToRad(config.angle + offset);
+      const direction = degToRad(
+        config.angle + rng.range(-0.5, 0.5) * config.spread
+      );
       const speed = config.velocity * rng.range(0.5, 1.5);
       p.rotation = rng.range(0, Math.PI * 2);
       p.sprite = rng.int(0, config.colors.length);
       // Pieces end at slightly different times, and all by `lifetime`.
       p.life *= rng.range(0.85, 1);
       p.s0 = rng.range(0, Math.PI * 2);
-      // A piece glides to the side of the cone it launched on. Up the
-      // middle, or in a sideways cone, it picks a side at random.
-      const right =
-        0.5 - 0.5 * Math.sin(degToRad(config.angle)) * Math.sign(offset);
-      p.s1 =
-        rng.range(FLUTTER_MIN, FLUTTER_MAX) * (rng.next() < right ? 1 : -1);
+      p.s1 = rng.range(FLUTTER_MIN, FLUTTER_MAX) * (rng.next() < 0.5 ? -1 : 1);
       p.s2 = rng.range(0, Math.PI * 2);
       p.s3 = rng.range(5, 9);
       // The velocity includes the flutter from the start, as `update` expects.

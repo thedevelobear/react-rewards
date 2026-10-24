@@ -140,7 +140,7 @@ describe('confetti', () => {
 
   it('ends within 1 px at 30, 60 and 144 Hz after 1 s and 2.5 s', () => {
     // Measured, against 144 Hz: 0.65 px at 30 Hz and 0.14 px at 60 Hz after
-    // 1 s, and 0.70 px and 0.15 px after 2.5 s, when the pieces glide.
+    // 1 s, and 0.71 px and 0.15 px after 2.5 s, when the pieces glide.
     for (const seconds of [1, 2.5]) {
       const at = (hz: number) => run(simulate({ count: 100 }, 3), seconds, hz);
       const reference = at(144);
@@ -161,22 +161,11 @@ describe('confetti', () => {
     }
   });
 
-  it('glides to the side of the cone it launched on (ADR 0059)', () => {
-    const simulation = simulate({ count: 200, size: 8, spread: 90 });
-    const s1 = field(simulation, 's1');
-    // Before the first step, the flight is the launch.
-    for (const [i, vx] of flightVx(simulation, 8).entries()) {
-      expect(Math.sign(s1[i] ?? 0)).toBe(Math.sign(vx));
-    }
-  });
-
-  it('picks a side at random up the middle, or in a sideways cone', () => {
-    for (const cone of [{ spread: 0 }, { angle: 0, spread: 45 }]) {
-      const s1 = field(simulate({ count: 200, ...cone }), 's1');
-      const left = s1.filter((speed) => speed < 0).length;
-      expect(left).toBeGreaterThan(60);
-      expect(left).toBeLessThan(140);
-    }
+  it('glides to either side at random (ADR 0059)', () => {
+    const s1 = field(simulate({ count: 200 }), 's1');
+    const left = s1.filter((speed) => speed < 0).length;
+    expect(left).toBeGreaterThan(70);
+    expect(left).toBeLessThan(130);
   });
 
   it('flies as without a glide while it rises and starts to fall', () => {
@@ -193,8 +182,25 @@ describe('confetti', () => {
     const simulation = run(simulate({ count: 200 }), 1.25);
     const falling = width(simulation);
     run(simulation, 1.25);
-    // Measured: 1.65 times as wide. Without the glide, 1.02 times.
+    // Measured: 1.68 times as wide. Without the glide, 1.02 times.
     expect(width(simulation)).toBeGreaterThan(falling * 1.4);
+  });
+
+  it('falls evenly, with no gap in the middle', () => {
+    const simulation = run(simulate({ count: 2000 }), 2.5);
+    // The middle 80% of the pieces, in five bands of equal width.
+    const x = field(simulation, 'x').sort((a, b) => a - b);
+    const from = x[Math.floor(0.1 * x.length)] ?? 0;
+    const to = x[Math.floor(0.9 * x.length)] ?? 0;
+    const bands = [0, 0, 0, 0, 0];
+    for (const value of x) {
+      const band = Math.floor(((value - from) / (to - from)) * 5);
+      if (band >= 0 && band < 5) bands[band] = (bands[band] ?? 0) + 1;
+    }
+    // Measured: 1.35 times the mean band. Gliding to the side a piece was
+    // thrown instead left 0.33 times, a gap between two columns.
+    const mean = (0.8 * x.length) / 5;
+    expect(bands[2]).toBeGreaterThan(0.8 * mean);
   });
 
   it('never glides without drag or gravity', () => {
@@ -223,30 +229,30 @@ describe('confetti', () => {
       [
         {
           "alpha": 1,
-          "rotation": 2.104,
+          "rotation": 4.524,
           "scaleY": 0.636,
-          "vx": -53.514,
-          "vy": 17.598,
-          "x": -7.113,
-          "y": -141.898,
+          "vx": 35.513,
+          "vy": 35.221,
+          "x": -23.318,
+          "y": -145.106,
         },
         {
           "alpha": 1,
-          "rotation": 1.99,
+          "rotation": -0.244,
           "scaleY": 0.974,
-          "vx": 15.13,
-          "vy": -153.41,
-          "x": -6.032,
-          "y": -322.722,
+          "vx": -41.595,
+          "vy": -114.595,
+          "x": 10.222,
+          "y": -333.844,
         },
         {
           "alpha": 1,
-          "rotation": 1.24,
+          "rotation": -0.703,
           "scaleY": 0.126,
-          "vx": 8.272,
-          "vy": 42.928,
-          "x": 50.904,
-          "y": -172.584,
+          "vx": 41.89,
+          "vy": 53.545,
+          "x": 28.699,
+          "y": -179.596,
         },
       ]
     `);
