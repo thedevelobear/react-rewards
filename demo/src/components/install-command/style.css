@@ -24,15 +24,19 @@
   cursor: pointer;
   transition:
     color var(--duration-fast) var(--ease-out),
-    border-color var(--duration-fast) var(--ease-out);
+    border-color var(--duration-fast) var(--ease-out),
+    box-shadow var(--duration-fast) var(--ease-out);
 }
 
 .install-manager:hover {
   color: var(--text);
 }
 
+/* Positioned, so its glow paints over the command below. */
 .install-manager[aria-pressed="true"] {
+  position: relative;
   border-bottom-color: var(--accent);
+  box-shadow: var(--accent-glow-line);
   color: var(--text);
 }
 

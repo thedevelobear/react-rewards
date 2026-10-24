@@ -15,7 +15,7 @@ The preview site for react-rewards, and the page the browser specs run against. 
 The site documents the library, so its design decisions are kept here rather than in `docs/decisions/` ([ADR 0046](../docs/decisions/0046-adrs-cover-the-library.md)). Each says what was chosen and why. When the site changes, edit the decision in place, in the same PR.
 
 ### Visual direction
-- Dark first: a near-black ground, panels one step lighter, 1 px borders, and one coral accent. The light theme mirrors the dark one's steps. There are no gradients, and no shadows apart from the glow under the preview's button.
+- Dark first: a near-black ground, panels one step lighter, 1 px borders, and one coral accent. The light theme mirrors the dark one's steps. There are no gradients. The only shadows are the accent's glow, a soft coral light like the glow under the blog's "Previous Posts" button (see "Accent glow").
 - Type: Geist for UI and Geist Mono for code and small labels, self-hosted through Fontsource, weights 400 to 600. UI text is 13 to 14 px with `-0.01em` tracking, and paragraphs 15.5 px at 1.6 line height. The page title is 64 px (40 px on phones), weight 600, `-0.045em`. Section titles are 24 px, weight 600, `-0.025em`. Group labels are mono, 11 px, uppercase, with `0.1em` tracking.
 - Shape: radii of 6, 10, 12, 14, 16 and 20 px and full. The props panel's compact controls keep 7 px.
 - Size: what people tap is 44 px tall: the header's buttons, the sidebar's links, the tabs, and the copy and Reset buttons. The props panel's controls stay 32 px, as a dense grid. The header is 68 px. The content is at most 800 px wide, beside a 240 px sidebar, and the header lines up with them.
@@ -50,6 +50,16 @@ The site documents the library, so its design decisions are kept here rather tha
 
 Why: a dark, quiet page lets the effects carry the colour. Each text colour keeps 4.5:1 on every surface it sits on, and the focus ring and ticks keep 3:1. Coral text fails on white, so light mode has a darker `--accent-text`.
 
+### Accent glow
+- The accent glows wherever it marks something, as a box shadow in the accent's colour, from tokens in `src/styles/tokens.css`:
+  - `--accent-glow`, `0 12px 40px -12px`: under the preview's button, and under a pager card on hover.
+  - `--accent-glow-soft`, `0 12px 32px -18px`: under the pager's cards.
+  - `--accent-glow-line`, `0 10px 16px -10px`: under the selected tab's line, in the Preview and Code tabs and the install command. The selected tab is positioned, so its glow paints over what follows.
+  - `--accent-glow-mark`, `0 0 10px`: around the sidebar's dot, the sliders' thumbs and a switch that is on. The sidebar's active icon has a 4 px `drop-shadow` of the accent.
+- The glow is decorative and carries no meaning of its own, so it needs no contrast. Glows that change animate with the UI's transitions.
+
+Why: the glow under the preview's button made the accent read as light rather than paint, so the other accent marks share it, and the cards that lead to the next page look like the blog's "Previous Posts" button.
+
 ### Routing
 - The URL hash names the page: `#getting-started`, `#custom-effects`, `#server-rendering`, `#upgrading-from-v2`, `#stress-test`, `#use-reward`, `#fire`, `#renderers`, `#confetti`, `#emoji`, `#balloon`. An effect's hash is its `name`, not its label, so Balloons is `#balloon`.
 - An empty or unknown hash shows Getting started. The URL is left as it is.
@@ -62,7 +72,7 @@ Why: GitHub Pages serves static files only, so path routes such as `/emoji` woul
 
 ### Getting started
 - The home page. Under the title is a preview of the first effect with its defaults, captioned "Every call to reward() fires a new burst."
-- Then three numbered steps, joined by a line. The last step's number has an accent ring.
+- Then three numbered steps, joined by a line.
   1. "Install the package": the install command, with a tab per package manager (pnpm, npm, yarn, bun) and a copy button. The choice is stored under `react-rewards:package-manager`.
   2. "Fire your first reward": a line on `useReward` with a link to its page, and the first effect's snippet with its defaults, as `RewardButton.tsx`.
   3. "Pick an effect": a card per effect, linking to its page, with its label and description. Each card has a drawing of its effect, from `articles/getting-started/art.tsx`. An effect without a drawing shows its icon instead, so a new effect needs no code here.
@@ -92,7 +102,7 @@ Why: one page for performance keeps the effect pages about the API, and keeps th
 - The logo's alt text is "react-rewards", and it links to `#getting-started`. Biome's `useValidAnchor` rejects `href="#"`. Its orange-to-purple gradient is outside the site's palette, which is fine for a logo: logos are exempt from WCAG's contrast minimum.
 - The sidebar is a navigation labelled "Pages", with three groups: "Guides" (Getting started, Custom effects, Server rendering, Upgrading from v2 and Stress test), "API" (useReward, fire and Renderers), and "Effects". Each heading labels its list. Items are links with an icon, and the current one has `aria-current="page"`.
 - Each page names its icon in `src/data/` (see "Icons").
-- The active item has a `--surface` background, `--text` text, an `--accent` icon and an `--accent` dot at its end. On phones every group's links share one row of 44 px pills that scrolls sideways, and the active pill has a `--surface` background and no dot.
+- The active item has a `--surface` background, `--text` text, an `--accent` icon and an `--accent` dot at its end, both glowing. On phones every group's links share one row of 44 px pills that scrolls sideways, and the active pill has a `--surface` background and no dot.
 
 Why: the item's text stays in text colours, which keep 4.5:1, and the accent marks it with shapes, which need no text contrast.
 
@@ -113,7 +123,7 @@ Why: one set of icons and one component keeps every icon the same weight, and no
 - There is no replay button: "Reward me" already fires again.
 
 ### Preview and Code tabs
-- Below an effect's title are two tabs, underlined in `--accent` when selected, as the install command's are. Preview holds the preview, the props panel and the props table. Code holds the snippet, as `RewardButton.tsx`.
+- Below an effect's title are two tabs, underlined in `--accent` when selected, with the line's glow under it, as the install command's are. Preview holds the preview, the props panel and the props table. Code holds the snippet, as `RewardButton.tsx`.
 - Both panels stay mounted, and the one not shown is `hidden`, so opening Code doesn't cancel a running burst, and the snippet always reflects the panel.
 - The tabs follow the WAI-ARIA tabs pattern: arrow keys, Home and End. Preview is selected on load and when the effect changes. The tab isn't kept in the URL.
 - The preview fires with the panel's settings.
@@ -171,5 +181,6 @@ Why: one copy of each fact, on the page people already use to try the effects, a
 
 ### Pager
 - Every page ends with cards for the pages before and after it, in the sidebar's order, in a navigation labelled "Previous and next". A card shows "Previous" or "Next", in mono, the page's label, and an `--accent` arrow. Getting started has only a next card, and the last effect only a previous one.
+- The cards have a soft accent glow under them, which grows to the preview button's on hover.
 
 Why: a reader can go through the site in order without going back up to the sidebar.

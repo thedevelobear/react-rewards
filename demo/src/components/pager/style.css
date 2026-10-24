@@ -19,11 +19,16 @@
   background: var(--card);
   color: var(--text);
   text-decoration: none;
-  transition: border-color var(--duration-fast) var(--ease-out);
+  box-shadow: var(--accent-glow-soft);
+  transition:
+    border-color var(--duration-fast) var(--ease-out),
+    box-shadow var(--duration-fast) var(--ease-out);
 }
 
+/* Lit like the preview's button (README, "Pager"). */
 .pager-link:hover {
   border-color: var(--border-strong);
+  box-shadow: var(--accent-glow);
 }
 
 .pager-link svg {
