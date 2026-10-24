@@ -1,16 +1,4 @@
-/** A seedable pseudo-random number generator. */
-export interface Rng {
-  /** The seed this generator started from. */
-  readonly seed: number;
-  /** A float in [0, 1). */
-  next(): number;
-  /** A float in [min, max). */
-  range(min: number, max: number): number;
-  /** An integer in [min, max). */
-  int(min: number, max: number): number;
-  /** One of `items`, chosen uniformly. Throws on an empty list. */
-  pick<T>(items: readonly T[]): T;
-}
+import type { Rng } from './types';
 
 const randomSeed = (): number => Math.floor(Math.random() * 2 ** 32);
 

@@ -1,2 +1,2 @@
-export type { Tab } from './component';
 export { Tabs } from './component';
+export type { Tab } from './types';

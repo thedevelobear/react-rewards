@@ -1,16 +1,11 @@
 import { useEffect, useRef } from 'react';
-
-interface ColorsProps {
-  readonly name: string;
-  readonly value: readonly string[];
-  readonly onChange: (value: readonly string[]) => void;
-}
+import type { ListProps } from './types';
 
 /**
  * A swatch per colour, each the browser's colour input, and a + tile that
  * adds one (README, "Props panel").
  */
-export const Colors = ({ name, value, onChange }: ColorsProps) => {
+export const Colors = ({ name, value, onChange }: ListProps) => {
   const adder = useRef<HTMLInputElement>(null);
 
   // React's `onChange` fires on every `input` event while the picker is

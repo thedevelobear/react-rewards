@@ -1,5 +1,5 @@
 import type { EffectConfig } from 'react-rewards';
-import type { AnyControl, AnyEffectPage, EffectPage } from './types';
+import type { AnyEffectPage, EffectPage, Field } from './types';
 
 /** Hides `page`'s config type, so it fits in the list of pages. */
 export const effectPage = <C extends EffectConfig>(
@@ -11,14 +11,6 @@ export const effectPage = <C extends EffectConfig>(
   icon: page.icon,
   use: (callback) => callback(page),
 });
-
-/** One setting of an effect, as the props panel and the props table show it. */
-export interface Field<C extends EffectConfig> {
-  readonly key: keyof C & string;
-  readonly control: AnyControl;
-  readonly value: unknown;
-  readonly defaultValue: unknown;
-}
 
 /** The page's settings in the order of its controls, with their values. */
 export const fields = <C extends EffectConfig>(

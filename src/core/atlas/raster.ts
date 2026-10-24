@@ -1,4 +1,5 @@
 import type { SpriteSource } from '@/core/define-effect';
+import type { SpriteSize } from './types';
 
 /**
  * Emoji glyphs often reach past their font size, so an emoji's box is this
@@ -10,9 +11,7 @@ const EMOJI_FONT =
   '"Apple Color Emoji", "Segoe UI Emoji", "Noto Color Emoji", sans-serif';
 
 /** The size a source is drawn at, in CSS pixels. */
-export const spriteSize = (
-  source: SpriteSource
-): { width: number; height: number } => {
+export const spriteSize = (source: SpriteSource): SpriteSize => {
   if ('emoji' in source) {
     const side = source.size * EMOJI_BOX;
     return { width: side, height: side };

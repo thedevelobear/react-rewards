@@ -1,20 +1,8 @@
-import { type ReactNode, useRef } from 'react';
-import { type Burst, type EffectConfig, useReward } from 'react-rewards';
+import { useRef } from 'react';
+import { type EffectConfig, useReward } from 'react-rewards';
 import { Icon } from '@/components/icon';
-import type { EffectPage } from '@/data/effects';
+import type { PreviewProps } from './types';
 import './style.css';
-
-interface PreviewProps<C extends EffectConfig> {
-  readonly page: EffectPage<C>;
-  /** The props panel's settings. */
-  readonly config: Readonly<C>;
-  /** Called with each burst the button starts. */
-  readonly onBurst?: (burst: Burst) => void;
-  /** Shown in the top right corner, such as the stress test's readout. */
-  readonly corner?: ReactNode;
-  /** A line under the button. */
-  readonly caption?: ReactNode;
-}
 
 /**
  * The stage for one effect: a dot grid, its name, and a button that fires

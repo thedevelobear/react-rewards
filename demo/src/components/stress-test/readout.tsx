@@ -1,5 +1,6 @@
 import type { RendererKind } from 'react-rewards';
 import type { Reading } from '@/hooks/use-frame-rate';
+import type { ReadoutProps } from './types';
 
 const RENDERERS: Record<RendererKind, string> = {
   webgl: 'WebGL',
@@ -28,7 +29,7 @@ const text = (reading: Reading): string => {
  * The renderer and fps tag in the preview's corner (README, "Stress test").
  * It isn't a live region, because it changes four times a second.
  */
-export const Readout = ({ reading }: { readonly reading: Reading }) => (
+export const Readout = ({ reading }: ReadoutProps) => (
   <span
     className="stress-readout"
     data-testid="stress-readout"

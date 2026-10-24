@@ -5,12 +5,9 @@ import { Preview } from '@/components/preview';
 import { PropsPanel } from '@/components/props-panel';
 import { PropsTable } from '@/components/props-table';
 import { Tabs } from '@/components/tabs';
-import { type EffectPage, fields, snippet } from '@/data/effects';
+import { fields, snippet } from '@/data/effects';
 import { useConfig } from '@/hooks/use-config';
-
-interface EffectViewProps<C extends EffectConfig> {
-  readonly page: EffectPage<C>;
-}
+import type { EffectViewProps } from './types';
 
 /**
  * One effect's Preview and Code tabs (README, "Preview and Code tabs"). The

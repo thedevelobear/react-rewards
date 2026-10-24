@@ -26,3 +26,18 @@ export interface UseFrameRateResult {
    */
   readonly track: (burst: Burst) => void;
 }
+
+/** One run: from the first tracked burst until every tracked burst ends. */
+export interface Run {
+  readonly bursts: Set<Burst>;
+  renderer: RendererKind | undefined;
+  /** Whether any burst ended other than skipped. */
+  drew: boolean;
+  /** Frame times within the last half second. */
+  readonly recent: number[];
+  first: number | undefined;
+  last: number;
+  frames: number;
+  shown: number;
+  handle: number;
+}

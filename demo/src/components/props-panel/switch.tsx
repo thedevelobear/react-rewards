@@ -1,8 +1,4 @@
-interface SwitchProps {
-  readonly name: string;
-  readonly value: boolean;
-  readonly onChange: (value: boolean) => void;
-}
+import type { SwitchProps } from './types';
 
 /** A checkbox drawn as a switch, with the setting's name beside it. */
 export const Switch = ({ name, value, onChange }: SwitchProps) => (

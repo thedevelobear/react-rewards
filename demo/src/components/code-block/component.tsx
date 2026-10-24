@@ -2,20 +2,8 @@ import { useEffect, useMemo, useState } from 'react';
 import { CopyButton } from '@/components/copy-button';
 import { Icon } from '@/components/icon';
 import { highlighter, loadHighlighter, THEME } from './highlight';
+import type { CodeBlockProps, Line } from './types';
 import './style.css';
-
-interface Token {
-  /** Where the token starts in the code, which also keys it. */
-  readonly offset: number;
-  readonly content: string;
-  /** A `--code-*` variable, or none for the foreground. */
-  readonly color?: string;
-}
-
-interface Line {
-  readonly offset: number;
-  readonly tokens: readonly Token[];
-}
 
 /** `code` split into lines of one uncoloured token each. */
 const plain = (code: string): Line[] => {
@@ -26,15 +14,6 @@ const plain = (code: string): Line[] => {
     return line;
   });
 };
-
-interface CodeBlockProps {
-  /** TSX source. A trailing newline is copied but not shown. */
-  readonly code: string;
-  /** The file the code would live in, such as `RewardButton.tsx`. */
-  readonly filename: string;
-  /** What the code is, for the copy button, such as "the snippet". */
-  readonly label: string;
-}
 
 /**
  * The code under its file name, with line numbers, highlighted by shiki once

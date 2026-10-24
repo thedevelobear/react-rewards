@@ -1,31 +1,18 @@
-import { type ReactNode, useId } from 'react';
+import { useId } from 'react';
 import type { EffectConfig } from 'react-rewards';
-import {
-  type Field,
-  isStringList,
-  type SettingValue,
-  sameValue,
-} from '@/data/effects';
+import { isStringList, sameValue } from '@/data/effects';
 import { Colors } from './colors';
 import { Emojis } from './emojis';
 import { Range } from './range';
 import { Switch } from './switch';
+import type { ControlGridProps, ControlProps, PropsPanelProps } from './types';
 import './style.css';
-
-interface PropsPanelProps<C extends EffectConfig> {
-  readonly fields: readonly Field<C>[];
-  readonly onChange: (key: keyof C & string, value: SettingValue) => void;
-  readonly onReset: () => void;
-}
 
 /** The control for one setting, picked by its kind and its value's type. */
 const Control = <C extends EffectConfig>({
   field: { key, control, value },
   onChange,
-}: {
-  readonly field: Field<C>;
-  readonly onChange: (value: SettingValue) => void;
-}) => {
+}: ControlProps<C>) => {
   switch (control.kind) {
     case 'range':
       return typeof value === 'number' ? (
@@ -47,7 +34,7 @@ const Control = <C extends EffectConfig>({
 };
 
 /** The panel's grid of cells, one per control. */
-export const ControlGrid = ({ children }: { readonly children: ReactNode }) => (
+export const ControlGrid = ({ children }: ControlGridProps) => (
   <div className="props-panel">
     <div className="props-grid">{children}</div>
   </div>

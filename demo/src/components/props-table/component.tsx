@@ -1,6 +1,7 @@
 import { useId } from 'react';
 import type { EffectConfig } from 'react-rewards';
-import { type AnyControl, type Field, formatValue } from '@/data/effects';
+import { type AnyControl, formatValue } from '@/data/effects';
+import type { DescriptionProps, PropsTableProps } from './types';
 import './style.css';
 
 const TYPES: Record<AnyControl['kind'], string> = {
@@ -11,16 +12,12 @@ const TYPES: Record<AnyControl['kind'], string> = {
 };
 
 /** `text` with its backticked parts as code. */
-const Description = ({ text }: { readonly text: string }) =>
+const Description = ({ text }: DescriptionProps) =>
   text
     .split('`')
     .map((part, index) =>
       index % 2 === 1 ? <code key={part}>{part}</code> : part
     );
-
-interface PropsTableProps<C extends EffectConfig> {
-  readonly fields: readonly Field<C>[];
-}
 
 /** Every setting of the effect, with its default (README, "Props table"). */
 export const PropsTable = <C extends EffectConfig>({

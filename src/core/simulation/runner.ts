@@ -1,24 +1,8 @@
 import type { Effect, EffectConfig, UpdateContext } from '@/core/define-effect';
-import { createRng, type Point, type Rng } from '@/core/math';
-import { createPool, type Pool } from '@/core/pool';
+import { createRng } from '@/core/math';
+import { createPool } from '@/core/pool';
+import type { Simulation, SimulationOptions } from './types';
 import { ParticleView } from './view';
-
-export interface SimulationOptions {
-  /** Where particles spawn, in viewport CSS pixels. */
-  readonly origin: Point;
-  /** Seeds the burst's generator. Random when left out. */
-  readonly seed?: number;
-}
-
-/** One burst's particles, stepped with its effect. */
-export interface Simulation {
-  readonly pool: Pool;
-  readonly rng: Rng;
-  /** True once every particle has been removed. */
-  readonly done: boolean;
-  /** Advances every particle by `dt` seconds. */
-  step(dt: number): void;
-}
 
 /**
  * Spawns `config.count` particles at the origin and runs `spawn` on each.

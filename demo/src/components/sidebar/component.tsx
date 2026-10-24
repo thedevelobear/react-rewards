@@ -1,33 +1,10 @@
 import { useId } from 'react';
-import { Icon, type IconName } from '@/components/icon';
+import { Icon } from '@/components/icon';
+import type { GroupProps, SidebarProps } from './types';
 import './style.css';
 
-export interface SidebarLink {
-  /** The URL hash, without its `#`. */
-  readonly name: string;
-  readonly label: string;
-  readonly icon: IconName;
-}
-
-export interface SidebarGroup {
-  readonly heading: string;
-  readonly links: readonly SidebarLink[];
-}
-
-interface SidebarProps {
-  readonly groups: readonly SidebarGroup[];
-  /** The name of the page that is showing. */
-  readonly current: string;
-}
-
 /** One group's heading and links. The heading labels the list. */
-const Group = ({
-  group: { heading, links },
-  current,
-}: {
-  readonly group: SidebarGroup;
-  readonly current: string;
-}) => {
+const Group = ({ group: { heading, links }, current }: GroupProps) => {
   const id = useId();
   return (
     <div className="sidebar-group">

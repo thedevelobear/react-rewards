@@ -4,8 +4,8 @@ export type {
   AnyControl,
   AnyEffectPage,
   EffectPage,
+  Field,
   RangeControl,
   SettingValue,
 } from './types';
-export type { Field } from './util';
 export { fields, formatValue, isStringList, sameValue } from './util';

@@ -1,17 +1,6 @@
-import { type KeyboardEvent, type ReactNode, useId, useState } from 'react';
+import { type KeyboardEvent, useId, useState } from 'react';
+import type { TabsProps } from './types';
 import './style.css';
-
-export interface Tab {
-  readonly id: string;
-  readonly label: string;
-  readonly panel: ReactNode;
-}
-
-interface TabsProps {
-  /** What the tab list is for, for screen readers. */
-  readonly label: string;
-  readonly tabs: readonly Tab[];
-}
 
 /** The tab `key` moves to from `index` of `count` tabs, if it moves. */
 const move = (key: string, index: number, count: number) => {

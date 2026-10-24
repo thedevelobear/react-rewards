@@ -1,4 +1,4 @@
-import type { Call } from './canvas';
+import type { Call, FakeWebgl, FakeWebglOptions, Size } from './types';
 
 /** Copies typed arrays, so a recorded upload keeps what was uploaded. */
 const snapshot = (value: unknown): unknown =>
@@ -11,9 +11,9 @@ const snapshot = (value: unknown): unknown =>
  * named objects, and status queries succeed unless `link` is false.
  */
 export const createFakeWebgl = (
-  canvas: { width: number; height: number },
-  options: { link?: boolean } = {}
-): { gl: WebGL2RenderingContext; calls: Call[] } => {
+  canvas: Size,
+  options: FakeWebglOptions = {}
+): FakeWebgl => {
   const calls: Call[] = [];
   const created = new Map<string, number>();
   const record =

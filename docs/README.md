@@ -101,6 +101,7 @@ What was decided, specifically enough to check the code against.
 | [0058](decisions/0058-site-redesign-before-the-release.md) | The site's redesign lands on the integration branch before the release, with the effect tweaks made while reviewing it | Accepted |
 | [0059](decisions/0059-confetti-falls-like-paper.md) | Confetti eases into falling like paper | Accepted |
 | [0060](decisions/0060-cleanup-before-the-release.md) | The docs, icon and type cleanup lands on the integration branch before the release | Proposed |
+| [0061](decisions/0061-types-in-types-files.md) | Types are declared in each folder's `types.ts` | Proposed |
 
 ### Benchmarks
 | Benchmark | What |

@@ -1,21 +1,14 @@
-import type { ComponentType, CSSProperties, ReactNode } from 'react';
-import { Icon, type IconName } from '@/components/icon';
-
-/** A colour of the drawings: a token in `tokens.css`. */
-type Paint = 'accent' | 'art-violet' | 'art-amber' | 'art-sky' | 'art-mint';
+import type { ComponentType, CSSProperties } from 'react';
+import { Icon } from '@/components/icon';
+import type {
+  BalloonProps,
+  EffectArtProps,
+  FaceProps,
+  Paint,
+  Piece,
+} from './types';
 
 const fill = (paint: Paint): CSSProperties => ({ fill: `var(--${paint})` });
-
-/** A confetti piece: where it sits in the card, in %, and its shape. */
-interface Piece {
-  readonly left: number;
-  readonly top: number;
-  readonly width: number;
-  readonly height: number;
-  readonly paint: Paint;
-  readonly round?: boolean;
-  readonly turn?: number;
-}
 
 const PIECES: readonly Piece[] = [
   { left: 22, top: 30, width: 8, height: 14, paint: 'accent', turn: -24 },
@@ -48,17 +41,9 @@ const Confetti = () =>
   ));
 
 /** A face's parts, turned and placed at `x` and `y`. */
-const Face = ({
-  x,
-  y,
-  turn,
-  children,
-}: {
-  readonly x: number;
-  readonly y: number;
-  readonly turn: number;
-  readonly children: ReactNode;
-}) => <g transform={`translate(${x} ${y}) rotate(${turn})`}>{children}</g>;
+const Face = ({ x, y, turn, children }: FaceProps) => (
+  <g transform={`translate(${x} ${y}) rotate(${turn})`}>{children}</g>
+);
 
 /** Three faces. Their features are `--ink` in both themes. */
 const Emoji = () => (
@@ -90,19 +75,7 @@ const Emoji = () => (
 );
 
 /** A balloon at `x`, its top at `y`, with its knot and its shine. */
-const Balloon = ({
-  x,
-  y,
-  width,
-  height,
-  paint,
-}: {
-  readonly x: number;
-  readonly y: number;
-  readonly width: number;
-  readonly height: number;
-  readonly paint: Paint;
-}) => (
+const Balloon = ({ x, y, width, height, paint }: BalloonProps) => (
   <g style={fill(paint)}>
     <ellipse cx={x} cy={y + height} rx={width} ry={height} />
     <path d={`M${x - 3} ${y + height * 2}h6l-3 4Z`} />
@@ -139,13 +112,7 @@ const ART: Readonly<Record<string, ComponentType>> = {
  * A drawing of the effect for its card. An effect without one shows its
  * icon (README, "Getting started").
  */
-export const EffectArt = ({
-  name,
-  icon,
-}: {
-  readonly name: string;
-  readonly icon: IconName;
-}) => {
+export const EffectArt = ({ name, icon }: EffectArtProps) => {
   const Art = ART[name];
   return Art ? <Art /> : <Icon name={icon} size={32} strokeWidth={1.5} />;
 };

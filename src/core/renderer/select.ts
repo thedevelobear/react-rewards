@@ -1,13 +1,13 @@
 import { createCanvasRenderer } from '@/core/renderer-canvas';
 import { CONTEXT_ATTRIBUTES, createWebglRenderer } from '@/core/renderer-webgl';
-import type { Renderer, RendererKind, RendererPreference } from './types';
+import type {
+  Renderer,
+  RendererFactory,
+  RendererKind,
+  RendererPreference,
+} from './types';
 
-type Factory = (
-  canvas: HTMLCanvasElement,
-  onLost: () => void
-) => Renderer | undefined;
-
-const factories: Readonly<Record<RendererKind, Factory>> = {
+const factories: Readonly<Record<RendererKind, RendererFactory>> = {
   webgl: (canvas, onLost) => {
     const gl = canvas.getContext('webgl2', CONTEXT_ATTRIBUTES);
     if (!gl) return undefined;

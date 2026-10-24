@@ -1,20 +1,14 @@
-import { type ReactNode, useId } from 'react';
+import { useId } from 'react';
 import { CodeBlock } from '@/components/code-block';
 import { InstallCommand } from '@/components/install-command';
 import { Preview } from '@/components/preview';
 import { effects, snippet } from '@/data/effects';
 import { EffectCards } from './cards';
+import type { StepProps } from './types';
 import './style.css';
 
 /** The first effect's snippet, with its defaults. */
 const EXAMPLE = effects[0].use((page) => snippet(page, page.effect.defaults));
-
-interface StepProps {
-  readonly number: number;
-  readonly title: string;
-  readonly text: ReactNode;
-  readonly children: ReactNode;
-}
 
 /** A numbered step, joined to the next by a line. */
 const Step = ({ number, title, text, children }: StepProps) => {

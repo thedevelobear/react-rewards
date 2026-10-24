@@ -81,3 +81,11 @@ export interface AnyEffectPage {
     callback: <C extends EffectConfig>(page: EffectPage<C>) => R
   ) => R;
 }
+
+/** One setting of an effect, as the props panel and the props table show it. */
+export interface Field<C extends EffectConfig> {
+  readonly key: keyof C & string;
+  readonly control: AnyControl;
+  readonly value: unknown;
+  readonly defaultValue: unknown;
+}

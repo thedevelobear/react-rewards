@@ -1,20 +1,4 @@
-import type { Point } from '@/core/math';
-
-/** Places rectangles in rows ("shelves"), left to right, top to bottom. */
-export interface Packer {
-  readonly width: number;
-  readonly height: number;
-  /** The top-left corner for a `width` by `height` box, or undefined if full. */
-  pack(width: number, height: number): Point | undefined;
-  /** Enlarges the area. Boxes already placed keep their positions. */
-  grow(width: number, height: number): void;
-}
-
-interface Shelf {
-  readonly y: number;
-  readonly height: number;
-  x: number;
-}
+import type { Packer, Shelf } from './types';
 
 /**
  * Creates a shelf packer with `padding` pixels around every box, so that

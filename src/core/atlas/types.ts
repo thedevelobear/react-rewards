@@ -1,4 +1,5 @@
 import type { SpriteSource } from '@/core/define-effect';
+import type { Point } from '@/core/math';
 
 /** Where a sprite sits in the atlas, and how big it is drawn. */
 export interface Region {
@@ -40,4 +41,27 @@ export interface AtlasOptions {
   readonly initialSize?: number;
   /** The largest side length in pixels. Defaults to 2048. */
   readonly maxSize?: number;
+}
+
+/** Places rectangles in rows ("shelves"), left to right, top to bottom. */
+export interface Packer {
+  readonly width: number;
+  readonly height: number;
+  /** The top-left corner for a `width` by `height` box, or undefined if full. */
+  pack(width: number, height: number): Point | undefined;
+  /** Enlarges the area. Boxes already placed keep their positions. */
+  grow(width: number, height: number): void;
+}
+
+/** One row of the packer, filled from the left. */
+export interface Shelf {
+  readonly y: number;
+  readonly height: number;
+  x: number;
+}
+
+/** A sprite's drawn size in CSS pixels. */
+export interface SpriteSize {
+  width: number;
+  height: number;
 }

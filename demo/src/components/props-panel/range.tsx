@@ -1,12 +1,5 @@
 import { useId } from 'react';
-import type { RangeControl } from '@/data/effects';
-
-interface RangeProps {
-  readonly name: string;
-  readonly control: RangeControl;
-  readonly value: number;
-  readonly onChange: (value: number) => void;
-}
+import type { RangeProps } from './types';
 
 /** A slider, with the setting's name and value above it. */
 export const Range = ({ name, control, value, onChange }: RangeProps) => {

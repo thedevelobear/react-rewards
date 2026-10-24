@@ -1,12 +1,6 @@
 import { Icon } from '@/components/icon';
+import type { PageTitleProps } from './types';
 import './style.css';
-
-interface PageTitleProps {
-  /** The sidebar group the page is in, such as "Guides". */
-  readonly group: string;
-  readonly title: string;
-  readonly description: string;
-}
 
 /**
  * The page's group and name as a breadcrumb, its name, and a line about it

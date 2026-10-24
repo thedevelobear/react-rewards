@@ -1,18 +1,6 @@
 import { Icon } from '@/components/icon';
+import type { PagerProps } from './types';
 import './style.css';
-
-export interface PagerLink {
-  /** The URL hash, without its `#`. */
-  readonly name: string;
-  readonly label: string;
-}
-
-interface PagerProps {
-  /** Every page, in the sidebar's order. */
-  readonly pages: readonly PagerLink[];
-  /** The name of the page that is showing. */
-  readonly current: string;
-}
 
 /**
  * Cards for the pages before and after this one, in the sidebar's order

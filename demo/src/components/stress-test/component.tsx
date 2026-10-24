@@ -1,7 +1,12 @@
 import { useEffect, useId, useState } from 'react';
 import { type RendererPreference, setRenderer } from 'react-rewards';
 import { Preview } from '@/components/preview';
-import { Choice, ControlGrid, Range } from '@/components/props-panel';
+import {
+  Choice,
+  type ChoiceOption,
+  ControlGrid,
+  Range,
+} from '@/components/props-panel';
 import { effects, type RangeControl } from '@/data/effects';
 import { useFrameRate } from '@/hooks/use-frame-rate';
 import { Readout } from './readout';
@@ -19,10 +24,7 @@ const DEFAULT_COUNT = 5000;
 
 const EFFECTS = effects.map(({ name, label }) => ({ value: name, label }));
 
-const RENDERERS: readonly {
-  readonly value: RendererPreference;
-  readonly label: string;
-}[] = [
+const RENDERERS: readonly ChoiceOption<RendererPreference>[] = [
   { value: 'auto', label: 'Auto' },
   { value: 'webgl', label: 'WebGL' },
   { value: 'canvas', label: 'Canvas 2D' },
