@@ -4,7 +4,7 @@ Each release's changes, newest first. Releases before 3.0.0 are tagged in git, w
 
 ## 3.0.0
 
-A rewrite, with a new engine and API. The README's [From v2](README.md#from-v2) table maps each v2 option to its replacement.
+A rewrite, with a new engine and API. [Upgrading from v2](https://thedevelobear.github.io/react-rewards/#upgrading-from-v2) maps each v2 option to its replacement.
 
 ### Breaking changes
 - `useReward(target, effect, config?, options?)` takes a ref or an element instead of an element id, and an imported effect (`confetti`, `emoji`, `balloon`) instead of a type name.
@@ -23,5 +23,5 @@ A rewrite, with a new engine and API. The README's [From v2](README.md#from-v2) 
 - `setRenderer('auto' | 'webgl' | 'canvas')`.
 - `defineEffect` for custom effects, with the math helpers the built-in effects use.
 - A `seed` option, so a burst can be replayed exactly.
-- A demo site: https://thedevelobear.github.io/react-rewards/
+- A site with every effect live and the docs: https://thedevelobear.github.io/react-rewards/
 - Packages are published from GitHub Actions with npm provenance.

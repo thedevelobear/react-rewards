@@ -14,10 +14,15 @@ export interface Line {
 }
 
 export interface CodeBlockProps {
-  /** TSX source. A trailing newline is copied but not shown. */
+  /** TSX or TypeScript source. A trailing newline is copied but not shown. */
   readonly code: string;
   /** The file the code would live in, such as `RewardButton.tsx`. */
   readonly filename: string;
+  /**
+   * The language in the header. Both are highlighted with the TSX grammar.
+   * Defaults to `tsx`.
+   */
+  readonly lang?: 'tsx' | 'ts';
   /** What the code is, for the copy button, such as "the snippet". */
   readonly label: string;
 }

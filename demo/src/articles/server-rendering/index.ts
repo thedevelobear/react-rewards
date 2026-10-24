@@ -1,0 +1,1 @@
+export { ServerRenderingArticle } from './component';

@@ -1,0 +1,1 @@
+export { UpgradingArticle } from './component';

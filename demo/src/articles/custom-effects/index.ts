@@ -1,0 +1,1 @@
+export { CustomEffectsArticle } from './component';

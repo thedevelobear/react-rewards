@@ -1,0 +1,1 @@
+export { FireArticle } from './component';

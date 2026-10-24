@@ -1,0 +1,1 @@
+export { StressTestArticle } from './component';

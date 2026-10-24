@@ -1,6 +1,6 @@
 import { Icon } from '@/components/icon';
 import { ThemeSwitcher } from '@/components/theme-switcher';
-import { gettingStarted } from '@/data/guides';
+import { gettingStarted } from '@/data/articles';
 import logo from './logo.png';
 import './style.css';
 

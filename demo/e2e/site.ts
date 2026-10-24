@@ -79,9 +79,9 @@ test('the pager leads to the pages before and after, from the top', async ({
 
   await page.goto('/');
   await expect(pager.getByRole('link')).toHaveCount(1);
-  const next = pager.getByRole('link', { name: 'Next Stress test' });
+  const next = pager.getByRole('link', { name: 'Next Custom effects' });
   await next.click();
-  await expect(heading).toHaveText('Stress test');
+  await expect(heading).toHaveText('Custom effects');
   await expect.poll(() => page.evaluate(() => window.scrollY)).toBe(0);
 
   // The last effect has no next page.
@@ -89,6 +89,59 @@ test('the pager leads to the pages before and after, from the top', async ({
   await expect(pager.getByRole('link')).toHaveCount(1);
   await pager.getByRole('link', { name: 'Previous Emoji' }).click();
   await expect(page).toHaveURL(/#emoji$/);
+});
+
+test('every sidebar link shows its page, and links between pages lead to one', async ({
+  page,
+}) => {
+  const heading = page.getByRole('heading', { level: 1 });
+  const nav = page.getByRole('navigation', { name: 'Pages' });
+  await page.goto('/');
+  const links = await nav.getByRole('link').evaluateAll((elements) =>
+    elements.map((element) => ({
+      href: element.getAttribute('href') ?? '',
+      label: element.textContent ?? '',
+    }))
+  );
+  expect(links.map(({ label }) => label)).toEqual([
+    'Getting started',
+    'Custom effects',
+    'Server rendering',
+    'Upgrading from v2',
+    'Stress test',
+    'useReward',
+    'fire',
+    'Renderers',
+    'Confetti',
+    'Emoji',
+    'Balloons',
+  ]);
+  const hrefs = links.map(({ href }) => href);
+
+  for (const { href, label } of links) {
+    await page.goto(`/${href}`);
+    await expect(heading).toHaveText(label);
+    const targets = await page
+      .getByRole('main')
+      .locator('a[href^="#"]')
+      .evaluateAll((elements) =>
+        elements.map((element) => element.getAttribute('href'))
+      );
+    for (const target of targets) expect(hrefs).toContain(target);
+  }
+});
+
+test("useReward's settings table shows each effect's defaults", async ({
+  page,
+}) => {
+  await page.goto('/#use-reward');
+  const settings = page.getByRole('table').first();
+  const cells = (name: RegExp) =>
+    settings.getByRole('row', { name }).getByRole('cell').allTextContents();
+  // The unit, then confetti, emoji and balloon.
+  expect(await cells(/^count /)).toEqual(['', '100', '20', '16']);
+  expect(await cells(/^gravity /)).toEqual(['px/s²', '900', '900', '-300']);
+  expect(await cells(/^rotate /)).toEqual(['', '', 'true', '']);
 });
 
 test('the effect cards lead to the effects', async ({ page }) => {

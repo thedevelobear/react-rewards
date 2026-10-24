@@ -1,4 +1,4 @@
-import { useEffect, useId, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { type RendererPreference, setRenderer } from 'react-rewards';
 import { Preview } from '@/components/preview';
 import {
@@ -7,6 +7,7 @@ import {
   ControlGrid,
   Range,
 } from '@/components/props-panel';
+import { Section } from '@/components/section';
 import { effects, type RangeControl } from '@/data/effects';
 import { useFrameRate } from '@/hooks/use-frame-rate';
 import { Readout } from './readout';
@@ -35,12 +36,11 @@ const RENDERERS: readonly ChoiceOption<RendererPreference>[] = [
  * of your choice, with the fps in the preview's corner (README, "Stress
  * test").
  */
-export const StressTest = () => {
+export const StressTestArticle = () => {
   const [name, setName] = useState<string>(effects[0].name);
   const [count, setCount] = useState(DEFAULT_COUNT);
   const [renderer, setRendererChoice] = useState<RendererPreference>('auto');
   const { reading, track } = useFrameRate();
-  const heading = useId();
 
   // The choice applies to the whole page, so the effect pages get Auto back.
   useEffect(() => () => setRenderer('auto'), []);
@@ -62,10 +62,7 @@ export const StressTest = () => {
           corner={<Readout reading={reading} />}
         />
       ))}
-      <section className="section" aria-labelledby={heading}>
-        <h2 id={heading} className="section-title">
-          Customize
-        </h2>
+      <Section title="Customize">
         <ControlGrid>
           <Choice
             name="effect"
@@ -86,7 +83,7 @@ export const StressTest = () => {
             onChange={chooseRenderer}
           />
         </ControlGrid>
-      </section>
+      </Section>
     </>
   );
 };

@@ -51,11 +51,11 @@ The site documents the library, so its design decisions are kept here rather tha
 Why: a dark, quiet page lets the effects carry the colour. Each text colour keeps 4.5:1 on every surface it sits on, and the focus ring and ticks keep 3:1. Coral text fails on white, so light mode has a darker `--accent-text`.
 
 ### Routing
-- The URL hash names the page: `#getting-started`, `#stress-test`, `#confetti`, `#emoji`, `#balloon`. An effect's hash is its `name`, not its label, so Balloons is `#balloon`.
+- The URL hash names the page: `#getting-started`, `#custom-effects`, `#server-rendering`, `#upgrading-from-v2`, `#stress-test`, `#use-reward`, `#fire`, `#renderers`, `#confetti`, `#emoji`, `#balloon`. An effect's hash is its `name`, not its label, so Balloons is `#balloon`.
 - An empty or unknown hash shows Getting started. The URL is left as it is.
 - `hooks/use-hash` reads the hash with `useSyncExternalStore` and the `hashchange` event. There is no router.
 - The document title follows the page, for example "Confetti · react-rewards".
-- A new effect needs no routing code. Its page in `src/data/effects/` gives it a sidebar link and a hash.
+- A new page needs no routing code. An effect's page in `src/data/effects/`, or an article's entry in `src/data/articles/list.ts`, gives it a sidebar link and a hash.
 - Going to another page scrolls to the top, because the pager's links are at the bottom. A reload keeps the browser's scroll.
 
 Why: GitHub Pages serves static files only, so path routes such as `/emoji` would need a `404.html` redirect and the base path set in Rsbuild. Hashes give deep links, reloads and the back and forward buttons under any base path, with no dependency. The cost is that in-page anchors can't use the hash.
@@ -64,13 +64,13 @@ Why: GitHub Pages serves static files only, so path routes such as `/emoji` woul
 - The home page. Under the title is a preview of the first effect with its defaults, captioned "Every call to reward() fires a new burst."
 - Then three numbered steps, joined by a line. The last step's number has an accent ring.
   1. "Install the package": the install command, with a tab per package manager (pnpm, npm, yarn, bun) and a copy button. The choice is stored under `react-rewards:package-manager`.
-  2. "Fire your first reward": a line on `useReward`, and the first effect's snippet with its defaults, as `RewardButton.tsx`.
-  3. "Pick an effect": a card per effect, linking to its page, with its label and description. Each card has a drawing of its effect, from `components/getting-started/art.tsx`. An effect without a drawing shows its icon instead, so a new effect needs no code here.
+  2. "Fire your first reward": a line on `useReward` with a link to its page, and the first effect's snippet with its defaults, as `RewardButton.tsx`.
+  3. "Pick an effect": a card per effect, linking to its page, with its label and description. Each card has a drawing of its effect, from `articles/getting-started/art.tsx`. An effect without a drawing shows its icon instead, so a new effect needs no code here.
 
 Why: the install command installs the whole library, so it is shown once rather than on every effect. The steps read in the order a newcomer works, and the preview shows the result before any of them.
 
 ### Stress test
-- A page under Guides, after Getting started, that shows the engine's headroom. Its title is "Stress test".
+- The last page under Guides, which shows the engine's headroom. Its title is "Stress test".
 - Its Customize section has three settings: the effect (Confetti, Emoji, Balloons), the count (a slider from 100 to 20000 in steps of 100, starting at 5000) and the renderer (Auto, WebGL, Canvas 2D). The burst uses the effect's defaults apart from the count.
 - The renderer calls `setRenderer`, which applies to the whole page, so leaving the Stress test sets it back to Auto. Effect pages always use Auto.
 - The preview is the effect pages' preview. Its top right corner holds the readout, a small mono tag. Before a burst it reads "Ready". While a burst runs, it shows the burst's renderer ([ADR 0047](../docs/decisions/0047-burst-renderer.md)) and the fps over the last half second. After the burst, it shows the average fps over the whole burst, followed by "avg". Bursts fired while one runs are counted with it. A burst that is skipped reads "Skipped", for example under reduced motion, or when the forced renderer isn't available.
@@ -90,7 +90,7 @@ Why: one page for performance keeps the effect pages about the API, and keeps th
   sips --resampleHeight 56 crop.png --out demo/src/components/header/logo.png
   ```
 - The logo's alt text is "react-rewards", and it links to `#getting-started`. Biome's `useValidAnchor` rejects `href="#"`. Its orange-to-purple gradient is outside the site's palette, which is fine for a logo: logos are exempt from WCAG's contrast minimum.
-- The sidebar is a navigation labelled "Pages", with two groups: "Guides", holding Getting started and Stress test, and "Effects". Each heading labels its list. Items are links with an icon, and the current one has `aria-current="page"`.
+- The sidebar is a navigation labelled "Pages", with three groups: "Guides" (Getting started, Custom effects, Server rendering, Upgrading from v2 and Stress test), "API" (useReward, fire and Renderers), and "Effects". Each heading labels its list. Items are links with an icon, and the current one has `aria-current="page"`.
 - Each page names its icon in `src/data/` (see "Icons").
 - The active item has a `--surface` background, `--text` text, an `--accent` icon and an `--accent` dot at its end. On phones every group's links share one row of 44 px pills that scrolls sideways, and the active pill has a `--surface` background and no dot.
 
@@ -133,11 +133,11 @@ Why: any colour or emoji can be tried, with no presets to maintain.
 ### Props table
 - It lists every config field in the panel's order: the prop, its type (`number`, `boolean` or `string[]`, from its control), its default (from `effect.defaults`, written as in the snippet) and a description.
 - The description is the field's JSDoc from `src/effects/<name>/types.ts`, copied next to its control, without references to ADRs. Text in backticks shows as code. Nothing checks that the copies match, so a change to a field's JSDoc has to be copied by hand.
-- The burst options (`zIndex`, `onComplete`, `respectReducedMotion` and `seed`) aren't listed. The library's README documents them.
+- The burst options (`zIndex`, `onComplete`, `respectReducedMotion` and `seed`) aren't listed. The useReward page documents them.
 - On phones the table scrolls sideways inside its frame, so the page doesn't.
 
 ### Code blocks
-- A code block has a header with a file icon, the file name, a "tsx" tag and the copy button. Under it, the code has line numbers in a column of their own, outside the `<pre>`, so they aren't copied or read out. The code scrolls sideways, and the numbers stay put.
+- A code block has a header with a file icon, the file name, a "tsx" or "ts" tag and the copy button. Both are highlighted with the `tsx` grammar. Under it, the code has line numbers in a column of their own, outside the `<pre>`, so they aren't copied or read out. The code scrolls sideways, and the numbers stay put.
 - The install command is a `$` prompt, which isn't copied, and the command, in mono. It isn't highlighted.
 
 ### Code colours
@@ -158,6 +158,16 @@ Why: any colour or emoji can be tried, with no presets to maintain.
 - shiki loads with a dynamic import after the first paint: `shiki/core`, the JavaScript regex engine (no WebAssembly) and the `tsx` grammar only. Until then the code shows as plain text. The tokens render as React elements from `codeToTokens`, not as inserted HTML.
 
 Why: every colour is a token, so code follows the theme like the rest of the page. Each kind of name has its own hue, and every colour keeps 4.5:1 on `--card`.
+
+### Articles
+- The pages that aren't effects are articles: the guides and the API's pages. Each is an entry in `src/data/articles/list.ts`, with its name, label, description, icon and content, and its content is a component in `src/articles/<name>/`. The site's own pages, Getting started and the Stress test, are articles too.
+- The library's documentation lives in the articles, and the root README keeps the basics and links to them ([ADR 0062](../docs/decisions/0062-docs-on-the-site.md)). The guides are Custom effects, Server rendering and Upgrading from v2. The API's pages are useReward (its arguments, settings, burst options, return value, the pointer, and picking an effect at runtime), fire, and Renderers (how bursts are drawn, `setRenderer`, and the benchmark).
+- An article is TSX, with no Markdown step. It is a series of `components/section` blocks, each an `h2` with paragraphs, lists, code blocks and tables. Paragraphs and lists directly in a section are prose: `--text-muted`, 15.5 px at 1.6 line height, at most 680 px wide, with bold leads in `--text`. Code inside text is a chip, which keeps its border when it wraps.
+- Tables are `components/data-table`, as the props table is. Cells in a table's data can hold code in backticks, which `components/code-text` turns into chips.
+- The settings table on the useReward page is generated from the effects' pages, with each effect's default, so it can't drift from the library. It counts colours instead of listing them, and links to each effect's page for the rest.
+- Links between pages are plain hashes, such as `#use-reward`, because the hash is the route and sections can't be linked. A browser spec visits every page in the sidebar and checks that each such link names a page. Links to the repo, such as the effect guide or the benchmark, point at `master` on GitHub.
+
+Why: one copy of each fact, on the page people already use to try the effects, and pages that look like the rest of the site with no new dependency.
 
 ### Pager
 - Every page ends with cards for the pages before and after it, in the sidebar's order, in a navigation labelled "Previous and next". A card shows "Previous" or "Next", in mono, the page's label, and an `--accent` arrow. Getting started has only a next card, and the last effect only a previous one.

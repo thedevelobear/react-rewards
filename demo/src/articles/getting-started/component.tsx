@@ -34,7 +34,7 @@ const Step = ({ number, title, text, children }: StepProps) => {
  * install command, which every effect shares, a first example, and the
  * effects (README, "Getting started").
  */
-export const GettingStarted = () => (
+export const GettingStartedArticle = () => (
   <>
     {effects[0].use((page) => (
       <Preview
@@ -58,7 +58,8 @@ export const GettingStarted = () => (
           <>
             Give <code>useReward</code> a ref to the element a reward starts
             from, and an effect. Each call to <code>reward()</code> fires a
-            burst.
+            burst. The <a href="#use-reward">useReward</a> page covers its
+            settings and options.
           </>
         }
       >

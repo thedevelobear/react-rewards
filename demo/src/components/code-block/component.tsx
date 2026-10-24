@@ -19,7 +19,12 @@ const plain = (code: string): Line[] => {
  * The code under its file name, with line numbers, highlighted by shiki once
  * it has loaded, and plain until then (README, "Code colours").
  */
-export const CodeBlock = ({ code, filename, label }: CodeBlockProps) => {
+export const CodeBlock = ({
+  code,
+  filename,
+  label,
+  lang = 'tsx',
+}: CodeBlockProps) => {
   const [shiki, setShiki] = useState(highlighter);
 
   useEffect(() => {
@@ -51,7 +56,7 @@ export const CodeBlock = ({ code, filename, label }: CodeBlockProps) => {
       <div className="code-block-head">
         <Icon name="file" size={14} />
         <span className="code-block-file">{filename}</span>
-        <span className="code-block-lang">tsx</span>
+        <span className="code-block-lang">{lang}</span>
         <CopyButton text={code} label={label} />
       </div>
       <div className="code-block-body">

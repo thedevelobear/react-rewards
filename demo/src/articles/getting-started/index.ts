@@ -1,0 +1,1 @@
+export { GettingStartedArticle } from './component';

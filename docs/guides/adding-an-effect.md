@@ -1,6 +1,6 @@
 # Adding an effect
 
-How to add a built-in effect to react-rewards: one folder in `src/effects/`, one export, one page and one icon on the site, and a few lines in the browser specs. Effects in user code need only `defineEffect`, which the README covers.
+How to add a built-in effect to react-rewards: one folder in `src/effects/`, one export, one page and one icon on the site, and a few lines in the browser specs. Effects in user code need only `defineEffect`, which the site's [Custom effects](https://thedevelobear.github.io/react-rewards/#custom-effects) page covers.
 
 The example is a made-up `sparkle` effect. Copy the closest existing effect (`confetti`, `emoji` or `balloon`) and rename it, rather than starting from an empty folder.
 
@@ -169,12 +169,12 @@ The site imports the built package ([ADR 0031](../decisions/0031-demo-imports-bu
    The panel edits numbers (`range`), booleans (`switch`), and lists of colours or emoji (`colors`, `emojis`). A setting of another type needs a new control kind in `demo/src/data/effects/types.ts`.
 
    `icon` names the sidebar icon, which the preview's button and the effect's card show too. Add its path data, on a 24 px grid, to `ICON_PATHS` in `demo/src/components/icon/paths.ts` ([demo README](../../demo/README.md), "Icons").
-2. Add the page to `effects` in `demo/src/data/effects/list.ts`. Its sidebar link, its `#sparkle` route, its Preview and Code tabs, its props table, its card on Getting started, its place in the previous and next cards, and its entry on the Stress test page follow from that ([demo README](../../demo/README.md)). The card shows the icon until the effect has a drawing in `demo/src/components/getting-started/art.tsx`.
+2. Add the page to `effects` in `demo/src/data/effects/list.ts`. Its sidebar link, its `#sparkle` route, its Preview and Code tabs, its props table, its card on Getting started, its column in the settings table on the useReward page, its place in the previous and next cards, and its entry on the Stress test page follow from that ([demo README](../../demo/README.md)). The card shows the icon until the effect has a drawing in `demo/src/articles/getting-started/art.tsx`.
 3. Add a `RewardButton` with `testId="fire-sparkle"` to the fixture page, `demo/src/fixtures/app.tsx`, and add `'sparkle'` to the loop in `demo/e2e/smoke.ts` that checks each effect draws.
 4. Add it to `EFFECTS` in `demo/bench/run.ts`, with its label on the Stress test page.
 
 ## The rest
-- Add a column to the effects table in the README.
+- Name the effect where the README and the useReward page's prose list the effects (`demo/src/articles/use-reward/component.tsx`).
 - Add `useReward + sparkle` to `.size-limit.json`, and note the size in the PR. A size close to the whole package's means the effect stopped tree-shaking.
 - Run `pnpm lint`, `pnpm typecheck`, `pnpm test`, `pnpm build`, `pnpm --filter demo typecheck` and `pnpm e2e`.
 - Look at the effect on the site with both renderers, using the renderer setting on the Stress test page. They should look the same.

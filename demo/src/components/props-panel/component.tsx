@@ -1,5 +1,5 @@
-import { useId } from 'react';
 import type { EffectConfig } from 'react-rewards';
+import { Section } from '@/components/section';
 import { isStringList, sameValue } from '@/data/effects';
 import { Colors } from './colors';
 import { Emojis } from './emojis';
@@ -49,16 +49,13 @@ export const PropsPanel = <C extends EffectConfig>({
   onChange,
   onReset,
 }: PropsPanelProps<C>) => {
-  const heading = useId();
   const changed = fields.some(
     ({ value, defaultValue }) => !sameValue(value, defaultValue)
   );
   return (
-    <section className="section" aria-labelledby={heading}>
-      <div className="section-head">
-        <h2 id={heading} className="section-title">
-          Customize
-        </h2>
+    <Section
+      title="Customize"
+      action={
         <button
           type="button"
           className="props-reset"
@@ -67,7 +64,8 @@ export const PropsPanel = <C extends EffectConfig>({
         >
           Reset
         </button>
-      </div>
+      }
+    >
       <ControlGrid>
         {fields.map((field) => (
           <Control
@@ -77,6 +75,6 @@ export const PropsPanel = <C extends EffectConfig>({
           />
         ))}
       </ControlGrid>
-    </section>
+    </Section>
   );
 };

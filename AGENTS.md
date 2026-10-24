@@ -31,6 +31,7 @@ A release PR bumps the version in `package.json` and adds an entry to `CHANGELOG
 - Record decisions and plan changes in `docs/`, in the same PR as the code: a new ADR for each decision, and an update to the active plan's progress table and to any section the work changes. Nothing that matters should live only in chat or in PR comments.
 - ADRs and docs state what was decided and why, briefly. They don't say who decided or asked, retell how a decision was reached, or name the PR something happened in. Only a plan's progress table numbers PRs ([ADR 0057](docs/decisions/0057-short-impersonal-adrs.md)).
 - ADRs are for the library: its API, engine, build and tests, and the repo's process. Decisions about the preview site's design and content go in `demo/README.md`, edited in place, not in ADRs ([ADR 0046](docs/decisions/0046-adrs-cover-the-library.md)). How the library is tested in a browser, and how `demo/` builds against it, are still ADRs.
+- The library's documentation is on the site, as articles in `demo/src/articles/`. The README keeps the basics. A change to the public API updates its article in the same PR ([ADR 0062](docs/decisions/0062-docs-on-the-site.md)).
 - If something is unclear, or the plan contradicts itself, ask the maintainer before deciding.
 - Work lands as small PRs into `master`, one at a time.
 - PRs are merged without squashing ([ADR 0009](docs/decisions/0009-no-squash-merges.md)). Make every commit a self-contained step that builds and passes lint.
