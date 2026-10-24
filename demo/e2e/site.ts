@@ -71,6 +71,26 @@ test('Getting started is the home page', async ({ page }) => {
   await expect(heading).toHaveText('Getting started');
 });
 
+test('the pager leads to the pages before and after, from the top', async ({
+  page,
+}) => {
+  const heading = page.getByRole('heading', { level: 1 });
+  const pager = page.getByRole('navigation', { name: 'Previous and next' });
+
+  await page.goto('/');
+  await expect(pager.getByRole('link')).toHaveCount(1);
+  const next = pager.getByRole('link', { name: 'Next Stress test' });
+  await next.click();
+  await expect(heading).toHaveText('Stress test');
+  await expect.poll(() => page.evaluate(() => window.scrollY)).toBe(0);
+
+  // The last effect has no next page.
+  await page.goto('/#balloon');
+  await expect(pager.getByRole('link')).toHaveCount(1);
+  await pager.getByRole('link', { name: 'Previous Emoji' }).click();
+  await expect(page).toHaveURL(/#emoji$/);
+});
+
 test('the effect cards lead to the effects', async ({ page }) => {
   const heading = page.getByRole('heading', { level: 1 });
   await page.goto('/');
