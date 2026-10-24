@@ -54,14 +54,6 @@ const Heart = ({ x, y, turn, scale, paint }: HeartProps) => (
     style={fill(paint)}
   >
     <path d={HEART} />
-    <ellipse
-      className="effect-art-shine"
-      cx="-5.4"
-      cy="-4.4"
-      rx="1.3"
-      ry="1.9"
-      transform="rotate(-40 -5.4 -4.4)"
-    />
   </g>
 );
 
