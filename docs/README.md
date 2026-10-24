@@ -94,7 +94,7 @@ What was decided, specifically enough to check the code against.
 | [0051](decisions/0051-no-engine-optimisations-after-benchmark.md) | Off-screen culling and the particle view's accessors stay as they are | Accepted |
 | [0052](decisions/0052-effects-generic-over-effect.md) | Any effect is an `Effect`, and `fire` and `useReward` are generic over the effect | Accepted |
 | [0053](decisions/0053-public-math-helpers.md) | The math helpers are public | Accepted |
-| [0054](decisions/0054-publish-from-github-release.md) | A GitHub release publishes to npm with trusted publishing, and v3 starts at 3.0.0 | Accepted |
+| [0054](decisions/0054-publish-from-github-release.md) | A GitHub release publishes to npm with trusted publishing, and v3 starts at 3.0.0 | Accepted. The npm it runs set by 0065 |
 | [0055](decisions/0055-pure-effect-definitions.md) | Built-in effects are marked pure, so unused ones tree-shake | Accepted |
 | [0056](decisions/0056-work-after-release-branches-off-master.md) | After 3.0.0, work branches off `master` | Accepted. Two more v3 PRs from the integration branch: 0058 and 0060 |
 | [0057](decisions/0057-short-impersonal-adrs.md) | ADRs are short, and state the decision and its reason | Accepted |
@@ -105,6 +105,7 @@ What was decided, specifically enough to check the code against.
 | [0062](decisions/0062-docs-on-the-site.md) | The site holds the docs, and the README keeps the basics | Accepted |
 | [0063](decisions/0063-effect-creator-agent.md) | An effect-creator agent for Claude Code lives in the repo | Accepted |
 | [0064](decisions/0064-orchestrated-agents.md) | Claude Code works through an orchestrator agent, with an effect creator, a developer and QA | Accepted |
+| [0065](decisions/0065-publish-with-pinned-npm.md) | The publish workflow runs a pinned npm 11 | Proposed |
 
 ### Benchmarks
 | Benchmark | What |
