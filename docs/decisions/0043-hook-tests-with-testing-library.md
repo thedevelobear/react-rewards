@@ -3,21 +3,8 @@
 - **Status:** Accepted
 - **Date:** 2026-10-23
 
-## Context
-The hook's tests run in happy-dom in the `dom` Rstest project ([ADR 0022](0022-happy-dom-tests.md)). They need to render components, re-render them with new arguments, unmount them and run React's `act`. The root package had `react` but not `react-dom`.
+The hook's tests use `renderHook` and `render` from `@testing-library/react`, in the `dom` project ([ADR 0022](0022-happy-dom-tests.md)). The root package adds `@testing-library/react`, `@testing-library/dom`, `react-dom` and `@types/react-dom` as devDependencies, the last two matching the demo. Test files call `cleanup()` in `afterEach`, because Rstest defines no globals for Testing Library to hook into. `@/core/fire` is mocked, since happy-dom can't draw.
 
-Options considered:
-- `react-dom` alone, with `createRoot` and React's `act`, and a small test component.
-- `@testing-library/react` on top of `react-dom`, with `renderHook` and `render`.
+**Why:** The tests render, re-render with new arguments, unmount and run `act`, which `renderHook` and `render` provide.
 
-On 2026-10-23 the latest versions were `@testing-library/react` 16.3.3, `@testing-library/dom` 10.4.2 (its peer dependency), `react-dom` 19.3.1 and `@types/react-dom` 19.3.0.
-
-## Decision
-- The root package gets those four as devDependencies, at exact versions ([ADR 0015](0015-exact-dependency-versions.md)). `react-dom` and `@types/react-dom` match the demo's versions.
-- The hook's tests use `renderHook` and `render` from `@testing-library/react`.
-- Rstest doesn't define test globals, so Testing Library can't register its own cleanup. Test files call `cleanup()` in `afterEach`.
-
-## Consequences
-- `react-dom` is only a devDependency. The package still doesn't depend on it.
-- The tests run on React 19 only. The hook uses only APIs that React 18 has too, but nothing checks that yet.
-- `fire()` can't draw in happy-dom, so its bursts are always skipped there. The hook's tests replace `@/core/fire` with a module mock to get bursts that run until the test ends them.
+**Consequences:** The tests run on React 19 only. The hook uses no API that React 18 lacks, but nothing checks it.
