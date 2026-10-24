@@ -30,12 +30,10 @@
   --accent-text: #c4381f;
   /*
    * The accent's glow (README, "Visual direction"): under the preview's
-   * button, softer under the pager's cards until they are hovered, under a
-   * selected tab's line, and around small accent marks such as the
-   * sidebar's dot and the sliders' thumbs.
+   * button, under a selected tab's line, and around small accent marks such
+   * as the sidebar's dot and the sliders' thumbs.
    */
   --accent-glow: 0 12px 40px -12px var(--accent);
-  --accent-glow-soft: 0 12px 32px -18px var(--accent);
   /*
    * An image, for a layer under a selected tab's line: it fades out before
    * the layer's edges, so it has none, and lights only downwards.

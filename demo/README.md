@@ -53,13 +53,12 @@ Why: a dark, quiet page lets the effects carry the colour. Each text colour keep
 
 ### Accent glow
 - The accent glows wherever it marks something, in the accent's colour, from tokens in `src/styles/tokens.css`:
-  - `--accent-glow`, `0 12px 40px -12px`: under the preview's button, and under a pager card on hover.
-  - `--accent-glow-soft`, `0 12px 32px -18px`: under the pager's cards.
-  - `--accent-glow-line`: under the selected tab's line, in the Preview and Code tabs and the install command. It isn't a shadow, which isn't painted inside its own box and so showed the tab's edges. It is a radial gradient on a layer under the line, 24 px wider on each side, at 45% opacity, that lights only downwards, and fades out sideways past the line's ends. Tabs are positioned, so the layer paints over what follows.
-  - `--accent-glow-mark`, `0 0 10px`: around the sidebar's dot, the sliders' thumbs and a switch that is on. The sidebar's active icon has a 4 px `drop-shadow` of the accent.
+  - `--accent-glow`, `0 12px 40px -12px`: under the preview's button.
+  - `--accent-glow-line`: under the selected tab's line, at 15% opacity in the Preview and Code tabs and 45% in the install command. It isn't a shadow, which isn't painted inside its own box and so showed the tab's edges. It is a radial gradient on a layer under the line, 24 px wider on each side, that lights only downwards, and fades out sideways past the line's ends. Tabs are positioned, so the layer paints over what follows.
+  - `--accent-glow-mark`, `0 0 10px`: around the sidebar's dot, the sliders' thumbs and a switch that is on. The sidebar's active icon and the pager's arrows have a 4 px `drop-shadow` of the accent.
 - The glow is decorative and carries no meaning of its own, so it needs no contrast. Glows that change animate with the UI's transitions.
 
-Why: the glow under the preview's button made the accent read as light rather than paint, so the other accent marks share it, and the cards that lead to the next page look like the blog's "Previous Posts" button.
+Why: the glow under the preview's button made the accent read as light rather than paint, so the other accent marks share it.
 
 ### Routing
 - The URL hash names the page: `#getting-started`, `#custom-effects`, `#server-rendering`, `#upgrading-from-v2`, `#stress-test`, `#use-reward`, `#fire`, `#renderers`, `#confetti`, `#emoji`, `#balloon`. An effect's hash is its `name`, not its label, so Balloons is `#balloon`.
@@ -205,6 +204,6 @@ Why: one copy of each fact, on the page people already use to try the effects, a
 
 ### Pager
 - Every page ends with cards for the pages before and after it, in the sidebar's order, in a navigation labelled "Previous and next". A card shows "Previous" or "Next", in mono, the page's label, and an `--accent` arrow. Getting started has only a next card, and the last effect only a previous one.
-- The cards have a soft accent glow under them, which grows to the preview button's on hover.
+- The cards have no glow. On hover, their border strengthens to `--border-strong`. The arrow has a 4 px `drop-shadow` of the accent.
 
 Why: a reader can go through the site in order without going back up to the sidebar.

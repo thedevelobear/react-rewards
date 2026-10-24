@@ -19,11 +19,10 @@
   background: var(--card);
   color: var(--text);
   text-decoration: none;
-  transition:
-    border-color var(--duration-fast) var(--ease-out),
+  transition: border-color var(--duration-fast) var(--ease-out);
 }
 
-/* Lit like the preview's button (README, "Pager"). */
+/* Only the border changes on hover (README, "Pager"). */
 .pager-link:hover {
   border-color: var(--border-strong);
 }
