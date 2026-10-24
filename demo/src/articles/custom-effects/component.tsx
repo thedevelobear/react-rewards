@@ -117,8 +117,8 @@ export const CustomEffectsArticle = () => (
       <p>
         To add an effect to the library itself, with its tests and its page on
         this site, follow <a href={GUIDE}>the effect guide</a>. In Claude Code,
-        the repo's <code>effect-creator</code> agent knows the engine's maths
-        and follows the guide for you.
+        ask the repo's agents: they work out the maths, build the effect and its
+        page, and run every check.
       </p>
     </Section>
   </>

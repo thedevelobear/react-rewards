@@ -104,6 +104,7 @@ What was decided, specifically enough to check the code against.
 | [0061](decisions/0061-types-in-types-files.md) | Types are declared in each folder's `types.ts` | Proposed |
 | [0062](decisions/0062-docs-on-the-site.md) | The site holds the docs, and the README keeps the basics | Proposed |
 | [0063](decisions/0063-effect-creator-agent.md) | An effect-creator agent for Claude Code lives in the repo | Proposed |
+| [0064](decisions/0064-orchestrated-agents.md) | Claude Code works through an orchestrator agent, with an effect creator, a developer and QA | Proposed |
 
 ### Benchmarks
 | Benchmark | What |

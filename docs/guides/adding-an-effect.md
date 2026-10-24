@@ -2,7 +2,7 @@
 
 How to add a built-in effect to react-rewards: one folder in `src/effects/`, one export, one page and one icon on the site, and a few lines in the browser specs. Effects in user code need only `defineEffect`, which the site's [Custom effects](https://thedevelobear.github.io/react-rewards/#custom-effects) page covers.
 
-In Claude Code, the repo's `effect-creator` agent (`.claude/agents/effect-creator.md`) follows this guide, and works out an effect's physics first: flight times and heights with drag, oscillation that survives any frame rate, and the tests that prove it ([ADR 0063](../decisions/0063-effect-creator-agent.md)). Ask Claude Code to use it, or find it under `/agents`.
+In Claude Code, ask the session's `orchestrator` agent for the effect. Its `effect-creator` agent does the library's part of this guide, working out the physics first: flight times and heights with drag, oscillation that survives any frame rate, and the tests that prove it. Its `developer` agent then does the site's part, and its `qa` agent runs every check ([ADRs 0063](../decisions/0063-effect-creator-agent.md), [0064](../decisions/0064-orchestrated-agents.md)).
 
 The example is a made-up `sparkle` effect. Copy the closest existing effect (`confetti`, `emoji` or `balloon`) and rename it, rather than starting from an empty folder.
 
