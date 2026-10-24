@@ -96,8 +96,8 @@ What was decided, specifically enough to check the code against.
 | [0053](decisions/0053-public-math-helpers.md) | The math helpers are public | Accepted |
 | [0054](decisions/0054-publish-from-github-release.md) | A GitHub release publishes to npm with trusted publishing, and v3 starts at 3.0.0 | Accepted |
 | [0055](decisions/0055-pure-effect-definitions.md) | Built-in effects are marked pure, so unused ones tree-shake | Accepted |
-| [0056](decisions/0056-work-after-release-branches-off-master.md) | After 3.0.0, work branches off `master` | Proposed |
-| [0057](decisions/0057-short-impersonal-adrs.md) | ADRs are short, and state the decision and its reason | Proposed |
+| [0056](decisions/0056-work-after-release-branches-off-master.md) | After 3.0.0, work branches off `master` | Accepted |
+| [0057](decisions/0057-short-impersonal-adrs.md) | ADRs are short, and state the decision and its reason | Accepted |
 
 ### Benchmarks
 | Benchmark | What |

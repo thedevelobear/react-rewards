@@ -1,6 +1,6 @@
 # 0057. ADRs are short, and state the decision and its reason
 
-- **Status:** Proposed
+- **Status:** Accepted
 - **Date:** 2026-10-24
 
 - An ADR is its title, status and date, then the decision, a **Why:** line, and **Consequences:** when they aren't obvious. A rejected option appears only when it explains the decision.
