@@ -96,6 +96,7 @@ What gets easier, what gets harder, and what has to happen next.
 | [0052](decisions/0052-effects-generic-over-effect.md) | Any effect is an `Effect`, and `fire` and `useReward` are generic over the effect | Proposed |
 | [0053](decisions/0053-public-math-helpers.md) | The math helpers are public | Proposed |
 | [0054](decisions/0054-publish-from-github-release.md) | A GitHub release publishes to npm with trusted publishing, and v3 starts at 3.0.0 | Proposed |
+| [0055](decisions/0055-pure-effect-definitions.md) | Built-in effects are marked pure, so unused ones tree-shake | Proposed |
 
 ### Benchmarks
 | Benchmark | What |

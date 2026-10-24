@@ -3,5 +3,23 @@
     "name": "react-rewards",
     "path": "dist/index.js",
     "gzip": true
+  },
+  {
+    "name": "useReward + confetti",
+    "path": "dist/index.js",
+    "import": "{ useReward, confetti }",
+    "gzip": true
+  },
+  {
+    "name": "useReward + emoji",
+    "path": "dist/index.js",
+    "import": "{ useReward, emoji }",
+    "gzip": true
+  },
+  {
+    "name": "useReward + balloon",
+    "path": "dist/index.js",
+    "import": "{ useReward, balloon }",
+    "gzip": true
   }
 ]
