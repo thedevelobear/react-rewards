@@ -30,7 +30,7 @@ describe('emoji', () => {
     expect(emoji.defaults).toEqual({
       count: 20,
       size: 25,
-      emojis: ["🦄", "⚡️", "🥰"],
+      emojis: ['🦄', '⚡️', '🥰'],
       angle: 90,
       spread: 45,
       velocity: 1500,
