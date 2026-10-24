@@ -1,6 +1,6 @@
 # 0055. Built-in effects are marked pure, so unused ones tree-shake
 
-- **Status:** Proposed
+- **Status:** Accepted
 - **Date:** 2026-10-24
 
 ## Context

@@ -1,6 +1,6 @@
 # 0052. Any effect is an `Effect`, and `fire` and `useReward` are generic over the effect
 
-- **Status:** Proposed
+- **Status:** Accepted
 - **Date:** 2026-10-24
 
 ## Context

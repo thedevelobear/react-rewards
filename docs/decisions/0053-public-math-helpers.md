@@ -1,6 +1,6 @@
 # 0053. The math helpers are public
 
-- **Status:** Proposed
+- **Status:** Accepted
 - **Date:** 2026-10-24
 
 ## Context

@@ -1,6 +1,6 @@
 # 0054. A GitHub release publishes to npm with trusted publishing, and v3 starts at 3.0.0
 
-- **Status:** Proposed
+- **Status:** Accepted
 - **Date:** 2026-10-24
 
 ## Context

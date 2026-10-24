@@ -93,10 +93,10 @@ What gets easier, what gets harder, and what has to happen next.
 | [0049](decisions/0049-pages-deploy-from-integration-branch.md) | The site deploys to GitHub Pages from the integration branch until the release | Accepted |
 | [0050](decisions/0050-no-canvas-particle-cap.md) | The Canvas 2D fallback has no particle cap | Accepted |
 | [0051](decisions/0051-no-engine-optimisations-after-benchmark.md) | Off-screen culling and the particle view's accessors stay as they are | Accepted |
-| [0052](decisions/0052-effects-generic-over-effect.md) | Any effect is an `Effect`, and `fire` and `useReward` are generic over the effect | Proposed |
-| [0053](decisions/0053-public-math-helpers.md) | The math helpers are public | Proposed |
-| [0054](decisions/0054-publish-from-github-release.md) | A GitHub release publishes to npm with trusted publishing, and v3 starts at 3.0.0 | Proposed |
-| [0055](decisions/0055-pure-effect-definitions.md) | Built-in effects are marked pure, so unused ones tree-shake | Proposed |
+| [0052](decisions/0052-effects-generic-over-effect.md) | Any effect is an `Effect`, and `fire` and `useReward` are generic over the effect | Accepted |
+| [0053](decisions/0053-public-math-helpers.md) | The math helpers are public | Accepted |
+| [0054](decisions/0054-publish-from-github-release.md) | A GitHub release publishes to npm with trusted publishing, and v3 starts at 3.0.0 | Accepted |
+| [0055](decisions/0055-pure-effect-definitions.md) | Built-in effects are marked pure, so unused ones tree-shake | Accepted |
 
 ### Benchmarks
 | Benchmark | What |
