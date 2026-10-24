@@ -16,6 +16,14 @@ const background = (page: Page) =>
 const dataTheme = (page: Page) =>
   page.evaluate(() => document.documentElement.dataset.theme ?? null);
 
+/** The `theme-color` tags' colours, for light then dark. */
+const themeColors = (page: Page) =>
+  page.evaluate(() =>
+    [
+      ...document.querySelectorAll<HTMLMetaElement>('meta[name="theme-color"]'),
+    ].map((tag) => tag.content)
+  );
+
 test('"Reward me" draws on the overlay', async ({ page }) => {
   await page.goto('/#confetti');
   const button = page.getByTestId('reward');
@@ -243,6 +251,24 @@ test('"system" follows the OS appearance live', async ({ page }) => {
   expect(await background(page)).toBe(BACKGROUND.light);
   await page.emulateMedia({ colorScheme: 'dark' });
   expect(await background(page)).toBe(BACKGROUND.dark);
+});
+
+test("the browser's bar follows the theme", async ({ page }) => {
+  await page.goto('/');
+  const switcher = page.getByTestId('theme');
+  expect(await themeColors(page)).toEqual(['#ffffff', '#0a0a0b']);
+
+  await switcher.click();
+  await expect(switcher).toHaveText('Theme: Light');
+  await expect.poll(() => themeColors(page)).toEqual(['#ffffff', '#ffffff']);
+
+  await switcher.click();
+  await expect(switcher).toHaveText('Theme: Dark');
+  await expect.poll(() => themeColors(page)).toEqual(['#0a0a0b', '#0a0a0b']);
+
+  await switcher.click();
+  await expect(switcher).toHaveText('Theme: System');
+  await expect.poll(() => themeColors(page)).toEqual(['#ffffff', '#0a0a0b']);
 });
 
 test('the icons and the share card are served', async ({ page, request }) => {

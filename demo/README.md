@@ -47,6 +47,8 @@ The site documents the library, so its design decisions are kept here rather tha
   | `--code-*` | see "Code colours" | | Each 4.5:1 or more on `--card`. |
 
 - Theme: a header button cycles system, light and dark. The choice is stored in `localStorage` under `react-rewards:theme`, and set as `data-theme` on `<html>` by an inline script before first paint.
+- The browser's bar is `--bg`, through two `theme-color` tags in `index.html`, one for each `prefers-color-scheme`. `useTheme` sets both to the chosen theme's colour, and gives each its own colour back for "system".
+
 Why: a dark, quiet page lets the effects carry the colour. Each text colour keeps 4.5:1 on every surface it sits on, and the focus ring and ticks keep 3:1. Coral text fails on white, so light mode has a darker `--accent-text`.
 
 ### Accent glow

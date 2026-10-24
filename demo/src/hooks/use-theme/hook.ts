@@ -1,4 +1,4 @@
-import { useCallback, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import type { Theme, UseThemeResult } from './types';
 
 /**
@@ -7,6 +7,26 @@ import type { Theme, UseThemeResult } from './types';
  * so the key is namespaced.
  */
 const STORAGE_KEY = 'react-rewards:theme';
+
+/**
+ * `--bg` in each theme, as in `tokens.css`. The `theme-color` tags in
+ * `index.html` hold the same colours, one per `prefers-color-scheme`.
+ */
+const THEME_COLORS = { light: '#ffffff', dark: '#0a0a0b' } as const;
+
+/**
+ * Colours the browser's bar like the page. A light or dark choice sets both
+ * `theme-color` tags, and "system" gives each its own scheme's colour back.
+ */
+const applyThemeColor = (theme: Theme) => {
+  const tags = document.querySelectorAll<HTMLMetaElement>(
+    'meta[name="theme-color"]'
+  );
+  for (const tag of tags) {
+    const scheme = tag.media.includes('dark') ? 'dark' : 'light';
+    tag.content = THEME_COLORS[theme === 'system' ? scheme : theme];
+  }
+};
 
 /** The theme that the pre-paint script applied. */
 const applied = (): Theme => {
@@ -34,6 +54,8 @@ export const useTheme = (): UseThemeResult => {
     }
     setThemeState(next);
   }, []);
+
+  useEffect(() => applyThemeColor(theme), [theme]);
 
   return { theme, setTheme };
 };
