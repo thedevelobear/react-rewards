@@ -9,7 +9,7 @@ The preview site for react-rewards, and the page the browser specs run against. 
 
 ## Two pages
 - `index.html` is the site. Its template applies the stored theme before the first paint.
-- `fixtures.html` is the bare page the renderer and hook specs open ([ADR 0045](../docs/decisions/0045-fixture-page.md)). The site doesn't link to it.
+- `fixtures.html` is the bare page the renderer and hook specs open ([ADR 0045](../docs/decisions/0045-fixture-page.md)). The site doesn't link to it, and its `robots` tag, `noindex`, keeps it out of search results.
 
 ## The site's design
 The site documents the library, so its design decisions are kept here rather than in `docs/decisions/` ([ADR 0046](../docs/decisions/0046-adrs-cover-the-library.md)). Each says what was chosen and why. When the site changes, edit the decision in place, in the same PR.

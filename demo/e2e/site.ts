@@ -291,3 +291,13 @@ test('the icons and the share card are served', async ({ page, request }) => {
     expect((await request.get(url)).ok(), url).toBe(true);
   }
 });
+
+test('only the fixture page is kept out of search results', async ({
+  page,
+}) => {
+  const robots = page.locator('meta[name="robots"]');
+  await page.goto('/');
+  await expect(robots).toHaveCount(0);
+  await page.goto('/fixtures.html');
+  await expect(robots).toHaveAttribute('content', 'noindex');
+});
