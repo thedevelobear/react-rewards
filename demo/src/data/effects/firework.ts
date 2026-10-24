@@ -8,6 +8,7 @@ export const fireworkPage = effectPage({
   description:
     'Rockets that spiral up and burst as peonies, willows and crackles.',
   icon: 'firework',
+  caption: 'Fireworks look best on dark backgrounds.',
   controls: {
     count: {
       kind: 'range',

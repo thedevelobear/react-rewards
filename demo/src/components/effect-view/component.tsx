@@ -29,7 +29,7 @@ export const EffectView = <C extends EffectConfig>({
           label: 'Preview',
           panel: (
             <>
-              <Preview page={page} config={config} />
+              <Preview page={page} config={config} caption={page.caption} />
               <PropsPanel fields={settings} onChange={set} onReset={reset} />
               <PropsTable fields={settings} />
             </>
