@@ -69,6 +69,22 @@ test('the renderer setting forces one, until the page is left', async ({
   expect(await overlayKind(page)).toBe('webgl');
 });
 
+test('Fireworks turn the count into rockets, and say so', async ({ page }) => {
+  await page.goto('/#stress-test');
+  const units = page.getByTestId('stress-units');
+  await expect(units).toHaveCount(0);
+  await option(page, 'effect', 'Fireworks').click();
+  await expect(units).toHaveText(
+    'Fireworks count rockets, which make the particles, so this count is approximate: 5000 particles is 38 rockets.'
+  );
+  await page.getByLabel('count').fill('100');
+  await expect(units).toContainText('100 particles is 1 rocket.');
+  await page.getByTestId('reward').click();
+  await expect(readout(page)).toHaveAttribute('data-state', 'done', {
+    timeout: BURST_TIMEOUT,
+  });
+});
+
 test('a skipped burst reads Skipped', async ({ page }) => {
   await page.emulateMedia({ reducedMotion: 'reduce' });
   await open(page);
