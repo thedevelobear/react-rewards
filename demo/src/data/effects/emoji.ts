@@ -6,7 +6,7 @@ export const emojiPage = effectPage({
   effect: emoji,
   label: 'Emoji',
   description: 'Emoji that pop in, spin and tumble down.',
-  icon: 'sunglasses',
+  icon: 'heart',
   controls: {
     count: {
       kind: 'range',
