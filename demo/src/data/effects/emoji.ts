@@ -6,11 +6,7 @@ export const emojiPage = effectPage({
   effect: emoji,
   label: 'Emoji',
   description: 'Emoji that pop in, spin and tumble down.',
-  icon: [
-    'M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z',
-    'M8.5 14.5a4.5 4.5 0 0 0 7 0',
-    'M9 9.5h.01M15 9.5h.01',
-  ],
+  icon: 'smile',
   controls: {
     count: {
       kind: 'range',

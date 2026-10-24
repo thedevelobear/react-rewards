@@ -6,8 +6,6 @@ import './style.css';
 
 const REPOSITORY = 'https://github.com/thedevelobear/react-rewards';
 
-const ARROW_UP_RIGHT = ['M7 17 17 7', 'M8 7h9v9'];
-
 /** The logo, a link to the repository and the theme switcher. */
 export const Header = () => (
   <header className="header">
@@ -20,7 +18,7 @@ export const Header = () => (
       <div className="header-actions">
         <a className="header-button" href={REPOSITORY}>
           GitHub
-          <Icon paths={ARROW_UP_RIGHT} size={14} />
+          <Icon name="arrow-up-right" size={14} />
         </a>
         <ThemeSwitcher />
       </div>

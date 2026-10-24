@@ -1,4 +1,4 @@
-import { ARROW_RIGHT, Icon } from '@/components/icon';
+import { Icon } from '@/components/icon';
 import { effects } from '@/data/effects';
 import { EffectArt } from './art';
 
@@ -16,7 +16,7 @@ export const EffectCards = () => (
               <span className="effect-card-name">{label}</span>
               <span className="effect-card-description">{description}</span>
             </span>
-            <Icon paths={ARROW_RIGHT} />
+            <Icon name="arrow-right" />
           </span>
         </a>
       </li>

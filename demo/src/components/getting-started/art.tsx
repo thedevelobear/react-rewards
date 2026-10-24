@@ -1,5 +1,5 @@
 import type { ComponentType, CSSProperties, ReactNode } from 'react';
-import { Icon } from '@/components/icon';
+import { Icon, type IconName } from '@/components/icon';
 
 /** A colour of the drawings: a token in `tokens.css`. */
 type Paint = 'accent' | 'art-violet' | 'art-amber' | 'art-sky' | 'art-mint';
@@ -144,8 +144,8 @@ export const EffectArt = ({
   icon,
 }: {
   readonly name: string;
-  readonly icon: readonly string[];
+  readonly icon: IconName;
 }) => {
   const Art = ART[name];
-  return Art ? <Art /> : <Icon paths={icon} size={32} strokeWidth={1.5} />;
+  return Art ? <Art /> : <Icon name={icon} size={32} strokeWidth={1.5} />;
 };

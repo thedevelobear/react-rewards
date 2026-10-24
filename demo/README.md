@@ -91,10 +91,17 @@ Why: one page for performance keeps the effect pages about the API, and keeps th
   ```
 - The logo's alt text is "react-rewards", and it links to `#getting-started`. Biome's `useValidAnchor` rejects `href="#"`. Its orange-to-purple gradient is outside the site's palette, which is fine for a logo: logos are exempt from WCAG's contrast minimum.
 - The sidebar is a navigation labelled "Pages", with two groups: "Guides", holding Getting started and Stress test, and "Effects". Each heading labels its list. Items are links with an icon, and the current one has `aria-current="page"`.
-- Each page's icon is path data on a 24 px grid, in its page in `src/data/`, drawn by `components/icon` with a 2 px stroke.
+- Each page names its icon in `src/data/` (see "Icons").
 - The active item has a `--surface` background, `--text` text, an `--accent` icon and an `--accent` dot at its end. On phones every group's links share one row of 44 px pills that scrolls sideways, and the active pill has a `--surface` background and no dot.
 
 Why: the item's text stays in text colours, which keep 4.5:1, and the accent marks it with shapes, which need no text contrast.
+
+### Icons
+- Every icon is path data on a 24 px grid, in `ICON_PATHS` in `components/icon/paths.ts`, keyed by a kebab-case name that says what it draws, such as `arrow-right` or `balloon`. Shapes such as rectangles and circles are written as paths too.
+- `components/icon` draws one by name, as a stroke in `currentColor`, 2 px wide by default, and hidden from screen readers, because text beside it names it. Components pass a size and, where needed, a stroke width. No other component draws its own icon.
+- Pages name their icon in `src/data/`, so the type of `icon` is the list of names, and a missing icon is a type error. A new page adds its icon to `ICON_PATHS`.
+
+Why: one set of icons and one component keeps every icon the same weight, and nothing is drawn twice.
 
 ### Page title
 - Above the title is a breadcrumb, a navigation labelled "Breadcrumb": the page's sidebar group, a chevron, and the page, which has `aria-current="page"`. The group isn't a link, because it has no page.

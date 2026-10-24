@@ -1,3 +1,5 @@
+import type { IconName } from '@/components/icon';
+
 /** A page of the site that isn't an effect (README, "Getting started"). */
 export interface Guide {
   /** The URL hash. */
@@ -6,6 +8,6 @@ export interface Guide {
   readonly label: string;
   /** One line under the title. */
   readonly description: string;
-  /** The sidebar icon, as path data on a 24px grid. */
-  readonly icon: readonly string[];
+  /** The sidebar icon. */
+  readonly icon: IconName;
 }

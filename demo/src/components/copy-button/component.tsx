@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { CheckIcon, CopyIcon } from './icons';
+import { Icon } from '@/components/icon';
 import './style.css';
 
 /** How long "Copied" shows, in milliseconds. */
@@ -39,10 +39,10 @@ export const CopyButton = ({ text, label }: CopyButtonProps) => {
     >
       {copied ? (
         <span className="copy-button-done">
-          <CheckIcon />
+          <Icon name="check" size={14} />
         </span>
       ) : (
-        <CopyIcon />
+        <Icon name="copy" size={14} />
       )}
       <span aria-live="polite">{copied ? 'Copied' : 'Copy'}</span>
     </button>

@@ -8,8 +8,6 @@ interface PageTitleProps {
   readonly description: string;
 }
 
-const CHEVRON_RIGHT = ['m9 6 6 6-6 6'];
-
 /**
  * The page's group and name as a breadcrumb, its name, and a line about it
  * (README, "Page title").
@@ -20,7 +18,7 @@ export const PageTitle = ({ group, title, description }: PageTitleProps) => (
       <ol className="page-title-breadcrumb">
         <li>{group}</li>
         <li aria-hidden="true">
-          <Icon paths={CHEVRON_RIGHT} size={12} />
+          <Icon name="chevron-right" size={12} />
         </li>
         <li aria-current="page">{title}</li>
       </ol>

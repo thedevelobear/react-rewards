@@ -1,13 +1,8 @@
-interface IconProps {
-  /** Path data on a 24px grid, drawn as strokes. */
-  readonly paths: readonly string[];
-  /** The width and height in CSS pixels. */
-  readonly size?: number;
-  readonly strokeWidth?: number;
-}
+import { ICON_PATHS } from './paths';
+import type { IconProps } from './types';
 
 /** A stroke icon. Text beside it names it, so it is hidden. */
-export const Icon = ({ paths, size = 16, strokeWidth = 2 }: IconProps) => (
+export const Icon = ({ name, size = 16, strokeWidth = 2 }: IconProps) => (
   <svg
     width={size}
     height={size}
@@ -19,7 +14,7 @@ export const Icon = ({ paths, size = 16, strokeWidth = 2 }: IconProps) => (
     strokeLinejoin="round"
     aria-hidden="true"
   >
-    {paths.map((d) => (
+    {ICON_PATHS[name].map((d) => (
       <path key={d} d={d} />
     ))}
   </svg>

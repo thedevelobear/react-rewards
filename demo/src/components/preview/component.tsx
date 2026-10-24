@@ -47,7 +47,7 @@ export const Preview = <C extends EffectConfig>({
           onBurst?.(burst);
         }}
       >
-        <Icon paths={page.icon} strokeWidth={2.2} />
+        <Icon name={page.icon} strokeWidth={2.2} />
         Reward me
       </button>
       {caption && <p className="preview-caption">{caption}</p>}

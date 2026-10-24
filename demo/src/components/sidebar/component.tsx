@@ -1,13 +1,12 @@
 import { useId } from 'react';
-import { Icon } from '@/components/icon';
+import { Icon, type IconName } from '@/components/icon';
 import './style.css';
 
 export interface SidebarLink {
   /** The URL hash, without its `#`. */
   readonly name: string;
   readonly label: string;
-  /** Path data on a 24px grid. */
-  readonly icon: readonly string[];
+  readonly icon: IconName;
 }
 
 export interface SidebarGroup {
@@ -43,7 +42,7 @@ const Group = ({
               className="sidebar-item"
               aria-current={name === current ? 'page' : undefined}
             >
-              <Icon paths={icon} />
+              <Icon name={icon} />
               {label}
             </a>
           </li>

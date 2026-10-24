@@ -27,11 +27,6 @@ const plain = (code: string): Line[] => {
   });
 };
 
-const FILE = [
-  'M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8Z',
-  'M14 3v5h5',
-];
-
 interface CodeBlockProps {
   /** TSX source. A trailing newline is copied but not shown. */
   readonly code: string;
@@ -75,7 +70,7 @@ export const CodeBlock = ({ code, filename, label }: CodeBlockProps) => {
   return (
     <div className="panel">
       <div className="code-block-head">
-        <Icon paths={FILE} size={14} />
+        <Icon name="file" size={14} />
         <span className="code-block-file">{filename}</span>
         <span className="code-block-lang">tsx</span>
         <CopyButton text={code} label={label} />
