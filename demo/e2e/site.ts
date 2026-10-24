@@ -244,3 +244,24 @@ test('"system" follows the OS appearance live', async ({ page }) => {
   await page.emulateMedia({ colorScheme: 'dark' });
   expect(await background(page)).toBe(BACKGROUND.dark);
 });
+
+test('the icons and the share card are served', async ({ page, request }) => {
+  await page.goto('/');
+  const icons = await page.evaluate(() =>
+    [
+      ...document.querySelectorAll<HTMLLinkElement>(
+        'link[rel="icon"], link[rel="apple-touch-icon"]'
+      ),
+    ].map((link) => link.href)
+  );
+  expect(icons).toHaveLength(3);
+  // The card's URL names the deployed site, so the build is checked for the
+  // same file.
+  const card = await page
+    .locator('meta[property="og:image"]')
+    .getAttribute('content');
+  const file = new URL(card ?? '').pathname.replace(/^\/react-rewards/, '');
+  for (const url of [...icons, file]) {
+    expect((await request.get(url)).ok(), url).toBe(true);
+  }
+});

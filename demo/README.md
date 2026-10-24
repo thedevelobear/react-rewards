@@ -47,7 +47,6 @@ The site documents the library, so its design decisions are kept here rather tha
   | `--code-*` | see "Code colours" | | Each 4.5:1 or more on `--card`. |
 
 - Theme: a header button cycles system, light and dark. The choice is stored in `localStorage` under `react-rewards:theme`, and set as `data-theme` on `<html>` by an inline script before first paint.
-
 Why: a dark, quiet page lets the effects carry the colour. Each text colour keeps 4.5:1 on every surface it sits on, and the focus ring and ticks keep 3:1. Coral text fails on white, so light mode has a darker `--accent-text`.
 
 ### Accent glow
@@ -112,6 +111,29 @@ Why: the item's text stays in text colours, which keep 4.5:1, and the accent mar
 - Pages name their icon in `src/data/`, so the type of `icon` is the list of names, and a missing icon is a type error. A new page adds its icon to `ICON_PATHS`.
 
 Why: one set of icons and one component keeps every icon the same weight, and nothing is drawn twice.
+
+### Favicon and link previews
+- The favicon is the logo's "r" in white and its yellow star (`#f2bd31`), on a tile with rounded corners and the logo's gradient, `#e86444` at the top left to `#924e93` at the bottom right. The letter and the star are traced from `assets/react-rewards.png`.
+- The build copies `demo/public/` to the site's root:
+  - `favicon.svg` is the source. Rsbuild links it from every page through `html.favicon`. Without that setting it would link the ICO.
+  - `favicon.ico` is 32 px, for browsers without SVG favicons. `index.html` links it with `sizes="32x32"`, so browsers that can show the SVG prefer it.
+  - `apple-touch-icon.png` is 180 px with square corners, because iOS rounds the corners itself and fills transparency with black.
+  - `og-image.png` is the card shown when a link to the site is shared.
+- The ICO and the Apple icon are made from the SVG with macOS `sips`. From `demo/`:
+  ```sh
+  sips -s format ico -z 32 32 public/favicon.svg --out public/favicon.ico
+  sed 's/ rx="14"//' public/favicon.svg > square.svg
+  sips -s format png -z 180 180 square.svg --out public/apple-touch-icon.png
+  ```
+- The share card is 1200×630 px: the logo on the dark theme's `--bg` and the preview's dot grid, "Reward micro-interactions for React" in Geist, and the effects in Geist Mono. Its source is `og-image/card.html`, rendered with Playwright. From `demo/`:
+  ```sh
+  pnpm exec playwright screenshot --viewport-size "1200, 630" "file://$PWD/og-image/card.html" public/og-image.png
+  ```
+  The card and the page's description both name the effects, so a new effect updates both, and the card is rendered again.
+- `index.html` has Open Graph tags (the title, description, URL and card, with the card's size and alt text), and `twitter:card` set to `summary_large_image`, which X reads alongside them. A canonical link names the same URL. These URLs are absolute, on `thedevelobear.github.io/react-rewards/`, because crawlers don't resolve relative ones, so moving the site means updating them.
+- The site has no `.nojekyll`, `404.html`, `robots.txt`, sitemap or web app manifest. The Pages workflow uploads the build, so Jekyll never runs. Routes are hashes, so every page is `index.html`. Crawlers read `robots.txt` only at the domain's root, not in a project site. The site isn't meant to be installed.
+
+Why: the white letter on the tile stays legible at 16 px on light and dark tab bars, where the gradient letter on its own was faint. A shared link shows the logo and what the library does.
 
 ### Page title
 - Above the title is a breadcrumb, a navigation labelled "Breadcrumb": the page's sidebar group, a chevron, and the page, which has `aria-current="page"`. The group isn't a link, because it has no page.

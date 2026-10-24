@@ -1,0 +1,61 @@
+<!doctype html>
+<!--
+  The source of public/og-image.png, the card shown when a link to the site is
+  shared. Render it from demo/ with:
+  pnpm exec playwright screenshot --viewport-size "1200, 630" "file://$PWD/og-image/card.html" public/og-image.png
+-->
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <style>
+      @font-face {
+        font-family: 'Geist';
+        font-weight: 100 900;
+        src: url('../node_modules/@fontsource-variable/geist/files/geist-latin-wght-normal.woff2');
+      }
+      @font-face {
+        font-family: 'Geist Mono';
+        font-weight: 100 900;
+        src: url('../node_modules/@fontsource-variable/geist-mono/files/geist-mono-latin-wght-normal.woff2');
+      }
+      body {
+        margin: 0;
+        width: 1200px;
+        height: 630px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        gap: 44px;
+        /* --bg with the preview's --dot grid, from the dark theme. */
+        background: #0a0a0b radial-gradient(circle, #202025 1.5px, transparent 1.5px) 0 0 / 28px 28px;
+        font-family: 'Geist', sans-serif;
+      }
+      img {
+        width: 860px;
+        /* The confetti on the right makes the centred logo look off to the left. */
+        margin-left: 24px;
+        /* The README's logo, trimmed as the header's is. */
+        object-view-box: inset(151px 0 327px 16px);
+      }
+      p {
+        margin: 0;
+        color: #a1a1aa;
+        font-size: 38px;
+        font-weight: 500;
+        letter-spacing: -0.02em;
+      }
+      small {
+        color: #8b8b94;
+        font-family: 'Geist Mono', monospace;
+        font-size: 22px;
+        letter-spacing: 0.02em;
+      }
+    </style>
+  </head>
+  <body>
+    <img src="../../assets/react-rewards.png" alt="react-rewards" />
+    <p>Reward micro-interactions for React</p>
+    <small>confetti · emoji · balloons</small>
+  </body>
+</html>

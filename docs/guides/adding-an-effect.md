@@ -176,7 +176,7 @@ The site imports the built package ([ADR 0031](../decisions/0031-demo-imports-bu
 4. Add it to `EFFECTS` in `demo/bench/run.ts`, with its label on the Stress test page.
 
 ## The rest
-- Name the effect where the README and the useReward page's prose list the effects (`demo/src/articles/use-reward/component.tsx`).
+- Name the effect where the README and the useReward page's prose list the effects (`demo/src/articles/use-reward/component.tsx`), and in the site's description and Open Graph tags in `demo/index.html`. Add it to the share card, `demo/og-image/card.html`, and render the card again ([demo README](../../demo/README.md), "Favicon and link previews").
 - Add `useReward + sparkle` to `.size-limit.json`, and note the size in the PR. A size close to the whole package's means the effect stopped tree-shaking.
 - Run `pnpm lint`, `pnpm typecheck`, `pnpm test`, `pnpm build`, `pnpm --filter demo typecheck` and `pnpm e2e`.
 - Look at the effect on the site with both renderers, using the renderer setting on the Stress test page. They should look the same.

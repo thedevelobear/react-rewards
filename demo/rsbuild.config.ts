@@ -22,5 +22,9 @@ export default defineConfig({
       entryName === 'index' ? './index.html' : undefined,
     title: ({ entryName }) =>
       entryName === 'fixtures' ? 'react-rewards fixtures' : 'react-rewards',
+    // Every page links the SVG favicon. Rsbuild would otherwise link the first
+    // favicon file it finds in public/, the ICO, which index.html links with
+    // its size so that browsers prefer the SVG.
+    favicon: './public/favicon.svg',
   },
 });
