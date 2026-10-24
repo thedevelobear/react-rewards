@@ -54,7 +54,7 @@ Why: a dark, quiet page lets the effects carry the colour. Each text colour keep
 ### Accent glow
 - The accent glows wherever it marks something, in the accent's colour, from tokens in `src/styles/tokens.css`:
   - `--accent-glow`, `0 12px 40px -12px`: under the preview's button.
-  - `--accent-glow-line`: under the selected tab's line, at 15% opacity in the Preview and Code tabs and 45% in the install command. It isn't a shadow, which isn't painted inside its own box and so showed the tab's edges. It is a radial gradient on a layer under the line, 24 px wider on each side, that lights only downwards, and fades out sideways past the line's ends. Tabs are positioned, so the layer paints over what follows.
+  - `--accent-glow-line`: under the selected tab's line, in the Preview and Code tabs and the install command. It isn't a shadow, which isn't painted inside its own box and so showed the tab's edges. It is a radial gradient on a layer under the line, 24 px wider on each side, at 15% opacity, that lights only downwards, and fades out sideways past the line's ends. Tabs are positioned, so the layer paints over what follows.
   - `--accent-glow-mark`, `0 0 10px`: around the sidebar's dot, the sliders' thumbs and a switch that is on. The sidebar's active icon and the pager's arrows have a 4 px `drop-shadow` of the accent.
 - The glow is decorative and carries no meaning of its own, so it needs no contrast. Glows that change animate with the UI's transitions.
 
