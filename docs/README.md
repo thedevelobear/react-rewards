@@ -15,20 +15,19 @@ A PR that makes or changes a decision adds the ADR and updates the active plan i
 ADRs record decisions about the library: its API, engine, build and tests, and the repo's process. Decisions about the preview site's design and content are kept in [`demo/README.md`](../demo/README.md) instead, and edited in place ([ADR 0046](decisions/0046-adrs-cover-the-library.md)).
 
 ### ADR template
+ADRs are short. They state what was decided and why, not who decided it or how ([ADR 0057](decisions/0057-short-impersonal-adrs.md)).
+
 ```md
 # NNNN. Title stating the decision
 
 - **Status:** Proposed | Accepted | Superseded by [NNNN](NNNN-topic.md)
 - **Date:** YYYY-MM-DD
 
-## Context
-What forced a decision: the problem, the constraints, the options considered.
-
-## Decision
 What was decided, specifically enough to check the code against.
 
-## Consequences
-What gets easier, what gets harder, and what has to happen next.
+**Why:** The reason, in a sentence or two.
+
+**Consequences:** What gets harder, or has to happen next. Left out when obvious.
 ```
 
 ## Index
@@ -43,7 +42,7 @@ What gets easier, what gets harder, and what has to happen next.
 | # | Decision | Status |
 |---|---|---|
 | [0001](decisions/0001-v3-direction.md) | v3 direction: toolchain, engine and API | Accepted |
-| [0002](decisions/0002-docs-as-decision-record.md) | docs/ is the decision record | Accepted. Scope narrowed to the library by 0046 |
+| [0002](decisions/0002-docs-as-decision-record.md) | docs/ is the decision record | Accepted. Scope narrowed to the library by 0046. ADR format set by 0057 |
 | [0003](decisions/0003-integration-branch.md) | v3 lands through the `feat/v3-scaffolding` integration branch | Accepted. Work after the release set by 0056 |
 | [0004](decisions/0004-esm-only-output.md) | Publish ESM only | Accepted |
 | [0005](decisions/0005-effect-contract-scope.md) | The 3.0 effect contract has `spawn` and `update` only | Accepted |
@@ -98,6 +97,7 @@ What gets easier, what gets harder, and what has to happen next.
 | [0054](decisions/0054-publish-from-github-release.md) | A GitHub release publishes to npm with trusted publishing, and v3 starts at 3.0.0 | Accepted |
 | [0055](decisions/0055-pure-effect-definitions.md) | Built-in effects are marked pure, so unused ones tree-shake | Accepted |
 | [0056](decisions/0056-work-after-release-branches-off-master.md) | After 3.0.0, work branches off `master` | Proposed |
+| [0057](decisions/0057-short-impersonal-adrs.md) | ADRs are short, and state the decision and its reason | Proposed |
 
 ### Benchmarks
 | Benchmark | What |
