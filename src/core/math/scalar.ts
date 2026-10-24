@@ -1,9 +1,12 @@
+/** `value` limited to the range from `min` to `max`. */
 export const clamp = (value: number, min: number, max: number): number =>
   Math.min(Math.max(value, min), max);
 
+/** The value `t` of the way from `from` to `to`. `t` isn't clamped. */
 export const lerp = (from: number, to: number, t: number): number =>
   from + (to - from) * t;
 
+/** Degrees to radians, the unit of `Particle.rotation`. */
 export const degToRad = (degrees: number): number => degrees * (Math.PI / 180);
 
 /**
