@@ -10,4 +10,4 @@
 
 **Why:** v3 needed an integration branch only because its intermediate states couldn't be released ([ADR 0003](0003-integration-branch.md)). After the release, `master` is v3.
 
-**Consequences:** Between PR 13's merge and the release, `AGENTS.md` points at `master` while it still holds v2, so no work starts then. A 2.x fix would need a branch from the `v2.1.0` tag and a new ADR, because the publish workflow puts every release on `latest`.
+**Consequences:** Between this ADR's merge and the release, `AGENTS.md` points at `master` while it still holds v2, so no work starts then. A 2.x fix would need a branch from the `v2.1.0` tag and a new ADR, because the publish workflow puts every release on `latest`.

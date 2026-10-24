@@ -15,7 +15,7 @@ A PR that makes or changes a decision adds the ADR and updates the active plan i
 ADRs record decisions about the library: its API, engine, build and tests, and the repo's process. Decisions about the preview site's design and content are kept in [`demo/README.md`](../demo/README.md) instead, and edited in place ([ADR 0046](decisions/0046-adrs-cover-the-library.md)).
 
 ### ADR template
-ADRs are short. They state what was decided and why, not who decided it or how ([ADR 0057](decisions/0057-short-impersonal-adrs.md)).
+ADRs are short. They state what was decided and why, not who decided it, how, or in which PR ([ADR 0057](decisions/0057-short-impersonal-adrs.md)).
 
 ```md
 # NNNN. Title stating the decision
@@ -46,13 +46,13 @@ What was decided, specifically enough to check the code against.
 | [0003](decisions/0003-integration-branch.md) | v3 lands through the `feat/v3-scaffolding` integration branch | Accepted. Work after the release set by 0056 |
 | [0004](decisions/0004-esm-only-output.md) | Publish ESM only | Accepted |
 | [0005](decisions/0005-effect-contract-scope.md) | The 3.0 effect contract has `spawn` and `update` only | Accepted |
-| [0006](decisions/0006-bare-demo-as-e2e-target.md) | A bare `demo/` page is the browser-test target from PR 5 | Accepted. The page the specs open is refined by 0045 |
+| [0006](decisions/0006-bare-demo-as-e2e-target.md) | A bare `demo/` page is the browser-test target | Accepted. The page the specs open is refined by 0045 |
 | [0007](decisions/0007-no-rename-step.md) | No rename-only step for the v2 files | Accepted |
 | [0008](decisions/0008-toolchain-version-pins.md) | Toolchain version pins (pnpm 12.15.0, Rslib 1.0.3), and how to run pnpm 12 | Accepted. CI bullet superseded by 0014 |
 | [0009](decisions/0009-no-squash-merges.md) | v3 PRs are merged without squashing | Accepted |
 | [0010](decisions/0010-unminified-dist.md) | The published build is not minified | Accepted |
 | [0011](decisions/0011-node-26-in-ci.md) | CI runs on Node 26, and `.nvmrc` pins it | Accepted. `actions/setup-node` bullet superseded by 0014 |
-| [0012](decisions/0012-pass-with-no-tests-until-pr-3.md) | Rstest passes with no test files until PR 3 | Accepted |
+| [0012](decisions/0012-pass-with-no-tests-until-first-test.md) | Rstest passes with no test files until the first test | Accepted |
 | [0013](decisions/0013-size-limit-report-only.md) | size-limit reports the bundle size, with no budget | Accepted |
 | [0014](decisions/0014-pnpm-setup-action.md) | CI sets up pnpm and Node with `pnpm/setup` | Accepted |
 | [0015](decisions/0015-exact-dependency-versions.md) | Dependencies use exact versions | Accepted |
@@ -62,13 +62,13 @@ What was decided, specifically enough to check the code against.
 | [0019](decisions/0019-particle-contract.md) | Particle fields, units and stepping in the effect contract | Accepted. Sprite sources refined by 0020 |
 | [0020](decisions/0020-sprite-sizes.md) | Sprite sources carry their size in CSS pixels | Accepted |
 | [0021](decisions/0021-async-atlas.md) | The atlas loads sprites asynchronously, and a burst waits for them | Accepted |
-| [0022](decisions/0022-happy-dom-tests.md) | Tests that need a DOM run in happy-dom, from PR 4 | Accepted |
+| [0022](decisions/0022-happy-dom-tests.md) | Tests that need a DOM run in happy-dom | Accepted |
 | [0023](decisions/0023-fire-options-beside-config.md) | `fire()` takes burst options beside the effect's config | Accepted |
 | [0024](decisions/0024-physical-config-units.md) | Effect configs use physical units | Accepted |
 | [0025](decisions/0025-cancel-skips-on-complete.md) | `cancel()` doesn't call `onComplete`, and `finished` says how a burst ended | Accepted |
 | [0026](decisions/0026-modernised-confetti.md) | Confetti is redesigned, not a copy of v2's look | Accepted |
-| [0027](decisions/0027-react-demo-from-pr-5.md) | `demo/` is a React 19 and Rsbuild app from PR 5 | Accepted |
-| [0028](decisions/0028-public-exports-from-pr-5.md) | The public exports after PR 5 | Accepted. Math helpers bullet superseded by 0053 |
+| [0027](decisions/0027-react-demo.md) | `demo/` is a React 19 and Rsbuild app from the start | Accepted |
+| [0028](decisions/0028-first-public-exports.md) | The first public exports are `fire`, `confetti` and `defineEffect` | Accepted. Math helpers bullet superseded by 0053 |
 | [0029](decisions/0029-default-z-index.md) | The overlay's `zIndex` defaults to 2147483647 | Accepted |
 | [0030](decisions/0030-effect-errors-swallowed.md) | Errors thrown by an effect are swallowed | Accepted |
 | [0031](decisions/0031-demo-imports-built-package.md) | `demo/` imports the built package | Accepted |
