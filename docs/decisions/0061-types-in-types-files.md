@@ -1,6 +1,6 @@
 # 0061. Types are declared in each folder's `types.ts`
 
-- **Status:** Proposed
+- **Status:** Accepted
 - **Date:** 2026-10-24
 
 - Every type and interface in `src/` and `demo/src/` is declared in the `types.ts` of the folder it belongs to: public and private types, component props, and the shapes functions return. Other files import them with `import type`, and signatures don't spell out object types inline.

@@ -1,6 +1,6 @@
 # 0062. The site holds the docs, and the README keeps the basics
 
-- **Status:** Proposed
+- **Status:** Accepted
 - **Date:** 2026-10-24
 
 - The root README keeps the logo, the features, the introduction, the install command, one usage example, links to the site's pages, contributing and the licence.
