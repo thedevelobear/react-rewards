@@ -1,10 +1,66 @@
-import type { HighlighterCore } from 'shiki/core';
+import type { HighlighterCore, ThemeRegistration } from 'shiki/core';
+
+/** The theme's name, for `codeToTokens`. */
+export const THEME = 'site';
+
+/** A colour of the site's theme: a `--code-*` token in `tokens.css`. */
+const color = (name: string) => ({ foreground: `var(--code-${name})` });
 
 /**
- * The theme's colours are the `--code-*` tokens in `tokens.css` (README,
- * "Code colours").
+ * The site's theme. Its colours are the `--code-*` tokens, so the code
+ * follows the site's theme with no script. A deeper scope wins, so `=>` and
+ * the quotes of a string override `storage` and `punctuation` (README, "Code
+ * colours").
  */
-export const THEME = 'site';
+const theme: ThemeRegistration = {
+  name: THEME,
+  type: 'dark',
+  fg: 'var(--code-foreground)',
+  bg: 'var(--code-background)',
+  settings: [
+    {
+      scope: [
+        'keyword',
+        'storage',
+        'constant.language',
+        'constant.numeric',
+        'variable.language',
+      ],
+      settings: color('keyword'),
+    },
+    {
+      scope: [
+        'punctuation',
+        'meta.brace',
+        'keyword.operator',
+        'storage.type.function.arrow',
+        'comment',
+      ],
+      settings: color('punctuation'),
+    },
+    {
+      scope: ['string', 'punctuation.definition.string'],
+      settings: color('string'),
+    },
+    {
+      scope: ['entity.name.function', 'support.function'],
+      settings: color('function'),
+    },
+    {
+      scope: [
+        'entity.name.type',
+        'support.type',
+        'entity.other.inherited-class',
+        'entity.other.attribute-name',
+      ],
+      settings: color('type'),
+    },
+    {
+      scope: ['entity.name.tag', 'support.class.component'],
+      settings: color('tag'),
+    },
+  ],
+};
 
 let loaded: HighlighterCore | null = null;
 let loading: Promise<HighlighterCore> | null = null;
@@ -21,14 +77,9 @@ export const loadHighlighter = (): Promise<HighlighterCore> => {
     import('shiki/core'),
     import('shiki/engine/javascript'),
   ]).then(
-    async ([
-      { createCssVariablesTheme, createHighlighterCore },
-      { createJavaScriptRegexEngine },
-    ]) => {
+    async ([{ createHighlighterCore }, { createJavaScriptRegexEngine }]) => {
       loaded = await createHighlighterCore({
-        themes: [
-          createCssVariablesTheme({ name: THEME, variablePrefix: '--code-' }),
-        ],
+        themes: [theme],
         langs: [import('shiki/langs/tsx.mjs')],
         engine: createJavaScriptRegexEngine(),
       });

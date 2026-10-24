@@ -57,9 +57,8 @@ export const StressTest = () => {
           page={typed}
           config={{ ...typed.effect.defaults, count }}
           onBurst={track}
-        >
-          <Readout reading={reading} />
-        </Preview>
+          corner={<Readout reading={reading} />}
+        />
       ))}
       <section className="section" aria-labelledby={heading}>
         <h2 id={heading} className="section-title">

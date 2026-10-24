@@ -11,7 +11,6 @@ body {
   color: var(--text);
   font-family: var(--font-sans);
   font-size: 14px;
-  font-weight: 500;
   line-height: 1.5;
   letter-spacing: -0.01em;
   -webkit-font-smoothing: antialiased;
@@ -19,7 +18,9 @@ body {
 
 h1,
 h2,
-p {
+p,
+ol,
+ul {
   margin: 0;
 }
 
@@ -38,15 +39,22 @@ svg {
   display: block;
 }
 
-/* Code inside text, such as a prop name in a description. */
-:not(pre) > code {
+code {
   font-family: var(--font-mono);
-  font-size: 0.92em;
   letter-spacing: 0;
+}
+
+/* Code inside text, such as a prop name in a description. */
+:where(p, td) > code {
+  padding: 2px 6px;
+  border: 1px solid var(--border-strong);
+  border-radius: var(--radius-xs);
+  background: var(--surface);
   color: var(--text);
+  font-size: 0.88em;
 }
 
 :focus-visible {
-  outline: 2px solid var(--accent);
+  outline: 2px solid var(--focus);
   outline-offset: 2px;
 }

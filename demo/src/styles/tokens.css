@@ -1,48 +1,54 @@
 /*
- * The site's design tokens (plan step 3). Shape, type and motion follow
- * reactbits.dev; the colours are the blog's. Light values sit on :root. The
- * dark values are set twice, for the switcher's dark choice and for the
- * system's dark mode when the switcher is on "system", so keep the two dark
- * blocks the same.
+ * The site's design tokens (README, "Visual direction"). Light values sit on
+ * :root. The dark values are set twice, for the switcher's dark choice and
+ * for the system's dark mode when the switcher is on "system", so keep the
+ * two dark blocks the same.
  */
 :root {
   color-scheme: light;
 
   --bg: #ffffff;
-  --card: #ffffff;
-  --surface: #fafafa;
+  /* Panels: the preview, the install command, code, cards. */
+  --card: #fafafa;
+  /* Recessed areas inside a card: the cards' art, the step numbers. */
+  --inset: #f4f4f5;
+  /* Controls and the active sidebar item. */
+  --surface: #f4f4f5;
+  --surface-hover: #e9e9ec;
   --border: #e4e4e7;
-  --border-subtle: #ededf0;
-  --text: #090a0b;
-  --text-muted: #697277;
-  --text-dimmed: #9eabb3;
-  --accent: #ff5f6d;
-  --accent-2: #ffc371;
-  --accent-gradient: linear-gradient(to right, #ff5f6d, #ffc371);
-  --accent-text: #cc3344;
-  /* Text on a gradient fill, in both themes. */
-  --ink: #090a0b;
-  /* Behind the page title (README, "Page title"). */
-  --title-band: var(--accent-gradient);
-  /* Raised surfaces: no shadow in light mode. */
-  --raised: none;
+  /* Controls' borders. */
+  --border-strong: #d4d4d8;
+  /* The previews' dot grid. */
+  --dot: #dcdce0;
+  --text: #09090b;
+  --text-secondary: #3f3f46;
+  --text-muted: #52525b;
+  --text-subtle: #66666f;
+  --accent: #ff6b57;
+  --accent-hover: #ff7f6e;
+  /* Accent text and links. The accent itself is 2.8:1 on white. */
+  --accent-text: #c4381f;
+  --accent-glow: 0 12px 40px -12px var(--accent);
+  /* Text on an accent fill, in both themes. */
+  --ink: #0a0a0b;
+  --focus: #7c3aed;
+  --success: #047857;
+  /* The switch's knob. */
+  --knob: #ffffff;
 
   /*
-   * The snippet's colours, for shiki's CSS-variables theme (README, "Code
-   * colours"). Each keeps 4.5:1 on --card. Those that point at other tokens
-   * follow the theme through them.
+   * The snippet's colours, for the site's shiki theme (README, "Code
+   * colours"). Each keeps 4.5:1 on --card.
    */
   --code-background: var(--card);
-  --code-foreground: var(--text);
-  --code-token-keyword: var(--accent-text);
-  --code-token-string: #9a5800;
-  --code-token-string-expression: var(--code-token-string);
-  --code-token-constant: #c2410c;
-  --code-token-function: var(--code-foreground);
-  --code-token-parameter: var(--code-foreground);
-  --code-token-punctuation: var(--text-muted);
-  --code-token-comment: var(--text-muted);
-  --code-token-link: var(--code-token-keyword);
+  --code-foreground: #18181b;
+  --code-keyword: var(--accent-text);
+  --code-string: #8f5500;
+  --code-function: #0b65a8;
+  --code-type: #7136d9;
+  --code-tag: #08775a;
+  --code-punctuation: var(--text-subtle);
+  --code-line-number: var(--text-subtle);
 
   --font-sans: "Geist Variable", system-ui, sans-serif;
   --font-mono: "Geist Mono Variable", ui-monospace, monospace;
@@ -51,11 +57,15 @@
   --radius-sm: 10px;
   --radius-md: 12px;
   --radius-lg: 14px;
-  --radius-xl: 24px;
+  --radius-xl: 16px;
+  --radius-2xl: 20px;
   --radius-full: 999px;
+  /* The props panel's compact controls. */
   --radius-control: 7px;
   --control-height: 32px;
-  --header-height: 60px;
+  /* Buttons and links people tap: the header, the sidebar, copy, tabs. */
+  --touch-height: 44px;
+  --header-height: 68px;
 
   --ease-out: cubic-bezier(0.23, 1, 0.32, 1);
   --duration-press: 0.12s;
@@ -67,38 +77,58 @@
 :root[data-theme="dark"] {
   color-scheme: dark;
 
-  --bg: #0d0e10;
-  --card: #16171a;
-  --surface: #ffffff0a;
-  --border: #26282c;
-  --border-subtle: #1f2124;
+  --bg: #0a0a0b;
+  --card: #0f0f11;
+  --inset: #121214;
+  --surface: #151517;
+  --surface-hover: #1c1c1f;
+  --border: #1e1e22;
+  --border-strong: #26262b;
+  --dot: #202025;
   --text: #f4f4f5;
-  --text-muted: #9eabb3;
-  --text-dimmed: #697277;
-  --accent-text: #ff5f6d;
-  --title-band: linear-gradient(to right, #ff5f6d59, #ffc37159);
-  --raised: inset 0 1px 0 #ffffff12;
-  --code-token-string: var(--accent-2);
-  --code-token-constant: #ff916f;
+  --text-secondary: #d4d4d8;
+  --text-muted: #a1a1aa;
+  --text-subtle: #8b8b94;
+  --accent-text: #ff6b57;
+  --focus: #a78bfa;
+  --success: #6ee7b7;
+  --code-foreground: #e7e7ea;
+  --code-keyword: #ff8a7a;
+  --code-string: #f2c46d;
+  --code-function: #7cc7ff;
+  --code-type: #c4a7ff;
+  --code-tag: #7ee0b8;
+  --code-punctuation: #9a9aa3;
+  --code-line-number: #80808a;
 }
 
 @media (prefers-color-scheme: dark) {
   :root:not([data-theme="light"]) {
     color-scheme: dark;
 
-    --bg: #0d0e10;
-    --card: #16171a;
-    --surface: #ffffff0a;
-    --border: #26282c;
-    --border-subtle: #1f2124;
+    --bg: #0a0a0b;
+    --card: #0f0f11;
+    --inset: #121214;
+    --surface: #151517;
+    --surface-hover: #1c1c1f;
+    --border: #1e1e22;
+    --border-strong: #26262b;
+    --dot: #202025;
     --text: #f4f4f5;
-    --text-muted: #9eabb3;
-    --text-dimmed: #697277;
-    --accent-text: #ff5f6d;
-    --title-band: linear-gradient(to right, #ff5f6d59, #ffc37159);
-    --raised: inset 0 1px 0 #ffffff12;
-    --code-token-string: var(--accent-2);
-    --code-token-constant: #ff916f;
+    --text-secondary: #d4d4d8;
+    --text-muted: #a1a1aa;
+    --text-subtle: #8b8b94;
+    --accent-text: #ff6b57;
+    --focus: #a78bfa;
+    --success: #6ee7b7;
+    --code-foreground: #e7e7ea;
+    --code-keyword: #ff8a7a;
+    --code-string: #f2c46d;
+    --code-function: #7cc7ff;
+    --code-type: #c4a7ff;
+    --code-tag: #7ee0b8;
+    --code-punctuation: #9a9aa3;
+    --code-line-number: #80808a;
   }
 }
 

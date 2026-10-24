@@ -1,4 +1,4 @@
-/* reactbits' "preview options": cells in a frame (plan step 3). */
+/* A cell per control (README, "Props panel"). */
 .props-panel {
   container-type: inline-size;
 }
@@ -29,6 +29,9 @@
   min-width: 0;
   margin: 0;
   padding: 12px 14px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  background: var(--card);
 }
 
 /* Swatches and chips (README, "Props panel"). */
@@ -66,9 +69,9 @@ fieldset.props-field > legend + * {
   flex-wrap: wrap;
   gap: 2px;
   padding: 2px;
-  border: 1px solid var(--border-subtle);
+  border: 1px solid var(--border);
   border-radius: var(--radius-control);
-  background: var(--surface);
+  background: var(--inset);
 }
 
 .props-choice-option {
@@ -91,9 +94,8 @@ fieldset.props-field > legend + * {
 }
 
 .props-choice-option[aria-pressed="true"] {
-  border-color: var(--border);
-  background: var(--card);
-  box-shadow: var(--raised);
+  border-color: var(--border-strong);
+  background: var(--surface);
   color: var(--text);
 }
 
@@ -108,6 +110,11 @@ fieldset.props-field > legend + * {
 .props-field-value {
   font-family: var(--font-mono);
   font-size: 12px;
+  letter-spacing: 0;
+}
+
+.props-field-name {
+  color: var(--text-secondary);
 }
 
 .props-field-value {
@@ -126,7 +133,8 @@ fieldset.props-field > legend + * {
   margin: 0;
   background:
     linear-gradient(var(--accent), var(--accent)) left center / 0 4px no-repeat,
-    linear-gradient(var(--border), var(--border)) center / 100% 4px no-repeat;
+    linear-gradient(var(--border-strong), var(--border-strong)) center / 100%
+    4px no-repeat;
   cursor: pointer;
   appearance: none;
 }
@@ -164,7 +172,7 @@ fieldset.props-field > legend + * {
   height: 18px;
   margin: 0;
   border-radius: var(--radius-full);
-  background: var(--text-muted);
+  background: var(--text-subtle);
   cursor: pointer;
   appearance: none;
   transition: background-color var(--duration-fast) var(--ease-out);
@@ -178,7 +186,7 @@ fieldset.props-field > legend + * {
   width: 14px;
   height: 14px;
   border-radius: 50%;
-  background: var(--card);
+  background: var(--knob);
   transition: transform var(--duration-fast) var(--ease-out);
 }
 
@@ -204,7 +212,7 @@ fieldset.props-field > legend + * {
   width: 100%;
   height: 100%;
   padding: 0;
-  border: 1px solid var(--border);
+  border: 1px solid var(--border-strong);
   border-radius: var(--radius-control);
   background: none;
   cursor: pointer;
@@ -226,7 +234,7 @@ fieldset.props-field > legend + * {
 
 /* The + tile is a colour input with nothing of its own showing. */
 .props-add {
-  border: 1px dashed var(--border);
+  border: 1px dashed var(--border-strong);
   color: var(--text-muted);
   transition: color var(--duration-fast) var(--ease-out);
 }
@@ -242,12 +250,12 @@ fieldset.props-field > legend + * {
 }
 
 .props-add:focus-within {
-  outline: 2px solid var(--accent);
+  outline: 2px solid var(--focus);
   outline-offset: 2px;
 }
 
 .props-chip {
-  border: 1px solid var(--border);
+  border: 1px solid var(--border-strong);
   background: var(--surface);
   font-size: 18px;
   line-height: 1;
@@ -262,7 +270,7 @@ fieldset.props-field > legend + * {
   width: 16px;
   height: 16px;
   padding: 0;
-  border: 1px solid var(--border);
+  border: 1px solid var(--border-strong);
   border-radius: var(--radius-full);
   background: var(--card);
   color: var(--text-muted);
@@ -276,7 +284,7 @@ fieldset.props-field > legend + * {
 }
 
 .props-remove:disabled {
-  color: var(--text-dimmed);
+  color: var(--border-strong);
   cursor: default;
 }
 
@@ -289,23 +297,23 @@ fieldset.props-field > legend + * {
   width: 104px;
   height: var(--control-height);
   padding: 0 10px;
-  border: 1px solid var(--border);
+  border: 1px solid var(--border-strong);
   border-radius: var(--radius-control);
-  background: var(--card);
+  background: var(--bg);
   color: var(--text);
   font: inherit;
   font-size: 12px;
 }
 
 .props-chip-input::placeholder {
-  color: var(--text-dimmed);
+  color: var(--text-subtle);
 }
 
 .props-chip-submit {
   width: var(--control-height);
   height: var(--control-height);
   padding: 0;
-  border: 1px dashed var(--border);
+  border: 1px dashed var(--border-strong);
   border-radius: var(--radius-control);
   background: none;
   color: var(--text-muted);
@@ -317,22 +325,28 @@ fieldset.props-field > legend + * {
 }
 
 .props-reset {
-  height: var(--control-height);
-  padding: 0 12px;
-  border: 1px solid var(--border);
-  border-radius: var(--radius-control);
-  background: var(--card);
-  box-shadow: var(--raised);
-  font-size: 12px;
+  height: var(--touch-height);
+  padding: 0 14px;
+  border: 1px solid var(--border-strong);
+  border-radius: var(--radius-sm);
+  background: var(--surface);
+  color: var(--text-secondary);
+  font-size: 13px;
+  font-weight: 500;
   cursor: pointer;
-  transition: background-color var(--duration-fast) var(--ease-out);
+  transition:
+    color var(--duration-fast) var(--ease-out),
+    background-color var(--duration-fast) var(--ease-out);
 }
 
 .props-reset:hover:enabled {
-  background: var(--surface);
+  background: var(--surface-hover);
+  color: var(--text);
 }
 
 .props-reset:disabled {
-  color: var(--text-dimmed);
+  border-color: var(--border);
+  background: none;
+  color: var(--text-subtle);
   cursor: default;
 }

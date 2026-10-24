@@ -17,7 +17,7 @@ export const Choice = <V extends string>({
   value,
   onChange,
 }: ChoiceProps<V>) => (
-  <fieldset className="frame-panel props-field">
+  <fieldset className="props-field">
     <legend className="props-field-name">{name}</legend>
     <div className="props-choice">
       {options.map((option) => (

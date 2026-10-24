@@ -2,8 +2,8 @@ import { expect, type Page, test } from '@playwright/test';
 import { PNG } from 'pngjs';
 import { bandAbove } from './util';
 
-/** `--accent-text` in each theme, as computed: the keyword colour. */
-const KEYWORD = { light: 'rgb(204, 51, 68)', dark: 'rgb(255, 95, 109)' };
+/** `--code-keyword` in each theme, as computed. */
+const KEYWORD = { light: 'rgb(196, 56, 31)', dark: 'rgb(255, 138, 122)' };
 
 const tab = (page: Page, name: 'Preview' | 'Code') =>
   page.getByRole('tab', { name });

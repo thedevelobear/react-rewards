@@ -13,12 +13,15 @@ const COMMANDS: Record<PackageManager, string> = {
   bun: 'bun add react-rewards',
 };
 
-/** The install command, with a switch for the package manager (plan step 3). */
+/**
+ * The install command, with a switch for the package manager (README,
+ * "Getting started").
+ */
 export const InstallCommand = () => {
   const { manager, setManager } = usePackageManager();
   const command = COMMANDS[manager];
   return (
-    <div className="frame install">
+    <div className="panel">
       <fieldset className="install-managers" aria-label="Package manager">
         {PACKAGE_MANAGERS.map((name) => (
           <button
@@ -32,7 +35,10 @@ export const InstallCommand = () => {
           </button>
         ))}
       </fieldset>
-      <div className="frame-panel install-panel">
+      <div className="install-panel">
+        <span className="install-prompt" aria-hidden="true">
+          $
+        </span>
         <code className="install-command" data-testid="install-command">
           {command}
         </code>

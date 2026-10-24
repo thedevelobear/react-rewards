@@ -8,7 +8,7 @@ const THEME_KEY = 'react-rewards:theme';
 const PACKAGE_MANAGER_KEY = 'react-rewards:package-manager';
 
 /** `--bg` in each theme, as computed. */
-const BACKGROUND = { light: 'rgb(255, 255, 255)', dark: 'rgb(13, 14, 16)' };
+const BACKGROUND = { light: 'rgb(255, 255, 255)', dark: 'rgb(10, 10, 11)' };
 
 const background = (page: Page) =>
   page.evaluate(() => getComputedStyle(document.body).backgroundColor);

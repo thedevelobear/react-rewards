@@ -30,7 +30,11 @@ export const GettingStarted = () => {
           Give <code>useReward</code> a ref to the element a reward starts from,
           and an effect. Each call to <code>reward()</code> fires a burst.
         </p>
-        <CodeBlock code={EXAMPLE} label="the example" />
+        <CodeBlock
+          code={EXAMPLE}
+          filename="RewardButton.tsx"
+          label="the example"
+        />
         <p className="getting-started-text">
           Each effect in the sidebar has a preview, its settings, and a snippet
           with the settings you pick.

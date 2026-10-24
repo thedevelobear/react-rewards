@@ -34,7 +34,11 @@ export const App = () => {
       <div className="layout">
         <Sidebar groups={GROUPS} current={page.name} />
         <main className="content">
-          <PageTitle title={page.label} description={page.description} />
+          <PageTitle
+            group={effect ? 'Effects' : 'Guides'}
+            title={page.label}
+            description={page.description}
+          />
           {effect ? (
             // Keyed by the effect, so its settings and tab start afresh.
             effect.use((typed) => (

@@ -8,6 +8,7 @@ export const effectPage = <C extends EffectConfig>(
   name: page.effect.name,
   label: page.label,
   description: page.description,
+  icon: page.icon,
   use: (callback) => callback(page),
 });
 

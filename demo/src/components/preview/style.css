@@ -2,50 +2,81 @@
   position: relative;
   display: grid;
   place-items: center;
-  min-height: 400px;
+  min-height: 320px;
   overflow: hidden;
   border: 1px solid var(--border);
-  border-radius: var(--radius-lg);
-  background: var(--card);
-  box-shadow: var(--raised);
+  border-radius: var(--radius-2xl);
+  background-color: var(--card);
+  background-image: radial-gradient(var(--dot) 1px, transparent 1px);
+  background-size: 20px 20px;
 }
 
-/* reactbits' dot grid, fading out towards the edges. */
-.preview::before {
-  content: "";
+/* The effect's name and the corner. On a narrow stage, the corner wraps
+   under the name. */
+.preview-bar {
   position: absolute;
-  inset: 0;
-  background-image: radial-gradient(
-    circle,
-    var(--text-dimmed) 1px,
-    transparent 1.5px
-  );
-  background-size: 20px 20px;
-  mask-image: radial-gradient(ellipse at center, #000 20%, transparent 75%);
-  opacity: 0.6;
-  pointer-events: none;
+  top: 14px;
+  right: 14px;
+  left: 18px;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  min-height: 24px;
+}
+
+/* The effect's name, after a dot that says the stage is live. */
+.preview-label {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: var(--text-muted);
+  font-family: var(--font-mono);
+  font-size: 12px;
+  letter-spacing: 0;
+}
+
+.preview-label::before {
+  content: "";
+  width: 7px;
+  height: 7px;
+  border-radius: var(--radius-full);
+  background: var(--success);
 }
 
 .preview-button {
-  /* Above the dot grid. */
-  position: relative;
-  height: 40px;
-  padding: 0 20px;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  height: 52px;
+  padding: 0 26px;
   border: 0;
   border-radius: var(--radius-full);
-  background: var(--accent-gradient);
+  background: var(--accent);
+  box-shadow: var(--accent-glow);
   color: var(--ink);
+  font-size: 16px;
   font-weight: 600;
   cursor: pointer;
-  transition:
-    transform var(--duration-press) var(--ease-out),
-    filter var(--duration-fast) var(--ease-out);
+  transition: transform var(--duration-press) var(--ease-out);
 }
 
 .preview-button:hover {
-  filter: brightness(1.05);
+  background: var(--accent-hover);
 }
 
 .preview-button:active {
   transform: scale(0.97);
+}
+
+/* A line under the button. */
+.preview-caption {
+  position: absolute;
+  right: 16px;
+  bottom: 18px;
+  left: 16px;
+  color: var(--text-subtle);
+  font-size: 13px;
+  text-align: center;
 }

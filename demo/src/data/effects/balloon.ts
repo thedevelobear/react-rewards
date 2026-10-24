@@ -6,6 +6,10 @@ export const balloonPage = effectPage({
   effect: balloon,
   label: 'Balloons',
   description: 'Balloons that float up and sway on their strings.',
+  icon: [
+    'M12 16c3.3 0 6-3.4 6-7a6 6 0 0 0-12 0c0 3.6 2.7 7 6 7Z',
+    'M12 16v1c0 2-2 2.5-2 4.5',
+  ],
   controls: {
     count: {
       kind: 'range',

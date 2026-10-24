@@ -1,10 +1,10 @@
 import type { ReactNode } from 'react';
 
-/** A 16px stroke icon. The button's text names it, so it is hidden. */
+/** A 17px stroke icon. The button's hidden text names it. */
 const Icon = ({ children }: { readonly children: ReactNode }) => (
   <svg
-    width="16"
-    height="16"
+    width="17"
+    height="17"
     viewBox="0 0 24 24"
     fill="none"
     stroke="currentColor"

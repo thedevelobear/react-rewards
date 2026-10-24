@@ -57,8 +57,13 @@ export interface EffectPage<C extends EffectConfig> {
   readonly effect: Effect<C>;
   /** The sidebar label and the page title. */
   readonly label: string;
-  /** One line under the title. */
+  /** One line under the title, and on the effect's card. */
   readonly description: string;
+  /**
+   * The sidebar icon, as path data on a 24px grid. The preview's button
+   * shows it too.
+   */
+  readonly icon: readonly string[];
   readonly controls: Controls<C>;
 }
 
@@ -73,6 +78,7 @@ export interface AnyEffectPage {
   readonly name: string;
   readonly label: string;
   readonly description: string;
+  readonly icon: readonly string[];
   readonly use: <R>(
     callback: <C extends EffectConfig>(page: EffectPage<C>) => R
   ) => R;

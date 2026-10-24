@@ -1,5 +1,6 @@
 import { useEffect, useMemo, useState } from 'react';
 import { CopyButton } from '@/components/copy-button';
+import { Icon } from '@/components/icon';
 import { highlighter, loadHighlighter, THEME } from './highlight';
 import './style.css';
 
@@ -26,18 +27,25 @@ const plain = (code: string): Line[] => {
   });
 };
 
+const FILE = [
+  'M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8Z',
+  'M14 3v5h5',
+];
+
 interface CodeBlockProps {
   /** TSX source. A trailing newline is copied but not shown. */
   readonly code: string;
+  /** The file the code would live in, such as `RewardButton.tsx`. */
+  readonly filename: string;
   /** What the code is, for the copy button, such as "the snippet". */
   readonly label: string;
 }
 
 /**
- * reactbits' code panel, highlighted by shiki once it has loaded, and plain
- * until then (README, "Code colours").
+ * The code under its file name, with line numbers, highlighted by shiki once
+ * it has loaded, and plain until then (README, "Code colours").
  */
-export const CodeBlock = ({ code, label }: CodeBlockProps) => {
+export const CodeBlock = ({ code, filename, label }: CodeBlockProps) => {
   const [shiki, setShiki] = useState(highlighter);
 
   useEffect(() => {
@@ -65,8 +73,20 @@ export const CodeBlock = ({ code, label }: CodeBlockProps) => {
   }, [shiki, shown]);
 
   return (
-    <div className="frame">
-      <div className="frame-panel code-block">
+    <div className="panel">
+      <div className="code-block-head">
+        <Icon paths={FILE} size={14} />
+        <span className="code-block-file">{filename}</span>
+        <span className="code-block-lang">tsx</span>
+        <CopyButton text={code} label={label} />
+      </div>
+      <div className="code-block-body">
+        {/* Beside the code rather than in it, so they aren't copied. */}
+        <div className="code-block-numbers" aria-hidden="true">
+          {lines.map((line, index) => (
+            <span key={line.offset}>{index + 1}</span>
+          ))}
+        </div>
         <pre className="code-block-pre" data-highlighted={shiki !== null}>
           <code>
             {lines.map((line, index) => (
@@ -84,9 +104,6 @@ export const CodeBlock = ({ code, label }: CodeBlockProps) => {
             ))}
           </code>
         </pre>
-        <div className="code-block-actions">
-          <CopyButton text={code} label={label} />
-        </div>
       </div>
     </div>
   );

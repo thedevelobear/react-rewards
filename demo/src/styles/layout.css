@@ -1,9 +1,24 @@
-/* The sidebar beside the content, stacked on phones. */
+/*
+ * The sidebar beside the content, which is at most 800px wide, stacked on
+ * phones. The header lines up with it through --layout-width.
+ */
+:root {
+  --sidebar-width: 240px;
+  --content-width: 800px;
+  --layout-gap: 48px;
+  --layout-width: calc(
+    var(--sidebar-width) +
+    var(--layout-gap) +
+    var(--content-width) +
+    48px
+  );
+}
+
 .layout {
   display: grid;
-  grid-template-columns: 180px minmax(0, 1fr);
-  gap: 40px;
-  max-width: 1200px;
+  grid-template-columns: var(--sidebar-width) minmax(0, 1fr);
+  gap: var(--layout-gap);
+  max-width: var(--layout-width);
   margin: 0 auto;
   padding: 0 24px;
 }
@@ -11,9 +26,9 @@
 .content {
   display: flex;
   flex-direction: column;
-  gap: 32px;
+  gap: 40px;
   min-width: 0;
-  padding: 40px 0 64px;
+  padding: 40px 0 80px;
 }
 
 @media (max-width: 720px) {
@@ -43,24 +58,16 @@
 }
 
 .section-title {
-  font-size: 1.6rem;
+  font-size: 24px;
   font-weight: 600;
-  line-height: 1.2;
-  letter-spacing: -0.01em;
+  line-height: 1.25;
+  letter-spacing: -0.025em;
 }
 
-/* reactbits' frame: a --surface track around panels (plan step 3). */
-.frame {
-  padding: 4px;
+/* A bordered card, such as the install command or the code. */
+.panel {
+  overflow: hidden;
   border: 1px solid var(--border);
   border-radius: var(--radius-lg);
-  background: var(--surface);
-}
-
-/* A panel in a frame. Its radius is the frame's minus the padding and border. */
-.frame-panel {
-  border: 1px solid var(--border);
-  border-radius: calc(var(--radius-lg) - 5px);
   background: var(--card);
-  box-shadow: var(--raised);
 }
