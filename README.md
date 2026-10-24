@@ -81,7 +81,7 @@ const { reward } = useReward(
 | `angle` | degrees | `90` | `90` | `90` | The launch direction, counter-clockwise from the right. `90` is up. |
 | `spread` | degrees | `45` | `45` | `90` | The width of the launch cone around `angle`. |
 | `velocity` | px/s | `1500` | `1500` | `300` | The average launch speed. |
-| `drag` | per second | `3` | `3` | `2` | Air resistance. Falling particles settle at `gravity / drag`. |
+| `drag` | per second | `3` | `3` | `2` | Air resistance. Falling particles settle at about `gravity / drag`. |
 | `gravity` | px/s² | `900` | `900` | `-300` | Downward pull. Negative rises, as balloons do. |
 | `lifetime` | ms | `3000` | `3000` | `5000` | The longest a particle lives. |
 | `rotate` | | | `true` | | Whether emoji tilt and spin. |

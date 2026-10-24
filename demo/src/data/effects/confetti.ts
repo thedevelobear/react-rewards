@@ -43,7 +43,7 @@ export const confettiPage = effectPage({
       step: 0.1,
       unit: '/s',
       description:
-        'Air resistance per second. Falling pieces settle at `gravity / drag`.',
+        'Air resistance per second. Falling pieces settle at 0.8 to 1.2 times `gravity / drag`.',
     },
     gravity: {
       kind: 'range',

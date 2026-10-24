@@ -1,53 +1,77 @@
 import { defineEffect, type Effect } from '@/core/define-effect';
-import { accelerate, clamp, degToRad, easeInOutQuad } from '@/core/math';
+import { accelerate, clamp, degToRad, easeInOutCubic, lerp } from '@/core/math';
 import type { ConfettiConfig } from './types';
 
 /** A piece's height as a share of its width. */
 const ASPECT = 0.625;
-/** The radius of the circle a piece flutters around, per pixel of `size`. */
-const FLUTTER_RADIUS = 1.25;
 /** The last share of its life over which a piece fades out. */
 const FADE = 0.2;
-/** How fast a piece spins in the plane, per radian per second of flutter. */
+/** The slowest and fastest swing, in radians per second. */
+const SWING_MIN = 4;
+const SWING_MAX = 8;
+/**
+ * A settled piece's fastest swing across, as a share of its fall speed, for
+ * a flutterer and a tumbler. At the defaults a flutterer swings about 19 px
+ * to either side, and a tumbler 4 px.
+ */
+const SWAY_FLUTTER = 0.25;
+const SWAY_TUMBLE = 0.1;
+/**
+ * How much the swing slows and speeds the fall, as a share of the fall
+ * speed. A flutterer slows a little as it swings out, and dips back in.
+ */
+const ARC_FLUTTER = 0.25;
+const ARC_TUMBLE = 0.1;
+/** How far a flutterer rocks with its swing, in radians. */
+const ROCK = 0.3;
+/** How fast a piece spins in flight, per radian per second of swing. */
 const SPIN = 0.5;
-/** The slowest and fastest flutter, in radians per second. */
-const FLUTTER_MIN = 3;
-const FLUTTER_MAX = 6;
+/** How fast a tumbler turns end over end, in radians per second. */
+const TUMBLE = 4;
+/** How many times a piece flips per swing. */
+const FLIP = 1.4;
+/** The most a tumbler glides sideways, as a share of its fall speed. */
+const GLIDE = 0.5;
+/** The slowest and fastest a piece falls, as shares of `gravity / drag`. */
+const FALL_MIN = 0.8;
+const FALL_MAX = 1.2;
 /**
- * The most a piece glides sideways, as a share of `gravity`. At the defaults
- * the fastest pieces drift 240 px/s to the side while falling at 300 px/s.
+ * When a piece starts and ends settling into its fall, in seconds from the
+ * top of its flight. It eases in over the whole time, so no moment shows
+ * where it starts.
  */
-const GLIDE = 0.8;
-/**
- * The glide eases in as a piece's fall speed goes from the first to the
- * second share of `gravity / drag`. With a drag of 3, that is from about half
- * a second to a second after the top of its flight.
- */
-const GLIDE_FROM = 0.75;
-const GLIDE_TO = 0.95;
+const SETTLE_FROM = -0.4;
+const SETTLE_TO = 1.6;
 
 /**
- * How much of its glide a piece has, from 0 to 1, by how close `vy` is to
- * the speed it settles at. It is 0 while the piece rises. Without drag or
- * gravity a piece never settles, so it never glides.
+ * How settled a piece is into its fall, from 0 to 1. A piece that falls from
+ * rest reaches `vy` after `-ln(1 - vy / fall) / drag` seconds, and a rising
+ * piece tops out that many seconds before 0, so `vy` says where the piece is
+ * in its flight, exactly at any frame rate.
  */
-const glideShare = (vy: number, { gravity, drag }: ConfettiConfig) => {
-  if (gravity === 0 || drag <= 0) return 0;
-  const settled = (vy * drag) / gravity;
-  return easeInOutQuad(
-    clamp((settled - GLIDE_FROM) / (GLIDE_TO - GLIDE_FROM), 0, 1)
+const settled = (vy: number, gravity: number, fall: number, drag: number) => {
+  if (fall === 0) return 0;
+  const share = (vy * Math.sign(gravity)) / fall;
+  const sinceTop = share < 1 ? -Math.log(1 - share) / drag : SETTLE_TO;
+  return easeInOutCubic(
+    clamp((sinceTop - SETTLE_FROM) / (SETTLE_TO - SETTLE_FROM), 0, 1)
   );
 };
 
 /**
- * Paper confetti (ADRs 0026, 0059). Pieces launch in a cone, slow down and
- * fall, flip about their horizontal axis, and flutter around a small circle.
- * Once it has been falling for a while, each glides to a random side, so the
- * burst opens evenly instead of falling in a column.
+ * Paper confetti (ADRs 0026, 0059). Pieces launch in a cone, slow down,
+ * spin and flip. From just before the top of its flight, a piece eases into
+ * falling the way paper does, somewhere between two ways: a flutterer sways gently from
+ * side to side like a leaf, rocking with the sway, while a tumbler turns end
+ * over end with a slight wobble and glides to one side. Each piece falls at
+ * its own speed, so the burst opens a little as it falls instead of falling
+ * in a column or as a block.
  *
- * Slots: `s0` is the flutter phase and `s1` its speed in radians per second.
- * The sign of `s1` is also the side the piece glides to (negative is left),
- * and its size how fast. `s2` is the flip phase and `s3` its speed.
+ * Slots: `s0` is the swing phase and `s1` its speed in radians per second.
+ * The size of `s1` places the piece between flutterer and tumbler, and its
+ * sign is the side it tumbles and glides to (negative is left). `s2` is how
+ * settled the piece is, from 0 to 1, as of the last step. `s3` scales its
+ * gravity, so pieces fall at different speeds.
  */
 export const confetti: Effect<ConfettiConfig> =
   /* @__PURE__ */ defineEffect<ConfettiConfig>({
@@ -81,36 +105,56 @@ export const confetti: Effect<ConfettiConfig> =
       // Pieces end at slightly different times, and all by `lifetime`.
       p.life *= rng.range(0.85, 1);
       p.s0 = rng.range(0, Math.PI * 2);
-      p.s1 = rng.range(FLUTTER_MIN, FLUTTER_MAX) * (rng.next() < 0.5 ? -1 : 1);
-      p.s2 = rng.range(0, Math.PI * 2);
-      p.s3 = rng.range(5, 9);
-      // The velocity includes the flutter from the start, as `update` expects.
-      const flutter = config.size * FLUTTER_RADIUS * p.s1;
-      p.vx = Math.cos(direction) * speed - flutter * Math.sin(p.s0);
-      p.vy = -Math.sin(direction) * speed + flutter * Math.cos(p.s0);
+      p.s1 = rng.range(SWING_MIN, SWING_MAX) * (rng.next() < 0.5 ? -1 : 1);
+      p.s3 = rng.range(FALL_MIN, FALL_MAX);
+      // Not yet settling, so the launch has no swing in it.
+      p.vx = Math.cos(direction) * speed;
+      p.vy = -Math.sin(direction) * speed;
+      p.scaleY = Math.cos(FLIP * p.s0);
     },
     update: (p, dt, config) => {
-      // Take the flutter out, so drag, gravity and the glide act on the
-      // flight alone, then add it back at the new phase.
-      const flutter = config.size * FLUTTER_RADIUS * p.s1;
-      const vx = p.vx + flutter * Math.sin(p.s0);
-      const vy = p.vy - flutter * Math.cos(p.s0);
-      p.s0 += p.s1 * dt;
-      const fallen = accelerate(vy, config.gravity, config.drag, dt);
-      // The glide uses the step's mean fall speed, so it matches at any
-      // frame rate.
-      const glide =
-        Math.sign(p.s1) *
-        ((Math.abs(p.s1) - FLUTTER_MIN) / (FLUTTER_MAX - FLUTTER_MIN)) *
-        GLIDE *
-        Math.abs(config.gravity) *
-        glideShare((vy + fallen) / 2, config);
-      p.vx = accelerate(vx, glide, config.drag, dt) - flutter * Math.sin(p.s0);
-      p.vy = fallen + flutter * Math.cos(p.s0);
+      const side = Math.sign(p.s1);
+      const speed = Math.abs(p.s1);
+      // 0 for a flutterer, 1 for a tumbler.
+      const tumbler = (speed - SWING_MIN) / (SWING_MAX - SWING_MIN);
+      const gravity = config.gravity * p.s3;
+      // The speed this piece settles at. Without drag it never settles.
+      const fall = config.drag > 0 ? Math.abs(gravity) / config.drag : 0;
+      const sway = fall * lerp(SWAY_FLUTTER, SWAY_TUMBLE, tumbler);
+      const arc = fall * lerp(ARC_FLUTTER, ARC_TUMBLE, tumbler);
 
-      p.s2 += p.s3 * dt;
-      p.scaleY = Math.cos(p.s2);
-      p.rotation += p.s1 * SPIN * dt;
+      // Take the swing out, so drag, gravity and the glide act on the flight
+      // alone, then add it back at the new phase. The swing moves the piece
+      // along an arc, `sin` across and `sin²` up, so it slows as it swings
+      // out and swoops back in.
+      const before = p.s2;
+      const phase = p.s0;
+      const vx = p.vx - before * sway * Math.cos(phase);
+      const vy = p.vy + before * arc * Math.sin(2 * phase);
+      p.s0 = phase + speed * dt;
+
+      const fallen = accelerate(vy, gravity, config.drag, dt);
+      // The glide acts through the step, so it takes how settled the piece
+      // is midway. The swing is the piece's state at the step's end, so it
+      // takes how settled the piece is then, as the next step expects. Both
+      // keep the effect the same at any frame rate.
+      const midway = settled((vy + fallen) / 2, gravity, fall, config.drag);
+      const after = settled(fallen, gravity, fall, config.drag);
+      const glide = side * tumbler * GLIDE * Math.abs(gravity) * midway;
+      p.vx =
+        accelerate(vx, glide, config.drag, dt) + after * sway * Math.cos(p.s0);
+      p.vy = fallen - after * arc * Math.sin(2 * p.s0);
+      p.s2 = after;
+
+      // In flight a piece spins. Settled, a flutterer rocks with its swing,
+      // its leading edge rising at each end, and a tumbler turns end over
+      // end.
+      const spin =
+        p.s1 * SPIN * (1 - midway) + side * tumbler * TUMBLE * midway;
+      const rock = -ROCK * (1 - tumbler);
+      p.rotation +=
+        spin * dt + rock * (after * Math.sin(p.s0) - before * Math.sin(phase));
+      p.scaleY = Math.cos(FLIP * p.s0);
       p.alpha = clamp((p.life - p.age) / (p.life * FADE), 0, 1);
     },
   });

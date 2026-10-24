@@ -14,7 +14,10 @@ export interface ConfettiConfig extends EffectConfig {
   spread: number;
   /** The average launch speed, in pixels per second. */
   velocity: number;
-  /** Air resistance per second. Falling pieces settle at `gravity / drag`. */
+  /**
+   * Air resistance per second. Falling pieces settle at 0.8 to 1.2 times
+   * `gravity / drag`.
+   */
   drag: number;
   /** Downward acceleration, in pixels per second squared. */
   gravity: number;
