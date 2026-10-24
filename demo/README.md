@@ -61,7 +61,7 @@ Why: a dark, quiet page lets the effects carry the colour. Each text colour keep
 Why: the glow under the preview's button made the accent read as light rather than paint, so the other accent marks share it.
 
 ### Routing
-- The URL hash names the page: `#getting-started`, `#custom-effects`, `#server-rendering`, `#upgrading-from-v2`, `#stress-test`, `#use-reward`, `#fire`, `#renderers`, `#confetti`, `#emoji`, `#balloon`. An effect's hash is its `name`, not its label, so Balloons is `#balloon`.
+- The URL hash names the page: `#getting-started`, `#custom-effects`, `#server-rendering`, `#upgrading-from-v2`, `#stress-test`, `#use-reward`, `#fire`, `#renderers`, `#confetti`, `#emoji`, `#balloon`, `#firework`. An effect's hash is its `name`, not its label, so Balloons is `#balloon` and Fireworks `#firework`.
 - An empty or unknown hash shows Getting started. The URL is left as it is.
 - `hooks/use-hash` reads the hash with `useSyncExternalStore` and the `hashchange` event. There is no router.
 - The document title follows the page, for example "Confetti · react-rewards".
@@ -110,6 +110,7 @@ Why: the item's text stays in text colours, which keep 4.5:1, and the accent mar
 - Every icon is path data on a 24 px grid, in `ICON_PATHS` in `components/icon/paths.ts`, keyed by a kebab-case name that says what it draws, such as `arrow-right` or `balloon`. Shapes such as rectangles and circles are written as paths too.
 - `components/icon` draws one by name, as a stroke in `currentColor`, 2 px wide by default, and hidden from screen readers, because text beside it names it. Components pass a size and, where needed, a stroke width. No other component draws its own icon.
 - Pages name their icon in `src/data/`, so the type of `icon` is the list of names, and a missing icon is a type error. A new page adds its icon to `ICON_PATHS`.
+- The fireworks' icon, `firework`, is a wavy trail rising from the bottom left to an eight-ray burst at the top right. The trail stops short of the burst, and the rays leave a hole in the middle, as `burst`'s do, so it reads as a firework at 16 px rather than a flower on a stem.
 
 Why: one set of icons and one component keeps every icon the same weight, and nothing is drawn twice.
 
