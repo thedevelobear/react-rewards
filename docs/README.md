@@ -98,8 +98,8 @@ What was decided, specifically enough to check the code against.
 | [0055](decisions/0055-pure-effect-definitions.md) | Built-in effects are marked pure, so unused ones tree-shake | Accepted |
 | [0056](decisions/0056-work-after-release-branches-off-master.md) | After 3.0.0, work branches off `master` | Accepted. One more PR on the integration branch: 0058 |
 | [0057](decisions/0057-short-impersonal-adrs.md) | ADRs are short, and state the decision and its reason | Accepted |
-| [0058](decisions/0058-site-redesign-before-the-release.md) | The site's redesign lands on the integration branch before the release, with the effect tweaks made while reviewing it | Proposed |
-| [0059](decisions/0059-confetti-falls-like-paper.md) | Confetti eases into falling like paper | Proposed |
+| [0058](decisions/0058-site-redesign-before-the-release.md) | The site's redesign lands on the integration branch before the release, with the effect tweaks made while reviewing it | Accepted |
+| [0059](decisions/0059-confetti-falls-like-paper.md) | Confetti eases into falling like paper | Accepted |
 
 ### Benchmarks
 | Benchmark | What |

@@ -1,6 +1,6 @@
 # 0058. The site's redesign lands on the integration branch before the release, with the effect tweaks made while reviewing it
 
-- **Status:** Proposed
+- **Status:** Accepted
 - **Date:** 2026-10-24
 
 - The preview site's redesign is one more v3 PR, `v3/14-site-redesign`, branched from `feat/v3-scaffolding` and merged into it. It is the exception to [ADR 0056](0056-work-after-release-branches-off-master.md)'s rule that the integration branch takes no more work.

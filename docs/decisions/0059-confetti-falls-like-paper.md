@@ -1,6 +1,6 @@
 # 0059. Confetti eases into falling like paper
 
-- **Status:** Proposed
+- **Status:** Accepted
 - **Date:** 2026-10-24
 
 - The launch is all but unchanged: pieces fly in the cone, slow with drag, spin and flip. From 0.4 s before the top of its flight to 1.6 s after it, a piece eases into its fall, on an ease-in-out cubic, so no moment shows where it starts. A piece that has begun to settle by its launch starts with that much sway in its launch velocity. Where a piece is in its flight comes from its fall speed: a piece falling from rest reaches `vy` after `-ln(1 - vy / fall) / drag` seconds, and a rising piece tops out that many seconds before 0. Without drag or gravity a piece never settles.
