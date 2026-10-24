@@ -24,7 +24,7 @@ export const confetti: Effect<ConfettiConfig> =
     blend: 'normal',
     defaults: {
       count: 50,
-      size: 8,
+      size: 10,
       colors: ['#A45BF1', '#25C6F6', '#72F753', '#F76C88', '#F5F770'],
       angle: 90,
       spread: 45,
