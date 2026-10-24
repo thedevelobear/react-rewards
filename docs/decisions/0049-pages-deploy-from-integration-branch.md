@@ -1,6 +1,6 @@
 # 0049. The site deploys to GitHub Pages from the integration branch until the release
 
-- **Status:** Proposed
+- **Status:** Accepted
 - **Date:** 2026-10-23
 
 ## Context

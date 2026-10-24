@@ -1,6 +1,6 @@
 # 0051. Off-screen culling and the particle view's accessors stay as they are
 
-- **Status:** Proposed
+- **Status:** Accepted
 - **Date:** 2026-10-23
 
 ## Context

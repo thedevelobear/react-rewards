@@ -88,11 +88,11 @@ What gets easier, what gets harder, and what has to happen next.
 | [0044](decisions/0044-reward-handles-pointer-events.md) | `reward` passed as an event handler fires from the pointer | Accepted |
 | [0045](decisions/0045-fixture-page.md) | The browser-test fixtures move to a second page, `fixtures.html` | Accepted |
 | [0046](decisions/0046-adrs-cover-the-library.md) | ADRs record the library, and the site's design lives in `demo/README.md` | Accepted |
-| [0047](decisions/0047-burst-renderer.md) | A burst says which renderer it was given | Proposed |
-| [0048](decisions/0048-benchmark-script-in-demo.md) | The benchmark harness is a script in `demo/` | Proposed |
-| [0049](decisions/0049-pages-deploy-from-integration-branch.md) | The site deploys to GitHub Pages from the integration branch until the release | Proposed |
-| [0050](decisions/0050-no-canvas-particle-cap.md) | The Canvas 2D fallback has no particle cap | Proposed |
-| [0051](decisions/0051-no-engine-optimisations-after-benchmark.md) | Off-screen culling and the particle view's accessors stay as they are | Proposed |
+| [0047](decisions/0047-burst-renderer.md) | A burst says which renderer it was given | Accepted |
+| [0048](decisions/0048-benchmark-script-in-demo.md) | The benchmark harness is a script in `demo/` | Accepted |
+| [0049](decisions/0049-pages-deploy-from-integration-branch.md) | The site deploys to GitHub Pages from the integration branch until the release | Accepted |
+| [0050](decisions/0050-no-canvas-particle-cap.md) | The Canvas 2D fallback has no particle cap | Accepted |
+| [0051](decisions/0051-no-engine-optimisations-after-benchmark.md) | Off-screen culling and the particle view's accessors stay as they are | Accepted |
 
 ### Benchmarks
 | Benchmark | What |
