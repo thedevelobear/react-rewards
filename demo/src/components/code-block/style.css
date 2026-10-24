@@ -1,0 +1,75 @@
+.code-block-head {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 6px 6px 6px 16px;
+  border-bottom: 1px solid var(--border);
+  color: var(--text-subtle);
+  font-family: var(--font-mono);
+  letter-spacing: 0;
+}
+
+.code-block-file {
+  min-width: 0;
+  overflow: hidden;
+  color: var(--text-secondary);
+  font-size: 13px;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.code-block-lang {
+  padding: 2px 7px;
+  border: 1px solid var(--border-strong);
+  border-radius: var(--radius-full);
+  color: var(--text-muted);
+  font-size: 11px;
+  line-height: 1.3;
+}
+
+.code-block-head .copy-button {
+  margin-left: auto;
+}
+
+/* The numbers stay put while the code scrolls sideways. */
+.code-block-body {
+  display: flex;
+  padding: 18px 0 20px 12px;
+  background: var(--code-background);
+  font-family: var(--font-mono);
+  font-size: 14px;
+  line-height: 24px;
+  letter-spacing: 0;
+}
+
+.code-block-numbers {
+  display: flex;
+  flex: none;
+  flex-direction: column;
+  min-width: 22px;
+  margin-right: 20px;
+  color: var(--code-line-number);
+  text-align: right;
+  user-select: none;
+}
+
+.code-block-pre {
+  flex: 1;
+  min-width: 0;
+  margin: 0;
+  padding-right: 20px;
+  overflow-x: auto;
+  color: var(--code-foreground);
+  font: inherit;
+  tab-size: 2;
+}
+
+@media (max-width: 720px) {
+  .code-block-body {
+    font-size: 13px;
+  }
+
+  .code-block-numbers {
+    margin-right: 14px;
+  }
+}

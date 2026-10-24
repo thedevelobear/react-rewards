@@ -1,0 +1,158 @@
+# demo
+
+The preview site for react-rewards, and the page the browser specs run against. It is a private workspace package, a React 19 and Rsbuild app ([ADR 0027](../docs/decisions/0027-react-demo.md)) that imports the built library, as users do ([ADR 0031](../docs/decisions/0031-demo-imports-built-package.md)).
+
+## Running it
+- `pnpm dev` at the root rebuilds the library on change. Next to it, `pnpm --filter demo dev` serves the site at `/` and the fixtures at `/fixtures.html`.
+- `pnpm e2e` at the root builds the library and the demo, then runs the Playwright specs in `e2e/`.
+- `pnpm --filter demo typecheck` checks the demo against the built declarations. Run `pnpm build` first.
+
+## Two pages
+- `index.html` is the site. Its template applies the stored theme before the first paint.
+- `fixtures.html` is the bare page the renderer and hook specs open ([ADR 0045](../docs/decisions/0045-fixture-page.md)). The site doesn't link to it.
+
+## The site's design
+The site documents the library, so its design decisions are kept here rather than in `docs/decisions/` ([ADR 0046](../docs/decisions/0046-adrs-cover-the-library.md)). Each says what was chosen and why. When the site changes, edit the decision in place, in the same PR.
+
+### Visual direction
+- Dark first: a near-black ground, panels one step lighter, 1 px borders, and one coral accent. The light theme mirrors the dark one's steps. There are no gradients, and no shadows apart from the glow under the preview's button.
+- Type: Geist for UI and Geist Mono for code and small labels, self-hosted through Fontsource, weights 400 to 600. UI text is 13 to 14 px with `-0.01em` tracking, and paragraphs 15.5 px at 1.6 line height. The page title is 64 px (40 px on phones), weight 600, `-0.045em`. Section titles are 24 px, weight 600, `-0.025em`. Group labels are mono, 11 px, uppercase, with `0.1em` tracking.
+- Shape: radii of 6, 10, 12, 14, 16 and 20 px and full. The props panel's compact controls keep 7 px.
+- Size: what people tap is 44 px tall: the header's buttons, the sidebar's links, the tabs, and the copy and Reset buttons. The props panel's controls stay 32 px, as a dense grid. The header is 68 px. The content is at most 800 px wide, beside a 240 px sidebar, and the header lines up with them.
+- Motion: `cubic-bezier(.23, 1, .32, 1)`, 0.12 to 0.3 s. Reduced motion turns UI transitions off.
+- Every colour is a token in `src/styles/tokens.css`, defined for light, `[data-theme="dark"]` and the dark media query. Contrast is checked with the WCAG formula, on the darkest surface a colour sits on:
+
+  | Token | Light | Dark | Use, and contrast |
+  |---|---|---|---|
+  | `--bg` | `#ffffff` | `#0a0a0b` | The page. |
+  | `--card` | `#fafafa` | `#0f0f11` | Panels: the preview, the install command, code, cards, the pager. |
+  | `--inset` | `#f4f4f5` | `#121214` | Recessed areas: card drawings, step numbers, table heads, hovers. |
+  | `--surface` | `#f4f4f5` | `#151517` | Controls, inline code and the active sidebar item. |
+  | `--surface-hover` | `#e9e9ec` | `#1c1c1f` | Controls on hover. |
+  | `--border` | `#e4e4e7` | `#1e1e22` | Panels and dividers. |
+  | `--border-strong` | `#d4d4d8` | `#26262b` | Controls. |
+  | `--dot` | `#dcdce0` | `#202025` | The dot grids. |
+  | `--text` | `#09090b` | `#f4f4f5` | 18.1:1 and 16.6:1. |
+  | `--text-secondary` | `#3f3f46` | `#d4d4d8` | Button labels. 9.5:1 and 12.3:1. |
+  | `--text-muted` | `#52525b` | `#a1a1aa` | Paragraphs and idle links. 7.0:1 and 7.1:1. |
+  | `--text-subtle` | `#66666f` | `#8b8b94` | Labels and captions. 5.2:1 and 5.4:1. |
+  | `--accent` | `#ff6b57` | same | Fills: the preview's button, the active tab's line, dots and icons. 2.8:1 on white, so never small text there. |
+  | `--accent-hover` | `#ff7f6e` | same | The preview's button on hover. |
+  | `--accent-text` | `#c4381f` | `#ff6b57` | Accent text and links. 4.9:1 and 6.5:1. |
+  | `--ink` | `#0a0a0b` | same | Text on the accent, 7.1:1, and the emoji drawing's faces. |
+  | `--focus` | `#7c3aed` | `#a78bfa` | The focus ring, `2px solid` with a 2 px offset. 5.2:1 and 6.7:1. |
+  | `--success` | `#047857` | `#6ee7b7` | The copied tick and the preview's live dot. 5.0:1 and 12.0:1. |
+  | `--knob` | `#ffffff` | same | The switch's knob. |
+  | `--art-*` | violet, amber, sky, mint | same | The effect cards' drawings, and `--art-line` and `--art-shine` for the balloons. Decorative. |
+  | `--code-*` | see "Code colours" | | Each 4.5:1 or more on `--card`. |
+
+- Theme: a header button cycles system, light and dark. The choice is stored in `localStorage` under `react-rewards:theme`, and set as `data-theme` on `<html>` by an inline script before first paint.
+
+Why: a dark, quiet page lets the effects carry the colour. Each text colour keeps 4.5:1 on every surface it sits on, and the focus ring and ticks keep 3:1. Coral text fails on white, so light mode has a darker `--accent-text`.
+
+### Routing
+- The URL hash names the page: `#getting-started`, `#stress-test`, `#confetti`, `#emoji`, `#balloon`. An effect's hash is its `name`, not its label, so Balloons is `#balloon`.
+- An empty or unknown hash shows Getting started. The URL is left as it is.
+- `hooks/use-hash` reads the hash with `useSyncExternalStore` and the `hashchange` event. There is no router.
+- The document title follows the page, for example "Confetti · react-rewards".
+- A new effect needs no routing code. Its page in `src/data/effects/` gives it a sidebar link and a hash.
+- Going to another page scrolls to the top, because the pager's links are at the bottom. A reload keeps the browser's scroll.
+
+Why: GitHub Pages serves static files only, so path routes such as `/emoji` would need a `404.html` redirect and the base path set in Rsbuild. Hashes give deep links, reloads and the back and forward buttons under any base path, with no dependency. The cost is that in-page anchors can't use the hash.
+
+### Getting started
+- The home page. Under the title is a preview of the first effect with its defaults, captioned "Every call to reward() fires a new burst."
+- Then three numbered steps, joined by a line. The last step's number has an accent ring.
+  1. "Install the package": the install command, with a tab per package manager (pnpm, npm, yarn, bun) and a copy button. The choice is stored under `react-rewards:package-manager`.
+  2. "Fire your first reward": a line on `useReward`, and the first effect's snippet with its defaults, as `RewardButton.tsx`.
+  3. "Pick an effect": a card per effect, linking to its page, with its label and description. Each card has a drawing of its effect, from `components/getting-started/art.tsx`. An effect without a drawing shows its icon instead, so a new effect needs no code here.
+
+Why: the install command installs the whole library, so it is shown once rather than on every effect. The steps read in the order a newcomer works, and the preview shows the result before any of them.
+
+### Stress test
+- A page under Guides, after Getting started, that shows the engine's headroom. Its title is "Stress test".
+- Its Customize section has three settings: the effect (Confetti, Emoji, Balloons), the count (a slider from 100 to 20000 in steps of 100, starting at 5000) and the renderer (Auto, WebGL, Canvas 2D). The burst uses the effect's defaults apart from the count.
+- The renderer calls `setRenderer`, which applies to the whole page, so leaving the Stress test sets it back to Auto. Effect pages always use Auto.
+- The preview is the effect pages' preview. Its top right corner holds the readout, a small mono tag. Before a burst it reads "Ready". While a burst runs, it shows the burst's renderer ([ADR 0047](../docs/decisions/0047-burst-renderer.md)) and the fps over the last half second. After the burst, it shows the average fps over the whole burst, followed by "avg". Bursts fired while one runs are counted with it. A burst that is skipped reads "Skipped", for example under reduced motion, or when the forced renderer isn't available.
+- The fps is the number of `requestAnimationFrame` callbacks a second. The page counts them only while a burst runs.
+- The effect pages have no readout and no renderer setting. Their count sliders keep their own ranges.
+- The site has no card showing that bursts aren't clipped. The fixture page has one, which the smoke spec checks ([ADR 0045](../docs/decisions/0045-fixture-page.md)).
+- The benchmark harness drives this page through its controls ([ADR 0048](../docs/decisions/0048-benchmark-script-in-demo.md)). A change to the page has to keep the settings' names, the button's and the readout's `data-testid`s, and the readout's `data-state`, or update the harness.
+
+Why: one page for performance keeps the effect pages about the API, and keeps their sliders fine enough for everyday counts.
+
+### Header and sidebar
+- The header holds the logo, a mono "docs" tag, a "GitHub" button with an arrow, and the theme switcher. The tag is hidden below 380 px, so the rest fits a small phone.
+- The theme switcher is an icon button showing the current theme. Its name, "Theme: System" for example, is visually hidden, and its tooltip names the next theme.
+- The logo is the README's `assets/react-rewards.png`, trimmed to its visible pixels and scaled to 56 px tall (265×56 px, 16 kB). It is shown 28 px tall, so it is sharp on 2x screens. It was made with macOS `sips`, and a new logo needs the same:
+  ```sh
+  sips -c 604 2857 --cropOffset 151 16 assets/react-rewards.png --out crop.png
+  sips --resampleHeight 56 crop.png --out demo/src/components/header/logo.png
+  ```
+- The logo's alt text is "react-rewards", and it links to `#getting-started`. Biome's `useValidAnchor` rejects `href="#"`. Its orange-to-purple gradient is outside the site's palette, which is fine for a logo: logos are exempt from WCAG's contrast minimum.
+- The sidebar is a navigation labelled "Pages", with two groups: "Guides", holding Getting started and Stress test, and "Effects". Each heading labels its list. Items are links with an icon, and the current one has `aria-current="page"`.
+- Each page's icon is path data on a 24 px grid, in its page in `src/data/`, drawn by `components/icon` with a 2 px stroke.
+- The active item has a `--surface` background, `--text` text, an `--accent` icon and an `--accent` dot at its end. On phones every group's links share one row of 44 px pills that scrolls sideways, and the active pill has a `--surface` background and no dot.
+
+Why: the item's text stays in text colours, which keep 4.5:1, and the accent marks it with shapes, which need no text contrast.
+
+### Page title
+- Above the title is a breadcrumb, a navigation labelled "Breadcrumb": the page's sidebar group, a chevron, and the page, which has `aria-current="page"`. The group isn't a link, because it has no page.
+- The title is `--text`, and the description under it is `--text-muted` at 19 px (17 px on phones), at most 560 px wide.
+
+### Preview
+- A 320 px stage with a `--dot` grid on `--card`, and a "Reward me" button at its centre that fires the effect from there. The button is an `--accent` pill with `--ink` text and the effect's icon.
+- Its top left corner names the effect, "Live preview · confetti", after a `--success` dot. The top right corner holds what the page puts there, such as the Stress test's readout. On a narrow stage, the corner wraps under the name.
+- There is no replay button: "Reward me" already fires again.
+
+### Preview and Code tabs
+- Below an effect's title are two tabs, underlined in `--accent` when selected, as the install command's are. Preview holds the preview, the props panel and the props table. Code holds the snippet, as `RewardButton.tsx`.
+- Both panels stay mounted, and the one not shown is `hidden`, so opening Code doesn't cancel a running burst, and the snippet always reflects the panel.
+- The tabs follow the WAI-ARIA tabs pattern: arrow keys, Home and End. Preview is selected on load and when the effect changes. The tab isn't kept in the URL.
+- The preview fires with the panel's settings.
+- The snippet is TSX. It calls `useReward` with a ref and fires with `reward()` from a click, as the preview does. Its config argument lists only the values that differ from the effect's defaults, and is left out when none do.
+
+Why: the page follows reactbits.dev's structure, as the plan's layout does.
+
+### Props panel
+- Each effect's page in `src/data/effects/` lists a control per config field: a slider with its range, step and unit, a switch, or a list. Each control is a bordered cell in a grid of three, two or one columns, by the panel's width. `Controls<C>` maps each field to the control for its value's type, so a missing field or the wrong kind of control is a type error. The panel is generated from the list, so a new effect needs no panel code.
+- `colors` shows a swatch per colour. Each is the browser's colour input, with × to remove it. A + tile is another colour input, and adds its colour when its picker closes. It listens for the native `change` event, because React's `onChange` fires on every `input` event while the picker is open. Colour inputs give lowercase `#rrggbb`, so a changed colour shows in lowercase in the snippet.
+- `emojis` shows a chip per emoji, with ×, and a field that adds what is typed on Enter or +. The text is split with `Intl.Segmenter`, so an emoji made of several code points stays whole, and whitespace is dropped. Any character is accepted, because an emoji sprite draws any glyph.
+- A list keeps at least one item. Lists come last and span the grid, so the cells before them fill it without gaps.
+- The settings start from `effect.defaults`. Reset restores them, and they start afresh when the effect changes. They aren't kept in the URL.
+
+Why: any colour or emoji can be tried, with no presets to maintain.
+
+### Props table
+- It lists every config field in the panel's order: the prop, its type (`number`, `boolean` or `string[]`, from its control), its default (from `effect.defaults`, written as in the snippet) and a description.
+- The description is the field's JSDoc from `src/effects/<name>/types.ts`, copied next to its control, without references to ADRs. Text in backticks shows as code. Nothing checks that the copies match, so a change to a field's JSDoc has to be copied by hand.
+- The burst options (`zIndex`, `onComplete`, `respectReducedMotion` and `seed`) aren't listed. The library's README documents them.
+- On phones the table scrolls sideways inside its frame, so the page doesn't.
+
+### Code blocks
+- A code block has a header with a file icon, the file name, a "tsx" tag and the copy button. Under it, the code has line numbers in a column of their own, outside the `<pre>`, so they aren't copied or read out. The code scrolls sideways, and the numbers stay put.
+- The install command is a `$` prompt, which isn't copied, and the command, in mono. It isn't highlighted.
+
+### Code colours
+- shiki highlights the snippets with a theme of the site's own, in `components/code-block/highlight.ts`. It maps TextMate scopes to the `--code-*` tokens in `src/styles/tokens.css`, so the code follows the theme switcher and the system's appearance with no script. A deeper scope wins, so `=>` and a string's quotes override the rules for `storage` and `punctuation`.
+- The colours, with their contrast on the code panel (`--card`: `#fafafa` light, `#0f0f11` dark):
+
+  | Token | Light | Dark | Colours, in the snippet |
+  |---|---|---|---|
+  | `--code-foreground` | `#18181b` (17.0:1) | `#e7e7ea` (15.5:1) | Variables, properties and JSX text. |
+  | `--code-keyword` | `--accent-text`, `#c4381f` (5.1:1) | `#ff8a7a` (8.4:1) | Keywords, and `null`, `true`, `false` and numbers. |
+  | `--code-string` | `#8f5500` (5.8:1) | `#f2c46d` (11.8:1) | Strings, with their quotes. |
+  | `--code-function` | `#0b65a8` (5.9:1) | `#7cc7ff` (10.5:1) | Names of functions, hooks and components, where they are declared or called. |
+  | `--code-type` | `#7136d9` (6.2:1) | `#c4a7ff` (9.4:1) | Types and JSX attribute names. |
+  | `--code-tag` | `#08775a` (5.3:1) | `#7ee0b8` (12.1:1) | JSX tag names. |
+  | `--code-punctuation` | `--text-subtle`, `#66666f` (5.4:1) | `#9a9aa3` (6.9:1) | Brackets, separators, operators such as `=` and `=>`, and comments. |
+  | `--code-line-number` | `--text-subtle`, `#66666f` (5.4:1) | `#80808a` (4.9:1) | Line numbers. |
+
+- shiki loads with a dynamic import after the first paint: `shiki/core`, the JavaScript regex engine (no WebAssembly) and the `tsx` grammar only. Until then the code shows as plain text. The tokens render as React elements from `codeToTokens`, not as inserted HTML.
+
+Why: every colour is a token, so code follows the theme like the rest of the page. Each kind of name has its own hue, and every colour keeps 4.5:1 on `--card`.
+
+### Pager
+- Every page ends with cards for the pages before and after it, in the sidebar's order, in a navigation labelled "Previous and next". A card shows "Previous" or "Next", in mono, the page's label, and an `--accent` arrow. Getting started has only a next card, and the last effect only a previous one.
+
+Why: a reader can go through the site in order without going back up to the sidebar.

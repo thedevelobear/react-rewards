@@ -1,0 +1,14 @@
+/* A small mono tag in the preview's corner (README, "Stress test"). */
+.stress-readout {
+  padding: 2px 8px;
+  border: 1px solid var(--border-strong);
+  border-radius: var(--radius-xs);
+  background: var(--surface);
+  color: var(--text-muted);
+  font-family: var(--font-mono);
+  font-size: 11px;
+  font-variant-numeric: tabular-nums;
+  line-height: 18px;
+  letter-spacing: 0;
+  white-space: nowrap;
+}

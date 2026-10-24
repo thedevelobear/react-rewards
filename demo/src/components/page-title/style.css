@@ -1,0 +1,39 @@
+.page-title {
+  display: flex;
+  flex-direction: column;
+}
+
+.page-title-breadcrumb {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 0;
+  color: var(--text-subtle);
+  font-size: 13px;
+  list-style: none;
+}
+
+.page-title-breadcrumb [aria-current="page"] {
+  color: var(--text-secondary);
+}
+
+.page-title-heading {
+  margin: 18px 0 16px;
+  font-size: clamp(40px, 10vw, 64px);
+  font-weight: 600;
+  line-height: 1;
+  letter-spacing: -0.045em;
+}
+
+.page-title-description {
+  max-width: 560px;
+  color: var(--text-muted);
+  font-size: 19px;
+  line-height: 1.55;
+}
+
+@media (max-width: 720px) {
+  .page-title-description {
+    font-size: 17px;
+  }
+}
