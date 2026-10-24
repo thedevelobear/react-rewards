@@ -21,5 +21,11 @@
     "path": "dist/index.js",
     "import": "{ useReward, balloon }",
     "gzip": true
+  },
+  {
+    "name": "useReward + firework",
+    "path": "dist/index.js",
+    "import": "{ useReward, firework }",
+    "gzip": true
   }
 ]
