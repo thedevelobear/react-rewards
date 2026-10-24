@@ -35,7 +35,7 @@ What was decided, specifically enough to check the code against.
 ### Plans
 | Plan | Status |
 |---|---|
-| [2026-10-22-v3-rewrite](plans/2026-10-22-v3-rewrite.md) | **Active**. The v3 rewrite, PR by PR. |
+| [2026-10-22-v3-rewrite](plans/2026-10-22-v3-rewrite.md) | Done. The v3 rewrite, PR by PR. |
 | [2026-10-21-toolchain-upgrade-and-preview-site](plans/2026-10-21-toolchain-upgrade-and-preview-site.md) | Superseded by 2026-10-22-v3-rewrite. The original proposal. |
 
 ### Decisions
@@ -105,7 +105,7 @@ What was decided, specifically enough to check the code against.
 | [0062](decisions/0062-docs-on-the-site.md) | The site holds the docs, and the README keeps the basics | Accepted |
 | [0063](decisions/0063-effect-creator-agent.md) | An effect-creator agent for Claude Code lives in the repo | Accepted |
 | [0064](decisions/0064-orchestrated-agents.md) | Claude Code works through an orchestrator agent, with an effect creator, a developer and QA | Accepted |
-| [0065](decisions/0065-publish-with-pinned-npm.md) | The publish workflow runs a pinned npm 11 | Proposed |
+| [0065](decisions/0065-publish-with-pinned-npm.md) | The publish workflow runs a pinned npm 11 | Accepted |
 
 ### Benchmarks
 | Benchmark | What |
