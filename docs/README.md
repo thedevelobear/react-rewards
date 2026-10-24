@@ -96,11 +96,11 @@ What was decided, specifically enough to check the code against.
 | [0053](decisions/0053-public-math-helpers.md) | The math helpers are public | Accepted |
 | [0054](decisions/0054-publish-from-github-release.md) | A GitHub release publishes to npm with trusted publishing, and v3 starts at 3.0.0 | Accepted |
 | [0055](decisions/0055-pure-effect-definitions.md) | Built-in effects are marked pure, so unused ones tree-shake | Accepted |
-| [0056](decisions/0056-work-after-release-branches-off-master.md) | After 3.0.0, work branches off `master` | Accepted. Two more PRs on the integration branch: 0058 and 0060 |
+| [0056](decisions/0056-work-after-release-branches-off-master.md) | After 3.0.0, work branches off `master` | Accepted. Two more v3 PRs from the integration branch: 0058 and 0060 |
 | [0057](decisions/0057-short-impersonal-adrs.md) | ADRs are short, and state the decision and its reason | Accepted |
 | [0058](decisions/0058-site-redesign-before-the-release.md) | The site's redesign lands on the integration branch before the release, with the effect tweaks made while reviewing it | Accepted |
 | [0059](decisions/0059-confetti-falls-like-paper.md) | Confetti eases into falling like paper | Accepted |
-| [0060](decisions/0060-cleanup-before-the-release.md) | The docs, icon and type cleanup lands on the integration branch before the release | Proposed |
+| [0060](decisions/0060-cleanup-before-the-release.md) | The docs, icon and type cleanup merges into `master` before the release is published | Proposed |
 | [0061](decisions/0061-types-in-types-files.md) | Types are declared in each folder's `types.ts` | Proposed |
 | [0062](decisions/0062-docs-on-the-site.md) | The site holds the docs, and the README keeps the basics | Proposed |
 | [0063](decisions/0063-effect-creator-agent.md) | An effect-creator agent for Claude Code lives in the repo | Proposed |
