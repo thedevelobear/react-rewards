@@ -36,11 +36,11 @@ const mean = (values: readonly number[]) =>
 describe('confetti', () => {
   it('has the defaults of ADR 0026, frozen', () => {
     expect(confetti.defaults).toEqual({
-      count: 50,
+      count: 100,
       size: 10,
       colors: ['#A45BF1', '#25C6F6', '#72F753', '#F76C88', '#F5F770'],
       angle: 90,
-      spread: 45,
+      spread: 60,
       velocity: 1500,
       drag: 3,
       gravity: 900,
@@ -67,19 +67,22 @@ describe('confetti', () => {
 
   it('launches within the cone, at 0.5 to 1.5 times velocity', () => {
     const config = { count: 200, velocity: 1000 };
+    // A piece launched sideways is at its top, so half settled, and its sway
+    // adds up to 0.5 * 0.25 * 1.2 * 300 = 45 px/s to the launch.
+    const sway = 45;
     const right = simulate({ ...config, angle: 0, spread: 0 });
     for (const [i, vx] of field(right, 'vx').entries()) {
-      expect(vx).toBeGreaterThanOrEqual(500 - 1e-3);
-      expect(vx).toBeLessThanOrEqual(1500 + 1e-3);
-      expect(Math.abs(field(right, 'vy')[i] ?? 0)).toBeLessThan(1e-3);
+      expect(vx).toBeGreaterThanOrEqual(500 - sway);
+      expect(vx).toBeLessThanOrEqual(1500 + sway);
+      expect(Math.abs(field(right, 'vy')[i] ?? 0)).toBeLessThan(sway);
     }
 
     const up = simulate({ ...config, angle: 90, spread: 90 });
     const vy = field(up, 'vy');
     for (const [i, vx] of field(up, 'vx').entries()) {
       const degrees = (Math.atan2(-(vy[i] ?? 0), vx) * 180) / Math.PI;
-      expect(degrees).toBeGreaterThanOrEqual(45 - 1e-3);
-      expect(degrees).toBeLessThanOrEqual(135 + 1e-3);
+      expect(degrees).toBeGreaterThan(45 - 5);
+      expect(degrees).toBeLessThan(135 + 5);
     }
   });
 
@@ -115,39 +118,26 @@ describe('confetti', () => {
     expect(Math.max(...scales)).toBeGreaterThan(0.95);
   });
 
-  it('flies all but unchanged while it rises (ADR 0059)', () => {
+  it('eases into its fall from 1.6 s before its top to 1.6 s after (ADR 0059)', () => {
     const simulation = simulate({ count: 200 });
-    const launch = field(simulation, 'vx');
-    run(simulation, 0.3);
-    // Measured: 1.7% settled at most, and 0.95 px/s off its flight.
-    for (const settled of field(simulation, 's2')) {
-      expect(settled).toBeLessThan(0.02);
-    }
-    for (const [i, vx] of field(simulation, 'vx').entries()) {
-      expect(Math.abs(vx - (launch[i] ?? 0) * Math.exp(-3 * 0.3))).toBeLessThan(
-        1.5
-      );
-    }
-  });
-
-  it('eases into its fall from 0.4 s before its top to 1.6 s after', () => {
-    const simulation = simulate({ count: 200 });
+    // A piece tops out 0.36 to 0.72 s after its launch, so it launches a
+    // little settled. Measured: 0.071 to 0.231.
     const last = field(simulation, 's2');
-    let first = 0;
+    for (const settled of last) {
+      expect(settled).toBeGreaterThan(0.05);
+      expect(settled).toBeLessThan(0.25);
+    }
     let step = 0;
     for (let i = 0; i < 144; i++) {
       run(simulation, 1 / 60);
       for (const [j, settled] of field(simulation, 's2').entries()) {
-        const was = last[j] ?? 0;
-        if (was === 0 && settled > 0) first = Math.max(first, settled);
-        step = Math.max(step, settled - was);
+        step = Math.max(step, settled - (last[j] ?? 0));
         last[j] = settled;
       }
     }
-    // Measured: the first step settles a piece by 0.00003 at most, and no
-    // step by more than 0.025, the most an ease over 2 s moves in 1/60 s.
-    expect(first).toBeLessThan(1e-4);
-    expect(step).toBeLessThan(0.026);
+    // Measured: no step settles a piece by more than 0.0155, the most an
+    // ease over 3.2 s moves in 1/60 s, so nothing jumps, launch included.
+    expect(step).toBeLessThan(0.016);
     // The last to top out does so at 0.72 s, so by 2.4 s all have settled.
     expect(last.every((settled) => settled === 1)).toBe(true);
   });
@@ -192,8 +182,8 @@ describe('confetti', () => {
   });
 
   it('ends within 1 px at 30, 60 and 144 Hz after 1 s and 2.5 s', () => {
-    // Measured, against 144 Hz: 0.62 px at 30 Hz and 0.13 px at 60 Hz after
-    // 1 s, and 0.70 px and 0.15 px after 2.5 s, when every piece sways.
+    // Measured, against 144 Hz: 0.64 px at 30 Hz and 0.14 px at 60 Hz after
+    // 1 s, and 0.69 px and 0.15 px after 2.5 s, when every piece sways.
     for (const seconds of [1, 2.5]) {
       const at = (hz: number) => run(simulate({ count: 100 }, 3), seconds, hz);
       const reference = at(144);
@@ -225,8 +215,8 @@ describe('confetti', () => {
     const simulation = run(simulate({ count: 200 }), 1.25);
     const falling = width(simulation);
     run(simulation, 1.25);
-    // Measured: 1.28 times as wide. Falling straight down, 1.02 times.
-    expect(width(simulation)).toBeGreaterThan(falling * 1.15);
+    // Measured: 1.39 times as wide. Falling straight down, 1.02 times.
+    expect(width(simulation)).toBeGreaterThan(falling * 1.2);
   });
 
   it('falls evenly, with no gap in the middle', () => {
@@ -240,7 +230,7 @@ describe('confetti', () => {
       const band = Math.floor(((value - from) / (to - from)) * 5);
       if (band >= 0 && band < 5) bands[band] = (bands[band] ?? 0) + 1;
     }
-    // Measured: 1.18 times the mean band. Gliding to the side a piece was
+    // Measured: 1.16 times the mean band. Gliding to the side a piece was
     // thrown instead left 0.33 times, a gap between two columns.
     const mean = (0.8 * x.length) / 5;
     expect(bands[2]).toBeGreaterThan(0.8 * mean);
@@ -275,30 +265,30 @@ describe('confetti', () => {
       [
         {
           "alpha": 1,
-          "rotation": 4.928,
+          "rotation": 4.872,
           "scaleY": 0.761,
-          "vx": -14.773,
-          "vy": 60.026,
-          "x": -19.41,
-          "y": -124.283,
+          "vx": 13.299,
+          "vy": 73.228,
+          "x": -23.699,
+          "y": -124.421,
         },
         {
           "alpha": 1,
-          "rotation": 1.92,
+          "rotation": 2.228,
           "scaleY": 0.642,
-          "vx": -121.675,
-          "vy": -103.793,
-          "x": -140.675,
-          "y": -283.71,
+          "vx": -180.044,
+          "vy": -108.105,
+          "x": -190.368,
+          "y": -262.161,
         },
         {
           "alpha": 1,
-          "rotation": 3.387,
+          "rotation": 3.326,
           "scaleY": -0.351,
-          "vx": 35.308,
-          "vy": -208.549,
-          "x": 40.709,
-          "y": -424.232,
+          "vx": 75.31,
+          "vy": -196.242,
+          "x": 57.366,
+          "y": -422.248,
         },
       ]
     `);

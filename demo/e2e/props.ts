@@ -46,7 +46,7 @@ test('the props panel sets the snippet, and Reset restores the defaults', async 
 
   await tab(page, 'Preview').click();
   await reset.click();
-  await expect(slider(page, 'count')).toHaveValue('50');
+  await expect(slider(page, 'count')).toHaveValue('100');
   await expect(await openCode(page)).toContainText('useReward(ref, confetti);');
 });
 

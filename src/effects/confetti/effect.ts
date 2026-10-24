@@ -40,7 +40,7 @@ const FALL_MAX = 1.2;
  * top of its flight. It eases in over the whole time, so no moment shows
  * where it starts.
  */
-const SETTLE_FROM = -0.4;
+const SETTLE_FROM = -1.6;
 const SETTLE_TO = 1.6;
 
 /**
@@ -58,14 +58,32 @@ const settled = (vy: number, gravity: number, fall: number, drag: number) => {
   );
 };
 
+/** A piece's swing and fall, from its slots `s1` and `s3`. */
+const motion = (s1: number, s3: number, config: ConfettiConfig) => {
+  const speed = Math.abs(s1);
+  // 0 for a flutterer, 1 for a tumbler.
+  const tumbler = (speed - SWING_MIN) / (SWING_MAX - SWING_MIN);
+  const gravity = config.gravity * s3;
+  // The speed this piece settles at. Without drag it never settles.
+  const fall = config.drag > 0 ? Math.abs(gravity) / config.drag : 0;
+  return {
+    speed,
+    tumbler,
+    gravity,
+    fall,
+    sway: fall * lerp(SWAY_FLUTTER, SWAY_TUMBLE, tumbler),
+    arc: fall * lerp(ARC_FLUTTER, ARC_TUMBLE, tumbler),
+  };
+};
+
 /**
  * Paper confetti (ADRs 0026, 0059). Pieces launch in a cone, slow down,
- * spin and flip. From just before the top of its flight, a piece eases into
- * falling the way paper does, somewhere between two ways: a flutterer sways gently from
- * side to side like a leaf, rocking with the sway, while a tumbler turns end
- * over end with a slight wobble and glides to one side. Each piece falls at
- * its own speed, so the burst opens a little as it falls instead of falling
- * in a column or as a block.
+ * spin and flip. From its launch, a piece eases into falling the way paper
+ * does, somewhere between two ways: a flutterer sways gently from side to
+ * side like a leaf, rocking with the sway, while a tumbler turns end over
+ * end with a slight wobble and glides to one side. Each piece falls at its
+ * own speed, so the burst opens a little as it falls instead of falling in a
+ * column or as a block.
  *
  * Slots: `s0` is the swing phase and `s1` its speed in radians per second.
  * The size of `s1` places the piece between flutterer and tumbler, and its
@@ -78,11 +96,11 @@ export const confetti: Effect<ConfettiConfig> =
     name: 'confetti',
     blend: 'normal',
     defaults: {
-      count: 50,
+      count: 100,
       size: 10,
       colors: ['#A45BF1', '#25C6F6', '#72F753', '#F76C88', '#F5F770'],
       angle: 90,
-      spread: 45,
+      spread: 60,
       velocity: 1500,
       drag: 3,
       gravity: 900,
@@ -107,21 +125,22 @@ export const confetti: Effect<ConfettiConfig> =
       p.s0 = rng.range(0, Math.PI * 2);
       p.s1 = rng.range(SWING_MIN, SWING_MAX) * (rng.next() < 0.5 ? -1 : 1);
       p.s3 = rng.range(FALL_MIN, FALL_MAX);
-      // Not yet settling, so the launch has no swing in it.
-      p.vx = Math.cos(direction) * speed;
-      p.vy = -Math.sin(direction) * speed;
+      // A piece has begun to settle by its launch, so its velocity includes
+      // that much swing from the start, as `update` expects.
+      const { gravity, fall, sway, arc } = motion(p.s1, p.s3, config);
+      const vy = -Math.sin(direction) * speed;
+      p.s2 = settled(vy, gravity, fall, config.drag);
+      p.vx = Math.cos(direction) * speed + p.s2 * sway * Math.cos(p.s0);
+      p.vy = vy - p.s2 * arc * Math.sin(2 * p.s0);
       p.scaleY = Math.cos(FLIP * p.s0);
     },
     update: (p, dt, config) => {
       const side = Math.sign(p.s1);
-      const speed = Math.abs(p.s1);
-      // 0 for a flutterer, 1 for a tumbler.
-      const tumbler = (speed - SWING_MIN) / (SWING_MAX - SWING_MIN);
-      const gravity = config.gravity * p.s3;
-      // The speed this piece settles at. Without drag it never settles.
-      const fall = config.drag > 0 ? Math.abs(gravity) / config.drag : 0;
-      const sway = fall * lerp(SWAY_FLUTTER, SWAY_TUMBLE, tumbler);
-      const arc = fall * lerp(ARC_FLUTTER, ARC_TUMBLE, tumbler);
+      const { speed, tumbler, gravity, fall, sway, arc } = motion(
+        p.s1,
+        p.s3,
+        config
+      );
 
       // Take the swing out, so drag, gravity and the glide act on the flight
       // alone, then add it back at the new phase. The swing moves the piece
