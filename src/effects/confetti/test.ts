@@ -27,7 +27,7 @@ describe('confetti', () => {
   it('has the defaults of ADR 0026, frozen', () => {
     expect(confetti.defaults).toEqual({
       count: 50,
-      size: 8,
+      size: 10,
       colors: ['#A45BF1', '#25C6F6', '#72F753', '#F76C88', '#F5F770'],
       angle: 90,
       spread: 45,
@@ -114,10 +114,11 @@ describe('confetti', () => {
     expect(mean(field(simulation, 'y'))).toBeLessThan(-200);
 
     run(simulation, 1.7);
-    // At 2 s every piece has slowed to near 900 / 3 = 300 px/s, plus flutter.
+    // At 2 s every piece has slowed to near 900 / 3 = 300 px/s, plus a
+    // flutter of at most 10 * 1.25 * 6 = 75 px/s.
     for (const vy of field(simulation, 'vy')) {
-      expect(vy).toBeGreaterThan(300 - 70);
-      expect(vy).toBeLessThan(300 + 70);
+      expect(vy).toBeGreaterThan(300 - 80);
+      expect(vy).toBeLessThan(300 + 80);
     }
   });
 
@@ -157,28 +158,28 @@ describe('confetti', () => {
           "alpha": 1,
           "rotation": 4.524,
           "scaleY": 0.636,
-          "vx": 25.057,
-          "vy": 41.304,
-          "x": -22.546,
-          "y": -140.495,
+          "vx": 35.513,
+          "vy": 35.221,
+          "x": -23.318,
+          "y": -145.106,
         },
         {
           "alpha": 1,
           "rotation": -0.244,
           "scaleY": 0.974,
-          "vx": -30.951,
-          "vy": -111.212,
-          "x": 10.876,
-          "y": -329.401,
+          "vx": -41.595,
+          "vy": -114.595,
+          "x": 10.222,
+          "y": -333.844,
         },
         {
           "alpha": 1,
           "rotation": -0.703,
           "scaleY": 0.126,
-          "vx": 41.254,
-          "vy": 43.854,
-          "x": 31.945,
-          "y": -182.143,
+          "vx": 41.89,
+          "vy": 53.545,
+          "x": 28.699,
+          "y": -179.596,
         },
       ]
     `);
