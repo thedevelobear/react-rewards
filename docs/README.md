@@ -105,4 +105,6 @@ What gets easier, what gets harder, and what has to happen next.
 | [2026-10-23-v3-engine](benchmarks/2026-10-23-v3-engine.md) | The v3 engine at 500, 5000 and 20000 particles per effect, on WebGL and Canvas 2D. |
 
 ### Guides
-None yet. `guides/adding-an-effect.md` arrives in PR 12.
+| Guide | What |
+|---|---|
+| [adding-an-effect](guides/adding-an-effect.md) | Adding a built-in effect: the contract, the folder, the tests, the export and the site. |
