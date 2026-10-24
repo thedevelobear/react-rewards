@@ -1,6 +1,6 @@
 # docs
 
-What happened in this repo and why, for people and coding agents. Start here, then read the active plan.
+What happened in this repo and why, for people and coding agents. Start here, then read the active plan, if there is one.
 
 ## Layout and rules
 The layout and its rules are set in [ADR 0002](decisions/0002-docs-as-decision-record.md).
