@@ -89,7 +89,8 @@ export const UseRewardArticle = () => (
         </li>
         <li>
           <code>effect</code>: <code>confetti</code>, <code>emoji</code>,{' '}
-          <code>balloon</code>, or <a href="#custom-effects">one of yours</a>.
+          <code>balloon</code>, <code>firework</code>, or{' '}
+          <a href="#custom-effects">one of yours</a>.
         </li>
         <li>
           <code>config</code>: changes to the effect's settings.
@@ -111,11 +112,14 @@ export const UseRewardArticle = () => (
     </Section>
     <Section title="Settings">
       <p>
-        <code>confetti</code>, <code>emoji</code> and <code>balloon</code> share
-        most of their settings, and every setting is optional. Each effect's
-        page describes its settings, lists its colours, and lets you try them:{' '}
-        <a href="#confetti">Confetti</a>, <a href="#emoji">Emoji</a> and{' '}
-        <a href="#balloon">Balloons</a>.
+        <code>confetti</code>, <code>emoji</code>, <code>balloon</code> and{' '}
+        <code>firework</code> share most of their settings, and every setting is
+        optional. A firework's <code>count</code> is rockets rather than
+        particles, and it has settings of its own for the rockets' spiral and
+        their shells. Each effect's page describes its settings, lists its
+        colours, and lets you try them: <a href="#confetti">Confetti</a>,{' '}
+        <a href="#emoji">Emoji</a>, <a href="#balloon">Balloons</a> and{' '}
+        <a href="#firework">Fireworks</a>.
       </p>
       <SettingsTable />
     </Section>

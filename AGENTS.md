@@ -1,6 +1,6 @@
 # Agent instructions
 
-react-rewards is a small React library of reward micro-interactions (confetti, emoji, balloons). Version 3 is a rewrite around a particle engine, built PR by PR in the [v3 plan](docs/plans/2026-10-22-v3-rewrite.md).
+react-rewards is a small React library of reward micro-interactions (confetti, emoji, balloons, fireworks). Version 3 is a rewrite around a particle engine, built PR by PR in the [v3 plan](docs/plans/2026-10-22-v3-rewrite.md).
 
 ## Before you start
 1. Read [`docs/README.md`](docs/README.md), then the active plan it links to, if there is one.
