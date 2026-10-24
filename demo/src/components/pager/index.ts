@@ -1,1 +1,2 @@
-export { Pager, type PagerLink } from './component';
+export { Pager } from './component';
+export type { PagerLink } from './types';

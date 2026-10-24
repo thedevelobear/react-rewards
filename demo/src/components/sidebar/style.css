@@ -53,6 +53,7 @@
 
 .sidebar-item[aria-current="page"] svg {
   color: var(--accent);
+  filter: drop-shadow(0 0 4px var(--accent));
 }
 
 /* The active item's dot (README, "Header and sidebar"). */
@@ -63,6 +64,7 @@
   margin-left: auto;
   border-radius: var(--radius-full);
   background: var(--accent);
+  box-shadow: var(--accent-glow-mark);
 }
 
 /* On phones every group's links share one row of pills that scrolls

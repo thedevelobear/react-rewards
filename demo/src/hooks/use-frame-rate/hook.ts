@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
-import type { Burst, RendererKind } from 'react-rewards';
-import type { Reading, UseFrameRateResult } from './types';
+import type { Burst } from 'react-rewards';
+import type { Reading, Run, UseFrameRateResult } from './types';
 
 /** How far back the running fps looks, in ms. */
 const WINDOW = 500;
@@ -10,21 +10,6 @@ const WINDOW = 500;
  * every frame.
  */
 const REFRESH = 250;
-
-/** One run: from the first tracked burst until every tracked burst ends. */
-interface Run {
-  readonly bursts: Set<Burst>;
-  renderer: RendererKind | undefined;
-  /** Whether any burst ended other than skipped. */
-  drew: boolean;
-  /** Frame times within the last `WINDOW`. */
-  readonly recent: number[];
-  first: number | undefined;
-  last: number;
-  frames: number;
-  shown: number;
-  handle: number;
-}
 
 /** Frames a second, from `frames` frames between `first` and `last`. */
 const rate = (frames: number, first = 0, last = 0): number | undefined =>

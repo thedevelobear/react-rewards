@@ -1,2 +1,2 @@
-export type { Simulation, SimulationOptions } from './runner';
 export { createSimulation } from './runner';
+export type { Simulation, SimulationOptions } from './types';

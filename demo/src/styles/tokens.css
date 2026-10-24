@@ -28,7 +28,22 @@
   --accent-hover: #ff7f6e;
   /* Accent text and links. The accent itself is 2.8:1 on white. */
   --accent-text: #c4381f;
+  /*
+   * The accent's glow (README, "Visual direction"): under the preview's
+   * button, under a selected tab's line, and around small accent marks such
+   * as the sidebar's dot and the sliders' thumbs.
+   */
   --accent-glow: 0 12px 40px -12px var(--accent);
+  /*
+   * An image, for a layer under a selected tab's line: it fades out before
+   * the layer's edges, so it has none, and lights only downwards.
+   */
+  --accent-glow-line: radial-gradient(
+    50% 100% at 50% 0,
+    var(--accent),
+    transparent
+  );
+  --accent-glow-mark: 0 0 10px var(--accent);
   /* Text on an accent fill, in both themes. */
   --ink: #0a0a0b;
   --focus: #7c3aed;

@@ -1,4 +1,4 @@
-import { type Atlas, createAtlas } from '@/core/atlas';
+import { createAtlas } from '@/core/atlas';
 import {
   type ConfigOf,
   type Effect,
@@ -6,7 +6,7 @@ import {
   resolveConfig,
   type SpriteSource,
 } from '@/core/define-effect';
-import { getLoop, type Loop } from '@/core/loop';
+import { getLoop } from '@/core/loop';
 import { prefersReducedMotion } from '@/core/motion';
 import { resolveOrigin } from '@/core/origin';
 import {
@@ -18,29 +18,17 @@ import {
   type RendererPreference,
 } from '@/core/renderer';
 import { createSimulation, type Simulation } from '@/core/simulation';
-import type { Burst, BurstEnd, FireOptions } from './types';
+import type {
+  Burst,
+  BurstEnd,
+  FireOptions,
+  Running,
+  Stage,
+  StageOptions,
+} from './types';
 
 /** The z-index a burst draws at unless it sets one (ADR 0029). */
 export const DEFAULT_Z_INDEX = 2147483647;
-
-export interface StageOptions {
-  readonly loop: Loop;
-  readonly overlay: Overlay;
-  readonly atlas: Atlas;
-}
-
-/** Runs bursts on one loop, overlay and atlas. */
-export interface Stage {
-  fire(effect: Effect, options: FireOptions): Burst;
-}
-
-/** A burst whose simulation has started. */
-interface Running {
-  readonly simulation: Simulation;
-  readonly batch: Batch;
-  readonly renderer: Renderer;
-  end(how: BurstEnd): void;
-}
 
 /** The pixel ratio sprites are rasterised at. 1 outside a browser. */
 const pixelRatio = (): number => globalThis.devicePixelRatio || 1;

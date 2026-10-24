@@ -1,2 +1,56 @@
-/** An icon more than one component draws, as path data for `Icon`. */
-export const ARROW_RIGHT: readonly string[] = ['M5 12h14', 'm13 6 6 6-6 6'];
+/**
+ * Every icon on the site, as path data on a 24px grid, drawn as strokes by
+ * `Icon` (README, "Icons"). Pages name theirs in `src/data/`.
+ */
+export const ICON_PATHS = {
+  'arrow-left': ['M19 12H5', 'm11 18-6-6 6-6'],
+  'arrow-right': ['M5 12h14', 'm13 6 6 6-6 6'],
+  'arrow-up-right': ['M7 17 17 7', 'M8 7h9v9'],
+  balloon: [
+    'M12 16c3.3 0 6-3.4 6-7a6 6 0 0 0-12 0c0 3.6 2.7 7 6 7Z',
+    'M12 16v1c0 2-2 2.5-2 4.5',
+  ],
+  bolt: ['M13 2 4 14h7l-1 8 9-12h-7l1-8Z'],
+  burst: [
+    'M12 3v4M12 17v4M3 12h4M17 12h4M6 6l2.5 2.5M15.5 15.5 18 18M18 6l-2.5 2.5M8.5 15.5 6 18',
+  ],
+  check: ['M20 6 9 17l-5-5'],
+  'chevron-right': ['m9 6 6 6-6 6'],
+  code: ['m16 18 6-6-6-6', 'm8 6-6 6 6 6'],
+  copy: [
+    'M11 9h8a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2h-8a2 2 0 0 1-2-2v-8a2 2 0 0 1 2-2Z',
+    'M5 15V5a2 2 0 0 1 2-2h10',
+  ],
+  file: [
+    'M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8Z',
+    'M14 3v5h5',
+  ],
+  flag: ['M5 21V4', 'M5 4h11l-2 4 2 4H5'],
+  flame: [
+    'M12 2c1 4 6 6 6 12a6 6 0 0 1-12 0c0-3 1.5-5 3-6 0 2 1 3 2 3.5C11 9 10.5 5 12 2Z',
+  ],
+  heart: [
+    'M12 19.75 4.6 12.35a4.75 4.75 0 0 1 6.72-6.72l.68.68.68-.68a4.75 4.75 0 0 1 6.72 6.72Z',
+  ],
+  layers: ['m12 3 9 5-9 5-9-5 9-5Z', 'm3 13 9 5 9-5'],
+  monitor: [
+    'M4 3h16a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2Z',
+    'M8 21h8M12 17v4',
+  ],
+  moon: ['M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79Z'],
+  server: [
+    'M5 3h14a2 2 0 0 1 2 2v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2Z',
+    'M5 13h14a2 2 0 0 1 2 2v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4a2 2 0 0 1 2-2Z',
+    'M7 7h.01M7 17h.01',
+  ],
+  sun: [
+    'M16 12a4 4 0 1 1-8 0 4 4 0 0 1 8 0Z',
+    'M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41',
+  ],
+  upgrade: [
+    'M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z',
+    'm8 12 4-4 4 4',
+    'M12 16V8',
+  ],
+  wand: ['m3 21 12-12', 'M17 3v4M15 5h4', 'M20 10v2M19 11h2'],
+} as const satisfies Readonly<Record<string, readonly string[]>>;

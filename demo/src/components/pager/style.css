@@ -22,6 +22,7 @@
   transition: border-color var(--duration-fast) var(--ease-out);
 }
 
+/* Only the border changes on hover (README, "Pager"). */
 .pager-link:hover {
   border-color: var(--border-strong);
 }
@@ -29,6 +30,7 @@
 .pager-link svg {
   flex: none;
   color: var(--accent);
+  filter: drop-shadow(0 0 4px var(--accent));
 }
 
 .pager-next {

@@ -1,7 +1,5 @@
 name: CI
 
-# Runs on pushes to master and on every PR. After 3.0.0, work branches off
-# master, and the integration branch takes no more work (ADR 0056).
 on:
   push:
     branches: [master]
@@ -19,8 +17,6 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v7
-      # pnpm from packageManager, Node from .nvmrc, then a frozen install
-      # (ADR 0014).
       - uses: pnpm/setup@v3
         with:
           node-version-file: .nvmrc
@@ -30,11 +26,9 @@ jobs:
       - run: pnpm typecheck
       - run: pnpm test
       - run: pnpm build
-      # The demo uses the built package (ADR 0031).
       - run: pnpm --filter demo typecheck
       - run: pnpm --filter demo build
       - run: pnpm lint:package
       - run: pnpm size
-      # Browser tests against the built demo (ADR 0006).
       - run: pnpm --filter demo exec playwright install --with-deps chromium
       - run: pnpm --filter demo e2e

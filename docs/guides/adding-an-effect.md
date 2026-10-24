@@ -1,6 +1,8 @@
 # Adding an effect
 
-How to add a built-in effect to react-rewards: one folder in `src/effects/`, one export, one page on the site, and a few lines in the browser specs. Effects in user code need only `defineEffect`, which the README covers.
+How to add a built-in effect to react-rewards: one folder in `src/effects/`, one export, one page and one icon on the site, and a few lines in the browser specs. Effects in user code need only `defineEffect`, which the site's [Custom effects](https://thedevelobear.github.io/react-rewards/#custom-effects) page covers.
+
+In Claude Code, ask the session's `orchestrator` agent for the effect. Its `effect-creator` agent does the library's part of this guide, working out the physics first: flight times and heights with drag, oscillation that survives any frame rate, and the tests that prove it. Its `developer` agent then does the site's part, and its `qa` agent runs every check ([ADRs 0063](../decisions/0063-effect-creator-agent.md), [0064](../decisions/0064-orchestrated-agents.md)).
 
 The example is a made-up `sparkle` effect. Copy the closest existing effect (`confetti`, `emoji` or `balloon`) and rename it, rather than starting from an empty folder.
 
@@ -158,7 +160,7 @@ The site imports the built package ([ADR 0031](../decisions/0031-demo-imports-bu
      effect: sparkle,
      label: 'Sparkle',
      description: 'Sparks that burst out in every direction and fade.',
-     icon: ['M12 3v18M3 12h18'],
+     icon: 'sparkle',
      controls: {
        count: { kind: 'range', min: 1, max: 200, step: 1, description: 'Sparks per burst.' },
        // ...one control per field, with the JSDoc from types.ts.
@@ -168,13 +170,13 @@ The site imports the built package ([ADR 0031](../decisions/0031-demo-imports-bu
 
    The panel edits numbers (`range`), booleans (`switch`), and lists of colours or emoji (`colors`, `emojis`). A setting of another type needs a new control kind in `demo/src/data/effects/types.ts`.
 
-   `icon` is the sidebar icon, as path data on a 24 px grid, drawn with a 2 px stroke. The preview's button shows it too.
-2. Add the page to `effects` in `demo/src/data/effects/list.ts`. Its sidebar link, its `#sparkle` route, its Preview and Code tabs, its props table, its card on Getting started, its place in the previous and next cards, and its entry on the Stress test page follow from that ([demo README](../../demo/README.md)). The card shows the icon until the effect has a drawing in `demo/src/components/getting-started/art.tsx`.
+   `icon` names the sidebar icon, which the preview's button and the effect's card show too. Add its path data, on a 24 px grid, to `ICON_PATHS` in `demo/src/components/icon/paths.ts` ([demo README](../../demo/README.md), "Icons").
+2. Add the page to `effects` in `demo/src/data/effects/list.ts`. Its sidebar link, its `#sparkle` route, its Preview and Code tabs, its props table, its card on Getting started, its column in the settings table on the useReward page, its place in the previous and next cards, and its entry on the Stress test page follow from that ([demo README](../../demo/README.md)). The card shows the icon until the effect has a drawing in `demo/src/articles/getting-started/art.tsx`.
 3. Add a `RewardButton` with `testId="fire-sparkle"` to the fixture page, `demo/src/fixtures/app.tsx`, and add `'sparkle'` to the loop in `demo/e2e/smoke.ts` that checks each effect draws.
 4. Add it to `EFFECTS` in `demo/bench/run.ts`, with its label on the Stress test page.
 
 ## The rest
-- Add a column to the effects table in the README.
+- Name the effect where the README and the useReward page's prose list the effects (`demo/src/articles/use-reward/component.tsx`), and in the site's description and Open Graph tags in `demo/index.html`. Add it to the share card, `demo/og-image/card.html`, and render the card again ([demo README](../../demo/README.md), "Favicon and link previews").
 - Add `useReward + sparkle` to `.size-limit.json`, and note the size in the PR. A size close to the whole package's means the effect stopped tree-shaking.
 - Run `pnpm lint`, `pnpm typecheck`, `pnpm test`, `pnpm build`, `pnpm --filter demo typecheck` and `pnpm e2e`.
 - Look at the effect on the site with both renderers, using the renderer setting on the Stress test page. They should look the same.

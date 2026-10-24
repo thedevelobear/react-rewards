@@ -1,5 +1,4 @@
-/** The package managers the install command is shown for. */
-export const PACKAGE_MANAGERS = ['pnpm', 'npm', 'yarn', 'bun'] as const;
+import type { PACKAGE_MANAGERS } from './hook';
 
 export type PackageManager = (typeof PACKAGE_MANAGERS)[number];
 

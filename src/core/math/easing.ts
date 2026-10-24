@@ -1,5 +1,4 @@
-/** Maps progress in [0, 1] to eased progress. f(0) is 0 and f(1) is 1. */
-export type Easing = (t: number) => number;
+import type { Easing } from './types';
 
 export const linear: Easing = (t) => t;
 

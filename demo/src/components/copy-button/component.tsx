@@ -1,15 +1,10 @@
 import { useEffect, useState } from 'react';
-import { CheckIcon, CopyIcon } from './icons';
+import { Icon } from '@/components/icon';
+import type { CopyButtonProps } from './types';
 import './style.css';
 
 /** How long "Copied" shows, in milliseconds. */
 const CONFIRMATION = 1500;
-
-interface CopyButtonProps {
-  readonly text: string;
-  /** What is copied, for screen readers, such as "the snippet". */
-  readonly label: string;
-}
 
 /** Copies `text` to the clipboard, and says so for a moment. */
 export const CopyButton = ({ text, label }: CopyButtonProps) => {
@@ -39,10 +34,10 @@ export const CopyButton = ({ text, label }: CopyButtonProps) => {
     >
       {copied ? (
         <span className="copy-button-done">
-          <CheckIcon />
+          <Icon name="check" size={14} />
         </span>
       ) : (
-        <CopyIcon />
+        <Icon name="copy" size={14} />
       )}
       <span aria-live="polite">{copied ? 'Copied' : 'Copy'}</span>
     </button>

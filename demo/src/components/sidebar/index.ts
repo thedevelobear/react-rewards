@@ -1,2 +1,2 @@
-export type { SidebarGroup, SidebarLink } from './component';
 export { Sidebar } from './component';
+export type { SidebarGroup, SidebarLink } from './types';

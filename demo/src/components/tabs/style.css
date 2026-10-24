@@ -11,7 +11,9 @@
   border-bottom: 1px solid var(--border);
 }
 
+/* Positioned, so the glow below it paints over what follows the list. */
 .tabs-tab {
+  position: relative;
   height: var(--touch-height);
   margin-bottom: -1px;
   padding: 0 12px;
@@ -34,6 +36,35 @@
 .tabs-tab[aria-selected="true"] {
   border-bottom-color: var(--accent);
   color: var(--text);
+}
+
+/*
+ * The selected tab's glow: wider than the tab, and only below its line
+ * (README, "Accent glow").
+ */
+.tabs-tab::after {
+  content: "";
+  position: absolute;
+  top: calc(100% + 2px);
+  right: -24px;
+  left: -24px;
+  height: 22px;
+  background: var(--accent-glow-line);
+  /* Past the line's ends, the glow fades out sideways too. */
+  mask-image: linear-gradient(
+    90deg,
+    transparent,
+    #000 24px,
+    #000 calc(100% - 24px),
+    transparent
+  );
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity var(--duration-fast) var(--ease-out);
+}
+
+.tabs-tab[aria-selected="true"]::after {
+  opacity: 0.15;
 }
 
 .tabs-panel {

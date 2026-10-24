@@ -1,11 +1,8 @@
 import type { FrameScheduler } from '@/core/loop';
+import type { FakeScheduler } from './types';
 
 /** A scheduler driven by hand: `tick(time)` runs the pending frame. */
-export const createFakeScheduler = (): {
-  scheduler: FrameScheduler;
-  readonly pending: boolean;
-  tick: (time: number) => void;
-} => {
+export const createFakeScheduler = (): FakeScheduler => {
   let pending: ((time: number) => void) | undefined;
   let handles = 0;
   const scheduler: FrameScheduler = {

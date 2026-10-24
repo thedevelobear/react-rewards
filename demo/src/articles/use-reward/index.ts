@@ -1,0 +1,1 @@
+export { UseRewardArticle } from './component';

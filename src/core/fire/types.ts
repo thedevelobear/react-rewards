@@ -1,6 +1,9 @@
-import type { EffectConfig } from '@/core/define-effect';
+import type { Atlas } from '@/core/atlas';
+import type { Effect, EffectConfig } from '@/core/define-effect';
+import type { Loop } from '@/core/loop';
 import type { Origin } from '@/core/origin';
-import type { RendererKind } from '@/core/renderer';
+import type { Batch, Overlay, Renderer, RendererKind } from '@/core/renderer';
+import type { Simulation } from '@/core/simulation';
 
 /**
  * How a burst ended. `'skipped'` means it ended before its simulation
@@ -42,4 +45,23 @@ export interface Burst {
    * an empty ref, or with no renderer available (ADR 0047).
    */
   readonly renderer: RendererKind | undefined;
+}
+
+export interface StageOptions {
+  readonly loop: Loop;
+  readonly overlay: Overlay;
+  readonly atlas: Atlas;
+}
+
+/** Runs bursts on one loop, overlay and atlas. */
+export interface Stage {
+  fire(effect: Effect, options: FireOptions): Burst;
+}
+
+/** A burst whose simulation has started. */
+export interface Running {
+  readonly simulation: Simulation;
+  readonly batch: Batch;
+  readonly renderer: Renderer;
+  end(how: BurstEnd): void;
 }

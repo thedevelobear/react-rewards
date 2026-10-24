@@ -16,6 +16,14 @@ const background = (page: Page) =>
 const dataTheme = (page: Page) =>
   page.evaluate(() => document.documentElement.dataset.theme ?? null);
 
+/** The `theme-color` tags' colours, for light then dark. */
+const themeColors = (page: Page) =>
+  page.evaluate(() =>
+    [
+      ...document.querySelectorAll<HTMLMetaElement>('meta[name="theme-color"]'),
+    ].map((tag) => tag.content)
+  );
+
 test('"Reward me" draws on the overlay', async ({ page }) => {
   await page.goto('/#confetti');
   const button = page.getByTestId('reward');
@@ -79,9 +87,9 @@ test('the pager leads to the pages before and after, from the top', async ({
 
   await page.goto('/');
   await expect(pager.getByRole('link')).toHaveCount(1);
-  const next = pager.getByRole('link', { name: 'Next Stress test' });
+  const next = pager.getByRole('link', { name: 'Next Custom effects' });
   await next.click();
-  await expect(heading).toHaveText('Stress test');
+  await expect(heading).toHaveText('Custom effects');
   await expect.poll(() => page.evaluate(() => window.scrollY)).toBe(0);
 
   // The last effect has no next page.
@@ -89,6 +97,59 @@ test('the pager leads to the pages before and after, from the top', async ({
   await expect(pager.getByRole('link')).toHaveCount(1);
   await pager.getByRole('link', { name: 'Previous Emoji' }).click();
   await expect(page).toHaveURL(/#emoji$/);
+});
+
+test('every sidebar link shows its page, and links between pages lead to one', async ({
+  page,
+}) => {
+  const heading = page.getByRole('heading', { level: 1 });
+  const nav = page.getByRole('navigation', { name: 'Pages' });
+  await page.goto('/');
+  const links = await nav.getByRole('link').evaluateAll((elements) =>
+    elements.map((element) => ({
+      href: element.getAttribute('href') ?? '',
+      label: element.textContent ?? '',
+    }))
+  );
+  expect(links.map(({ label }) => label)).toEqual([
+    'Getting started',
+    'Custom effects',
+    'Server rendering',
+    'Upgrading from v2',
+    'Stress test',
+    'useReward',
+    'fire',
+    'Renderers',
+    'Confetti',
+    'Emoji',
+    'Balloons',
+  ]);
+  const hrefs = links.map(({ href }) => href);
+
+  for (const { href, label } of links) {
+    await page.goto(`/${href}`);
+    await expect(heading).toHaveText(label);
+    const targets = await page
+      .getByRole('main')
+      .locator('a[href^="#"]')
+      .evaluateAll((elements) =>
+        elements.map((element) => element.getAttribute('href'))
+      );
+    for (const target of targets) expect(hrefs).toContain(target);
+  }
+});
+
+test("useReward's settings table shows each effect's defaults", async ({
+  page,
+}) => {
+  await page.goto('/#use-reward');
+  const settings = page.getByRole('table').first();
+  const cells = (name: RegExp) =>
+    settings.getByRole('row', { name }).getByRole('cell').allTextContents();
+  // The unit, then confetti, emoji and balloon.
+  expect(await cells(/^count /)).toEqual(['', '100', '20', '16']);
+  expect(await cells(/^gravity /)).toEqual(['px/s²', '900', '900', '-300']);
+  expect(await cells(/^rotate /)).toEqual(['', '', 'true', '']);
 });
 
 test('the effect cards lead to the effects', async ({ page }) => {
@@ -190,4 +251,53 @@ test('"system" follows the OS appearance live', async ({ page }) => {
   expect(await background(page)).toBe(BACKGROUND.light);
   await page.emulateMedia({ colorScheme: 'dark' });
   expect(await background(page)).toBe(BACKGROUND.dark);
+});
+
+test("the browser's bar follows the theme", async ({ page }) => {
+  await page.goto('/');
+  const switcher = page.getByTestId('theme');
+  expect(await themeColors(page)).toEqual(['#ffffff', '#0a0a0b']);
+
+  await switcher.click();
+  await expect(switcher).toHaveText('Theme: Light');
+  await expect.poll(() => themeColors(page)).toEqual(['#ffffff', '#ffffff']);
+
+  await switcher.click();
+  await expect(switcher).toHaveText('Theme: Dark');
+  await expect.poll(() => themeColors(page)).toEqual(['#0a0a0b', '#0a0a0b']);
+
+  await switcher.click();
+  await expect(switcher).toHaveText('Theme: System');
+  await expect.poll(() => themeColors(page)).toEqual(['#ffffff', '#0a0a0b']);
+});
+
+test('the icons and the share card are served', async ({ page, request }) => {
+  await page.goto('/');
+  const icons = await page.evaluate(() =>
+    [
+      ...document.querySelectorAll<HTMLLinkElement>(
+        'link[rel="icon"], link[rel="apple-touch-icon"]'
+      ),
+    ].map((link) => link.href)
+  );
+  expect(icons).toHaveLength(3);
+  // The card's URL names the deployed site, so the build is checked for the
+  // same file.
+  const card = await page
+    .locator('meta[property="og:image"]')
+    .getAttribute('content');
+  const file = new URL(card ?? '').pathname.replace(/^\/react-rewards/, '');
+  for (const url of [...icons, file]) {
+    expect((await request.get(url)).ok(), url).toBe(true);
+  }
+});
+
+test('only the fixture page is kept out of search results', async ({
+  page,
+}) => {
+  const robots = page.locator('meta[name="robots"]');
+  await page.goto('/');
+  await expect(robots).toHaveCount(0);
+  await page.goto('/fixtures.html');
+  await expect(robots).toHaveAttribute('content', 'noindex');
 });

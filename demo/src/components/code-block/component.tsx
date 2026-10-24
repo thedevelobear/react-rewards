@@ -2,20 +2,8 @@ import { useEffect, useMemo, useState } from 'react';
 import { CopyButton } from '@/components/copy-button';
 import { Icon } from '@/components/icon';
 import { highlighter, loadHighlighter, THEME } from './highlight';
+import type { CodeBlockProps, Line } from './types';
 import './style.css';
-
-interface Token {
-  /** Where the token starts in the code, which also keys it. */
-  readonly offset: number;
-  readonly content: string;
-  /** A `--code-*` variable, or none for the foreground. */
-  readonly color?: string;
-}
-
-interface Line {
-  readonly offset: number;
-  readonly tokens: readonly Token[];
-}
 
 /** `code` split into lines of one uncoloured token each. */
 const plain = (code: string): Line[] => {
@@ -27,25 +15,16 @@ const plain = (code: string): Line[] => {
   });
 };
 
-const FILE = [
-  'M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8Z',
-  'M14 3v5h5',
-];
-
-interface CodeBlockProps {
-  /** TSX source. A trailing newline is copied but not shown. */
-  readonly code: string;
-  /** The file the code would live in, such as `RewardButton.tsx`. */
-  readonly filename: string;
-  /** What the code is, for the copy button, such as "the snippet". */
-  readonly label: string;
-}
-
 /**
  * The code under its file name, with line numbers, highlighted by shiki once
  * it has loaded, and plain until then (README, "Code colours").
  */
-export const CodeBlock = ({ code, filename, label }: CodeBlockProps) => {
+export const CodeBlock = ({
+  code,
+  filename,
+  label,
+  lang = 'tsx',
+}: CodeBlockProps) => {
   const [shiki, setShiki] = useState(highlighter);
 
   useEffect(() => {
@@ -75,9 +54,9 @@ export const CodeBlock = ({ code, filename, label }: CodeBlockProps) => {
   return (
     <div className="panel">
       <div className="code-block-head">
-        <Icon paths={FILE} size={14} />
+        <Icon name="file" size={14} />
         <span className="code-block-file">{filename}</span>
-        <span className="code-block-lang">tsx</span>
+        <span className="code-block-lang">{lang}</span>
         <CopyButton text={code} label={label} />
       </div>
       <div className="code-block-body">

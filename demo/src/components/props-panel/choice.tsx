@@ -1,14 +1,4 @@
-interface ChoiceOption<V extends string> {
-  readonly value: V;
-  readonly label: string;
-}
-
-interface ChoiceProps<V extends string> {
-  readonly name: string;
-  readonly options: readonly ChoiceOption<V>[];
-  readonly value: V;
-  readonly onChange: (value: V) => void;
-}
+import type { ChoiceProps } from './types';
 
 /** A button per option, such as the stress test's renderers. */
 export const Choice = <V extends string>({

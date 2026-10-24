@@ -1,10 +1,5 @@
 import { useState } from 'react';
-
-interface EmojisProps {
-  readonly name: string;
-  readonly value: readonly string[];
-  readonly onChange: (value: readonly string[]) => void;
-}
+import type { ListProps } from './types';
 
 const segmenter = new Intl.Segmenter(undefined, { granularity: 'grapheme' });
 
@@ -21,7 +16,7 @@ const characters = (text: string) =>
  * A chip per emoji, and a field that adds what is typed (README, "Props
  * panel").
  */
-export const Emojis = ({ name, value, onChange }: EmojisProps) => {
+export const Emojis = ({ name, value, onChange }: ListProps) => {
   const [text, setText] = useState('');
 
   const remove = (index: number) =>

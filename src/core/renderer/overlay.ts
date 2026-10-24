@@ -1,52 +1,8 @@
 import { createRenderer as createDefaultRenderer } from './select';
-import type { Renderer } from './types';
+import type { Claim, Overlay, OverlayOptions, Renderer } from './types';
 
 /** How long the overlay stays ready after its last burst, in milliseconds. */
 export const IDLE_TIMEOUT = 5000;
-
-export interface OverlayOptions {
-  /**
-   * Creates a renderer on canvases from `createCanvas`, which calls `onLost`
-   * if its context is lost. Defaults to the `'auto'` choice.
-   */
-  readonly createRenderer?: (
-    createCanvas: () => HTMLCanvasElement,
-    onLost: () => void
-  ) => Renderer | undefined;
-  /** Milliseconds before an unused overlay is removed. */
-  readonly idleTimeout?: number;
-  /** Called after an unused overlay has been removed with its renderer. */
-  readonly onUnmount?: () => void;
-}
-
-/** One burst's claim on the overlay. */
-export interface OverlayLease {
-  readonly renderer: Renderer;
-  /** Ends the claim. The last one to end hides the overlay. */
-  release(): void;
-}
-
-export interface Overlay {
-  /**
-   * Claims the overlay for one burst. Shows the canvas, creating it and its
-   * renderer on first use, at the highest `zIndex` among current claims.
-   * Returns undefined, and adds nothing to the page, when no renderer is
-   * available. If the renderer's context is lost, every claim ends and its
-   * `onLost` is called (ADR 0036).
-   */
-  acquire(zIndex: number, onLost?: () => void): OverlayLease | undefined;
-  /**
-   * Drops the canvas and renderer so the next burst creates new ones, for a
-   * new renderer choice (ADR 0033). An idle overlay is removed at once. One
-   * in use is removed when its last claim ends, instead of being hidden.
-   */
-  reset(): void;
-}
-
-interface Claim {
-  readonly zIndex: number;
-  readonly onLost: (() => void) | undefined;
-}
 
 const STYLE =
   'position:fixed;inset:0;width:100%;height:100%;pointer-events:none;';

@@ -1,0 +1,22 @@
+/* Prose in a section, such as an article's paragraphs (README, "Articles"). */
+.section > p,
+.section > ul,
+.section > ol {
+  max-width: 680px;
+  color: var(--text-muted);
+  font-size: 15.5px;
+  line-height: 1.6;
+}
+
+.section > ul,
+.section > ol {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding-left: 20px;
+}
+
+.section strong {
+  color: var(--text);
+  font-weight: 600;
+}

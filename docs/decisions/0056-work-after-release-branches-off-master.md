@@ -1,6 +1,6 @@
 # 0056. After 3.0.0, work branches off `master`
 
-- **Status:** Accepted. One more PR on the integration branch: [0058](0058-site-redesign-before-the-release.md)
+- **Status:** Accepted. Two more PRs on the integration branch: [0058](0058-site-redesign-before-the-release.md) and [0060](0060-cleanup-before-the-release.md)
 - **Date:** 2026-10-24
 
 - From the release on, each change is a branch made from `origin/master` with `--no-track`, merged into `master` through a PR. The integration branch takes no more work, and it and the `v3/*` branches can be deleted once 3.0.0 is published.

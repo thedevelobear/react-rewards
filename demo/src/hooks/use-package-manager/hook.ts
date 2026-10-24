@@ -1,9 +1,8 @@
 import { useCallback, useState } from 'react';
-import {
-  PACKAGE_MANAGERS,
-  type PackageManager,
-  type UsePackageManagerResult,
-} from './types';
+import type { PackageManager, UsePackageManagerResult } from './types';
+
+/** The package managers the install command is shown for. */
+export const PACKAGE_MANAGERS = ['pnpm', 'npm', 'yarn', 'bun'] as const;
 
 /** Namespaced, like the theme's key (see `use-theme`). */
 const STORAGE_KEY = 'react-rewards:package-manager';

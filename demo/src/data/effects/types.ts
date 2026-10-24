@@ -1,4 +1,5 @@
 import type { Effect, EffectConfig } from 'react-rewards';
+import type { IconName } from '@/components/icon';
 
 /**
  * How the props panel edits one setting, and what the props table says about
@@ -59,11 +60,8 @@ export interface EffectPage<C extends EffectConfig> {
   readonly label: string;
   /** One line under the title, and on the effect's card. */
   readonly description: string;
-  /**
-   * The sidebar icon, as path data on a 24px grid. The preview's button
-   * shows it too.
-   */
-  readonly icon: readonly string[];
+  /** The sidebar icon. The preview's button and the card show it too. */
+  readonly icon: IconName;
   readonly controls: Controls<C>;
 }
 
@@ -78,8 +76,16 @@ export interface AnyEffectPage {
   readonly name: string;
   readonly label: string;
   readonly description: string;
-  readonly icon: readonly string[];
+  readonly icon: IconName;
   readonly use: <R>(
     callback: <C extends EffectConfig>(page: EffectPage<C>) => R
   ) => R;
+}
+
+/** One setting of an effect, as the props panel and the props table show it. */
+export interface Field<C extends EffectConfig> {
+  readonly key: keyof C & string;
+  readonly control: AnyControl;
+  readonly value: unknown;
+  readonly defaultValue: unknown;
 }
