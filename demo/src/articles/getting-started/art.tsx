@@ -3,7 +3,7 @@ import { Icon } from '@/components/icon';
 import type {
   BalloonProps,
   EffectArtProps,
-  FaceProps,
+  HeartProps,
   Paint,
   Piece,
 } from './types';
@@ -40,37 +40,37 @@ const Confetti = () =>
     />
   ));
 
-/** A face's parts, turned and placed at `x` and `y`. */
-const Face = ({ x, y, turn, children }: FaceProps) => (
-  <g transform={`translate(${x} ${y}) rotate(${turn})`}>{children}</g>
+/**
+ * A heart centred on (0, 0), 17.6 by 15.5: the shape of the emoji page's
+ * icon (`heart` in `ICON_PATHS`).
+ */
+const HEART =
+  'M0 7.75-7.4.35a4.75 4.75 0 0 1 6.72-6.72l.68.68.68-.68a4.75 4.75 0 0 1 6.72 6.72Z';
+
+/** A heart at `x` and `y`, turned and scaled, with a shine on its left lobe. */
+const Heart = ({ x, y, turn, scale, paint }: HeartProps) => (
+  <g
+    transform={`translate(${x} ${y}) rotate(${turn}) scale(${scale})`}
+    style={fill(paint)}
+  >
+    <path d={HEART} />
+    <ellipse
+      className="effect-art-shine"
+      cx="-5.4"
+      cy="-4.4"
+      rx="1.3"
+      ry="1.9"
+      transform="rotate(-40 -5.4 -4.4)"
+    />
+  </g>
 );
 
-/** Three faces. Their features are `--ink` in both themes. */
-const Emoji = () => (
-  <svg
-    className="effect-art-ink"
-    width="150"
-    height="80"
-    viewBox="0 0 150 80"
-    aria-hidden="true"
-  >
-    <Face x={28} y={46} turn={-14}>
-      <circle r="17" style={fill('art-amber')} />
-      <circle cx="-6" cy="-4" r="2.2" />
-      <circle cx="6" cy="-4" r="2.2" />
-      <path className="effect-art-smile" d="M-8 4a9 9 0 0 0 16 0" />
-    </Face>
-    <Face x={76} y={32} turn={6}>
-      <circle r="21" style={fill('accent')} />
-      <path className="effect-art-smile" d="M-11 -6l5 3M11 -6l-5 3" />
-      <path d="M-10 5a10 10 0 0 0 20 0Z" />
-    </Face>
-    <Face x={122} y={50} turn={16}>
-      <circle r="15" style={fill('art-violet')} />
-      <circle cx="-5" cy="-3" r="2" />
-      <circle cx="5" cy="-3" r="2" />
-      <path className="effect-art-smile" d="M-6 4a7 7 0 0 0 12 0" />
-    </Face>
+/** Three hearts, where the emoji fly. */
+const Hearts = () => (
+  <svg width="150" height="80" viewBox="0 0 150 80" aria-hidden="true">
+    <Heart x={28} y={46} turn={-14} scale={2} paint="art-amber" />
+    <Heart x={76} y={32} turn={6} scale={2.4} paint="accent" />
+    <Heart x={122} y={50} turn={16} scale={1.8} paint="art-violet" />
   </svg>
 );
 
@@ -104,7 +104,7 @@ const Balloons = () => (
 
 const ART: Readonly<Record<string, ComponentType>> = {
   confetti: Confetti,
-  emoji: Emoji,
+  emoji: Hearts,
   balloon: Balloons,
 };
 

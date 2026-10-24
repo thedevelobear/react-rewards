@@ -39,11 +39,11 @@ The site documents the library, so its design decisions are kept here rather tha
   | `--accent` | `#ff6b57` | same | Fills: the preview's button, the active tab's line, dots and icons. 2.8:1 on white, so never small text there. |
   | `--accent-hover` | `#ff7f6e` | same | The preview's button on hover. |
   | `--accent-text` | `#c4381f` | `#ff6b57` | Accent text and links. 4.9:1 and 6.5:1. |
-  | `--ink` | `#0a0a0b` | same | Text on the accent, 7.1:1, and the emoji drawing's faces. |
+  | `--ink` | `#0a0a0b` | same | Text on the accent, 7.1:1. |
   | `--focus` | `#7c3aed` | `#a78bfa` | The focus ring, `2px solid` with a 2 px offset. 5.2:1 and 6.7:1. |
   | `--success` | `#047857` | `#6ee7b7` | The copied tick and the preview's live dot. 5.0:1 and 12.0:1. |
   | `--knob` | `#ffffff` | same | The switch's knob. |
-  | `--art-*` | violet, amber, sky, mint | same | The effect cards' drawings, and `--art-line` and `--art-shine` for the balloons. Decorative. |
+  | `--art-*` | violet, amber, sky, mint | same | The effect cards' drawings, `--art-line` for the balloons' strings, and `--art-shine` for the balloons' and hearts' shine. Decorative. |
   | `--code-*` | see "Code colours" | | Each 4.5:1 or more on `--card`. |
 
 - Theme: a header button cycles system, light and dark. The choice is stored in `localStorage` under `react-rewards:theme`, and set as `data-theme` on `<html>` by an inline script before first paint.

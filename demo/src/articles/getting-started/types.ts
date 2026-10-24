@@ -20,12 +20,15 @@ export interface Piece {
   readonly turn?: number;
 }
 
-/** A face's parts, turned and placed at `x` and `y`. */
-export interface FaceProps {
+/** A heart, centred on `x` and `y`. */
+export interface HeartProps {
   readonly x: number;
   readonly y: number;
+  /** Degrees, clockwise. */
   readonly turn: number;
-  readonly children: ReactNode;
+  /** The heart is 17.6 by 15.5 at a scale of 1. */
+  readonly scale: number;
+  readonly paint: Paint;
 }
 
 /** A balloon at `x`, its top at `y`. */

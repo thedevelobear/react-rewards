@@ -152,18 +152,6 @@
   position: absolute;
 }
 
-.effect-art-ink {
-  color: var(--ink);
-  fill: currentColor;
-}
-
-.effect-art-smile {
-  fill: none;
-  stroke: currentColor;
-  stroke-width: 2.4;
-  stroke-linecap: round;
-}
-
 .effect-art-string {
   stroke: var(--art-line);
 }
