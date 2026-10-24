@@ -64,7 +64,7 @@
 }
 
 .tabs-tab[aria-selected="true"]::after {
-  opacity: 0.45;
+  opacity: 0.15;
 }
 
 .tabs-panel {
