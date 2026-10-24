@@ -1,5 +1,6 @@
 export type {
   BlendMode,
+  ConfigOf,
   Effect,
   EffectConfig,
   EffectDefinition,

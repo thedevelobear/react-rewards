@@ -23,6 +23,7 @@ Options considered:
 - `useReward(ref, party ? confetti : emoji)`, the same with `{ count: 10 }`, and `fire(either, { origin, config })` all type-check, and so does a list typed `Effect[]`.
 - For a single effect, a key it doesn't have, or a value of the wrong type, is still an error.
 - For a union, `config` may set any member's keys. A key the chosen effect doesn't have is copied into its config and never read.
+- When one effect's config has every field of another's, TypeScript reduces `a ? b : c` to the effect with fewer fields, and the extra keys become errors. The built-in effects' configs each have a field the others lack, so any two of them work. An effect whose config is only `count` and `lifetime` always has fewer fields, so the tests pair effects that each have a field of their own.
 - Bivariance lets an `Effect` be called by hand with a config missing its own fields: `effect.spawn(p, { count: 1, lifetime: 1000 }, rng, 0)` type-checks. The engine calls these functions only with a config resolved from the effect's defaults, so the hole isn't reachable through `fire` or `useReward`.
 - The public type parameter of `fire` and `useReward` is now the effect, not its config. A caller that wrote `useReward<ConfettiConfig>(...)` writes `useReward<typeof confetti>(...)`. Nothing is released yet, so no published caller breaks.
 - The demo no longer needs `effectPage()` for assignability. It keeps the helper, so the shared components still see each page's own config type ([demo README](../../demo/README.md)).

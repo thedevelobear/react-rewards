@@ -89,6 +89,11 @@ export interface UpdateContext {
   spawn(init: (child: Particle) => void): void;
 }
 
+/**
+ * What an effect is made of. `sprites`, `spawn` and `update` are methods, so
+ * TypeScript compares their config parameters bivariantly and any `Effect<C>`
+ * is an `Effect` (ADR 0052).
+ */
 export interface EffectDefinition<C extends EffectConfig> {
   readonly name: string;
   readonly blend: BlendMode;
@@ -98,25 +103,20 @@ export interface EffectDefinition<C extends EffectConfig> {
    */
   readonly defaults: C;
   /** The sprites this effect draws. A particle picks one with `sprite`. */
-  readonly sprites: (config: C) => readonly SpriteSource[];
+  sprites(config: C): readonly SpriteSource[];
   /**
    * Sets up one new particle. It starts at the burst's origin with velocity
    * 0, rotation 0, scales 1, alpha 1, sprite 0, slots 0 and
    * `life = lifetime / 1000`.
    */
-  readonly spawn: (p: Particle, config: C, rng: Rng, index: number) => void;
+  spawn(p: Particle, config: C, rng: Rng, index: number): void;
   /**
    * Advances one particle by `dt` seconds. Change its velocity (forces such
    * as gravity and drag), rotation, scale, alpha or sprite. The simulation
    * then moves the particle by its velocity, so effects don't integrate
    * position themselves.
    */
-  readonly update: (
-    p: Particle,
-    dt: number,
-    config: C,
-    ctx: UpdateContext
-  ) => void;
+  update(p: Particle, dt: number, config: C, ctx: UpdateContext): void;
 }
 
 /** An effect made with `defineEffect`. It and its defaults are frozen. */
@@ -124,3 +124,10 @@ export interface Effect<C extends EffectConfig = EffectConfig>
   extends Omit<EffectDefinition<C>, 'defaults'> {
   readonly defaults: Readonly<C>;
 }
+
+/**
+ * The config type of the effect `E`. For a union of effects, it is the union
+ * of their configs (ADR 0052).
+ */
+export type ConfigOf<E extends Effect> =
+  E extends Effect<infer C extends EffectConfig> ? C : never;
