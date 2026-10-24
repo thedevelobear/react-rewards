@@ -44,7 +44,7 @@ What gets easier, what gets harder, and what has to happen next.
 |---|---|---|
 | [0001](decisions/0001-v3-direction.md) | v3 direction: toolchain, engine and API | Accepted |
 | [0002](decisions/0002-docs-as-decision-record.md) | docs/ is the decision record | Accepted. Scope narrowed to the library by 0046 |
-| [0003](decisions/0003-integration-branch.md) | v3 lands through the `feat/v3-scaffolding` integration branch | Accepted |
+| [0003](decisions/0003-integration-branch.md) | v3 lands through the `feat/v3-scaffolding` integration branch | Accepted. Work after the release set by 0056 |
 | [0004](decisions/0004-esm-only-output.md) | Publish ESM only | Accepted |
 | [0005](decisions/0005-effect-contract-scope.md) | The 3.0 effect contract has `spawn` and `update` only | Accepted |
 | [0006](decisions/0006-bare-demo-as-e2e-target.md) | A bare `demo/` page is the browser-test target from PR 5 | Accepted. The page the specs open is refined by 0045 |
@@ -97,6 +97,7 @@ What gets easier, what gets harder, and what has to happen next.
 | [0053](decisions/0053-public-math-helpers.md) | The math helpers are public | Accepted |
 | [0054](decisions/0054-publish-from-github-release.md) | A GitHub release publishes to npm with trusted publishing, and v3 starts at 3.0.0 | Accepted |
 | [0055](decisions/0055-pure-effect-definitions.md) | Built-in effects are marked pure, so unused ones tree-shake | Accepted |
+| [0056](decisions/0056-work-after-release-branches-off-master.md) | After 3.0.0, work branches off `master` | Proposed |
 
 ### Benchmarks
 | Benchmark | What |

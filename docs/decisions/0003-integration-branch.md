@@ -1,6 +1,6 @@
 # 0003. v3 lands through an integration branch
 
-- **Status:** Accepted
+- **Status:** Accepted. Work after the release set by [0056](0056-work-after-release-branches-off-master.md)
 - **Date:** 2026-10-22
 
 ## Context
