@@ -103,6 +103,7 @@ What was decided, specifically enough to check the code against.
 | [0060](decisions/0060-cleanup-before-the-release.md) | The docs, icon and type cleanup lands on the integration branch before the release | Proposed |
 | [0061](decisions/0061-types-in-types-files.md) | Types are declared in each folder's `types.ts` | Proposed |
 | [0062](decisions/0062-docs-on-the-site.md) | The site holds the docs, and the README keeps the basics | Proposed |
+| [0063](decisions/0063-effect-creator-agent.md) | An effect-creator agent for Claude Code lives in the repo | Proposed |
 
 ### Benchmarks
 | Benchmark | What |

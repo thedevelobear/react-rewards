@@ -116,7 +116,9 @@ export const CustomEffectsArticle = () => (
     <Section title="Adding an effect to react-rewards">
       <p>
         To add an effect to the library itself, with its tests and its page on
-        this site, follow <a href={GUIDE}>the effect guide</a>.
+        this site, follow <a href={GUIDE}>the effect guide</a>. In Claude Code,
+        the repo's <code>effect-creator</code> agent knows the engine's maths
+        and follows the guide for you.
       </p>
     </Section>
   </>
