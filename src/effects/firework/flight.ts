@@ -8,7 +8,7 @@ const FUSE = 0.9;
 /** A rocket's fuse when nothing slows it down, in seconds. */
 const FUSE_UNSLOWED = 1;
 /** The climb over which the spiral opens to its full radius, in pixels. */
-const OPEN = 40;
+const OPEN = 30;
 
 /**
  * How far something moves in `t` seconds from velocity `v`, under constant
@@ -41,7 +41,7 @@ export const fuse = (speed: number, k: number, g: number): number => {
  *
  * Around that path, the rocket spirals a helix of constant pitch: it turns
  * by `turn` radians per pixel climbed, and its radius opens from 0 at the
- * launch to `spiral` as `1 - exp(-climbed / 40)`. Seen from the side, the
+ * launch to `spiral` as `1 - exp(-climbed / 30)`. Seen from the side, the
  * helix is a sideways sine, and its depth is the cosine.
  */
 export const flight = (rocket: Rocket, t: number): Flight => {

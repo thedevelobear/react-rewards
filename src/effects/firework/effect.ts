@@ -43,17 +43,22 @@ const FAN = 0.3;
 const LAUNCH_MIN = 0.9;
 const LAUNCH_MAX = 1.1;
 /** Pixels climbed per turn of the spiral. */
-const PITCH = 64;
+const PITCH = 44;
 /** How much a rocket grows as it comes round the near side of its spiral. */
 const DEPTH = 0.25;
 /** A rocket's size, as a multiple of a star's. */
 const HEAD = 1.2;
-/** Seconds a rocket fades over when its burst comes at the show's end. */
+/**
+ * The least time a rocket leaves its shell before the show ends, in seconds.
+ * A rocket launches sooner if it must.
+ */
+const SHOW = 1;
+/** Seconds a dud fades over before the show ends. */
 const ROCKET_FADE = 0.2;
 
 /** Pixels between a rocket's trail sparks, and between a willow star's. */
-const ROCKET_SPACING = 6;
-const WILLOW_SPACING = 12;
+const ROCKET_SPACING = 5;
+const WILLOW_SPACING = 9;
 /** A trail spark's diameter, as a share of a star's. */
 const TRAIL_SIZE = 0.6;
 /** The shortest and longest a trail spark lives, behind a rocket and a willow star, in seconds. */
@@ -65,7 +70,7 @@ const WILLOW_TRAIL_MAX = 1.8;
 const ROCKET_TRAIL_KEEP = 0.12;
 const WILLOW_TRAIL_KEEP = 0.05;
 /** How fast a trail spark drifts on its own, in pixels per second (one standard deviation). */
-const TRAIL_JITTER = 12;
+const TRAIL_JITTER = 9;
 /** A trail spark's air resistance per second. */
 const TRAIL_DRAG = 8;
 /** A trail spark's size at the end of its life, as a share of its first. */
@@ -112,10 +117,11 @@ const SPARKS = 6;
 /** A spark's diameter, as a share of a star's. */
 const SPARK_SIZE = 0.6;
 /**
- * A spark's fastest pop, in pixels per second, and its air resistance per
- * second. Sparks pop at 0.3 to 1 times it, so they scatter rather than ring.
+ * How far a spark pops at most, as a share of `radius`, and its air
+ * resistance per second. Sparks pop 0.3 to 1 times as far, so they scatter
+ * rather than ring.
  */
-const SPARK_SPEED = 110;
+const SPARK_REACH = 0.16;
 const SPARK_DRAG = 6;
 /** The shortest and longest a spark lives, and the seconds it fades over. */
 const SPARK_MIN = 0.3;
@@ -427,7 +433,8 @@ const pop = (
     if (life <= 0) continue;
     const angle =
       turn + (Math.PI * 2 * (j + 0.8 * (noise(seed, 1) - 0.5))) / SPARKS;
-    const speed = SPARK_SPEED * lerp(0.3, 1, noise(seed, 2));
+    const speed =
+      config.radius * SPARK_REACH * SPARK_DRAG * lerp(0.3, 1, noise(seed, 2));
     const vx = svx + Math.cos(angle) * speed;
     const vy = svy + Math.sin(angle) * speed;
     ctx.spawn((c) => {
@@ -585,16 +592,16 @@ export const firework: Effect<FireworkConfig> =
     blend: 'additive',
     defaults: {
       count: 3,
-      size: 5,
+      size: 4,
       colors: ['#FF3B4E', '#4DFF88', '#4D7CFF', '#FFD84A', '#FFFFFF'],
       angle: 90,
-      spread: 60,
-      velocity: 1000,
-      drag: 2.5,
-      gravity: 250,
-      spiral: 5,
+      spread: 80,
+      velocity: 650,
+      drag: 3.5,
+      gravity: 180,
+      spiral: 3.5,
       stars: 40,
-      radius: 110,
+      radius: 80,
       peony: 1,
       willow: 1,
       crackle: 1,
@@ -635,13 +642,13 @@ export const firework: Effect<FireworkConfig> =
           ? goldSprite(config)
           : (colour + index) % colours;
       // The first rocket launches at once, and the rest within `STAGGER`,
-      // or sooner if they would burst after the show ends. A rocket's life
-      // ends at its burst, or at the show's end for a dud.
+      // or sooner, so each bursts `SHOW` seconds before the show ends. A
+      // rocket's life ends at its burst, or at the show's end for a dud.
       const time = fuse(Math.hypot(p.s1, p.s2), config.drag, config.gravity);
       const end = config.lifetime / 1000;
       const delay = Math.min(
         index === 0 ? 0 : (STAGGER * (index - 1 + wait)) / (rockets - 1),
-        Math.max(0, end - time)
+        Math.max(0, end - time - SHOW)
       );
       p.life = Math.min(delay + time, end);
       p.alpha = delay > 0 ? 0 : 1;
