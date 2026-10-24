@@ -1,6 +1,6 @@
 # 0050. The Canvas 2D fallback has no particle cap
 
-- **Status:** Proposed
+- **Status:** Accepted
 - **Date:** 2026-10-23
 
 ## Context

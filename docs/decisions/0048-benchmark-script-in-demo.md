@@ -1,6 +1,6 @@
 # 0048. The benchmark harness is a script in `demo/`
 
-- **Status:** Proposed
+- **Status:** Accepted
 - **Date:** 2026-10-23
 
 ## Context

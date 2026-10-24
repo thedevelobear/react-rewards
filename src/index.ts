@@ -1,5 +1,6 @@
 export type {
   BlendMode,
+  ConfigOf,
   Effect,
   EffectConfig,
   EffectDefinition,
@@ -10,7 +11,22 @@ export type {
 export { defineEffect } from '@/core/define-effect';
 export type { Burst, BurstEnd, FireOptions } from '@/core/fire';
 export { fire, setRenderer } from '@/core/fire';
-export type { Rng } from '@/core/math';
+export type { Easing, Rng } from '@/core/math';
+export {
+  accelerate,
+  clamp,
+  createRng,
+  damp,
+  degToRad,
+  easeInCubic,
+  easeInOutCubic,
+  easeInOutQuad,
+  easeInQuad,
+  easeOutCubic,
+  easeOutQuad,
+  lerp,
+  linear,
+} from '@/core/math';
 export type { Origin } from '@/core/origin';
 export type { RendererKind, RendererPreference } from '@/core/renderer';
 export type { BalloonConfig } from '@/effects/balloon';

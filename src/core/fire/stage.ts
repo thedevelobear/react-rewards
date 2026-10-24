@@ -1,5 +1,6 @@
 import { type Atlas, createAtlas } from '@/core/atlas';
 import {
+  type ConfigOf,
   type Effect,
   type EffectConfig,
   resolveConfig,
@@ -30,10 +31,7 @@ export interface StageOptions {
 
 /** Runs bursts on one loop, overlay and atlas. */
 export interface Stage {
-  fire<C extends EffectConfig>(
-    effect: Effect<C>,
-    options: FireOptions<C>
-  ): Burst;
+  fire(effect: Effect, options: FireOptions): Burst;
 }
 
 /** A burst whose simulation has started. */
@@ -78,10 +76,7 @@ export const createStage = ({ loop, overlay, atlas }: StageOptions): Stage => {
     renderer?.draw({ atlas, batches });
   };
 
-  const fire = <C extends EffectConfig>(
-    effect: Effect<C>,
-    options: FireOptions<C>
-  ): Burst => {
+  const fire = (effect: Effect, options: FireOptions): Burst => {
     let resolve: (how: BurstEnd) => void = () => {};
     const finished = new Promise<BurstEnd>((settle) => {
       resolve = settle;
@@ -131,7 +126,7 @@ export const createStage = ({ loop, overlay, atlas }: StageOptions): Stage => {
     }
     release = lease.release;
 
-    let config: C;
+    let config: EffectConfig;
     let sources: readonly SpriteSource[];
     try {
       config = resolveConfig(effect, options.config);
@@ -211,7 +206,7 @@ export const setRenderer = (next: RendererPreference): void => {
  * user prefers reduced motion, the origin is an empty ref, no renderer is
  * available, the sprites fail to load or the effect throws (ADR 0025).
  */
-export const fire = <C extends EffectConfig>(
-  effect: Effect<C>,
-  options: FireOptions<C>
+export const fire = <E extends Effect>(
+  effect: E,
+  options: FireOptions<ConfigOf<E>>
 ): Burst => getStage().fire(effect, options);

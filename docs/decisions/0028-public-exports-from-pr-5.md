@@ -1,6 +1,6 @@
 # 0028. The public exports after PR 5
 
-- **Status:** Accepted
+- **Status:** Accepted. The math helpers bullet is superseded by [0053](0053-public-math-helpers.md).
 - **Date:** 2026-10-22
 
 ## Context

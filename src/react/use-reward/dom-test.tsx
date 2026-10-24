@@ -129,6 +129,42 @@ describe('useReward', () => {
     });
   });
 
+  it('takes a union of effects, with the config of either (ADR 0052)', () => {
+    // Each config has a field the other's doesn't (ADR 0052).
+    const colored = defineEffect({
+      name: 'colored',
+      blend: 'normal',
+      defaults: { count: 1, lifetime: 100, colors: ['#000'] },
+      sprites: () => [],
+      spawn: () => {},
+      update: () => {},
+    });
+    const sized = defineEffect({
+      name: 'sized',
+      blend: 'normal',
+      defaults: { count: 1, lifetime: 100, size: 4 },
+      sprites: () => [],
+      spawn: () => {},
+      update: () => {},
+    });
+    const target = { current: null };
+    const { result, rerender } = renderHook(
+      ({ party }: { party: boolean }) =>
+        useReward(target, party ? colored : sized, { colors: ['#fff'] }),
+      { initialProps: { party: true } }
+    );
+    act(() => {
+      result.current.reward();
+    });
+    rerender({ party: false });
+    act(() => {
+      result.current.reward();
+    });
+    expect(fired.map((call) => call.effect)).toEqual([colored, sized]);
+    // @ts-expect-error `sized` has no colours.
+    renderHook(() => useReward(target, sized, { colors: ['#fff'] }));
+  });
+
   it('fires from an origin it is given, and returns the burst', async () => {
     const { result } = renderHook(() =>
       useReward(document.createElement('button'), first)

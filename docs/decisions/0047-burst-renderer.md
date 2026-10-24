@@ -1,6 +1,6 @@
 # 0047. A burst says which renderer it was given
 
-- **Status:** Proposed
+- **Status:** Accepted
 - **Date:** 2026-10-23
 
 ## Context

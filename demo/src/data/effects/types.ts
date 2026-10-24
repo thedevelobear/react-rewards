@@ -64,9 +64,9 @@ export interface EffectPage<C extends EffectConfig> {
 
 /**
  * An effect page with its config type hidden, so pages for different effects
- * fit in one list. `Effect<C>` takes `C` in its functions' parameters, so an
- * `Effect<ConfettiConfig>` isn't an `Effect<EffectConfig>` (plan, open
- * question 8). `use` hands the typed page to a generic callback.
+ * fit in one list. `use` hands the typed page to a generic callback, so the
+ * shared components still see the page's own config type, and every key the
+ * props panel sets is one of its fields.
  */
 export interface AnyEffectPage {
   /** The effect's `name`, which is also its URL hash (README, "Routing"). */

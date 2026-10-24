@@ -5,7 +5,7 @@ import {
   useRef,
   useState,
 } from 'react';
-import type { Effect, EffectConfig } from '@/core/define-effect';
+import type { ConfigOf, Effect } from '@/core/define-effect';
 import { type Burst, fire } from '@/core/fire';
 import type { Origin } from '@/core/origin';
 import type {
@@ -45,10 +45,10 @@ const startOf = (
  * (ADR 0041). Bursts that are still running when the component unmounts are
  * cancelled, so `onComplete` isn't called for them (ADR 0042).
  */
-export const useReward = <C extends EffectConfig>(
+export const useReward = <E extends Effect>(
   target: RewardTarget,
-  effect: Effect<C>,
-  config?: Partial<C>,
+  effect: E,
+  config?: Partial<ConfigOf<E>>,
   options?: RewardOptions
 ): UseRewardResult => {
   const [isAnimating, setIsAnimating] = useState(false);

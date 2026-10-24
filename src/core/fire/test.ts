@@ -1,7 +1,11 @@
 import { afterEach, describe, expect, it, rs } from '@rstest/core';
 import { type AtlasOptions, createAtlas } from '@/core/atlas';
-import { defineEffect, type EffectDefinition } from '@/core/define-effect';
-import { createStage, DEFAULT_Z_INDEX } from '@/core/fire';
+import {
+  defineEffect,
+  type Effect,
+  type EffectDefinition,
+} from '@/core/define-effect';
+import { createStage, DEFAULT_Z_INDEX, fire } from '@/core/fire';
 import { createLoop } from '@/core/loop';
 import type { Overlay, Renderer } from '@/core/renderer';
 import { createFakeCanvases, createFakeScheduler } from '@/test-utils';
@@ -21,6 +25,26 @@ const testEffect = (overrides: Partial<EffectDefinition<TestConfig>> = {}) =>
     update: () => {},
     ...overrides,
   });
+
+/** Two effects whose configs each have a field the other's doesn't. */
+const coloredEffect = defineEffect({
+  name: 'colored',
+  blend: 'normal',
+  defaults: { count: 3, lifetime: 100, colors: ['#f00'] },
+  sprites: ({ colors }) =>
+    colors.map((color) => ({ shape: 'circle', color, size: 4 }) as const),
+  spawn: () => {},
+  update: () => {},
+});
+
+const sizedEffect = defineEffect({
+  name: 'sized',
+  blend: 'normal',
+  defaults: { count: 4, lifetime: 100, size: 4 },
+  sprites: ({ size }) => [{ shape: 'circle', color: '#f00', size }],
+  spawn: () => {},
+  update: () => {},
+});
 
 const origin = { x: 100, y: 200 };
 
@@ -346,5 +370,31 @@ describe('createStage', () => {
     expect(calls.count).toBe(0);
     await Promise.resolve();
     expect(calls.count).toBe(1);
+  });
+
+  it('fires effects with different configs from one list (ADR 0052)', async () => {
+    const { stage, counts, tick } = setup();
+    const effects: readonly Effect[] = [testEffect(), coloredEffect];
+    for (const effect of effects) stage.fire(effect, { origin });
+    await settle();
+    tick();
+    expect(counts()).toEqual([[2, 3]]);
+  });
+});
+
+describe('fire', () => {
+  it('types a union of effects, with the config of either (ADR 0052)', () => {
+    // Only type-checked: fire() would start the page's stage, which needs a
+    // browser.
+    const play = (colored: boolean) => {
+      const effect = colored ? coloredEffect : sizedEffect;
+      fire(effect, { origin, config: { count: 5 } });
+      fire(effect, { origin, config: { colors: ['#00f'], size: 8 } });
+      // @ts-expect-error `sizedEffect` has no colours.
+      fire(sizedEffect, { origin, config: { colors: ['#00f'] } });
+      // @ts-expect-error `count` is a number.
+      fire(effect, { origin, config: { count: '5' } });
+    };
+    expect(play).toBeTypeOf('function');
   });
 });
