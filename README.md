@@ -11,7 +11,7 @@
 Firing confetti all over the page may seem like a questionable idea, but keep in mind that rewarding users for their actions is not.
 If a huge cloud of smiling emoji doesn't fit your application well, try changing the physics config to make it more subtle.
 
-You can read more on the subject of micro-interactions in my blog post – https://www.thedevelobear.com/post/microinteractions/
+You can read more on the subject of micro-interactions in my blog post - https://www.thedevelobear.com/post/microinteractions/
 
 ## Demo
 
@@ -77,7 +77,7 @@ const { reward } = useReward(
 | `count` | | `100` | `20` | `16` | Particles per burst. |
 | `size` | CSS px | `10` | `25` | `30` | A piece's width, an emoji's font size, or a balloon's width. |
 | `colors` | | 5 colours | | 5 colours | Each particle picks one. |
-| `emojis` | | | `['🤓', '😊', '🥳']` | | Particles take them in turn. |
+| `emojis` | | | `['🦄', '⚡️', '🥰']` | | Particles take them in turn. |
 | `angle` | degrees | `90` | `90` | `90` | The launch direction, counter-clockwise from the right. `90` is up. |
 | `spread` | degrees | `60` | `45` | `90` | The width of the launch cone around `angle`. |
 | `velocity` | px/s | `1500` | `1500` | `300` | The average launch speed. |
