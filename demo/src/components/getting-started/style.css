@@ -41,11 +41,6 @@
   letter-spacing: 0;
 }
 
-/* The last step is where the reader goes next. */
-.step:last-child .step-number {
-  border-color: var(--accent);
-}
-
 .step-body {
   flex: 1;
   min-width: 0;

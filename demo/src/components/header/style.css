@@ -21,6 +21,7 @@
   display: flex;
   align-items: center;
   min-height: var(--touch-height);
+  margin-top: -10px;
 }
 
 /* The logo PNG is twice this size, for 2x screens (README, "Header and
