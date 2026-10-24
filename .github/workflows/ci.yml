@@ -1,8 +1,10 @@
 name: CI
 
+# Runs on pushes to master and on every PR. After 3.0.0, work branches off
+# master, and the integration branch takes no more work (ADR 0056).
 on:
   push:
-    branches: [master, feat/v3-scaffolding]
+    branches: [master]
   pull_request:
 
 permissions:
