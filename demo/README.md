@@ -1,6 +1,6 @@
 # demo
 
-The preview site for react-rewards, and the page the browser specs run against. It is a private workspace package, a React 19 and Rsbuild app ([ADR 0027](../docs/decisions/0027-react-demo-from-pr-5.md)) that imports the built library, as users do ([ADR 0031](../docs/decisions/0031-demo-imports-built-package.md)).
+The preview site for react-rewards, and the page the browser specs run against. It is a private workspace package, a React 19 and Rsbuild app ([ADR 0027](../docs/decisions/0027-react-demo.md)) that imports the built library, as users do ([ADR 0031](../docs/decisions/0031-demo-imports-built-package.md)).
 
 ## Running it
 - `pnpm dev` at the root rebuilds the library on change. Next to it, `pnpm --filter demo dev` serves the site at `/` and the fixtures at `/fixtures.html`.

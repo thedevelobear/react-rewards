@@ -1,30 +1,38 @@
 # Agent instructions
 
-react-rewards is a small React library of reward micro-interactions (confetti, emoji, balloons). Version 3 is a rewrite in progress.
+react-rewards is a small React library of reward micro-interactions (confetti, emoji, balloons). Version 3 is a rewrite around a particle engine, built PR by PR in the [v3 plan](docs/plans/2026-10-22-v3-rewrite.md).
 
 ## Before you start
-1. Read [`docs/README.md`](docs/README.md), then the active plan it links to.
+1. Read [`docs/README.md`](docs/README.md), then the active plan it links to, if there is one.
 2. Check [`docs/decisions/`](docs/decisions/) for anything your change touches. Don't silently re-decide something recorded there. If a decision needs to change, propose a new ADR. For the preview site, also read [`demo/README.md`](demo/README.md).
 
-## Picking up the next PR
-Each PR in the plan's progress table is usually done in a fresh session. To continue:
-1. Run `git fetch`. Find the first PR in the progress table that isn't merged.
-2. If its branch (`v3/NN-topic`) exists, continue on it. Otherwise create it from the integration branch without tracking it:
+## Starting a branch
+Every change is a branch made from `master`, merged into it through a PR ([ADR 0056](docs/decisions/0056-work-after-release-branches-off-master.md)).
+1. Run `git fetch`. If your work already has a branch, continue on it. Otherwise create one from `master` without tracking it, named after the change's main commit type and its topic:
    ```sh
-   git switch --no-track -c v3/NN-topic origin/feat/v3-scaffolding
+   git switch --no-track -c feat/topic origin/master
    ```
-   Without `--no-track`, git makes `feat/v3-scaffolding` the branch's upstream. A plain push, including VS Code's Push button, then lands the commits on the integration branch with no PR. When the maintainer asks for a push, use `git push -u origin v3/NN-topic`.
-3. If the previous PR is merged but still listed as "In review", mark it "Merged" with its PR number, and set any ADR it left as "Proposed" to "Accepted" (unless the maintainer changed it). Do this in the first commit of the new branch.
-4. Before writing code, ask the maintainer the open questions the plan assigns to this PR. Record each answer as an ADR (or in `demo/README.md`, if it is about the site's design), and remove the question from the table.
-5. When the PR is done, set its status to "In review", stop, and report to the maintainer. Don't push branches or open PRs unless the maintainer asks.
+   Without `--no-track`, git makes `master` the branch's upstream. A plain push, including VS Code's Push button, then lands the commits on `master` with no PR. When the maintainer asks for a push, use `git push -u origin feat/topic`.
+2. Bring the docs up to date with what has merged, in the first commit of the new branch. Set any ADR left as "Proposed" by a merged PR to "Accepted" (unless the maintainer changed it). If a plan lists a merged PR as "In review", mark it "Merged" with its PR number. If that was the plan's last PR, mark the plan done.
+3. When the work is done, stop and report to the maintainer. Don't push branches or open PRs unless the maintainer asks.
 
-Fixes to a merged PR go on a `v3/fix-topic` branch, created and pushed the same way as in step 2. They take no number. List them in the plan's "Follow-up fixes" table, not in the progress table.
+## Work over several PRs
+Work too big for one PR gets a plan in `docs/plans/`, with a progress table, as v3 did. Each PR in the table is usually done in a fresh session:
+1. Find the first PR in the progress table that isn't merged, and start or continue its branch as above.
+2. Before writing code, ask the maintainer the open questions the plan assigns to this PR. Record each answer as an ADR (or in `demo/README.md`, if it is about the site's design), and remove the question from the table.
+3. When the PR is done, set its status to "In review".
+
+Fixes to a merged PR of a plan take no number. List them in the plan's "Follow-up fixes" table, not in the progress table.
+
+## Releasing
+A release PR bumps the version in `package.json` and adds an entry to `CHANGELOG.md`. Once it merges, the maintainer publishes a GitHub release tagged `v` and the version, and a workflow publishes the package to npm ([ADR 0054](docs/decisions/0054-publish-from-github-release.md)).
 
 ## While you work
 - Record decisions and plan changes in `docs/`, in the same PR as the code: a new ADR for each decision, and an update to the active plan's progress table and to any section the work changes. Nothing that matters should live only in chat or in PR comments.
+- ADRs and docs state what was decided and why, briefly. They don't say who decided or asked, retell how a decision was reached, or name the PR something happened in. Only a plan's progress table numbers PRs ([ADR 0057](docs/decisions/0057-short-impersonal-adrs.md)).
 - ADRs are for the library: its API, engine, build and tests, and the repo's process. Decisions about the preview site's design and content go in `demo/README.md`, edited in place, not in ADRs ([ADR 0046](docs/decisions/0046-adrs-cover-the-library.md)). How the library is tested in a browser, and how `demo/` builds against it, are still ADRs.
 - If something is unclear, or the plan contradicts itself, ask the maintainer before deciding.
-- Work lands as small PRs, one at a time. v3 PRs target the integration branch `feat/v3-scaffolding`, not `master`.
+- Work lands as small PRs into `master`, one at a time.
 - PRs are merged without squashing ([ADR 0009](docs/decisions/0009-no-squash-merges.md)). Make every commit a self-contained step that builds and passes lint.
 - Dependencies use exact versions, and `pnpm add` writes them that way. Peer dependencies stay ranges ([ADR 0015](docs/decisions/0015-exact-dependency-versions.md)).
 
