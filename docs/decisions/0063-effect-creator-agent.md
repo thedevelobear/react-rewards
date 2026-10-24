@@ -1,6 +1,6 @@
 # 0063. An effect-creator agent for Claude Code lives in the repo
 
-- **Status:** Proposed
+- **Status:** Accepted
 - **Date:** 2026-10-24
 
 - `.claude/agents/effect-creator.md` defines a Claude Code subagent for writing effects and extending the engine. It holds the engine's model as the maths sees it (units, the step, drawing, sprites, randomness), the closed forms for flight with drag, the techniques the built-in effects use to stay frame-rate independent, how to design and test an effect, and where an engine change has to land.

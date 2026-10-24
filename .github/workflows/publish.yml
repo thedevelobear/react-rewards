@@ -31,4 +31,7 @@ jobs:
             echo "The release tag $TAG doesn't match package.json ($expected)."
             exit 1
           fi
-      - run: npm publish
+      # pnpm's Node comes without npm, so `npm` is the runner's npm 10, which
+      # can't use trusted publishing (ADR 0065).
+      - name: Publish with npm 11
+        run: npx --yes npm@11.20.0 publish

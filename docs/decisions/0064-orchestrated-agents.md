@@ -1,6 +1,6 @@
 # 0064. Claude Code works through an orchestrator agent, with an effect creator, a developer and QA
 
-- **Status:** Proposed
+- **Status:** Accepted
 - **Date:** 2026-10-24
 
 - Four agents live in `.claude/agents/`:

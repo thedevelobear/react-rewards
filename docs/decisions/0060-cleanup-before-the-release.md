@@ -1,6 +1,6 @@
 # 0060. The docs, icon and type cleanup merges into `master` before the release is published
 
-- **Status:** Proposed
+- **Status:** Accepted
 - **Date:** 2026-10-24
 
 - One more v3 PR, `v3/15-docs-and-cleanup`, branched from `feat/v3-scaffolding` and merged into `master` after it. With [ADR 0058](0058-site-redesign-before-the-release.md), it is the second exception to [ADR 0056](0056-work-after-release-branches-off-master.md)'s rule that the integration branch takes no more work.
