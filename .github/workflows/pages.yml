@@ -1,10 +1,10 @@
 name: Pages
 
-# Deploys the site from the integration branch until the release, when PR 12
-# moves the trigger to master (ADR 0049).
+# Deploys the site from master. Until the release it deployed from the
+# integration branch (ADR 0049).
 on:
   push:
-    branches: [feat/v3-scaffolding]
+    branches: [master]
   workflow_dispatch:
 
 permissions:
