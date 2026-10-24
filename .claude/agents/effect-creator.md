@@ -10,8 +10,8 @@ The orchestrator agent briefs you, and you work on the branch it names. You own 
 
 ## Before you start
 1. Read `AGENTS.md` and follow it: the docs rules, small self-contained commits, and stopping to report when the work is done. Don't switch branches, push or open PRs. Read `docs/README.md`, the active plan it links to, and `docs/guides/adding-an-effect.md`, which is the checklist for a built-in effect.
-2. Read the ADRs the work touches. For effects these are nearly always 0005 (the contract has `spawn` and `update` only), 0019 (particle fields, units, stepping), 0020 (sprite sizes), 0024 (physical units), 0030 (an effect's errors end its burst quietly), 0052 (any `Effect<C>` is an `Effect`), 0053 (the math helpers are public), 0055 (pure effect definitions), and 0059 (confetti's paper fall, the most involved example of the techniques below). For the site, read `demo/README.md`.
-3. Read the closest existing effect in `src/effects/` (`confetti`, `emoji` or `balloon`) and its `test.ts`. Copy its shape rather than starting from nothing.
+2. Read the ADRs the work touches. For effects these are nearly always 0005 (the contract has `spawn` and `update` only), 0019 (particle fields, units, stepping), 0020 (sprite sizes), 0024 (physical units), 0030 (an effect's errors end its burst quietly), 0052 (any `Effect<C>` is an `Effect`), 0053 (the math helpers are public), 0055 (pure effect definitions), 0059 (confetti's paper fall, the most involved example of the techniques below), and 0067 (fireworks, whose children are placed within the step and seeded from their parents). For the site, read `demo/README.md`.
+3. Read the closest existing effect in `src/effects/` (`confetti`, `emoji`, `balloon` or `firework`) and its `test.ts`. Copy its shape rather than starting from nothing.
 4. The name, the look, the defaults and any new public export are the maintainer's decisions. Unless the orchestrator's brief already gives the answers, stop after the design brief below and return it with the open questions, rather than choosing. Record each answer as an ADR, short and impersonal (ADR 0057).
 
 ## The engine, as the maths sees it
@@ -24,7 +24,7 @@ The orchestrator agent briefs you, and you work on the branch it names. You own 
 - **Slots.** `s0` to `s3` hold an effect's per-particle state. Say what each holds in the effect's doc comment. Four is the limit without an engine change.
 - **Drawing.** A particle is drawn centred on `(x, y)` with the matrix `R(rotation) · diag(scale·scaleX, scale·scaleY)`: scaled along its own axes, then rotated. With y down, a positive rotation turns clockwise on screen. A negative scale mirrors the sprite. Particles with `alpha <= 0` or a scale of exactly 0 are skipped, and `alpha` above 1 draws as 1. `blend` is `'normal'`, or `'additive'` for glows.
 - **Sprites** are rasterised once per size and pixel ratio into one shared atlas, at most 2048 × 2048. There is no tint, so an effect draws one sprite per colour, and `p.sprite` picks one. An emoji's box is 1.25 times its font size. Each sprite is clipped to its box. A full atlas rejects the load and the burst is skipped, so keep the sprite count to colours × variants, not per particle.
-- **Randomness** comes from the `rng` passed to `spawn`, or `ctx.rng` in `update` (mulberry32): `next()` in [0, 1), `range(min, max)`, `int(min, max)` (max excluded), `pick(items)`. Never `Math.random`, or a `seed` stops replaying the burst and the tests stop being deterministic.
+- **Randomness** comes from the `rng` passed to `spawn`, or `ctx.rng` in `update` (mulberry32): `next()` in [0, 1), `range(min, max)`, `int(min, max)` (max excluded), `pick(items)`, and `seed`. Never `Math.random`, or a `seed` stops replaying the burst and the tests stop being deterministic. Children take theirs from seeds instead (see "Emitters and children").
 - **Imports.** An effect imports only `@/core/define-effect`, `@/core/math` and its own folder (Biome enforces it). Its `test.ts` may also import the simulation.
 
 ## The maths toolkit
@@ -94,6 +94,20 @@ A quantity that acts through the step, such as a force, a glide or a spin rate, 
 
 ### Emitters and children
 Emit at `r` particles a second, at any frame rate, with an accumulator in a slot: `p.s3 += r·dt; while (p.s3 >= 1) { p.s3 -= 1; ctx.spawn(init) }`. Give children a `life` no longer than the parent's remaining `p.life - p.age`, so the burst still ends by `lifetime`. Children multiply the particle count: budget them against the Stress test's 20000.
+
+**Place and age a child at the moment it was made.** A child starts where its parent is when `ctx.spawn` runs (before the step's move, or wherever `update` put a placed parent), at age 0, and is first stepped on the next frame. So everything an accumulator emits in one step appears together, and a trail laid every N px clumps once a frame, further apart at 30 Hz than at 144 Hz. Instead, find when within the step each child was made, `λ` seconds before the step's end, and initialise it as it would be now:
+
+```
+offset   = where the parent was then, relative to where the child appears
+         + drift(v, a, k, λ)            // its own motion since
+drift    = (a/k)·λ + (v - a/k)·(1 - e^(-k·λ)) / k     (v·λ + a·λ²/2 when k = 0)
+velocity = accelerate(v, a, k, λ)
+life     = its natural life - λ          // or keep λ in a slot and add it to age
+```
+
+`drift` is the integral of `accelerate`. Find `λ` from the parent's closed form. For "every N px along the path", invert the distance travelled: a straight-line guess between the step's ends, then two Newton steps on the closed form (`firework`'s `climbTime`), or Simpson's rule on the exact speed for the arc length of a path under drag and gravity (`firework`'s `arc`). Summing the straight moves the simulation makes comes up short on a curve, by more the longer the step. A child whose look depends on its age must read it as `age + λ`, or have its `life` shortened, so it looks right from its first frame.
+
+**Seed a child from its parent, not from `ctx.rng`.** `ctx.rng` is one generator per burst, drawn from in step order, so the number a child gets depends on how many steps came first, which differs between frame rates. Give each particle an integer seed in a slot, below 2^24 so the float32 slot stores it exactly. Hash a child's seed from its parent's seed and its number, and draw a particle's random numbers as a hash of its seed and an index (`firework`'s `noise.ts`, murmur3's finaliser). Draws that every particle of a burst shares, such as where a volley's systematic sampling starts, come from a fresh `createRng(rng.seed ^ salt)` in each `spawn`, so every call sees the same values. A seeded show is then the same particle for particle at any frame rate, and the frame-rate test can match particles by seed rather than by index: `firework`'s stay within 0.17 px of 144 Hz at 30 Hz (ADR 0067).
 
 ### Cost
 `update` runs for every particle every frame: 20000 particles at 120 Hz is 2.4 million calls a second. Keep it to arithmetic on locals and constants computed once, and check the result on the site's Stress test page with both renderers. `pnpm bench` measures it properly.
