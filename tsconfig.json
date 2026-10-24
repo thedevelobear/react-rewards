@@ -1,32 +1,22 @@
 {
-//  "target": "esnext",
-//  "compilerOptions": {
-//    "esModuleInterop": true,
-//    "strict": true,
-//    "skipLibCheck": true,
-//    "jsx": "react-jsx",
-//    "module": "ESNext",
-//    "declaration": true,
-//    "declarationDir": "types",
-//    "sourceMap": true,
-//    "inlineSources": true,
-//    "outDir": "dist",
-//    "moduleResolution": "node",
-//    "emitDeclarationOnly": true,
-//    "allowSyntheticDefaultImports": true,
-//    "forceConsistentCasingInFileNames": true,
-//    "suppressImplicitAnyIndexErrors": true
-//  },
   "compilerOptions": {
-    "esModuleInterop": true,
-//    "lib": ["es2018"],
+    "target": "ES2022",
+    "lib": ["ES2022", "DOM", "DOM.Iterable"],
+    "module": "ESNext",
+    "moduleResolution": "Bundler",
+    "jsx": "react-jsx",
     "strict": true,
-    "target": "esnext",
-    "module": "commonjs",
-    "moduleResolution": "node",
+    "noUncheckedIndexedAccess": true,
+    "verbatimModuleSyntax": true,
+    "isolatedDeclarations": true,
+    "declaration": true,
     "noUnusedLocals": true,
-    "forceConsistentCasingInFileNames": true,
-    "suppressImplicitAnyIndexErrors": true
+    "noEmit": true,
+    "skipLibCheck": true,
+    "rootDir": "./src",
+    "paths": {
+      "@/*": ["./src/*"]
+    }
   },
-  "include": ["src", "src/svg.d.ts"]
+  "include": ["src"]
 }

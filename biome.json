@@ -1,0 +1,85 @@
+{
+  "$schema": "./node_modules/@biomejs/biome/configuration_schema.json",
+  "vcs": { "enabled": true, "clientKind": "git", "useIgnoreFile": true },
+  "files": { "includes": ["**", "!pnpm-lock.yaml"] },
+  "formatter": {
+    "enabled": true,
+    "indentStyle": "space",
+    "indentWidth": 2,
+    "lineWidth": 80
+  },
+  "javascript": {
+    "formatter": {
+      "quoteStyle": "single",
+      "trailingCommas": "es5",
+      "semicolons": "always",
+      "arrowParentheses": "always"
+    }
+  },
+  "markdown": { "formatter": { "enabled": false } },
+  "linter": {
+    "enabled": true,
+    "domains": { "react": "recommended" },
+    "rules": {
+      "preset": "recommended",
+      "style": {
+        "useFilenamingConvention": {
+          "level": "error",
+          "options": { "filenameCases": ["kebab-case"], "requireAscii": true }
+        },
+        "useNamingConvention": "error"
+      }
+    }
+  },
+  "overrides": [
+    {
+      "includes": ["src/effects/**", "!src/effects/**/test.ts"],
+      "linter": {
+        "rules": {
+          "style": {
+            "noRestrictedImports": {
+              "level": "error",
+              "options": {
+                "patterns": [
+                  {
+                    "group": [
+                      "**",
+                      "!./**",
+                      "!@/core/define-effect",
+                      "!@/core/math"
+                    ],
+                    "message": "Effects import only from @/core/define-effect, @/core/math and their own folder (plan step 1c)."
+                  }
+                ]
+              }
+            }
+          }
+        }
+      }
+    },
+    {
+      "includes": ["src/core/**"],
+      "linter": {
+        "rules": {
+          "style": {
+            "noRestrictedImports": {
+              "level": "error",
+              "options": {
+                "paths": {
+                  "react": "core/ is framework-agnostic and never imports React (plan step 1c).",
+                  "react-dom": "core/ is framework-agnostic and never imports React (plan step 1c)."
+                },
+                "patterns": [
+                  {
+                    "group": ["@/effects/**", "@/react/**", "react/**"],
+                    "message": "core/ never imports effects or the React layer (plan step 1b, rule 8)."
+                  }
+                ]
+              }
+            }
+          }
+        }
+      }
+    }
+  ]
+}

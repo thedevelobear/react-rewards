@@ -1,0 +1,153 @@
+/*
+ * The site's design tokens (README, "Visual direction"). Light values sit on
+ * :root. The dark values are set twice, for the switcher's dark choice and
+ * for the system's dark mode when the switcher is on "system", so keep the
+ * two dark blocks the same.
+ */
+:root {
+  color-scheme: light;
+
+  --bg: #ffffff;
+  /* Panels: the preview, the install command, code, cards. */
+  --card: #fafafa;
+  /* Recessed areas inside a card: the cards' art, the step numbers. */
+  --inset: #f4f4f5;
+  /* Controls and the active sidebar item. */
+  --surface: #f4f4f5;
+  --surface-hover: #e9e9ec;
+  --border: #e4e4e7;
+  /* Controls' borders. */
+  --border-strong: #d4d4d8;
+  /* The previews' dot grid. */
+  --dot: #dcdce0;
+  --text: #09090b;
+  --text-secondary: #3f3f46;
+  --text-muted: #52525b;
+  --text-subtle: #66666f;
+  --accent: #ff6b57;
+  --accent-hover: #ff7f6e;
+  /* Accent text and links. The accent itself is 2.8:1 on white. */
+  --accent-text: #c4381f;
+  --accent-glow: 0 12px 40px -12px var(--accent);
+  /* Text on an accent fill, in both themes. */
+  --ink: #0a0a0b;
+  --focus: #7c3aed;
+  --success: #047857;
+  /* The switch's knob. */
+  --knob: #ffffff;
+
+  /* The effect cards' drawings. Decorative, so contrast doesn't apply. */
+  --art-violet: #a78bfa;
+  --art-amber: #f5c451;
+  --art-sky: #5ec8f2;
+  --art-mint: #6ee7b7;
+  --art-line: #c4c4cc;
+  --art-shine: #ffffff59;
+
+  /*
+   * The snippet's colours, for the site's shiki theme (README, "Code
+   * colours"). Each keeps 4.5:1 on --card.
+   */
+  --code-background: var(--card);
+  --code-foreground: #18181b;
+  --code-keyword: var(--accent-text);
+  --code-string: #8f5500;
+  --code-function: #0b65a8;
+  --code-type: #7136d9;
+  --code-tag: #08775a;
+  --code-punctuation: var(--text-subtle);
+  --code-line-number: var(--text-subtle);
+
+  --font-sans: "Geist Variable", system-ui, sans-serif;
+  --font-mono: "Geist Mono Variable", ui-monospace, monospace;
+
+  --radius-xs: 6px;
+  --radius-sm: 10px;
+  --radius-md: 12px;
+  --radius-lg: 14px;
+  --radius-xl: 16px;
+  --radius-2xl: 20px;
+  --radius-full: 999px;
+  /* The props panel's compact controls. */
+  --radius-control: 7px;
+  --control-height: 32px;
+  /* Buttons and links people tap: the header, the sidebar, copy, tabs. */
+  --touch-height: 44px;
+  --header-height: 68px;
+
+  --ease-out: cubic-bezier(0.23, 1, 0.32, 1);
+  --duration-press: 0.12s;
+  --duration-fast: 0.15s;
+  --duration-base: 0.2s;
+  --duration-slow: 0.3s;
+}
+
+:root[data-theme="dark"] {
+  color-scheme: dark;
+
+  --bg: #0a0a0b;
+  --card: #0f0f11;
+  --inset: #121214;
+  --surface: #151517;
+  --surface-hover: #1c1c1f;
+  --border: #1e1e22;
+  --border-strong: #26262b;
+  --dot: #202025;
+  --text: #f4f4f5;
+  --text-secondary: #d4d4d8;
+  --text-muted: #a1a1aa;
+  --text-subtle: #8b8b94;
+  --accent-text: #ff6b57;
+  --focus: #a78bfa;
+  --success: #6ee7b7;
+  --art-line: #3a3a40;
+  --code-foreground: #e7e7ea;
+  --code-keyword: #ff8a7a;
+  --code-string: #f2c46d;
+  --code-function: #7cc7ff;
+  --code-type: #c4a7ff;
+  --code-tag: #7ee0b8;
+  --code-punctuation: #9a9aa3;
+  --code-line-number: #80808a;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    color-scheme: dark;
+
+    --bg: #0a0a0b;
+    --card: #0f0f11;
+    --inset: #121214;
+    --surface: #151517;
+    --surface-hover: #1c1c1f;
+    --border: #1e1e22;
+    --border-strong: #26262b;
+    --dot: #202025;
+    --text: #f4f4f5;
+    --text-secondary: #d4d4d8;
+    --text-muted: #a1a1aa;
+    --text-subtle: #8b8b94;
+    --accent-text: #ff6b57;
+    --focus: #a78bfa;
+    --success: #6ee7b7;
+    --art-line: #3a3a40;
+    --code-foreground: #e7e7ea;
+    --code-keyword: #ff8a7a;
+    --code-string: #f2c46d;
+    --code-function: #7cc7ff;
+    --code-type: #c4a7ff;
+    --code-tag: #7ee0b8;
+    --code-punctuation: #9a9aa3;
+    --code-line-number: #80808a;
+  }
+}
+
+/* The UI stops moving. The effects honour reduced motion themselves. */
+@media (prefers-reduced-motion: reduce) {
+  :root {
+    --duration-press: 0s;
+    --duration-fast: 0s;
+    --duration-base: 0s;
+    --duration-slow: 0s;
+  }
+}

@@ -1,0 +1,62 @@
+/* A tab per package manager, underlined when chosen. */
+.install-managers {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+  min-width: 0;
+  margin: 0;
+  padding: 0 10px;
+  border: 0;
+  border-bottom: 1px solid var(--border);
+}
+
+.install-manager {
+  height: var(--touch-height);
+  margin-bottom: -1px;
+  padding: 0 12px;
+  border: 0;
+  border-bottom: 2px solid transparent;
+  background: none;
+  color: var(--text-muted);
+  font-family: var(--font-mono);
+  font-size: 13px;
+  letter-spacing: 0;
+  cursor: pointer;
+  transition:
+    color var(--duration-fast) var(--ease-out),
+    border-color var(--duration-fast) var(--ease-out);
+}
+
+.install-manager:hover {
+  color: var(--text);
+}
+
+.install-manager[aria-pressed="true"] {
+  border-bottom-color: var(--accent);
+  color: var(--text);
+}
+
+.install-panel {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 6px 6px 6px 20px;
+  background: var(--code-background);
+  font-family: var(--font-mono);
+  font-size: 14.5px;
+  letter-spacing: 0;
+}
+
+.install-prompt {
+  margin-right: -4px;
+  color: var(--text-subtle);
+  user-select: none;
+}
+
+.install-command {
+  flex: 1;
+  min-width: 0;
+  overflow-x: auto;
+  color: var(--code-foreground);
+  white-space: nowrap;
+}

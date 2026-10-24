@@ -1,0 +1,64 @@
+.pager {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px;
+  margin-top: 24px;
+  padding-top: 24px;
+  border-top: 1px solid var(--border);
+}
+
+.pager-link {
+  display: flex;
+  flex: 0 1 280px;
+  align-items: center;
+  gap: 16px;
+  min-width: 240px;
+  padding: 14px 18px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  background: var(--card);
+  color: var(--text);
+  text-decoration: none;
+  transition: border-color var(--duration-fast) var(--ease-out);
+}
+
+.pager-link:hover {
+  border-color: var(--border-strong);
+}
+
+.pager-link svg {
+  flex: none;
+  color: var(--accent);
+}
+
+.pager-next {
+  margin-left: auto;
+}
+
+.pager-text {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  gap: 4px;
+  min-width: 0;
+}
+
+.pager-direction {
+  color: var(--text-subtle);
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+.pager-label {
+  font-size: 16px;
+  font-weight: 600;
+}
+
+@media (max-width: 720px) {
+  .pager-link {
+    flex-grow: 1;
+    min-width: 0;
+  }
+}

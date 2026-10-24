@@ -1,0 +1,32 @@
+{
+  "name": "demo",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "rsbuild dev",
+    "build": "rsbuild build",
+    "preview": "rsbuild preview",
+    "typecheck": "tsc --noEmit",
+    "e2e": "playwright test",
+    "bench": "node bench/run.ts"
+  },
+  "dependencies": {
+    "@fontsource-variable/geist": "5.3.0",
+    "@fontsource-variable/geist-mono": "5.3.0",
+    "react": "19.3.1",
+    "react-dom": "19.3.1",
+    "react-rewards": "workspace:*",
+    "shiki": "4.5.0"
+  },
+  "devDependencies": {
+    "@playwright/test": "1.64.1",
+    "@rsbuild/core": "2.2.14",
+    "@rsbuild/plugin-react": "2.1.1",
+    "@types/node": "26.6.5",
+    "@types/pngjs": "6.0.5",
+    "@types/react": "19.3.0",
+    "@types/react-dom": "19.3.0",
+    "pixelmatch": "8.0.0",
+    "pngjs": "7.0.0"
+  }
+}

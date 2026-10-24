@@ -1,0 +1,73 @@
+/*
+ * The sidebar beside the content, which is at most 800px wide, stacked on
+ * phones. The header lines up with it through --layout-width.
+ */
+:root {
+  --sidebar-width: 240px;
+  --content-width: 800px;
+  --layout-gap: 48px;
+  --layout-width: calc(
+    var(--sidebar-width) +
+    var(--layout-gap) +
+    var(--content-width) +
+    48px
+  );
+}
+
+.layout {
+  display: grid;
+  grid-template-columns: var(--sidebar-width) minmax(0, 1fr);
+  gap: var(--layout-gap);
+  max-width: var(--layout-width);
+  margin: 0 auto;
+  padding: 0 24px;
+}
+
+.content {
+  display: flex;
+  flex-direction: column;
+  gap: 40px;
+  min-width: 0;
+  padding: 40px 0 80px;
+}
+
+@media (max-width: 720px) {
+  .layout {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 0;
+    padding: 0;
+  }
+
+  .content {
+    padding: 24px 16px 48px;
+  }
+}
+
+/* A titled part of the page, such as the props panel or the snippet. */
+.section {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.section-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+}
+
+.section-title {
+  font-size: 24px;
+  font-weight: 600;
+  line-height: 1.25;
+  letter-spacing: -0.025em;
+}
+
+/* A bordered card, such as the install command or the code. */
+.panel {
+  overflow: hidden;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  background: var(--card);
+}

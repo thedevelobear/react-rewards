@@ -1,0 +1,47 @@
+.tabs {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+/* A tab per panel, underlined when selected, as the install command's are. */
+.tabs-list {
+  display: flex;
+  gap: 4px;
+  border-bottom: 1px solid var(--border);
+}
+
+.tabs-tab {
+  height: var(--touch-height);
+  margin-bottom: -1px;
+  padding: 0 12px;
+  border: 0;
+  border-bottom: 2px solid transparent;
+  background: none;
+  color: var(--text-muted);
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  transition:
+    color var(--duration-fast) var(--ease-out),
+    border-color var(--duration-fast) var(--ease-out);
+}
+
+.tabs-tab:hover {
+  color: var(--text);
+}
+
+.tabs-tab[aria-selected="true"] {
+  border-bottom-color: var(--accent);
+  color: var(--text);
+}
+
+.tabs-panel {
+  display: flex;
+  flex-direction: column;
+  gap: 40px;
+}
+
+.tabs-panel[hidden] {
+  display: none;
+}
