@@ -10,7 +10,9 @@
   border-bottom: 1px solid var(--border);
 }
 
+/* Positioned, so the glow below it paints over the command below. */
 .install-manager {
+  position: relative;
   height: var(--touch-height);
   margin-bottom: -1px;
   padding: 0 12px;
@@ -24,20 +26,45 @@
   cursor: pointer;
   transition:
     color var(--duration-fast) var(--ease-out),
-    border-color var(--duration-fast) var(--ease-out),
-    box-shadow var(--duration-fast) var(--ease-out);
+    border-color var(--duration-fast) var(--ease-out);
 }
 
 .install-manager:hover {
   color: var(--text);
 }
 
-/* Positioned, so its glow paints over the command below. */
 .install-manager[aria-pressed="true"] {
-  position: relative;
   border-bottom-color: var(--accent);
-  box-shadow: var(--accent-glow-line);
   color: var(--text);
+}
+
+/*
+ * The selected tab's glow: wider than the tab, and only below its line
+ * (README, "Accent glow").
+ */
+.install-manager::after {
+  content: "";
+  position: absolute;
+  top: calc(100% + 2px);
+  right: -24px;
+  left: -24px;
+  height: 22px;
+  background: var(--accent-glow-line);
+  /* Past the line's ends, the glow fades out sideways too. */
+  mask-image: linear-gradient(
+    90deg,
+    transparent,
+    #000 24px,
+    #000 calc(100% - 24px),
+    transparent
+  );
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity var(--duration-fast) var(--ease-out);
+}
+
+.install-manager[aria-pressed="true"]::after {
+  opacity: 0.45;
 }
 
 .install-panel {

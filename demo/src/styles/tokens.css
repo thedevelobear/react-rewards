@@ -36,7 +36,15 @@
    */
   --accent-glow: 0 12px 40px -12px var(--accent);
   --accent-glow-soft: 0 12px 32px -18px var(--accent);
-  --accent-glow-line: 0 10px 16px -10px var(--accent);
+  /*
+   * An image, for a layer under a selected tab's line: it fades out before
+   * the layer's edges, so it has none, and lights only downwards.
+   */
+  --accent-glow-line: radial-gradient(
+    50% 100% at 50% 0,
+    var(--accent),
+    transparent
+  );
   --accent-glow-mark: 0 0 10px var(--accent);
   /* Text on an accent fill, in both themes. */
   --ink: #0a0a0b;
