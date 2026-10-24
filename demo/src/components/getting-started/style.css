@@ -1,4 +1,178 @@
-.getting-started-text {
-  max-width: 64ch;
+.steps {
+  margin-top: 16px;
+}
+
+/* A number on a rail that joins it to the next step. */
+.step {
+  display: flex;
+  gap: 20px;
+}
+
+.step-rail {
+  display: flex;
+  flex: none;
+  flex-direction: column;
+  align-items: center;
+  width: 32px;
+}
+
+.step-rail::after {
+  content: "";
+  flex: 1;
+  width: 1px;
+  margin-top: 8px;
+  background: var(--border);
+}
+
+.step:last-child .step-rail::after {
+  display: none;
+}
+
+.step-number {
+  display: grid;
+  place-items: center;
+  width: 32px;
+  height: 32px;
+  border: 1px solid var(--border-strong);
+  border-radius: var(--radius-full);
+  background: var(--inset);
+  font-family: var(--font-mono);
+  font-size: 13px;
+  letter-spacing: 0;
+}
+
+/* The last step is where the reader goes next. */
+.step:last-child .step-number {
+  border-color: var(--accent);
+}
+
+.step-body {
+  flex: 1;
+  min-width: 0;
+  padding-bottom: 56px;
+}
+
+.step:last-child .step-body {
+  padding-bottom: 0;
+}
+
+.step-title {
+  margin: 2px 0 8px;
+}
+
+.step-text {
+  max-width: 620px;
+  margin-bottom: 20px;
   color: var(--text-muted);
+  font-size: 15.5px;
+  line-height: 1.6;
+}
+
+@media (max-width: 720px) {
+  .step {
+    gap: 14px;
+  }
+
+  .step-body {
+    padding-bottom: 40px;
+  }
+}
+
+.effect-cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 12px;
+  padding: 0;
+  list-style: none;
+}
+
+.effect-card {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  overflow: hidden;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-xl);
+  background: var(--card);
+  color: var(--text);
+  text-decoration: none;
+  transition: border-color var(--duration-fast) var(--ease-out);
+}
+
+.effect-card:hover {
+  border-color: var(--border-strong);
+}
+
+.effect-card-art {
+  position: relative;
+  display: grid;
+  place-items: center;
+  height: 120px;
+  border-bottom: 1px solid var(--border);
+  background-color: var(--inset);
+  background-image: radial-gradient(var(--dot) 1px, transparent 1px);
+  background-size: 16px 16px;
+  color: var(--text-subtle);
+}
+
+.effect-card-body {
+  display: flex;
+  flex: 1;
+  align-items: center;
+  gap: 12px;
+  padding: 14px 16px;
+  color: var(--text-muted);
+}
+
+.effect-card-body svg {
+  flex: none;
+  transition: transform var(--duration-fast) var(--ease-out);
+}
+
+.effect-card:hover .effect-card-body svg {
+  transform: translateX(2px);
+  color: var(--text);
+}
+
+.effect-card-text {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 0;
+}
+
+.effect-card-name {
+  color: var(--text);
+  font-size: 15px;
+  font-weight: 600;
+}
+
+.effect-card-description {
+  font-size: 13px;
+}
+
+/* The drawings (art.tsx). */
+.effect-art-piece {
+  position: absolute;
+}
+
+.effect-art-ink {
+  color: var(--ink);
+  fill: currentColor;
+}
+
+.effect-art-smile {
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 2.4;
+  stroke-linecap: round;
+}
+
+.effect-art-string {
+  stroke: var(--art-line);
+}
+
+.effect-art-shine {
+  fill: var(--art-shine);
 }

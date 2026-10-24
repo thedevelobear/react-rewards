@@ -71,6 +71,14 @@ test('Getting started is the home page', async ({ page }) => {
   await expect(heading).toHaveText('Getting started');
 });
 
+test('the effect cards lead to the effects', async ({ page }) => {
+  const heading = page.getByRole('heading', { level: 1 });
+  await page.goto('/');
+  await page.getByRole('link', { name: /^Emoji / }).click();
+  await expect(page).toHaveURL(/#emoji$/);
+  await expect(heading).toHaveText('Emoji');
+});
+
 test('the install command follows the package manager, and a reload keeps it', async ({
   page,
 }) => {
