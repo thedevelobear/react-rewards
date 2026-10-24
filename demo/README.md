@@ -76,6 +76,7 @@ Why: GitHub Pages serves static files only, so path routes such as `/emoji` woul
   1. "Install the package": the install command, with a tab per package manager (pnpm, npm, yarn, bun) and a copy button. The choice is stored under `react-rewards:package-manager`.
   2. "Fire your first reward": a line on `useReward` with a link to its page, and the first effect's snippet with its defaults, as `RewardButton.tsx`.
   3. "Pick an effect": a card per effect, linking to its page, with its label and description. Each card has a drawing of its effect, from `articles/getting-started/art.tsx`. An effect without a drawing shows its icon instead, so a new effect needs no code here.
+     - The fireworks' drawing has three dotted `--art-amber` trails rising from one point under the card, to one shell of each kind: a peony's ring of `--accent` stars, a willow's drooping `--art-amber` strands, and a crackle's clusters of `--art-sky` sparks. The effect's crackle sparks are white-gold, but white doesn't show on the light theme's `--inset`, and the `--art-*` colours are the drawings' palette. The trails are dotted, as the effect's are made of sparks, because solid trails read as the stems of a bouquet.
 
 Why: the install command installs the whole library, so it is shown once rather than on every effect. The steps read in the order a newcomer works, and the preview shows the result before any of them.
 
