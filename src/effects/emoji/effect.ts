@@ -24,7 +24,7 @@ export const emoji: Effect<EmojiConfig> =
     defaults: {
       count: 20,
       size: 25,
-      emojis: ['🤓', '😊', '🥳'],
+      emojis: ['🦄', '⚡️', '🥰'],
       angle: 90,
       spread: 45,
       velocity: 1500,
