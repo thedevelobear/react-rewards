@@ -23,6 +23,22 @@ const run = (simulation: Simulation, seconds: number, hz = 60) => {
   return simulation;
 };
 
+/** Each piece's sideways speed without its flutter, for pieces `size` wide. */
+const flightVx = (simulation: Simulation, size: number) => {
+  const s0 = field(simulation, 's0');
+  const s1 = field(simulation, 's1');
+  return field(simulation, 'vx').map(
+    (vx, i) => vx + size * 1.25 * (s1[i] ?? 0) * Math.sin(s0[i] ?? 0)
+  );
+};
+
+/** How wide the middle 80% of the pieces spread, in pixels. */
+const width = (simulation: Simulation) => {
+  const x = field(simulation, 'x').sort((a, b) => a - b);
+  const at = (share: number) => x[Math.floor(share * (x.length - 1))] ?? 0;
+  return at(0.9) - at(0.1);
+};
+
 describe('confetti', () => {
   it('has the defaults of ADR 0026, frozen', () => {
     expect(confetti.defaults).toEqual({
@@ -122,22 +138,73 @@ describe('confetti', () => {
     }
   });
 
-  it('ends within 1 px at 30, 60 and 144 Hz after 1 s', () => {
-    // Measured: 0.66 px at 30 Hz and 0.14 px at 60 Hz, against 144 Hz.
-    const at = (hz: number) => run(simulate({ count: 100 }, 3), 1, hz);
-    const reference = at(144);
-    for (const hz of [30, 60]) {
-      const simulation = at(hz);
-      const x = field(simulation, 'x');
-      const y = field(simulation, 'y');
-      const refX = field(reference, 'x');
-      const refY = field(reference, 'y');
-      for (let i = 0; i < x.length; i++) {
-        const gap = Math.hypot(
-          (x[i] ?? 0) - (refX[i] ?? 0),
-          (y[i] ?? 0) - (refY[i] ?? 0)
-        );
-        expect(gap).toBeLessThan(1);
+  it('ends within 1 px at 30, 60 and 144 Hz after 1 s and 2.5 s', () => {
+    // Measured, against 144 Hz: 0.65 px at 30 Hz and 0.14 px at 60 Hz after
+    // 1 s, and 0.70 px and 0.15 px after 2.5 s, when the pieces glide.
+    for (const seconds of [1, 2.5]) {
+      const at = (hz: number) => run(simulate({ count: 100 }, 3), seconds, hz);
+      const reference = at(144);
+      for (const hz of [30, 60]) {
+        const simulation = at(hz);
+        const x = field(simulation, 'x');
+        const y = field(simulation, 'y');
+        const refX = field(reference, 'x');
+        const refY = field(reference, 'y');
+        for (let i = 0; i < x.length; i++) {
+          const gap = Math.hypot(
+            (x[i] ?? 0) - (refX[i] ?? 0),
+            (y[i] ?? 0) - (refY[i] ?? 0)
+          );
+          expect(gap).toBeLessThan(1);
+        }
+      }
+    }
+  });
+
+  it('glides to the side of the cone it launched on (ADR 0059)', () => {
+    const simulation = simulate({ count: 200, size: 8, spread: 90 });
+    const s1 = field(simulation, 's1');
+    // Before the first step, the flight is the launch.
+    for (const [i, vx] of flightVx(simulation, 8).entries()) {
+      expect(Math.sign(s1[i] ?? 0)).toBe(Math.sign(vx));
+    }
+  });
+
+  it('picks a side at random up the middle, or in a sideways cone', () => {
+    for (const cone of [{ spread: 0 }, { angle: 0, spread: 45 }]) {
+      const s1 = field(simulate({ count: 200, ...cone }), 's1');
+      const left = s1.filter((speed) => speed < 0).length;
+      expect(left).toBeGreaterThan(60);
+      expect(left).toBeLessThan(140);
+    }
+  });
+
+  it('flies as without a glide while it rises and starts to fall', () => {
+    const simulation = simulate({ count: 200, size: 8 });
+    const launch = flightVx(simulation, 8);
+    // The slowest piece tops out at 0.4 s, and glides from 0.85 s.
+    run(simulation, 0.6);
+    for (const [i, vx] of flightVx(simulation, 8).entries()) {
+      expect(vx).toBeCloseTo((launch[i] ?? 0) * Math.exp(-3 * 0.6), 2);
+    }
+  });
+
+  it('opens once it has fallen a while, instead of falling in a column', () => {
+    const simulation = run(simulate({ count: 200 }), 1.25);
+    const falling = width(simulation);
+    run(simulation, 1.25);
+    // Measured: 1.65 times as wide. Without the glide, 1.02 times.
+    expect(width(simulation)).toBeGreaterThan(falling * 1.4);
+  });
+
+  it('never glides without drag or gravity', () => {
+    for (const still of [{ drag: 0 }, { gravity: 0 }]) {
+      const simulation = simulate({ count: 50, size: 8, ...still });
+      const launch = flightVx(simulation, 8);
+      run(simulation, 2);
+      const slowed = Math.exp(-(still.drag ?? 3) * 2);
+      for (const [i, vx] of flightVx(simulation, 8).entries()) {
+        expect(vx).toBeCloseTo((launch[i] ?? 0) * slowed, 1);
       }
     }
   });
@@ -156,30 +223,30 @@ describe('confetti', () => {
       [
         {
           "alpha": 1,
-          "rotation": 4.524,
+          "rotation": 2.104,
           "scaleY": 0.636,
-          "vx": 35.513,
-          "vy": 35.221,
-          "x": -23.318,
-          "y": -145.106,
+          "vx": -53.514,
+          "vy": 17.598,
+          "x": -7.113,
+          "y": -141.898,
         },
         {
           "alpha": 1,
-          "rotation": -0.244,
+          "rotation": 1.99,
           "scaleY": 0.974,
-          "vx": -41.595,
-          "vy": -114.595,
-          "x": 10.222,
-          "y": -333.844,
+          "vx": 15.13,
+          "vy": -153.41,
+          "x": -6.032,
+          "y": -322.722,
         },
         {
           "alpha": 1,
-          "rotation": -0.703,
+          "rotation": 1.24,
           "scaleY": 0.126,
-          "vx": 41.89,
-          "vy": 53.545,
-          "x": 28.699,
-          "y": -179.596,
+          "vx": 8.272,
+          "vy": 42.928,
+          "x": 50.904,
+          "y": -172.584,
         },
       ]
     `);
