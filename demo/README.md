@@ -146,7 +146,7 @@ Why: the white letter on the tile stays legible at 16 px on light and dark tab b
 ### Preview
 - A 320 px stage with a `--dot` grid on `--card`, and a "Reward me" button at its centre that fires the effect from there. The button is an `--accent` pill with `--ink` text and the effect's icon.
 - Its top left corner names the effect, "Live preview · confetti", after a `--success` dot. The top right corner holds what the page puts there, such as the Stress test's readout. On a narrow stage, the corner wraps under the name.
-- A caption under the button says what the settings don't: "Every call to reward() fires a new burst." on Getting started, and "Fireworks look best on dark backgrounds." on the Fireworks page, since white shells and crackle sparks are faint on the light theme. An effect's page sets it with `caption` in `src/data/effects/`.
+- A caption under the button says what the settings don't: "Every call to reward() fires a new burst." on Getting started, and "Fireworks look best on dark backgrounds. Just like in real life." on the Fireworks page, since white shells and crackle sparks are faint on the light theme. An effect's page sets it with `caption` in `src/data/effects/`.
 - There is no replay button: "Reward me" already fires again.
 - The stage is 320 px for every effect. Bursts are drawn on the page's overlay, which the stage doesn't clip, so an effect that rises higher draws over the page above it. Fireworks' shells burst about 376 px above the button and reach about 470 px, as confetti does, far past the stage's top edge, which is kept: a taller stage for one effect would make the pages differ, and the overflow shows the bursts aren't clipped.
 
