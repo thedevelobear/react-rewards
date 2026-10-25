@@ -83,8 +83,12 @@ const TRAIL_TWINKLE = 0.3;
  */
 const TRAIL_DEPTH = 0.4;
 
-/** The golden angle, which spreads a shell's stars evenly around it. */
-const GOLDEN = Math.PI * (3 - Math.sqrt(5));
+/**
+ * The golden angle, π · (3 - √5) radians, which spreads a shell's stars
+ * evenly around it. It is written out because bundlers keep a top-level call
+ * such as `Math.sqrt` even in apps that don't use the effect (ADR 0055).
+ */
+const GOLDEN = 2.399963229728653;
 /** How much a star's speed varies either way, as a share. */
 const STAR_JITTER = 0.08;
 /** Seconds of motion a star's streak shows: it is drawn as long as it moves in that time. */
