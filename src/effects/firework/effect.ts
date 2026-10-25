@@ -43,7 +43,7 @@ const FAN = 0.3;
 const LAUNCH_MIN = 0.9;
 const LAUNCH_MAX = 1.1;
 /** Pixels climbed per turn of the spiral. */
-const PITCH = 44;
+const PITCH = 64;
 /** How much a rocket grows as it comes round the near side of its spiral. */
 const DEPTH = 0.25;
 /** A rocket's size, as a multiple of a star's. */
@@ -57,8 +57,8 @@ const SHOW = 1;
 const ROCKET_FADE = 0.2;
 
 /** Pixels between a rocket's trail sparks, and between a willow star's. */
-const ROCKET_SPACING = 5;
-const WILLOW_SPACING = 9;
+const ROCKET_SPACING = 7;
+const WILLOW_SPACING = 13;
 /** A trail spark's diameter, as a share of a star's. */
 const TRAIL_SIZE = 0.6;
 /** The shortest and longest a trail spark lives, behind a rocket and a willow star, in seconds. */
@@ -70,7 +70,7 @@ const WILLOW_TRAIL_MAX = 1.8;
 const ROCKET_TRAIL_KEEP = 0.12;
 const WILLOW_TRAIL_KEEP = 0.05;
 /** How fast a trail spark drifts on its own, in pixels per second (one standard deviation). */
-const TRAIL_JITTER = 9;
+const TRAIL_JITTER = 13;
 /** A trail spark's air resistance per second. */
 const TRAIL_DRAG = 8;
 /** A trail spark's size at the end of its life, as a share of its first. */
@@ -596,16 +596,16 @@ export const firework: Effect<FireworkConfig> =
     blend: 'additive',
     defaults: {
       count: 3,
-      size: 4,
+      size: 5,
       colors: ['#FF3B4E', '#4DFF88', '#4D7CFF', '#FFD84A', '#FFFFFF'],
       angle: 90,
-      spread: 80,
-      velocity: 650,
-      drag: 3.5,
-      gravity: 180,
-      spiral: 3.5,
+      spread: 60,
+      velocity: 1200,
+      drag: 2.5,
+      gravity: 250,
+      spiral: 5,
       stars: 40,
-      radius: 80,
+      radius: 120,
       peony: 1,
       willow: 1,
       crackle: 1,

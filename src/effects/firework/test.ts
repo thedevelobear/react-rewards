@@ -36,7 +36,7 @@ const FLASH = 5;
 const straight = { count: 1, spread: 0, spiral: 0 };
 
 /** The closed forms of a rocket's climb, from launch speed `u` upwards. */
-const climb = (u: number, k = 3.5, g = 180) => {
+const climb = (u: number, k = 2.5, g = 250) => {
   const terminal = g / k;
   const top = Math.log(1 + u / terminal) / k;
   /** Height above the launch, `t` seconds in. */
@@ -83,16 +83,16 @@ describe('firework', () => {
   it('has its defaults, frozen, and glows', () => {
     expect(firework.defaults).toEqual({
       count: 3,
-      size: 4,
+      size: 5,
       colors: ['#FF3B4E', '#4DFF88', '#4D7CFF', '#FFD84A', '#FFFFFF'],
       angle: 90,
-      spread: 80,
-      velocity: 650,
-      drag: 3.5,
-      gravity: 180,
-      spiral: 3.5,
+      spread: 60,
+      velocity: 1200,
+      drag: 2.5,
+      gravity: 250,
+      spiral: 5,
       stars: 40,
-      radius: 80,
+      radius: 120,
       peony: 1,
       willow: 1,
       crackle: 1,
@@ -194,16 +194,16 @@ describe('firework', () => {
   });
 
   it('bursts at 0.9 of the time to its top, where the closed form puts it', () => {
-    // At the defaults, a rocket launched at 650 px/s would top out 147.3 px
-    // up after 0.747 s. It bursts at 0.672 s, 146.8 px up. From 0.9 to 1.1
-    // times the speed, it bursts 129.7 to 164.0 px up.
-    const defaults = climb(650);
-    expect(defaults.top).toBeCloseTo(0.7466, 3);
-    expect(defaults.apex).toBeCloseTo(147.32, 2);
-    expect(defaults.burst).toBeCloseTo(0.6719, 3);
-    expect(defaults.height(defaults.burst)).toBeCloseTo(146.77, 2);
-    expect(climb(585).height(climb(585).burst)).toBeCloseTo(129.67, 2);
-    expect(climb(715).height(climb(715).burst)).toBeCloseTo(164.0, 2);
+    // At the defaults, a rocket launched at 1200 px/s would top out 377.4 px
+    // up after 1.026 s. It bursts at 0.923 s, 376.0 px up. From 0.9 to 1.1
+    // times the speed, it bursts 332.0 to 420.3 px up.
+    const defaults = climb(1200);
+    expect(defaults.top).toBeCloseTo(1.026, 3);
+    expect(defaults.apex).toBeCloseTo(377.4, 1);
+    expect(defaults.burst).toBeCloseTo(0.9234, 3);
+    expect(defaults.height(defaults.burst)).toBeCloseTo(375.97, 2);
+    expect(climb(1080).height(climb(1080).burst)).toBeCloseTo(331.95, 2);
+    expect(climb(1320).height(climb(1320).burst)).toBeCloseTo(420.33, 2);
 
     for (const hz of [30, 60, 144]) {
       const simulation = simulate(straight, 4);
@@ -226,7 +226,7 @@ describe('firework', () => {
     }
   });
 
-  it('climbs on a spiral as wide as spiral, turning every 44 px', () => {
+  it('climbs on a spiral as wide as spiral, turning every 64 px', () => {
     const simulation = simulate({ ...straight, spiral: 5 }, 2);
     const { burst, height } = climb(launch(simulation));
     const sides: number[] = [];
@@ -237,14 +237,14 @@ describe('firework', () => {
     const widest = Math.max(...sides.map(Math.abs));
     expect(widest).toBeLessThanOrEqual(5 + 1e-3);
     expect(widest).toBeGreaterThan(4.5);
-    // A turn every 44 px crosses the path twice.
+    // A turn every 64 px crosses the path twice.
     let crossings = 0;
     for (let i = 1; i < sides.length; i++) {
       if (Math.sign(sides[i] ?? 0) !== Math.sign(sides[i - 1] ?? 0)) {
         crossings++;
       }
     }
-    expect(Math.abs(crossings - (2 * height(burst)) / 44)).toBeLessThanOrEqual(
+    expect(Math.abs(crossings - (2 * height(burst)) / 64)).toBeLessThanOrEqual(
       1
     );
 
@@ -253,7 +253,7 @@ describe('firework', () => {
     expect(field(flat, 'x')[0]).toBeCloseTo(0, 9);
   });
 
-  it('lays a trail spark every 5 px climbed, as many at any frame rate', () => {
+  it('lays a trail spark every 7 px climbed, as many at any frame rate', () => {
     const laid = [30, 60, 144].map((hz) => {
       const simulation = run(simulate(straight, 3), 0.5, hz);
       return {
@@ -263,14 +263,14 @@ describe('firework', () => {
       };
     });
     for (const { laid: total, live, height } of laid) {
-      expect(total).toBe(Math.floor(height / 5));
+      expect(total).toBe(Math.floor(height / 7));
       expect(total).toBe(laid[0]?.laid);
       expect(live).toBe(laid[0]?.live);
     }
   });
 
   it('matches within 1 px at 30, 60 and 144 Hz, particle by particle', () => {
-    // Measured, against 144 Hz: at most 0.17 px at 30 Hz and 0.04 px at
+    // Measured, against 144 Hz: at most 0.25 px at 30 Hz and 0.06 px at
     // 60 Hz, and the same particles in each run.
     for (const seed of [1, 2, 3]) {
       for (const seconds of [1, 1.5, 2, 2.5]) {
@@ -315,7 +315,7 @@ describe('firework', () => {
   });
 
   it('launches late rockets sooner, so each bursts 1 s before the end', () => {
-    // A rocket would burst up to 0.45 + 0.69 s in. With 2 s, each bursts by
+    // A rocket would burst up to 0.45 + 0.96 s in. With 2 s, each bursts by
     // 1 s, launching sooner if it must.
     let sooner = 0;
     for (let seed = 1; seed <= 10; seed++) {
@@ -369,8 +369,7 @@ describe('firework', () => {
     );
     // The rocket's velocity at the burst, which the stars carry.
     const u = launch(simulation);
-    const terminal = 180 / 3.5;
-    const rocket = terminal - (u + terminal) * Math.exp(-3.5 * climb(u).burst);
+    const rocket = 100 - (u + 100) * Math.exp(-2.5 * climb(u).burst);
     while (count(simulation, FLASH) === 0) run(simulation, 1 / 144, 144);
     const flash = field(simulation, 's0').indexOf(FLASH);
     const centre = field(simulation, 'x')[flash] ?? 0;
@@ -382,15 +381,15 @@ describe('firework', () => {
     const fall = field(simulation, 'vy').filter((_, i) => s0[i] === PEONY);
     expect(out).toHaveLength(40);
     // Stars launch at radius * 4, so 0.75 s on they are out up to
-    // radius * (1 - e^-3), 76.0 px. Measured: the widest is 76.8 px out.
-    const reach = 80 * (1 - Math.exp(-3));
+    // radius * (1 - e^-3), 114.0 px. Measured: the widest is 115.1 px out.
+    const reach = 120 * (1 - Math.exp(-3));
     expect(Math.max(...out)).toBeGreaterThan(reach * 0.95);
     expect(Math.max(...out)).toBeLessThan(reach * 1.08);
     // On average they fall at gravity / 4 + (vy - gravity / 4) * e^-3, from
-    // the rocket's vy at the burst. Measured: 42.18 px/s, against 42.03.
+    // the rocket's vy at the burst. Measured: 58.12 px/s, against 57.99.
     const mean = fall.reduce((sum, vy) => sum + vy, 0) / fall.length;
     expect(mean).toBeCloseTo(
-      45 * (1 - Math.exp(-3)) + rocket * Math.exp(-3),
+      62.5 * (1 - Math.exp(-3)) + rocket * Math.exp(-3),
       0
     );
   });
@@ -404,10 +403,10 @@ describe('firework', () => {
       const values = vy.filter((_, i) => s0[i] === role);
       return values.reduce((sum, value) => sum + value, 0) / values.length;
     };
-    // Stars settle at gravity / 3, 60 px/s, and trail sparks at gravity / 8,
-    // 22.5 px/s. Measured: 58.3 and 21.0.
-    expect(mean(WILLOW)).toBeGreaterThan(54);
-    expect(mean(TRAIL)).toBeLessThan(25);
+    // Stars settle at gravity / 3, 83 px/s, and trail sparks at gravity / 8,
+    // 31 px/s. Measured: 79.2 and 28.6.
+    expect(mean(WILLOW)).toBeGreaterThan(75);
+    expect(mean(TRAIL)).toBeLessThan(35);
     // Trail sparks live 1.2 to 1.8 s, so the trail shows the star's path.
     const lives = field(simulation, 's1').filter((_, i) => s0[i] === TRAIL);
     expect(lives.length).toBeGreaterThan(100);
@@ -482,32 +481,32 @@ describe('firework', () => {
         ])
       )
     );
-    expect(simulation.pool.count).toMatchInlineSnapshot(`66`);
+    expect(simulation.pool.count).toMatchInlineSnapshot(`102`);
     expect(state).toMatchInlineSnapshot(`
       [
         {
           "alpha": 1,
-          "s3": 25,
-          "scale": 1.381,
+          "s3": 41,
+          "scale": 1.268,
           "sprite": 5,
-          "x": 55.116,
-          "y": -113.169,
+          "x": 102.348,
+          "y": -269.521,
         },
         {
           "alpha": 1,
-          "s3": 23,
-          "scale": 1.42,
+          "s3": 37,
+          "scale": 1.209,
           "sprite": 1,
-          "x": -18.901,
-          "y": -118.129,
+          "x": -21.814,
+          "y": -260.144,
         },
         {
           "alpha": 1,
-          "s3": 18,
-          "scale": 1.236,
+          "s3": 25,
+          "scale": 0.922,
           "sprite": 2,
-          "x": -42.785,
-          "y": -79.896,
+          "x": -62.033,
+          "y": -170.888,
         },
       ]
     `);
