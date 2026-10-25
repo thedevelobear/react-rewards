@@ -21,7 +21,7 @@ export const fireworkPage = effectPage({
     size: {
       kind: 'range',
       min: 2,
-      max: 10,
+      max: 12,
       step: 1,
       unit: 'px',
       description:
@@ -40,14 +40,14 @@ export const fireworkPage = effectPage({
     velocity: {
       kind: 'range',
       min: 200,
-      max: 1500,
+      max: 2000,
       step: 50,
       unit: 'px/s',
       description: "A rocket's average launch speed, in pixels per second.",
     },
     drag: {
       kind: 'range',
-      min: 1,
+      min: 1.5,
       max: 8,
       step: 0.1,
       unit: '/s',
@@ -57,7 +57,7 @@ export const fireworkPage = effectPage({
     gravity: {
       kind: 'range',
       min: 0,
-      max: 800,
+      max: 1000,
       step: 10,
       unit: 'px/s²',
       description:
@@ -66,7 +66,7 @@ export const fireworkPage = effectPage({
     spiral: {
       kind: 'range',
       min: 0,
-      max: 12,
+      max: 15,
       step: 0.5,
       unit: 'px',
       description:
@@ -83,7 +83,7 @@ export const fireworkPage = effectPage({
     radius: {
       kind: 'range',
       min: 20,
-      max: 200,
+      max: 250,
       step: 5,
       unit: 'px',
       description:
