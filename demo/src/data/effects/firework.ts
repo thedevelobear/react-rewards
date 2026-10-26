@@ -125,7 +125,7 @@ export const fireworkPage = effectPage({
     colors: {
       kind: 'colors',
       description:
-        'One sprite per colour. Each shell takes the next colour. Willows burn gold, and crackles pop into white-gold sparks.',
+        'One sprite per colour. Each shell takes the next colour. Willows burn gold, and crackles pop into amber sparks.',
     },
   },
 });

@@ -30,8 +30,11 @@ const FLASH = 5;
 
 /** Willow stars and trails, the orange-gold of burning charcoal. */
 const GOLD = '#FFA944';
-/** Crackle sparks, white-gold. */
-const SPARKLE = '#FFF1C9';
+/**
+ * Crackle sparks, an amber between the willow's `GOLD` and the sodium gold
+ * of the default colours, that shows on light pages as well as dark.
+ */
+const SPARKLE = '#FFC24A';
 
 /** Mixed into the burst's seed for the draws a volley's rockets share. */
 const VOLLEY = 0x2f6b9d3;
@@ -571,7 +574,7 @@ const fly = (
  * - a peony: a ball of coloured stars that streak out, slow, droop and fade;
  * - a willow: gold stars whose long trails hang and droop;
  * - a crackle: coloured stars that flicker, go dark, and pop into
- *   glittering white-gold sparks.
+ *   glittering amber sparks.
  *
  * Everything is placed and timed in closed form or by a particle's own age,
  * and children are placed and aged by the moment they were made within the

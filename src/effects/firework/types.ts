@@ -6,7 +6,7 @@ export interface FireworkConfig extends EffectConfig {
   count: number;
   /** A star's diameter in CSS pixels. Trails and sparks are smaller, and everything glows past its size. */
   size: number;
-  /** One sprite per colour. Each shell takes the next colour. Willows burn gold, and crackles pop into white-gold sparks. */
+  /** One sprite per colour. Each shell takes the next colour. Willows burn gold, and crackles pop into amber sparks. */
   colors: readonly string[];
   /** The launch direction in degrees, counter-clockwise from the right. 90 is up. */
   angle: number;

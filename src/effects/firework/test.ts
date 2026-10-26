@@ -109,7 +109,7 @@ describe('firework', () => {
       { key: 'firework-glow|#000', width: 20, height: 20 },
       { key: 'firework-glow|#FFA944', width: 20, height: 20 },
       { key: 'firework-glow|#FFA944', width: 12, height: 12 },
-      { key: 'firework-glow|#FFF1C9', width: 12, height: 12 },
+      { key: 'firework-glow|#FFC24A', width: 12, height: 12 },
       { key: 'firework-flash', width: 120, height: 120 },
     ]);
     expect(firework.sprites(resolveConfig(firework))).toHaveLength(9);
@@ -458,7 +458,7 @@ describe('firework', () => {
     expect(gap).toBeGreaterThan(0.12 - 2 / 144);
     expect(gap).toBeLessThan(0.22 + 2 / 144);
 
-    // It popped into six white-gold sparks where it went.
+    // It popped into six amber sparks where it went.
     const s0 = field(simulation, 's0');
     const s2 = field(simulation, 's2');
     const popped = s0
