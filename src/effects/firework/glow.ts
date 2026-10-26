@@ -1,7 +1,14 @@
 import type { SpriteSource } from '@/core/define-effect';
 
 /** A glow's box, as a multiple of its core's diameter. */
-export const GLOW = 3;
+export const GLOW = 2;
+/** The white-hot centre's radius, as a share of the core's. */
+const HOT = 0.36;
+/**
+ * Where the halo has faded to 0.18, as a share of the way from the core's
+ * edge to the box's. The halo keeps its shape whatever `GLOW` is.
+ */
+const HALO = 0.4;
 /** A burst's flash, white with a little warmth. */
 const FLASH = '255,240,214';
 
@@ -45,11 +52,14 @@ export const glow = (color: string, core: number): SpriteSource => ({
       ctx.fill();
       return;
     }
+    // Stops as shares of the box's radius, where the core's edge is at
+    // `1 / GLOW`.
+    const edge = 1 / GLOW;
     const gradient = ctx.createRadialGradient(r, r, 0, r, r, r);
     gradient.addColorStop(0, '#fff');
-    gradient.addColorStop(0.12, `rgb(${rgb})`);
-    gradient.addColorStop(1 / GLOW, `rgba(${rgb},0.75)`);
-    gradient.addColorStop(0.6, `rgba(${rgb},0.18)`);
+    gradient.addColorStop(HOT * edge, `rgb(${rgb})`);
+    gradient.addColorStop(edge, `rgba(${rgb},0.75)`);
+    gradient.addColorStop(edge + HALO * (1 - edge), `rgba(${rgb},0.18)`);
     gradient.addColorStop(1, `rgba(${rgb},0)`);
     ctx.fillStyle = gradient;
     ctx.fillRect(0, 0, width, width);

@@ -603,7 +603,7 @@ export const firework: Effect<FireworkConfig> =
       velocity: 1200,
       drag: 2.5,
       gravity: 250,
-      spiral: 5,
+      spiral: 2,
       stars: 40,
       radius: 120,
       peony: 1,

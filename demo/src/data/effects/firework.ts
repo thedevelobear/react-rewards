@@ -66,7 +66,7 @@ export const fireworkPage = effectPage({
     spiral: {
       kind: 'range',
       min: 0,
-      max: 15,
+      max: 8,
       step: 0.5,
       unit: 'px',
       description:

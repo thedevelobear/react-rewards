@@ -157,7 +157,7 @@ test("useReward's settings table shows each effect's defaults", async ({
     '250',
   ]);
   expect(await cells(/^rotate /)).toEqual(['', '', 'true', '', '']);
-  expect(await cells(/^spiral /)).toEqual(['px', '', '', '', '5']);
+  expect(await cells(/^spiral /)).toEqual(['px', '', '', '', '2']);
 });
 
 test('the effect cards lead to the effects', async ({ page }) => {

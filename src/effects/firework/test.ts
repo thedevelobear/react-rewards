@@ -90,7 +90,7 @@ describe('firework', () => {
       velocity: 1200,
       drag: 2.5,
       gravity: 250,
-      spiral: 5,
+      spiral: 2,
       stars: 40,
       radius: 120,
       peony: 1,
@@ -104,12 +104,12 @@ describe('firework', () => {
 
   it('draws a glow per colour, then gold stars, trails, sparks and a flash', () => {
     const config = resolveConfig(firework, { size: 10, colors: ['#000'] });
-    // A glow's box is three times its core, so the halo shows.
+    // A glow's box is twice its core, so the halo shows.
     expect(firework.sprites(config)).toMatchObject([
-      { key: 'firework-glow|#000', width: 30, height: 30 },
-      { key: 'firework-glow|#FFA944', width: 30, height: 30 },
-      { key: 'firework-glow|#FFA944', width: 18, height: 18 },
-      { key: 'firework-glow|#FFF1C9', width: 18, height: 18 },
+      { key: 'firework-glow|#000', width: 20, height: 20 },
+      { key: 'firework-glow|#FFA944', width: 20, height: 20 },
+      { key: 'firework-glow|#FFA944', width: 12, height: 12 },
+      { key: 'firework-glow|#FFF1C9', width: 12, height: 12 },
       { key: 'firework-flash', width: 120, height: 120 },
     ]);
     expect(firework.sprites(resolveConfig(firework))).toHaveLength(9);
@@ -227,7 +227,10 @@ describe('firework', () => {
   });
 
   it('climbs on a spiral as wide as spiral, turning every 64 px', () => {
-    const simulation = simulate({ ...straight, spiral: 5 }, 2);
+    // At the default, 2 px to either side, and 5.9 turns up to the burst at
+    // 376 px.
+    const { spiral } = firework.defaults;
+    const simulation = simulate({ ...straight, spiral }, 2);
     const { burst, height } = climb(launch(simulation));
     const sides: number[] = [];
     for (let step = 0; step < Math.floor(burst * 144); step++) {
@@ -235,8 +238,8 @@ describe('firework', () => {
       sides.push(field(simulation, 'x')[0] ?? 0);
     }
     const widest = Math.max(...sides.map(Math.abs));
-    expect(widest).toBeLessThanOrEqual(5 + 1e-3);
-    expect(widest).toBeGreaterThan(4.5);
+    expect(widest).toBeLessThanOrEqual(spiral + 1e-3);
+    expect(widest).toBeGreaterThan(spiral * 0.9);
     // A turn every 64 px crosses the path twice.
     let crossings = 0;
     for (let i = 1; i < sides.length; i++) {
@@ -489,24 +492,24 @@ describe('firework', () => {
           "s3": 41,
           "scale": 1.268,
           "sprite": 5,
-          "x": 102.348,
-          "y": -269.521,
+          "x": 99.58,
+          "y": -270.445,
         },
         {
           "alpha": 1,
           "s3": 37,
           "scale": 1.209,
           "sprite": 1,
-          "x": -21.814,
-          "y": -260.144,
+          "x": -24.789,
+          "y": -259.851,
         },
         {
           "alpha": 1,
           "s3": 25,
           "scale": 0.922,
           "sprite": 2,
-          "x": -62.033,
-          "y": -170.888,
+          "x": -61.121,
+          "y": -171.204,
         },
       ]
     `);
