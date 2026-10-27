@@ -1,6 +1,6 @@
 # 0067. Fireworks climb in closed form and burst as peonies, willows and crackles
 
-- **Status:** Proposed
+- **Status:** Accepted
 - **Date:** 2026-10-24
 
 - **The volley.** `count` is rockets, launched from one point: the first at once, the rest within 0.45 s, each in its own share of a fan `spread` wide around `angle`, at 0.9 to 1.1 times `velocity`.

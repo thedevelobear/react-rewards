@@ -106,9 +106,9 @@ What was decided, specifically enough to check the code against.
 | [0063](decisions/0063-effect-creator-agent.md) | An effect-creator agent for Claude Code lives in the repo | Accepted |
 | [0064](decisions/0064-orchestrated-agents.md) | Claude Code works through an orchestrator agent, with an effect creator, a developer and QA | Accepted |
 | [0065](decisions/0065-publish-with-pinned-npm.md) | The publish workflow runs a pinned npm 11 | Accepted |
-| [0066](decisions/0066-firework-effect-name.md) | The fireworks effect is named `firework` | Proposed |
-| [0067](decisions/0067-fireworks-climb-in-closed-form.md) | Fireworks climb in closed form and burst as peonies, willows and crackles | Proposed |
-| [0068](decisions/0068-shared-test-helpers.md) | Helpers that more than one test file uses live in `src/test-utils/` | Proposed |
+| [0066](decisions/0066-firework-effect-name.md) | The fireworks effect is named `firework` | Accepted |
+| [0067](decisions/0067-fireworks-climb-in-closed-form.md) | Fireworks climb in closed form and burst as peonies, willows and crackles | Accepted |
+| [0068](decisions/0068-shared-test-helpers.md) | Helpers that more than one test file uses live in `src/test-utils/` | Accepted |
 
 ### Benchmarks
 | Benchmark | What |
