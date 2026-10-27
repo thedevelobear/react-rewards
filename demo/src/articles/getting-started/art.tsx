@@ -1,3 +1,7 @@
+/*
+ * Paths from Tabler Icons (MIT, Copyright (c) 2020-2026 Paweł Kuna) and, for
+ * fireworks, Hugeicons' free set (MIT, Copyright (c) 2025 Hugeicons).
+ */
 import { Icon } from '@/components/icon';
 import type { DrawingProps, EffectArtProps, Stroke } from './types';
 
