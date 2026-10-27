@@ -1,30 +1,14 @@
 import { afterEach, describe, expect, it, rs } from '@rstest/core';
 import { type AtlasOptions, createAtlas } from '@/core/atlas';
-import {
-  defineEffect,
-  type Effect,
-  type EffectDefinition,
-} from '@/core/define-effect';
+import { defineEffect, type Effect } from '@/core/define-effect';
 import { createStage, DEFAULT_Z_INDEX, fire } from '@/core/fire';
 import { createLoop } from '@/core/loop';
 import type { Overlay, Renderer } from '@/core/renderer';
-import { createFakeCanvases, createFakeScheduler } from '@/test-utils';
-
-type TestConfig = { count: number; lifetime: number };
-
-const testEffect = (overrides: Partial<EffectDefinition<TestConfig>> = {}) =>
-  defineEffect<TestConfig>({
-    name: 'test',
-    blend: 'additive',
-    defaults: { count: 2, lifetime: 100 },
-    sprites: () => [
-      { shape: 'rect', color: '#f00', width: 4, height: 4 },
-      { shape: 'circle', color: '#00f', size: 4 },
-    ],
-    spawn: () => {},
-    update: () => {},
-    ...overrides,
-  });
+import {
+  createFakeCanvases,
+  createFakeScheduler,
+  testEffect,
+} from '@/test-utils';
 
 /** Two effects whose configs each have a field the other's doesn't. */
 const coloredEffect = defineEffect({

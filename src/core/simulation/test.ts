@@ -1,27 +1,11 @@
 import { describe, expect, it } from '@rstest/core';
-import {
-  defineEffect,
-  type EffectDefinition,
-  resolveConfig,
-} from '@/core/define-effect';
+import { defineEffect, resolveConfig } from '@/core/define-effect';
 import { createLoop, type FrameScheduler } from '@/core/loop';
 import { accelerate, degToRad } from '@/core/math';
 import { createSimulation, type Simulation } from '@/core/simulation';
+import { testEffect } from '@/test-utils';
 
 const origin = { x: 100, y: 200 };
-
-type TestConfig = { count: number; lifetime: number };
-
-const testEffect = (overrides: Partial<EffectDefinition<TestConfig>> = {}) =>
-  defineEffect<TestConfig>({
-    name: 'test',
-    blend: 'normal',
-    defaults: { count: 3, lifetime: 1000 },
-    sprites: () => [{ shape: 'rect', color: '#000', width: 4, height: 4 }],
-    spawn: () => {},
-    update: () => {},
-    ...overrides,
-  });
 
 const particles = (simulation: Simulation) =>
   Array.from({ length: simulation.pool.count }, (_, i) => ({
@@ -34,6 +18,7 @@ describe('createSimulation', () => {
   it('spawns count particles at the origin, in index order', () => {
     const indices: number[] = [];
     const effect = testEffect({
+      defaults: { count: 3, lifetime: 1000 },
       spawn: (p, _config, _rng, index) => {
         indices.push(index);
         expect(p.x).toBe(origin.x);
@@ -122,6 +107,7 @@ describe('createSimulation', () => {
 
   it('removes particles once their age reaches their life', () => {
     const effect = testEffect({
+      defaults: { count: 3, lifetime: 1000 },
       spawn: (p, _config, _rng, index) => {
         p.life = (index + 1) * 0.1;
       },
