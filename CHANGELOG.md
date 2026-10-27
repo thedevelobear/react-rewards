@@ -2,6 +2,11 @@
 
 Each release's changes, newest first. Releases before 3.0.0 are tagged in git, with no entries here.
 
+## 3.1.0
+
+### Added
+- `firework`: a volley of rockets that climb on a spiralling trail and burst as peonies, willows and crackles. Its settings, typed as `FireworkConfig`, are on [its page of the docs](https://thedevelobear.github.io/react-rewards/#firework). It looks best on dark backgrounds.
+
 ## 3.0.0
 
 A rewrite, with a new engine and API. [Upgrading from v2](https://thedevelobear.github.io/react-rewards/#upgrading-from-v2) maps each v2 option to its replacement.

@@ -1,6 +1,6 @@
 # 0068. Helpers that more than one test file uses live in `src/test-utils/`
 
-- **Status:** Proposed
+- **Status:** Accepted
 - **Date:** 2026-10-27
 
 - A test helper that more than one test file uses lives in `src/test-utils/`, in a module named for what it is for, exported from its `index.ts`. Tests import it from `@/test-utils`. A test file keeps only the helpers specific to it, such as `firework`'s `climb`.
