@@ -10,7 +10,7 @@
   --bg: #ffffff;
   /* Panels: the preview, the install command, code, cards. */
   --card: #fafafa;
-  /* Recessed areas inside a card: the cards' art, the step numbers. */
+  /* Recessed areas inside a card: the effect cards' icons, the step numbers. */
   --inset: #f4f4f5;
   /* Controls and the active sidebar item. */
   --surface: #f4f4f5;
