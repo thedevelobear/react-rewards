@@ -7,37 +7,17 @@ export type Paint =
   | 'art-violet'
   | 'art-amber'
   | 'art-sky'
-  | 'art-mint';
+  | 'art-mint'
+  | 'art-line';
 
-/** A confetti piece: where it sits in the card, in %, and its shape. */
-export interface Piece {
-  readonly left: number;
-  readonly top: number;
-  readonly width: number;
-  readonly height: number;
-  readonly paint: Paint;
-  readonly round?: boolean;
-  readonly turn?: number;
-}
-
-/** A heart, centred on `x` and `y`. */
-export interface HeartProps {
-  readonly x: number;
-  readonly y: number;
-  /** Degrees, clockwise. */
-  readonly turn: number;
-  /** The heart is 17.6 by 15.5 at a scale of 1. */
-  readonly scale: number;
+/** A stroke of a card's drawing: path data on a 24 px grid, and its colour. */
+export interface Stroke {
+  readonly d: string;
   readonly paint: Paint;
 }
 
-/** A balloon at `x`, its top at `y`. */
-export interface BalloonProps {
-  readonly x: number;
-  readonly y: number;
-  readonly width: number;
-  readonly height: number;
-  readonly paint: Paint;
+export interface DrawingProps {
+  readonly strokes: readonly Stroke[];
 }
 
 export interface EffectArtProps {
