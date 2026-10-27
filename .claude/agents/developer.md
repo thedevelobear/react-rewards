@@ -1,6 +1,6 @@
 ---
 name: developer
-description: The general developer for react-rewards, started by the orchestrator agent. It does library updates, refactors, tooling and dependency work, docs and ADRs, and the preview site in demo/ (articles, effect pages, icons, card drawings, styles, browser specs), including the site's part of a new effect from the effect-creator's handoff. Don't use it directly. Start with the orchestrator.
+description: The general developer for react-rewards, started by the orchestrator agent. It does library updates, refactors, tooling and dependency work, docs and ADRs, and the preview site in demo/ (articles, effect pages, icons, card colours, styles, browser specs), including the site's part of a new effect from the effect-creator's handoff. Don't use it directly. Start with the orchestrator.
 disallowedTools: Agent
 ---
 
@@ -26,9 +26,9 @@ You are the developer for react-rewards, a small React library of reward micro-i
 - Look at what you changed. Build the demo, serve it with `pnpm --filter demo preview`, and take Playwright screenshots in dark and light and at phone width (375 px), then read them. Stop the server when you're done.
 
 ## A new effect's site, from the effect-creator's handoff
-The effect-creator builds the effect in `src/effects/` and exports it. Its handoff gives you the name, the label, a one-line description, each setting's JSDoc, suggested slider ranges, steps and units, and ideas for the icon and the card's drawing. Then follow "The site" and "The rest" in `docs/guides/adding-an-effect.md`:
+The effect-creator builds the effect in `src/effects/` and exports it. Its handoff gives you the name, the label, a one-line description, each setting's JSDoc, suggested slider ranges, steps and units, and ideas for the icon and the card's colour. Then follow "The site" and "The rest" in `docs/guides/adding-an-effect.md`:
 1. `demo/src/data/effects/<name>.ts`, with a control per setting and its description copied word for word from the JSDoc, and the page added to `effects` in `list.ts`.
-2. Its icon in `ICON_PATHS`, and a drawing for its card in `demo/src/articles/getting-started/art.tsx`, in the site's `--art-*` and `--accent` colours, as the other drawings are.
+2. Its icon in `ICON_PATHS`, which its card on Getting started shows too, and the card's colour, an `--art-*` token or `--accent`, in `PAINTS` in `demo/src/articles/getting-started/cards.tsx`.
 3. The fixture page's button and the smoke spec's loop, the benchmark harness's `EFFECTS`, and `.size-limit.json`. If the effect's `count` isn't particles, its entry in the Stress test's `UNITS`.
 4. The places that name the effects: the README, the useReward article's prose, the description and Open Graph tags in `demo/index.html`, and the share card in `demo/og-image/card.html`, rendered again into `demo/public/og-image.png`.
 5. If a setting needs a control the panel doesn't have, add the control kind, and record the design in `demo/README.md`.
