@@ -1,9 +1,9 @@
 import { describe, expect, it } from '@rstest/core';
 import { defineEffect, resolveConfig } from '@/core/define-effect';
-import { createLoop, type FrameScheduler } from '@/core/loop';
+import { createLoop } from '@/core/loop';
 import { accelerate, degToRad } from '@/core/math';
 import { createSimulation, type Simulation } from '@/core/simulation';
-import { testEffect } from '@/test-utils';
+import { createFakeScheduler, testEffect } from '@/test-utils';
 
 const origin = { x: 100, y: 200 };
 
@@ -256,27 +256,14 @@ describe('frame-rate independence', () => {
 
   /** Runs one second of frames at `hz` through the real loop. */
   const runAt = (hz: number) => {
-    let pending: ((time: number) => void) | undefined;
-    const scheduler: FrameScheduler = {
-      request: (callback) => {
-        pending = callback;
-        return 1;
-      },
-      cancel: () => {
-        pending = undefined;
-      },
-    };
+    const fake = createFakeScheduler();
     const simulation = createSimulation(falling, resolveConfig(falling), {
       origin,
       seed: 1234,
     });
-    const remove = createLoop(scheduler).add((dt) => simulation.step(dt));
+    const remove = createLoop(fake.scheduler).add((dt) => simulation.step(dt));
     // Frame 0 has dt 0, then `hz` frames of 1/hz s each.
-    for (let frame = 0; frame <= hz; frame++) {
-      const callback = pending;
-      pending = undefined;
-      callback?.((frame * 1000) / hz);
-    }
+    for (let frame = 0; frame <= hz; frame++) fake.tick((frame * 1000) / hz);
     remove();
     return particles(simulation);
   };
