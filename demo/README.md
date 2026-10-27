@@ -43,7 +43,7 @@ The site documents the library, so its design decisions are kept here rather tha
   | `--focus` | `#7c3aed` | `#a78bfa` | The focus ring, `2px solid` with a 2 px offset. 5.2:1 and 6.7:1. |
   | `--success` | `#047857` | `#6ee7b7` | The copied tick and the preview's live dot. 5.0:1 and 12.0:1. |
   | `--knob` | `#ffffff` | same | The switch's knob. |
-  | `--art-*` | violet, amber, sky, mint | same | The effect cards' drawings, `--art-line` for the balloons' strings, and `--art-shine` for the balloons' and hearts' shine. Decorative. |
+  | `--art-*` | violet, amber, sky, mint | same | The effect cards' drawings, and `--art-line` (`#c4c4cc` light, `#3a3a40` dark) for the balloon's string. Decorative. |
   | `--code-*` | see "Code colours" | | Each 4.5:1 or more on `--card`. |
 
 - Theme: a header button cycles system, light and dark. The choice is stored in `localStorage` under `react-rewards:theme`, and set as `data-theme` on `<html>` by an inline script before first paint.
@@ -75,10 +75,11 @@ Why: GitHub Pages serves static files only, so path routes such as `/emoji` woul
 - Then three numbered steps, joined by a line.
   1. "Install the package": the install command, with a tab per package manager (pnpm, npm, yarn, bun) and a copy button. The choice is stored under `react-rewards:package-manager`.
   2. "Fire your first reward": a line on `useReward` with a link to its page, and the first effect's snippet with its defaults, as `RewardButton.tsx`.
-  3. "Pick an effect": a card per effect, linking to its page, with its label and description. Each card has a drawing of its effect, from `articles/getting-started/art.tsx`. An effect without a drawing shows its icon instead, so a new effect needs no code here.
-     - The fireworks' drawing has three dotted `--art-amber` trails rising from one point under the card, to one shell of each kind: a peony's ring of `--accent` stars, a willow's drooping `--art-amber` strands, and a crackle's clusters of `--art-sky` sparks. The effect's crackle sparks are amber, but the drawing keeps them `--art-sky`, so they don't read as more of the willow's `--art-amber` strands, and the `--art-*` colours are the drawings' palette. The trails are dotted, as the effect's are made of sparks, because solid trails read as the stems of a bouquet.
+  3. "Pick an effect": a card per effect, linking to its page, with its label and description. Each card has a drawing of its effect, from `articles/getting-started/art.tsx`. An effect without a drawing shows its icon instead, at the drawings' size and stroke, so a new effect needs no code here.
+     - The drawings are line drawings on a 24 px grid, shown at 64 px. They share one stroke width, 1.5 on the grid (about 4 px on screen), with round caps and joins and no fill. Each is path data with a colour per stroke, drawn by one component.
+     - Each has several colours: the main shape in `--accent`, and the small bits in the `--art-*` colours. The balloon is the exception, an `--art-sky` body with the accent on its shine. Confetti is an `--accent` popper, with plus signs and short lines in `--art-violet`, `--art-amber`, `--art-sky` and `--art-mint`. Emoji is two hearts: an `--accent` one in front of a larger `--art-violet` one. Balloons is an `--art-sky` balloon with an `--accent` shine and an `--art-line` string. Fireworks is four curved `--accent` lines bursting from one point, with sparks alternating `--art-amber` and `--art-sky` around them.
 
-Why: the install command installs the whole library, so it is shown once rather than on every effect. The steps read in the order a newcomer works, and the preview shows the result before any of them.
+Why: the install command installs the whole library, so it is shown once rather than on every effect. The steps read in the order a newcomer works, and the preview shows the result before any of them. Drawings on one grid, at one size and stroke, read as one set.
 
 ### Stress test
 - The last page under Guides, which shows the engine's headroom. Its title is "Stress test".
@@ -111,6 +112,7 @@ Why: the item's text stays in text colours, which keep 4.5:1, and the accent mar
 ### Icons
 - Every icon is path data on a 24 px grid, in `ICON_PATHS` in `components/icon/paths.ts`, keyed by a kebab-case name that says what it draws, such as `arrow-right` or `balloon`. Shapes such as rectangles and circles are written as paths too.
 - `components/icon` draws one by name, as a stroke in `currentColor`, 2 px wide by default, and hidden from screen readers, because text beside it names it. Components pass a size and, where needed, a stroke width. No other component draws its own icon.
+- The effect cards on Getting started show drawings, not icons: line drawings in several colours, which a `currentColor` icon can't be. They live in `articles/getting-started/art.tsx`, not in `ICON_PATHS` (see "Getting started").
 - Pages name their icon in `src/data/`, so the type of `icon` is the list of names, and a missing icon is a type error. A new page adds its icon to `ICON_PATHS`.
 - The fireworks' icon, `firework`, is a wavy trail rising from the bottom left to an eight-ray burst at the top right. The trail stops short of the burst, and the rays leave a hole in the middle, as `burst`'s do, so it reads as a firework at 16 px rather than a flower on a stem.
 
