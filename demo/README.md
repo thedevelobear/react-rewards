@@ -115,7 +115,8 @@ Why: the item's text stays in text colours, which keep 4.5:1, and the accent mar
 - `components/icon` draws one by name, as a stroke in `currentColor`, 2 px wide by default, and hidden from screen readers, because text beside it names it. Components pass a size and, where needed, a stroke width. No other component draws its own icon.
 - The effect cards on Getting started show drawings, not icons: line drawings in several colours, which a `currentColor` icon can't be. They live in `articles/getting-started/art.tsx`, not in `ICON_PATHS` (see "Getting started").
 - Pages name their icon in `src/data/`, so the type of `icon` is the list of names, and a missing icon is a type error. A new page adds its icon to `ICON_PATHS`.
-- The fireworks' icon, `firework`, is a wavy trail rising from the bottom left to an eight-ray burst at the top right. The trail stops short of the burst, and the rays leave a hole in the middle, as `burst`'s do, so it reads as a firework at 16 px rather than a flower on a stem.
+- Confetti's icon, `party-popper`, is a cone at the bottom left with a curved mouth, and the bits it throws to the top right: two curly streamers, a dash and three dots.
+- The fireworks' icon, `firework`, is a burst of eight rays from a hole in the middle, the side rays curving down as a willow's do, with five spark dots around it. The hole keeps the rays apart at 16 px.
 
 Why: one set of icons and one component keeps every icon the same weight, and nothing is drawn twice.
 
