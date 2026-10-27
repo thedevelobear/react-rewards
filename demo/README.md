@@ -26,7 +26,7 @@ The site documents the library, so its design decisions are kept here rather tha
   |---|---|---|---|
   | `--bg` | `#ffffff` | `#0a0a0b` | The page. |
   | `--card` | `#fafafa` | `#0f0f11` | Panels: the preview, the install command, code, cards, the pager. |
-  | `--inset` | `#f4f4f5` | `#121214` | Recessed areas: card drawings, step numbers, table heads, hovers. |
+  | `--inset` | `#f4f4f5` | `#121214` | Recessed areas: the effect cards' icons, step numbers, table heads, hovers. |
   | `--surface` | `#f4f4f5` | `#151517` | Controls, inline code and the active sidebar item. |
   | `--surface-hover` | `#e9e9ec` | `#1c1c1f` | Controls on hover. |
   | `--border` | `#e4e4e7` | `#1e1e22` | Panels and dividers. |
@@ -43,7 +43,7 @@ The site documents the library, so its design decisions are kept here rather tha
   | `--focus` | `#7c3aed` | `#a78bfa` | The focus ring, `2px solid` with a 2 px offset. 5.2:1 and 6.7:1. |
   | `--success` | `#047857` | `#6ee7b7` | The copied tick and the preview's live dot. 5.0:1 and 12.0:1. |
   | `--knob` | `#ffffff` | same | The switch's knob. |
-  | `--art-*` | violet, amber, sky, mint | same | The effect cards' drawings, `--art-line` for the balloons' strings, and `--art-shine` for the balloons' and hearts' shine. Decorative. |
+  | `--art-*` | violet, amber, sky | same | The effect cards' icons. Decorative. |
   | `--code-*` | see "Code colours" | | Each 4.5:1 or more on `--card`. |
 
 - Theme: a header button cycles system, light and dark. The choice is stored in `localStorage` under `react-rewards:theme`, and set as `data-theme` on `<html>` by an inline script before first paint.
@@ -61,7 +61,7 @@ Why: a dark, quiet page lets the effects carry the colour. Each text colour keep
 Why: the glow under the preview's button made the accent read as light rather than paint, so the other accent marks share it.
 
 ### Routing
-- The URL hash names the page: `#getting-started`, `#custom-effects`, `#server-rendering`, `#upgrading-from-v2`, `#stress-test`, `#use-reward`, `#fire`, `#renderers`, `#confetti`, `#emoji`, `#balloon`. An effect's hash is its `name`, not its label, so Balloons is `#balloon`.
+- The URL hash names the page: `#getting-started`, `#custom-effects`, `#server-rendering`, `#upgrading-from-v2`, `#stress-test`, `#use-reward`, `#fire`, `#renderers`, `#confetti`, `#emoji`, `#balloon`, `#firework`. An effect's hash is its `name`, not its label, so Balloons is `#balloon` and Fireworks `#firework`.
 - An empty or unknown hash shows Getting started. The URL is left as it is.
 - `hooks/use-hash` reads the hash with `useSyncExternalStore` and the `hashchange` event. There is no router.
 - The document title follows the page, for example "Confetti · react-rewards".
@@ -75,19 +75,21 @@ Why: GitHub Pages serves static files only, so path routes such as `/emoji` woul
 - Then three numbered steps, joined by a line.
   1. "Install the package": the install command, with a tab per package manager (pnpm, npm, yarn, bun) and a copy button. The choice is stored under `react-rewards:package-manager`.
   2. "Fire your first reward": a line on `useReward` with a link to its page, and the first effect's snippet with its defaults, as `RewardButton.tsx`.
-  3. "Pick an effect": a card per effect, linking to its page, with its label and description. Each card has a drawing of its effect, from `articles/getting-started/art.tsx`. An effect without a drawing shows its icon instead, so a new effect needs no code here.
+  3. "Pick an effect": a card per effect, linking to its page, with its label and description. Each card shows its effect's sidebar icon, through `components/icon`, at 64 px with a stroke of 1.5 on the 24 px grid (about 4 px on screen), so a new effect needs no code here.
+     - Each icon is one colour, from `articles/getting-started/cards.tsx`: Confetti `--art-violet`, Emoji `--accent`, Balloons `--art-sky` and Fireworks `--art-amber`. An effect without a colour there is `--accent`.
 
-Why: the install command installs the whole library, so it is shown once rather than on every effect. The steps read in the order a newcomer works, and the preview shows the result before any of them.
+Why: the install command installs the whole library, so it is shown once rather than on every effect. The steps read in the order a newcomer works, and the preview shows the result before any of them. The cards and the sidebar show the same icon, so each effect has one picture across the site.
 
 ### Stress test
 - The last page under Guides, which shows the engine's headroom. Its title is "Stress test".
-- Its Customize section has three settings: the effect (Confetti, Emoji, Balloons), the count (a slider from 100 to 20000 in steps of 100, starting at 5000) and the renderer (Auto, WebGL, Canvas 2D). The burst uses the effect's defaults apart from the count.
+- Its Customize section has three settings: the effect (Confetti, Emoji, Balloons, Fireworks), the count (a slider from 100 to 20000 in steps of 100, starting at 5000) and the renderer (Auto, WebGL, Canvas 2D). The burst uses the effect's defaults apart from the count.
+- The count is particles. Fireworks' `count` is rockets, so for them the page asks for `max(1, round(particles / 130))` rockets: at the defaults a rocket peaks at about 126 live particles. A line under the settings says so, for example "Fireworks count rockets, which make the particles, so this count is approximate: 5000 particles is 38 rockets." Another effect whose `count` isn't particles adds its own entry to `UNITS` in `articles/stress-test/component.tsx`.
 - The renderer calls `setRenderer`, which applies to the whole page, so leaving the Stress test sets it back to Auto. Effect pages always use Auto.
 - The preview is the effect pages' preview. Its top right corner holds the readout, a small mono tag. Before a burst it reads "Ready". While a burst runs, it shows the burst's renderer ([ADR 0047](../docs/decisions/0047-burst-renderer.md)) and the fps over the last half second. After the burst, it shows the average fps over the whole burst, followed by "avg". Bursts fired while one runs are counted with it. A burst that is skipped reads "Skipped", for example under reduced motion, or when the forced renderer isn't available.
 - The fps is the number of `requestAnimationFrame` callbacks a second. The page counts them only while a burst runs.
 - The effect pages have no readout and no renderer setting. Their count sliders keep their own ranges.
 - The site has no card showing that bursts aren't clipped. The fixture page has one, which the smoke spec checks ([ADR 0045](../docs/decisions/0045-fixture-page.md)).
-- The benchmark harness drives this page through its controls ([ADR 0048](../docs/decisions/0048-benchmark-script-in-demo.md)). A change to the page has to keep the settings' names, the button's and the readout's `data-testid`s, and the readout's `data-state`, or update the harness.
+- The benchmark harness drives this page through its controls ([ADR 0048](../docs/decisions/0048-benchmark-script-in-demo.md)), so it gets the same rockets for its particle counts. A change to the page has to keep the settings' names, the button's and the readout's `data-testid`s, and the readout's `data-state`, or update the harness.
 
 Why: one page for performance keeps the effect pages about the API, and keeps their sliders fine enough for everyday counts.
 
@@ -110,6 +112,8 @@ Why: the item's text stays in text colours, which keep 4.5:1, and the accent mar
 - Every icon is path data on a 24 px grid, in `ICON_PATHS` in `components/icon/paths.ts`, keyed by a kebab-case name that says what it draws, such as `arrow-right` or `balloon`. Shapes such as rectangles and circles are written as paths too.
 - `components/icon` draws one by name, as a stroke in `currentColor`, 2 px wide by default, and hidden from screen readers, because text beside it names it. Components pass a size and, where needed, a stroke width. No other component draws its own icon.
 - Pages name their icon in `src/data/`, so the type of `icon` is the list of names, and a missing icon is a type error. A new page adds its icon to `ICON_PATHS`.
+- Confetti's icon, `party-popper`, is a cone at the bottom left with a curved mouth, and the bits it throws to the top right: two curly streamers, a dash and three dots.
+- The fireworks' icon, `firework`, is Hugeicons' free fireworks icon (MIT), copied as it is: four curved strokes crossing at one point, with seven spark dots. A comment in `paths.ts` keeps its notice.
 
 Why: one set of icons and one component keeps every icon the same weight, and nothing is drawn twice.
 
@@ -143,7 +147,9 @@ Why: the white letter on the tile stays legible at 16 px on light and dark tab b
 ### Preview
 - A 320 px stage with a `--dot` grid on `--card`, and a "Reward me" button at its centre that fires the effect from there. The button is an `--accent` pill with `--ink` text and the effect's icon.
 - Its top left corner names the effect, "Live preview · confetti", after a `--success` dot. The top right corner holds what the page puts there, such as the Stress test's readout. On a narrow stage, the corner wraps under the name.
+- A caption under the button says what the settings don't: "Every call to reward() fires a new burst." on Getting started, and "Fireworks look best on dark backgrounds. Just like in real life." on the Fireworks page, since white shells are faint on the light theme. An effect's page sets it with `caption` in `src/data/effects/`.
 - There is no replay button: "Reward me" already fires again.
+- The stage is 320 px for every effect. Bursts are drawn on the page's overlay, which the stage doesn't clip, so an effect that rises higher draws over the page above it. Fireworks' shells burst about 376 px above the button and reach about 470 px, as confetti does, far past the stage's top edge, which is kept: a taller stage for one effect would make the pages differ, and the overflow shows the bursts aren't clipped.
 
 ### Preview and Code tabs
 - Below an effect's title are two tabs, underlined in `--accent` when selected, with the line's glow under it, as the install command's are. Preview holds the preview, the props panel and the props table. Code holds the snippet, as `RewardButton.tsx`.

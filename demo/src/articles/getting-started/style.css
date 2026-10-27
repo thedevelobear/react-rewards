@@ -99,7 +99,6 @@
 }
 
 .effect-card-art {
-  position: relative;
   display: grid;
   place-items: center;
   height: 120px;
@@ -107,7 +106,6 @@
   background-color: var(--inset);
   background-image: radial-gradient(var(--dot) 1px, transparent 1px);
   background-size: 16px 16px;
-  color: var(--text-subtle);
 }
 
 .effect-card-body {
@@ -145,17 +143,4 @@
 
 .effect-card-description {
   font-size: 13px;
-}
-
-/* The drawings (art.tsx). */
-.effect-art-piece {
-  position: absolute;
-}
-
-.effect-art-string {
-  stroke: var(--art-line);
-}
-
-.effect-art-shine {
-  fill: var(--art-shine);
 }

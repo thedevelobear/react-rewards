@@ -35,6 +35,8 @@ export type { ConfettiConfig } from '@/effects/confetti';
 export { confetti } from '@/effects/confetti';
 export type { EmojiConfig } from '@/effects/emoji';
 export { emoji } from '@/effects/emoji';
+export type { FireworkConfig } from '@/effects/firework';
+export { firework } from '@/effects/firework';
 export type {
   RewardOptions,
   RewardTarget,

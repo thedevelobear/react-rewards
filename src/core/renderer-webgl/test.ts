@@ -1,7 +1,7 @@
 import { describe, expect, it } from '@rstest/core';
-import type { Atlas, Region } from '@/core/atlas';
+import type { Atlas } from '@/core/atlas';
 import type { BlendMode } from '@/core/define-effect';
-import { createPool, type Pool } from '@/core/pool';
+import { createPool } from '@/core/pool';
 import type { Batch } from '@/core/renderer';
 import {
   createInstances,
@@ -9,20 +9,7 @@ import {
   createWebglRenderer,
   INSTANCE_FLOATS,
 } from '@/core/renderer-webgl';
-import { type Call, createFakeWebgl } from '@/test-utils';
-
-const regions: Region[] = [
-  { sx: 2, sy: 2, sw: 16, sh: 10, width: 8, height: 5 },
-  { sx: 20, sy: 2, sw: 40, sh: 40, width: 20, height: 20 },
-];
-
-const particle = (pool: Pool, fields: Partial<Record<string, number>>) => {
-  const index = pool.alloc();
-  for (const [field, value] of Object.entries(fields)) {
-    const array = pool.fields[field as keyof Pool['fields']];
-    array[index] = value ?? 0;
-  }
-};
+import { createFakeWebgl, named, particle, regions } from '@/test-utils';
 
 /** A batch of `count` default particles. */
 const batch = (blend: BlendMode, count = 1): Batch => {
@@ -30,9 +17,6 @@ const batch = (blend: BlendMode, count = 1): Batch => {
   for (let i = 0; i < count; i++) particle(pool, {});
   return { pool, regions, blend };
 };
-
-const named = (calls: Call[], name: string) =>
-  calls.filter(([call]) => call === name);
 
 describe('createInstances', () => {
   it('packs the centre, alpha, texel matrix and atlas box', () => {

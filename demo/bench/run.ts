@@ -11,11 +11,16 @@ import { createRsbuild, loadConfig } from '@rsbuild/core';
 const root = join(import.meta.dirname, '..');
 const reps = Number(process.argv[2] ?? 3);
 
-/** Each effect's name and its label on the Stress test page. */
+/**
+ * Each effect's name and its label on the Stress test page. The page turns
+ * the count into rockets for fireworks, one per 130 particles, so their
+ * particle counts are approximate (README, "Stress test").
+ */
 const EFFECTS = [
   ['confetti', 'Confetti'],
   ['emoji', 'Emoji'],
   ['balloon', 'Balloons'],
+  ['firework', 'Fireworks'],
 ] as const;
 const COUNTS = [500, 5000, 20000];
 const RENDERERS = [

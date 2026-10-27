@@ -63,6 +63,11 @@ export interface EffectPage<C extends EffectConfig> {
   /** The sidebar icon. The preview's button and the card show it too. */
   readonly icon: IconName;
   readonly controls: Controls<C>;
+  /**
+   * A line under the preview's button, for what the settings don't say
+   * (README, "Preview").
+   */
+  readonly caption?: string;
 }
 
 /**

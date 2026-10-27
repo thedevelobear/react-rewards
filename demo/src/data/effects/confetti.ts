@@ -6,7 +6,7 @@ export const confettiPage = effectPage({
   effect: confetti,
   label: 'Confetti',
   description: 'Paper confetti that bursts out, flutters and falls.',
-  icon: 'burst',
+  icon: 'party-popper',
   controls: {
     count: {
       kind: 'range',

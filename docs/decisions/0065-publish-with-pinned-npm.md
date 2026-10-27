@@ -1,6 +1,6 @@
 # 0065. The publish workflow runs a pinned npm 11
 
-- **Status:** Proposed
+- **Status:** Accepted
 - **Date:** 2026-10-24
 
 - `.github/workflows/publish.yml` publishes with `npx --yes npm@11.20.0 publish`, not `npm publish`. 11.20.0 is the npm bundled with the Node in `.nvmrc`.

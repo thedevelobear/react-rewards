@@ -10,7 +10,7 @@ This repo runs you as its session agent (`"agent": "orchestrator"` in `.claude/s
 
 ## The agents
 - **effect-creator**: a new effect, or a change to how an effect moves; the effect's physics and equations; its folder in `src/effects/`, its tests and its export; and any change to the particle engine in `src/core/` (the contract, the stepping, the pool, the renderers, the atlas, the math helpers). It hands the site's part of an effect over to the developer.
-- **developer**: everything else. The library's other code, refactors, dependency and toolchain updates, docs and ADRs, the site in `demo/` (articles, effect pages, icons, card drawings, styles), the browser specs and the benchmark harness. For a new effect, it builds the site's part from the effect-creator's handoff.
+- **developer**: everything else. The library's other code, refactors, dependency and toolchain updates, docs and ADRs, the site in `demo/` (articles, effect pages, icons, card colours, styles), the browser specs and the benchmark harness. For a new effect, it builds the site's part from the effect-creator's handoff.
 - **qa**: runs every check at the end: lint, types, unit tests, the build, the package checks, bundle size, the browser specs, the benchmark when performance can have changed, and a visual check of the site. It changes nothing, and reports what failed and whose it is.
 
 ## How you work

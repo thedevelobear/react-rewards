@@ -1,17 +1,12 @@
 import { describe, expect, it } from '@rstest/core';
-import type { Atlas, Region } from '@/core/atlas';
-import { createPool, type Pool } from '@/core/pool';
+import type { Atlas } from '@/core/atlas';
+import { createPool } from '@/core/pool';
 import type { Batch } from '@/core/renderer';
 import { createCanvasRenderer } from '@/core/renderer-canvas';
-import { type Call, createFakeContext } from '@/test-utils';
+import { createFakeContext, named, particle, regions } from '@/test-utils';
 
 const atlasCanvas = {} as HTMLCanvasElement;
 const atlas = { canvas: atlasCanvas, version: 1 } as Atlas;
-
-const regions: Region[] = [
-  { sx: 2, sy: 2, sw: 16, sh: 10, width: 8, height: 5 },
-  { sx: 20, sy: 2, sw: 40, sh: 40, width: 20, height: 20 },
-];
 
 const setup = (dpr = 1) => {
   const { ctx, calls } = createFakeContext();
@@ -21,17 +16,6 @@ const setup = (dpr = 1) => {
   calls.length = 0;
   return { canvas, renderer, calls };
 };
-
-const particle = (pool: Pool, fields: Partial<Record<string, number>>) => {
-  const index = pool.alloc();
-  for (const [field, value] of Object.entries(fields)) {
-    const array = pool.fields[field as keyof Pool['fields']];
-    array[index] = value ?? 0;
-  }
-};
-
-const named = (calls: Call[], name: string) =>
-  calls.filter(([call]) => call === name);
 
 describe('createCanvasRenderer', () => {
   it('sizes the drawing buffer in device pixels', () => {

@@ -1,27 +1,11 @@
 import { describe, expect, it } from '@rstest/core';
-import {
-  defineEffect,
-  type EffectDefinition,
-  resolveConfig,
-} from '@/core/define-effect';
-import { createLoop, type FrameScheduler } from '@/core/loop';
+import { defineEffect, resolveConfig } from '@/core/define-effect';
+import { createLoop } from '@/core/loop';
 import { accelerate, degToRad } from '@/core/math';
 import { createSimulation, type Simulation } from '@/core/simulation';
+import { createFakeScheduler, testEffect } from '@/test-utils';
 
 const origin = { x: 100, y: 200 };
-
-type TestConfig = { count: number; lifetime: number };
-
-const testEffect = (overrides: Partial<EffectDefinition<TestConfig>> = {}) =>
-  defineEffect<TestConfig>({
-    name: 'test',
-    blend: 'normal',
-    defaults: { count: 3, lifetime: 1000 },
-    sprites: () => [{ shape: 'rect', color: '#000', width: 4, height: 4 }],
-    spawn: () => {},
-    update: () => {},
-    ...overrides,
-  });
 
 const particles = (simulation: Simulation) =>
   Array.from({ length: simulation.pool.count }, (_, i) => ({
@@ -34,6 +18,7 @@ describe('createSimulation', () => {
   it('spawns count particles at the origin, in index order', () => {
     const indices: number[] = [];
     const effect = testEffect({
+      defaults: { count: 3, lifetime: 1000 },
       spawn: (p, _config, _rng, index) => {
         indices.push(index);
         expect(p.x).toBe(origin.x);
@@ -122,6 +107,7 @@ describe('createSimulation', () => {
 
   it('removes particles once their age reaches their life', () => {
     const effect = testEffect({
+      defaults: { count: 3, lifetime: 1000 },
       spawn: (p, _config, _rng, index) => {
         p.life = (index + 1) * 0.1;
       },
@@ -270,27 +256,14 @@ describe('frame-rate independence', () => {
 
   /** Runs one second of frames at `hz` through the real loop. */
   const runAt = (hz: number) => {
-    let pending: ((time: number) => void) | undefined;
-    const scheduler: FrameScheduler = {
-      request: (callback) => {
-        pending = callback;
-        return 1;
-      },
-      cancel: () => {
-        pending = undefined;
-      },
-    };
+    const fake = createFakeScheduler();
     const simulation = createSimulation(falling, resolveConfig(falling), {
       origin,
       seed: 1234,
     });
-    const remove = createLoop(scheduler).add((dt) => simulation.step(dt));
+    const remove = createLoop(fake.scheduler).add((dt) => simulation.step(dt));
     // Frame 0 has dt 0, then `hz` frames of 1/hz s each.
-    for (let frame = 0; frame <= hz; frame++) {
-      const callback = pending;
-      pending = undefined;
-      callback?.((frame * 1000) / hz);
-    }
+    for (let frame = 0; frame <= hz; frame++) fake.tick((frame * 1000) / hz);
     remove();
     return particles(simulation);
   };

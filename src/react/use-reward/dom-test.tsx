@@ -16,6 +16,7 @@ import {
   type UseRewardResult,
   useReward,
 } from '@/react/use-reward';
+import { testEffect } from '@/test-utils';
 
 /** A call to the fake `fire()`, with a burst the test ends by hand. */
 interface Fired {
@@ -54,18 +55,8 @@ rs.mock('@/core/fire', () => ({
   },
 }));
 
-const createEffect = (name: string) =>
-  defineEffect({
-    name,
-    blend: 'normal',
-    defaults: { count: 1, lifetime: 100 },
-    sprites: () => [],
-    spawn: () => {},
-    update: () => {},
-  });
-
-const first = createEffect('first');
-const second = createEffect('second');
+const first = testEffect({ name: 'first' });
+const second = testEffect({ name: 'second' });
 
 /** Ends a burst and lets the hook see it. */
 const end = (call: Fired | undefined, how: BurstEnd) =>

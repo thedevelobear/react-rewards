@@ -1,7 +1,7 @@
 {
   "name": "react-rewards",
   "version": "3.0.0",
-  "description": "This package lets you easily add micro-interactions to your app and reward users with the rain of confetti, emoji or balloons.",
+  "description": "This package lets you easily add micro-interactions to your app and reward users with the rain of confetti, emoji, balloons or fireworks.",
   "author": "thedevelobear",
   "license": "MIT",
   "type": "module",
@@ -26,6 +26,7 @@
     "confetti",
     "emoji",
     "balloons",
+    "fireworks",
     "cannon",
     "microinteractions",
     "micro-interactions",

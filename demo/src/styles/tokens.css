@@ -10,7 +10,7 @@
   --bg: #ffffff;
   /* Panels: the preview, the install command, code, cards. */
   --card: #fafafa;
-  /* Recessed areas inside a card: the cards' art, the step numbers. */
+  /* Recessed areas inside a card: the effect cards' icons, the step numbers. */
   --inset: #f4f4f5;
   /* Controls and the active sidebar item. */
   --surface: #f4f4f5;
@@ -51,13 +51,10 @@
   /* The switch's knob. */
   --knob: #ffffff;
 
-  /* The effect cards' drawings. Decorative, so contrast doesn't apply. */
+  /* The effect cards' icons. Decorative, so contrast doesn't apply. */
   --art-violet: #a78bfa;
   --art-amber: #f5c451;
   --art-sky: #5ec8f2;
-  --art-mint: #6ee7b7;
-  --art-line: #c4c4cc;
-  --art-shine: #ffffff59;
 
   /*
    * The snippet's colours, for the site's shiki theme (README, "Code
@@ -115,7 +112,6 @@
   --accent-text: #ff6b57;
   --focus: #a78bfa;
   --success: #6ee7b7;
-  --art-line: #3a3a40;
   --code-foreground: #e7e7ea;
   --code-keyword: #ff8a7a;
   --code-string: #f2c46d;
@@ -145,7 +141,6 @@
     --accent-text: #ff6b57;
     --focus: #a78bfa;
     --success: #6ee7b7;
-    --art-line: #3a3a40;
     --code-foreground: #e7e7ea;
     --code-keyword: #ff8a7a;
     --code-string: #f2c46d;
