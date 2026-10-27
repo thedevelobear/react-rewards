@@ -25,7 +25,7 @@ The orchestrator agent briefs you, and you work on the branch it names. You own 
 - **Drawing.** A particle is drawn centred on `(x, y)` with the matrix `R(rotation) · diag(scale·scaleX, scale·scaleY)`: scaled along its own axes, then rotated. With y down, a positive rotation turns clockwise on screen. A negative scale mirrors the sprite. Particles with `alpha <= 0` or a scale of exactly 0 are skipped, and `alpha` above 1 draws as 1. `blend` is `'normal'`, or `'additive'` for glows.
 - **Sprites** are rasterised once per size and pixel ratio into one shared atlas, at most 2048 × 2048. There is no tint, so an effect draws one sprite per colour, and `p.sprite` picks one. An emoji's box is 1.25 times its font size. Each sprite is clipped to its box. A full atlas rejects the load and the burst is skipped, so keep the sprite count to colours × variants, not per particle.
 - **Randomness** comes from the `rng` passed to `spawn`, or `ctx.rng` in `update` (mulberry32): `next()` in [0, 1), `range(min, max)`, `int(min, max)` (max excluded), `pick(items)`, and `seed`. Never `Math.random`, or a `seed` stops replaying the burst and the tests stop being deterministic. Children take theirs from seeds instead (see "Emitters and children").
-- **Imports.** An effect imports only `@/core/define-effect`, `@/core/math` and its own folder (Biome enforces it). Its `test.ts` may also import the simulation.
+- **Imports.** An effect imports only `@/core/define-effect`, `@/core/math` and its own folder (Biome enforces it). Its `test.ts` may also import the simulation and `@/test-utils`.
 
 ## The maths toolkit
 
@@ -123,12 +123,12 @@ Write a short brief before any code. Unless the orchestrator's brief already set
 ## Building it
 Follow `docs/guides/adding-an-effect.md` for the library's part: the folder (`index.ts`, `effect.ts`, `types.ts` with a one-line JSDoc per field, `test.ts`), the `Effect<C>` annotation, `/* @__PURE__ */` and top-level constants written as literals, and the export from `src/index.ts` with its ADR. Types go in `types.ts` (ADR 0061). The guide's "The site" and "The rest" are the developer's, from your handoff.
 
-Test the maths, not only the code, in `test.ts` over `createSimulation` with a fixed seed:
+Test the maths, not only the code, in `test.ts` with a fixed seed, using the helpers every effect's test shares from `@/test-utils`: `simulate(effect, overrides, seed)`, `run`, `field`, `gaps`, `rounded` and `mean` (ADR 0068). Keep helpers only this effect needs in its `test.ts`, and move one to `src/test-utils/` once a second test file needs it, rather than copying it. Test:
 - the defaults, frozen; the sprites for a config; `count` particles; the launch cone and speeds;
 - the closed forms: the apex, the terminal speed, the reach, or the sway's width, within a stated tolerance, against the formulas above;
 - that every particle is gone by `lifetime`;
-- frame-rate independence: after 1 s at 30, 60 and 144 Hz, every particle within 1 px of the 144 Hz run. Note the measured gaps in a comment, as the built-in effects do;
-- an inline snapshot of a few particles after half a second at 60 Hz.
+- frame-rate independence: after 1 s at 30, 60 and 144 Hz, every particle within 1 px of the 144 Hz run, by `gaps`, or by seed when children change the order, as `firework` does. Note the measured gaps in a comment, as the built-in effects do;
+- an inline snapshot of a few particles after half a second at 60 Hz, from `rounded`.
 
 Run `pnpm lint`, `pnpm typecheck`, `pnpm test` and `pnpm build` before you hand off. qa runs the browser specs, the size check and the benchmark afterwards, and looks at the effect on both renderers.
 
@@ -147,7 +147,7 @@ An effect that needs more than the contract offers changes the engine first, in 
 - **A particle field or more slots:** `FIELDS` and its defaults in `src/core/pool/store.ts`, `Particle` in `src/core/define-effect/types.ts`, the accessors in `src/core/simulation/view.ts`, and every renderer that draws it.
 - **A draw feature** (a field the renderers read, a blend mode, a sprite kind) goes into both renderers before an effect uses it: `src/core/renderer-canvas/renderer.ts`, and for WebGL the instance packing in `src/core/renderer-webgl/instance.ts` (`INSTANCE_FLOATS`), the shaders in `shader.ts`, and the batching rule (ADR 0034). A sprite kind also needs `SpriteSource` and the atlas's `spriteSize`, `spriteKey` and `drawSprite` in `src/core/atlas/raster.ts`. The parity spec, `demo/e2e/renderer.ts`, must still pass with the feature in the seeded burst.
 - **A math helper** is public API (ADR 0053): an ADR, an export from `src/index.ts`, and the site's Custom effects article (ADR 0062).
-- Engine changes are tested in Node against the recording contexts in `src/test-utils/`, and in the browser specs. A change on the hot path is measured with `pnpm bench` before and after (ADRs 0048, 0051).
+- Engine changes are tested in Node against the recording contexts and `testEffect` in `src/test-utils/`, and in the browser specs. A change on the hot path is measured with `pnpm bench` before and after (ADRs 0048, 0051).
 
 ## Reporting
 When you stop, report the brief, the equations and the numbers you derived for the defaults, what you changed and the commits, which checks pass (with their output if any fail), the open questions, and the handoff. When the orchestrator sends you qa's failures, fix the ones in your part and report again. Record decisions in `docs/` as `AGENTS.md` describes, and keep this file true: a change to the contract, the stepping, the math helpers or the renderers updates it in the same PR.

@@ -117,29 +117,30 @@ export const sparkle: Effect<SparkleConfig> =
 - **Seed a child from its parent, not from `ctx.rng`.** `ctx.rng` is drawn from in step order, so what a child gets depends on how many steps came first. Keep an integer seed in a slot instead, below 2^24 so the slot stores it exactly. Hash a child's seed from its parent's seed and its number, and draw a particle's random numbers by hashing its seed with an index (`firework`'s `noise.ts`). A seeded burst is then the same particle for particle at any frame rate, and its frame-rate test can compare particles by seed.
 
 ### Import restrictions
-An effect imports only from `@/core/define-effect`, `@/core/math` and its own folder. Biome's `noRestrictedImports` enforces this in `biome.json`, so the renderers, the pool and the atlas can change without touching effects. `test.ts` is exempt, so it can run a simulation. Effects never import each other ([step 1b, rule 8](../plans/2026-10-22-v3-rewrite.md#1b-naming-and-folder-rules)).
+An effect imports only from `@/core/define-effect`, `@/core/math` and its own folder. Biome's `noRestrictedImports` enforces this in `biome.json`, so the renderers, the pool and the atlas can change without touching effects. `test.ts` is exempt, so it can run a simulation with the helpers in `@/test-utils`. Effects never import each other ([step 1b, rule 8](../plans/2026-10-22-v3-rewrite.md#1b-naming-and-folder-rules)).
 
 ## Tests
-Errors thrown by an effect are swallowed: its burst just ends ([ADR 0030](../decisions/0030-effect-errors-swallowed.md)). The tests are where an effect's mistakes show, so cover it in `test.ts`, in Node, the way the built-in effects do:
+Errors thrown by an effect are swallowed: its burst just ends ([ADR 0030](../decisions/0030-effect-errors-swallowed.md)). The tests are where an effect's mistakes show, so cover it in `test.ts`, in Node, the way the built-in effects do, with the helpers they share in `src/test-utils/` ([ADR 0068](../decisions/0068-shared-test-helpers.md)):
 
 ```ts
 import { describe, expect, it } from '@rstest/core';
 import { resolveConfig } from '@/core/define-effect';
-import { createSimulation, type Simulation } from '@/core/simulation';
-import { type SparkleConfig, sparkle } from '@/effects/sparkle';
+import { sparkle } from '@/effects/sparkle';
+import { field, gaps, rounded, run, simulate } from '@/test-utils';
 
-const simulate = (overrides: Partial<SparkleConfig> = {}, seed = 1) =>
-  createSimulation(sparkle, resolveConfig(sparkle, overrides), {
-    origin: { x: 0, y: 0 },
-    seed,
-  });
-
-/** Steps `seconds` at `hz` steps per second. */
-const run = (simulation: Simulation, seconds: number, hz = 60) => {
-  for (let i = 0; i < Math.round(seconds * hz); i++) simulation.step(1 / hz);
-  return simulation;
-};
+it('fades as it ages', () => {
+  const simulation = run(simulate(sparkle, { count: 50 }, 3), 1.1);
+  expect(field(simulation, 'alpha').every((alpha) => alpha < 1)).toBe(true);
+});
 ```
+
+- `simulate(sparkle, overrides, seed)` starts a burst at (0, 0), with `overrides` on the defaults and seed 1 unless given.
+- `run(simulation, seconds, hz)` steps it, at 60 Hz unless given, and returns it.
+- `field(simulation, 'x')` reads one field of every live particle, in pool order. `mean` averages one.
+- `gaps(simulation, reference)` is how far each particle is from the same one in another run, in pixels.
+- `rounded(simulation, ['x', 'y'])` is the fields an inline snapshot shows, rounded to 3 decimals.
+
+Keep helpers only this effect needs in its `test.ts`, as `firework` keeps `climb`. Move a helper to `src/test-utils/` once a second test file needs it, rather than copying it.
 
 Then test, as `src/effects/emoji/test.ts` does:
 - the defaults, and that they are frozen;
@@ -147,8 +148,8 @@ Then test, as `src/effects/emoji/test.ts` does:
 - that a burst spawns `count` particles, and whatever `spawn` promises, such as the launch cone and speeds;
 - what `update` does over time, such as fading out or settling at `gravity / drag`;
 - that the burst ends by `lifetime`;
-- frame-rate independence: after 1 s at 30, 60 and 144 Hz, every particle within 1 px of the 144 Hz run;
-- an inline snapshot of a few particles after half a second at 60 Hz.
+- frame-rate independence: after 1 s at 30, 60 and 144 Hz, every particle within 1 px of the 144 Hz run, by `gaps`;
+- an inline snapshot of a few particles after half a second at 60 Hz, from `rounded`.
 
 ## The public API
 Export the effect and its config type from `src/index.ts`, next to the others. That adds to the public API, so the PR records it in an ADR, as [ADR 0037](../decisions/0037-balloon-effect-name.md) did for `balloon`.

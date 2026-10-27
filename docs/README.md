@@ -108,6 +108,7 @@ What was decided, specifically enough to check the code against.
 | [0065](decisions/0065-publish-with-pinned-npm.md) | The publish workflow runs a pinned npm 11 | Accepted |
 | [0066](decisions/0066-firework-effect-name.md) | The fireworks effect is named `firework` | Proposed |
 | [0067](decisions/0067-fireworks-climb-in-closed-form.md) | Fireworks climb in closed form and burst as peonies, willows and crackles | Proposed |
+| [0068](decisions/0068-shared-test-helpers.md) | Helpers that more than one test file uses live in `src/test-utils/` | Proposed |
 
 ### Benchmarks
 | Benchmark | What |
