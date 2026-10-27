@@ -50,7 +50,7 @@ const BALLOON: readonly Stroke[] = [
 /*
  * Four curved lines bursting from (12, 11), and the sparks around them. The
  * sparks are dots, round caps on strokes of almost no length, listed
- * clockwise from the right, so neighbours alternate colours.
+ * clockwise from the right, amber and sky in turn.
  */
 const FIREWORK: readonly Stroke[] = [
   { d: 'M19 18C17.5 12.5 12 11 12 11C12 11 8 14.5 8 21', paint: 'accent' },
