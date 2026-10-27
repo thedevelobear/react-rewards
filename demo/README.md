@@ -113,7 +113,7 @@ Why: the item's text stays in text colours, which keep 4.5:1, and the accent mar
 - `components/icon` draws one by name, as a stroke in `currentColor`, 2 px wide by default, and hidden from screen readers, because text beside it names it. Components pass a size and, where needed, a stroke width. No other component draws its own icon.
 - Pages name their icon in `src/data/`, so the type of `icon` is the list of names, and a missing icon is a type error. A new page adds its icon to `ICON_PATHS`.
 - Confetti's icon, `party-popper`, is a cone at the bottom left with a curved mouth, and the bits it throws to the top right: two curly streamers, a dash and three dots.
-- The fireworks' icon, `firework`, is a burst of eight rays from a hole in the middle, the side rays curving down as a willow's do, with five spark dots around it. The hole keeps the rays apart at 16 px.
+- The fireworks' icon, `firework`, is Hugeicons' free fireworks icon (MIT), copied as it is: four curved strokes crossing at one point, with seven spark dots. A comment in `paths.ts` keeps its notice.
 
 Why: one set of icons and one component keeps every icon the same weight, and nothing is drawn twice.
 
