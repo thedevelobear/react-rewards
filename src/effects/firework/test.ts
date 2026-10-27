@@ -1,28 +1,9 @@
 import { describe, expect, it } from '@rstest/core';
 import { resolveConfig } from '@/core/define-effect';
-import { createSimulation, type Simulation } from '@/core/simulation';
-import { type FireworkConfig, firework } from '@/effects/firework';
+import type { Simulation } from '@/core/simulation';
+import { firework } from '@/effects/firework';
+import { field, run, simulate } from '@/test-utils';
 import { seedOf } from './noise';
-
-const origin = { x: 0, y: 0 };
-
-const simulate = (overrides: Partial<FireworkConfig> = {}, seed = 1) =>
-  createSimulation(firework, resolveConfig(firework, overrides), {
-    origin,
-    seed,
-  });
-
-const field = (
-  simulation: Simulation,
-  name: keyof Simulation['pool']['fields']
-) =>
-  Array.from(simulation.pool.fields[name].subarray(0, simulation.pool.count));
-
-/** Steps `seconds` at `hz` steps per second. */
-const run = (simulation: Simulation, seconds: number, hz = 60) => {
-  for (let i = 0; i < Math.round(seconds * hz); i++) simulation.step(1 / hz);
-  return simulation;
-};
 
 /** Roles in `s0`, as in `effect.ts`. A rocket's `s0` is negative. */
 const PEONY = 0;
@@ -116,7 +97,11 @@ describe('firework', () => {
   });
 
   it('launches count rockets, one to each share of the fan', () => {
-    const simulation = simulate({ count: 9, spread: 90, velocity: 1000 });
+    const simulation = simulate(firework, {
+      count: 9,
+      spread: 90,
+      velocity: 1000,
+    });
     expect(field(simulation, 's0').every((role) => role < 0)).toBe(true);
     const angles = field(simulation, 's1')
       .map((ux, i) => {
@@ -137,7 +122,7 @@ describe('firework', () => {
 
   it('launches the first rocket at once, and the rest within 0.45 s', () => {
     for (let seed = 1; seed <= 20; seed++) {
-      const simulation = simulate({}, seed);
+      const simulation = simulate(firework, {}, seed);
       const delays = field(simulation, 'life').map(
         (life, i) => life - climb(launch(simulation, i)).burst
       );
@@ -155,7 +140,7 @@ describe('firework', () => {
 
   it('gives each rocket of a volley the next kind and the next colour', () => {
     for (let seed = 1; seed <= 50; seed++) {
-      const simulation = simulate({}, seed);
+      const simulation = simulate(firework, {}, seed);
       const kinds = field(simulation, 's0').map((s0) => (-s0 - 1) % 4);
       // With equal weights, three rockets are one of each kind.
       expect([...kinds].sort()).toEqual([PEONY, WILLOW, CRACKLE]);
@@ -174,6 +159,7 @@ describe('firework', () => {
     const kinds = [0, 0, 0];
     for (let seed = 1; seed <= 2000; seed++) {
       const simulation = simulate(
+        firework,
         { count: 1, peony: 2, willow: 1, crackle: 1 },
         seed
       );
@@ -187,7 +173,11 @@ describe('firework', () => {
     expect(Math.abs((kinds[CRACKLE] ?? 0) / 2000 - 0.25)).toBeLessThan(0.03);
 
     for (let seed = 1; seed <= 200; seed++) {
-      const simulation = simulate({ peony: 1, willow: 0, crackle: 3 }, seed);
+      const simulation = simulate(
+        firework,
+        { peony: 1, willow: 0, crackle: 3 },
+        seed
+      );
       const s0 = field(simulation, 's0');
       expect(s0.every((code) => (-code - 1) % 4 !== WILLOW)).toBe(true);
     }
@@ -206,7 +196,7 @@ describe('firework', () => {
     expect(climb(1320).height(climb(1320).burst)).toBeCloseTo(420.33, 2);
 
     for (const hz of [30, 60, 144]) {
-      const simulation = simulate(straight, 4);
+      const simulation = simulate(firework, straight, 4);
       const { burst, apex, height } = climb(launch(simulation));
       let time = 0;
       while (count(simulation, FLASH) === 0) {
@@ -230,7 +220,7 @@ describe('firework', () => {
     // At the default, 2 px to either side, and 5.9 turns up to the burst at
     // 376 px.
     const { spiral } = firework.defaults;
-    const simulation = simulate({ ...straight, spiral }, 2);
+    const simulation = simulate(firework, { ...straight, spiral }, 2);
     const { burst, height } = climb(launch(simulation));
     const sides: number[] = [];
     for (let step = 0; step < Math.floor(burst * 144); step++) {
@@ -251,14 +241,14 @@ describe('firework', () => {
       1
     );
 
-    const flat = simulate(straight, 2);
+    const flat = simulate(firework, straight, 2);
     run(flat, 0.5);
     expect(field(flat, 'x')[0]).toBeCloseTo(0, 9);
   });
 
   it('lays a trail spark every 7 px climbed, as many at any frame rate', () => {
     const laid = [30, 60, 144].map((hz) => {
-      const simulation = run(simulate(straight, 3), 0.5, hz);
+      const simulation = run(simulate(firework, straight, 3), 0.5, hz);
       return {
         laid: field(simulation, 's3')[0],
         live: count(simulation, TRAIL),
@@ -277,7 +267,8 @@ describe('firework', () => {
     // 60 Hz, and the same particles in each run.
     for (const seed of [1, 2, 3]) {
       for (const seconds of [1, 1.5, 2, 2.5]) {
-        const at = (hz: number) => byKey(run(simulate({}, seed), seconds, hz));
+        const at = (hz: number) =>
+          byKey(run(simulate(firework, {}, seed), seconds, hz));
         const reference = at(144);
         for (const hz of [30, 60]) {
           const particles = at(hz);
@@ -298,7 +289,7 @@ describe('firework', () => {
   it('ends every rocket, star, trail and spark by lifetime', () => {
     for (const lifetime of [3500, 2000, 600]) {
       for (const hz of [30, 60, 144]) {
-        const simulation = simulate({ lifetime }, 5);
+        const simulation = simulate(firework, { lifetime }, 5);
         const end = lifetime / 1000;
         let time = 0;
         // The latest any particle is due to end: now plus its life left.
@@ -322,7 +313,7 @@ describe('firework', () => {
     // 1 s, launching sooner if it must.
     let sooner = 0;
     for (let seed = 1; seed <= 10; seed++) {
-      const simulation = simulate({ lifetime: 2000 }, seed);
+      const simulation = simulate(firework, { lifetime: 2000 }, seed);
       const lives = field(simulation, 'life');
       for (const life of lives) expect(life).toBeLessThanOrEqual(1 + 1e-6);
       if (lives.includes(1)) sooner++;
@@ -341,7 +332,7 @@ describe('firework', () => {
   });
 
   it('launches duds at once when the show is shorter than a climb', () => {
-    const simulation = simulate({ lifetime: 600 });
+    const simulation = simulate(firework, { lifetime: 600 });
     expect(field(simulation, 'alpha')).toEqual([1, 1, 1]);
     expect(field(simulation, 'life')).toEqual([0.6, 0.6, 0.6].map(Math.fround));
     let flashes = 0;
@@ -357,16 +348,19 @@ describe('firework', () => {
   });
 
   it('replays a seeded burst exactly', () => {
-    const a = run(simulate({}, 9), 2);
-    const b = run(simulate({}, 9), 2);
+    const a = run(simulate(firework, {}, 9), 2);
+    const b = run(simulate(firework, {}, 9), 2);
     for (const name of ['x', 'y', 'alpha', 'scale', 'sprite'] as const) {
       expect(field(a, name)).toEqual(field(b, name));
     }
-    expect(field(run(simulate({}, 10), 2), 'x')).not.toEqual(field(a, 'x'));
+    expect(field(run(simulate(firework, {}, 10), 2), 'x')).not.toEqual(
+      field(a, 'x')
+    );
   });
 
   it('spreads a peony to radius, and droops it at gravity / 4', () => {
     const simulation = simulate(
+      firework,
       { ...straight, peony: 1, willow: 0, crackle: 0 },
       6
     );
@@ -398,7 +392,11 @@ describe('firework', () => {
   });
 
   it('hangs a willow trail: its sparks fall slower than its stars', () => {
-    const simulation = simulate({ ...straight, peony: 0, crackle: 0 }, 7);
+    const simulation = simulate(
+      firework,
+      { ...straight, peony: 0, crackle: 0 },
+      7
+    );
     run(simulation, 2);
     const s0 = field(simulation, 's0');
     const vy = field(simulation, 'vy');
@@ -420,7 +418,11 @@ describe('firework', () => {
   });
 
   it('flickers a crackle star, darkens it, then pops it into sparks', () => {
-    const simulation = simulate({ ...straight, peony: 0, willow: 0 }, 8);
+    const simulation = simulate(
+      firework,
+      { ...straight, peony: 0, willow: 0 },
+      8
+    );
     while (count(simulation, CRACKLE) === 0) run(simulation, 1 / 144, 144);
     const star = field(simulation, 's2')[
       field(simulation, 's0').indexOf(CRACKLE)
@@ -474,7 +476,7 @@ describe('firework', () => {
   });
 
   it('matches its snapshot after half a second at 60 Hz', () => {
-    const simulation = run(simulate(), 0.5);
+    const simulation = run(simulate(firework), 0.5);
     const round = (value: number) => Math.round(value * 1000) / 1000;
     const state = Array.from({ length: 3 }, (_, i) =>
       Object.fromEntries(
