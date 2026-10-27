@@ -2,7 +2,7 @@ import { describe, expect, it } from '@rstest/core';
 import { resolveConfig } from '@/core/define-effect';
 import type { Simulation } from '@/core/simulation';
 import { firework } from '@/effects/firework';
-import { field, run, simulate } from '@/test-utils';
+import { field, rounded, run, simulate } from '@/test-utils';
 import { seedOf } from './noise';
 
 /** Roles in `s0`, as in `effect.ts`. A rocket's `s0` is negative. */
@@ -477,14 +477,10 @@ describe('firework', () => {
 
   it('matches its snapshot after half a second at 60 Hz', () => {
     const simulation = run(simulate(firework), 0.5);
-    const round = (value: number) => Math.round(value * 1000) / 1000;
-    const state = Array.from({ length: 3 }, (_, i) =>
-      Object.fromEntries(
-        (['x', 'y', 'alpha', 'scale', 'sprite', 's3'] as const).map((name) => [
-          name,
-          round(field(simulation, name)[i] ?? Number.NaN),
-        ])
-      )
+    const state = rounded(
+      simulation,
+      ['x', 'y', 'alpha', 'scale', 'sprite', 's3'],
+      3
     );
     expect(simulation.pool.count).toMatchInlineSnapshot(`102`);
     expect(state).toMatchInlineSnapshot(`

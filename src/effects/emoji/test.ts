@@ -1,7 +1,7 @@
 import { describe, expect, it } from '@rstest/core';
 import { resolveConfig } from '@/core/define-effect';
 import { emoji } from '@/effects/emoji';
-import { field, mean, run, simulate } from '@/test-utils';
+import { field, gaps, mean, rounded, run, simulate } from '@/test-utils';
 
 const DEGREE = Math.PI / 180;
 
@@ -141,16 +141,7 @@ describe('emoji', () => {
     const at = (hz: number) => run(simulate(emoji, { count: 100 }, 3), 1, hz);
     const reference = at(144);
     for (const hz of [30, 60]) {
-      const simulation = at(hz);
-      const x = field(simulation, 'x');
-      const y = field(simulation, 'y');
-      const refX = field(reference, 'x');
-      const refY = field(reference, 'y');
-      for (let i = 0; i < x.length; i++) {
-        const gap = Math.hypot(
-          (x[i] ?? 0) - (refX[i] ?? 0),
-          (y[i] ?? 0) - (refY[i] ?? 0)
-        );
+      for (const gap of gaps(at(hz), reference)) {
         expect(gap).toBeLessThan(1);
       }
     }
@@ -158,23 +149,16 @@ describe('emoji', () => {
 
   it('matches its snapshot after half a second at 60 Hz', () => {
     const simulation = run(simulate(emoji, { count: 3 }), 0.5);
-    const round = (value: number) => Math.round(value * 1000) / 1000;
-    const state = Array.from({ length: simulation.pool.count }, (_, i) =>
-      Object.fromEntries(
-        (
-          [
-            'x',
-            'y',
-            'vx',
-            'vy',
-            'rotation',
-            'scale',
-            'alpha',
-            'sprite',
-          ] as const
-        ).map((name) => [name, round(field(simulation, name)[i] ?? Number.NaN)])
-      )
-    );
+    const state = rounded(simulation, [
+      'x',
+      'y',
+      'vx',
+      'vy',
+      'rotation',
+      'scale',
+      'alpha',
+      'sprite',
+    ]);
     expect(state).toMatchInlineSnapshot(`
       [
         {
