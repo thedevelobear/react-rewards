@@ -13,9 +13,10 @@ const SHORT_TAIL = 3;
 const DOT = 4;
 const FLASH = 5;
 
-/** The defaults' lifetime and radius. */
-const T = 0.8;
+/** The defaults' lifetime in seconds, radius and size. */
+const T = 1.5;
 const R = 60;
+const SIZE = 18;
 /** A streak's and the ring's air resistance per second at the defaults. */
 const K = 6 / T;
 const RING_K = 8 / T;
@@ -86,10 +87,10 @@ describe('pop', () => {
     expect(pop.defaults).toEqual({
       count: 10,
       dots: 24,
-      size: 10,
+      size: 18,
       radius: 60,
       swirl: 20,
-      lifetime: 800,
+      lifetime: 1500,
       colors: ['#FF4D79', '#F59E0B', '#8B5CF6', '#1FB2F5'],
     });
     expect(Object.isFrozen(pop.defaults)).toBe(true);
@@ -109,7 +110,7 @@ describe('pop', () => {
       { key: 'pop-star|#fff', width: 17.5, height: 17.5 },
       { key: 'pop-tail|#000', width: 20, height: 7 },
       { key: 'pop-tail|#fff', width: 20, height: 7 },
-      { key: 'pop-dot|#000', width: 3.2 * 2.4, height: 3.2 * 2.4 },
+      { key: 'pop-dot|#000', width: 2 * 2.4, height: 2 * 2.4 },
       { key: 'pop-flash|#000', width: 60, height: 60 },
     ]);
     expect(pop.sprites(resolveConfig(pop))).toHaveLength(10);
@@ -179,9 +180,10 @@ describe('pop', () => {
   });
 
   it('lands each star on its closed-form path: radius out, swirled 20° counter-clockwise', () => {
-    // At the defaults a star has covered 63% of its way 0.13 s after its
-    // launch and 95% after 0.4 s, so a long star is 57.6 px out by then.
-    expect(1 - Math.exp(-K * 0.4)).toBeCloseTo(0.95, 2);
+    // At the defaults a star has covered 63% of its way 0.25 s after its
+    // launch and 95% after 0.75 s, so a long star is 57.6 px out by then.
+    expect(1 - Math.exp(-K * 0.25)).toBeCloseTo(0.63, 2);
+    expect(1 - Math.exp(-K * 0.75)).toBeCloseTo(0.95, 2);
     for (const [swirl, hz] of [
       [20, 144],
       [20, 30],
@@ -214,8 +216,9 @@ describe('pop', () => {
 
   it('stretches each streak back to the start, then twice the way its star has left', () => {
     // Straight out, so the length along the path is the distance out. The
-    // streak spans the last ln 3 / k seconds: 0.146 s at the defaults, when
+    // streak spans the last ln 3 / k seconds: 0.275 s at the defaults, when
     // it is 2/3 of the way, 32 px for a long star.
+    expect(Math.log(3) / K).toBeCloseTo(0.275, 3);
     const simulation = simulate(pop, { swirl: 0 }, 4);
     for (const [step, t] of [
       [0.1, 0.1],
@@ -226,7 +229,7 @@ describe('pop', () => {
         for (const tail of all(simulation, kind + LONG_TAIL)) {
           const { from, to } = reach(kind, tail.s2);
           const q = covered(kind, t);
-          const drawn = tail.scaleX * tail.scale * 10;
+          const drawn = tail.scaleX * tail.scale * SIZE;
           if (q < 2 / 3) expect(drawn).toBeCloseTo((to - from) * q, 3);
           else expect(drawn).toBeCloseTo(2 * (to - from) * (1 - q), 3);
           // It points straight out, from its star.
@@ -242,20 +245,20 @@ describe('pop', () => {
 
   it('races the ring out as one even circle, thinning, and gone by 0.45 of lifetime', () => {
     const simulation = simulate(pop, {}, 5);
-    run(simulation, 0.1, 120);
+    run(simulation, 0.1, 100);
     const dots = all(simulation, DOT);
     expect(dots).toHaveLength(24);
-    // 0.3 to 1.15 of radius, covering 1 - e^(-10 t): 50.2 px at 0.1 s.
+    // 0.3 to 1.15 of radius, covering 1 - e^(-5.33 t): 39.08 px at 0.1 s.
     const q = 1 - Math.exp(-RING_K * 0.1);
     const r = R * (0.3 + 0.85 * q);
-    expect(r).toBeCloseTo(50.24, 2);
+    expect(r).toBeCloseTo(39.08, 2);
     const angles = dots
       .map(({ x, y }) => Math.atan2(y, x))
       .sort((a, b) => a - b);
     for (const [j, { x, y, scale, alpha }] of dots.entries()) {
       expect(Math.hypot(x, y)).toBeCloseTo(r, 3);
       expect(scale).toBeCloseTo(1 - 0.55 * q, 5);
-      expect(alpha).toBeCloseTo(1 - (0.1 / 0.36) ** 2, 5);
+      expect(alpha).toBeCloseTo(1 - (0.1 / (0.45 * T)) ** 2, 5);
       if (j > 0) {
         expect((angles[j] ?? 0) - (angles[j - 1] ?? 0)).toBeCloseTo(
           (Math.PI * 2) / 24,
@@ -263,22 +266,22 @@ describe('pop', () => {
         );
       }
     }
-    // The ring heads for 69 px, and is 67.6 px out when it is spent, 0.36 s
-    // in: its last step at 120 Hz is 43/120 s in.
-    expect(R * (0.3 + 0.85 * (1 - Math.exp(-RING_K * 0.36)))).toBeCloseTo(
+    // The ring heads for 69 px, and is 67.6 px out when it is spent, 0.675 s
+    // in: its last step at 100 Hz is 0.67 s in.
+    expect(R * (0.3 + 0.85 * (1 - Math.exp(-RING_K * 0.675)))).toBeCloseTo(
       67.61,
       2
     );
-    run(simulation, 31 / 120, 120);
+    run(simulation, 0.57, 100);
     const last = all(simulation, DOT);
     expect(last).toHaveLength(24);
-    const end = R * (0.3 + 0.85 * (1 - Math.exp(-RING_K * (43 / 120))));
+    const end = R * (0.3 + 0.85 * (1 - Math.exp(-RING_K * 0.67)));
     for (const { x, y } of last) expect(Math.hypot(x, y)).toBeCloseTo(end, 3);
-    simulation.step(1 / 120);
+    simulation.step(1 / 100);
     expect(count(simulation, DOT)).toBe(0);
   });
 
-  it('flashes at the centre for the first 0.12 of lifetime, on 3 frames at 30 Hz', () => {
+  it('flashes at the centre for the first 0.12 of lifetime, on 6 frames at 30 Hz', () => {
     const simulation = simulate(pop, {}, 6);
     simulation.step(0);
     const alphas: number[] = [];
@@ -289,10 +292,10 @@ describe('pop', () => {
       alphas.push(flash?.alpha ?? 0);
       run(simulation, 1 / 30, 30);
     }
-    // At 0, 1/30 and 2/30 s, fading from 0.85 over 0.096 s.
-    expect(alphas).toHaveLength(3);
+    // At 0 to 5/30 s, fading from 0.85 over 0.18 s.
+    expect(alphas).toHaveLength(6);
     for (const [frame, alpha] of alphas.entries()) {
-      expect(alpha).toBeCloseTo(0.85 * (1 - frame / 30 / 0.096), 5);
+      expect(alpha).toBeCloseTo(0.85 * (1 - frame / 30 / (0.12 * T)), 5);
     }
   });
 
@@ -303,15 +306,15 @@ describe('pop', () => {
       expect(star.scale).toBeCloseTo(0.35 * sizeOf(LONG, star.s2), 5);
     }
     for (const star of all(simulation, SHORT)) expect(star.alpha).toBe(0);
-    // Short streaks launch 0.048 s in.
-    run(simulation, 0.05, 100);
+    // Short streaks launch 0.09 s in.
+    run(simulation, 0.1, 100);
     for (const star of all(simulation, SHORT)) {
       expect(star.alpha).toBe(1);
       expect(star.scale).toBeCloseTo(0.35 * sizeOf(SHORT, star.s2), 5);
     }
   });
 
-  it('blooms each star with an overshoot, then twinkles it every 0.178 to 0.267 s', () => {
+  it('blooms each star with an overshoot, then twinkles it every 0.33 to 0.5 s', () => {
     const gaps: number[] = [];
     for (let seed = 1; seed <= 10; seed++) {
       const simulation = simulate(pop, {}, seed);
@@ -337,20 +340,22 @@ describe('pop', () => {
       }
       for (const star of stars) {
         const list = history.get(star) ?? [];
-        // A tip until 0.2 s, then it blooms to 1.16 (0.35 + 0.65 × 1.25) at
-        // 0.3 s, and settles at 1 by 0.4 s.
-        const tip = list.filter(({ t: at }) => at < 0.199);
+        // A tip until 0.25 of lifetime, 0.375 s, then it blooms to 1.16
+        // (0.35 + 0.65 × 1.25) at 0.5625 s, and settles at 1 by 0.75 s.
+        const tip = list.filter(({ t: at }) => at < 0.25 * T - 1e-3);
         for (const { scale } of tip) expect(scale).toBeCloseTo(0.35, 5);
-        const bloom = list.filter(({ t: at }) => at > 0.2 && at <= 0.4);
+        const bloom = list.filter(
+          ({ t: at }) => at > 0.25 * T && at <= 0.5 * T
+        );
         const peak = bloom.reduce((a, b) => (b.scale > a.scale ? b : a));
         expect(peak.scale).toBeCloseTo(1.1625, 3);
-        expect(peak.t).toBeCloseTo(0.3, 2);
+        expect(peak.t).toBeCloseTo(0.375 * T, 2);
         expect(bloom.at(-1)?.scale).toBeCloseTo(1, 3);
 
         // Twinkling, it dims by up to a quarter, and comes back to full
-        // brightness every 0.8 / 4.5 to 0.8 / 3 s: 0.178 to 0.267 s, 5.3 to 8
-        // frames at 30 Hz.
-        const twinkle = list.filter(({ t: at }) => at > 0.4);
+        // brightness every lifetime / 4.5 to lifetime / 3: 0.33 to 0.5 s,
+        // 10 to 15 frames at 30 Hz.
+        const twinkle = list.filter(({ t: at }) => at > 0.5 * T);
         expect(Math.min(...twinkle.map(({ alpha }) => alpha))).toBeLessThan(
           0.9
         );
@@ -369,12 +374,12 @@ describe('pop', () => {
         for (let i = 1; i < brightest.length; i++) {
           const gap = (brightest[i] ?? 0) - (brightest[i - 1] ?? 0);
           gaps.push(gap);
-          expect(gap).toBeGreaterThan(0.8 / 4.5 - 2 / 240);
-          expect(gap).toBeLessThan(0.8 / 3 + 2 / 240);
+          expect(gap).toBeGreaterThan(T / 4.5 - 2 / 240);
+          expect(gap).toBeLessThan(T / 3 + 2 / 240);
         }
         // It shrinks to nothing by its end: within its last 1/240 s, under
-        // easeOutCubic(1/240 / 0.2) = 6% of its size.
-        expect(list.at(-1)?.scale).toBeLessThan(0.065);
+        // easeOutCubic(1/240 / 0.375) = 3.3% of its size.
+        expect(list.at(-1)?.scale).toBeLessThan(0.034);
       }
     }
     // Enough stars came back to full brightness twice to measure.
@@ -382,7 +387,7 @@ describe('pop', () => {
   });
 
   it('ends every star, streak, dot and the flash by lifetime', () => {
-    for (const lifetime of [800, 600, 2000]) {
+    for (const lifetime of [1500, 600, 2400]) {
       for (const hz of [30, 60, 144]) {
         const simulation = simulate(pop, { lifetime }, 9);
         const end = lifetime / 1000;
@@ -410,7 +415,7 @@ describe('pop', () => {
     // Twice the lifetime at half the frame rate is the same pop, step for
     // step.
     const quick = run(simulate(pop, {}, 10), 0.3, 60);
-    const slow = run(simulate(pop, { lifetime: 1600 }, 10), 0.6, 30);
+    const slow = run(simulate(pop, { lifetime: 3000 }, 10), 0.6, 30);
     expect(slow.pool.count).toBe(quick.pool.count);
     const reference = byKey(quick);
     for (const [key, { x, y }] of byKey(slow)) {
@@ -472,34 +477,34 @@ describe('pop', () => {
 
   it('matches its snapshot after half a second at 60 Hz', () => {
     const simulation = run(simulate(pop), 0.5);
-    expect(simulation.pool.count).toMatchInlineSnapshot(`20`);
+    expect(simulation.pool.count).toMatchInlineSnapshot(`44`);
     expect(
       rounded(simulation, ['x', 'y', 'rotation', 'scale', 'alpha', 'sprite'], 3)
     ).toMatchInlineSnapshot(`
       [
         {
-          "alpha": 0.78,
-          "rotation": 3.358,
-          "scale": 0.675,
+          "alpha": 1,
+          "rotation": 3.673,
+          "scale": 1.14,
           "sprite": 0,
-          "x": -36.38,
-          "y": -48.055,
+          "x": -31.315,
+          "y": -44.904,
         },
         {
-          "alpha": 0.887,
-          "rotation": 3.959,
-          "scale": 0.619,
+          "alpha": 1,
+          "rotation": 4.336,
+          "scale": 0.503,
           "sprite": 1,
-          "x": -1.186,
-          "y": -38.057,
+          "x": 0.837,
+          "y": -33.741,
         },
         {
-          "alpha": 0.784,
-          "rotation": 4.663,
-          "scale": 0.642,
+          "alpha": 1,
+          "rotation": 4.977,
+          "scale": 1.075,
           "sprite": 2,
-          "x": 35.691,
-          "y": -45.977,
+          "x": 34.053,
+          "y": -40.5,
         },
       ]
     `);

@@ -2,7 +2,7 @@ import type { EffectConfig } from '@/core/define-effect';
 
 /** The pop's settings, in the units of ADR 0024. */
 export interface PopConfig extends EffectConfig {
-  /** Streaks per pop. Every other one is shorter, with a smaller star. */
+  /** Stars per pop, each shot out on its own streak. Every other one is smaller and lands nearer the centre. */
   count: number;
   /** Dots in the ring that races out ahead of the streaks. 0 leaves the ring out. */
   dots: number;

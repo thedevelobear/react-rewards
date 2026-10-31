@@ -14,8 +14,8 @@ const STAR_WAIST = 0.16;
 /** A streak's box: twice its base length wide, so its head is at the middle. */
 export const TAIL_BOX = 0.7;
 /** A streak's half-width at its widest, and its halo's, as shares of its base length. */
-const TAIL_CORE = 0.12;
-const TAIL_HALO = 0.3;
+const TAIL_CORE = 0.08;
+const TAIL_HALO = 0.22;
 /** Where along a streak it is widest, as a share of its length from the tail. */
 const TAIL_WIDEST = 0.85;
 

@@ -89,7 +89,7 @@ const RING_LIFE = 0.45;
 /** How much a dot has shrunk once the ring is spent. */
 const THIN = 0.55;
 /** A dot's diameter, as a share of `size`. */
-const DOT_SIZE = 0.32;
+const DOT_SIZE = 0.2;
 
 /** How long the flash lasts, as a share of lifetime. */
 const FLASH_LIFE = 0.12;
@@ -290,7 +290,7 @@ const emit = (
 
 /**
  * A pop, for likes, favourites and follows: a button-sized bloom in three
- * layers. A soft flash lights the centre for its first 0.1 s. A ring of
+ * layers. A soft flash lights the centre for the first 0.12 of it. A ring of
  * fine dots races out ahead, thinning and fading as it slows, like a
  * shockwave. Long and short streaks shoot out in turn around the circle on
  * a gentle swirl, each shrinking into the four-point star at its tip as it
@@ -318,10 +318,10 @@ export const pop: Effect<PopConfig> = /* @__PURE__ */ defineEffect<PopConfig>({
   defaults: {
     count: 10,
     dots: 24,
-    size: 10,
+    size: 18,
     radius: 60,
     swirl: 20,
-    lifetime: 800,
+    lifetime: 1500,
     colors: ['#FF4D79', '#F59E0B', '#8B5CF6', '#1FB2F5'],
   },
   sprites: (config) => {
