@@ -2,10 +2,13 @@
 
 [![npm version](https://badge.fury.io/js/react-rewards.svg)](https://badge.fury.io/js/react-rewards) [![forthebadge](https://forthebadge.com/images/badges/makes-people-smile.svg)](https://forthebadge.com)
 
-:sparkles: **GPU-rendered**: WebGL2, with a Canvas 2D fallback
-:evergreen_tree: **Tree-shakeable**: about 7 kB gzipped for `useReward` and confetti
-:female_detective: **Built with TypeScript**
-:stopwatch: **Frame-rate independent**, and quiet for people who prefer reduced motion
+❇️ **GPU-rendered**: WebGL2, with a Canvas 2D fallback
+
+🌲 **Tree-shakeable**: about 7 kB gzipped for `useReward` and confetti
+
+🕵️ **Built with TypeScript**
+
+⏱️ **Frame-rate independent**, and quiet for people who prefer reduced motion
 
 **React-rewards** lets you add micro-interactions to your app, and rewards users with the rain of confetti, emoji, balloons or fireworks in seconds.
 Firing confetti all over the page may seem like a questionable idea, but keep in mind that rewarding users for their actions is not.
