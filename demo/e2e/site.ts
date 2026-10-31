@@ -93,10 +93,10 @@ test('the pager leads to the pages before and after, from the top', async ({
   await expect.poll(() => page.evaluate(() => window.scrollY)).toBe(0);
 
   // The last effect has no next page.
-  await page.goto('/#firework');
+  await page.goto('/#pop');
   await expect(pager.getByRole('link')).toHaveCount(1);
-  await pager.getByRole('link', { name: 'Previous Balloons' }).click();
-  await expect(page).toHaveURL(/#balloon$/);
+  await pager.getByRole('link', { name: 'Previous Fireworks' }).click();
+  await expect(page).toHaveURL(/#firework$/);
 });
 
 test('every sidebar link shows its page, and links between pages lead to one', async ({
@@ -124,6 +124,7 @@ test('every sidebar link shows its page, and links between pages lead to one', a
     'Emoji',
     'Balloons',
     'Fireworks',
+    'Pop',
   ]);
   const hrefs = links.map(({ href }) => href);
 
@@ -147,17 +148,19 @@ test("useReward's settings table shows each effect's defaults", async ({
   const settings = page.getByRole('table').first();
   const cells = (name: RegExp) =>
     settings.getByRole('row', { name }).getByRole('cell').allTextContents();
-  // The unit, then confetti, emoji, balloon and firework.
-  expect(await cells(/^count /)).toEqual(['', '100', '20', '16', '3']);
+  // The unit, then confetti, emoji, balloon, firework and pop.
+  expect(await cells(/^count /)).toEqual(['', '100', '20', '16', '3', '10']);
   expect(await cells(/^gravity /)).toEqual([
     'px/s²',
     '900',
     '900',
     '-300',
     '250',
+    '',
   ]);
-  expect(await cells(/^rotate /)).toEqual(['', '', 'true', '', '']);
-  expect(await cells(/^spiral /)).toEqual(['px', '', '', '', '2']);
+  expect(await cells(/^rotate /)).toEqual(['', '', 'true', '', '', '']);
+  expect(await cells(/^spiral /)).toEqual(['px', '', '', '', '2', '']);
+  expect(await cells(/^swirl /)).toEqual(['°', '', '', '', '', '20']);
 });
 
 test('the effect cards lead to the effects', async ({ page }) => {

@@ -2,6 +2,7 @@ import { balloonPage } from './balloon';
 import { confettiPage } from './confetti';
 import { emojiPage } from './emoji';
 import { fireworkPage } from './firework';
+import { popPage } from './pop';
 import type { AnyEffectPage } from './types';
 
 /** The effects in sidebar order. A new effect adds its page here. */
@@ -10,6 +11,7 @@ export const effects = [
   emojiPage,
   balloonPage,
   fireworkPage,
+  popPage,
 ] as const;
 
 /** The page for `name`, if there is one (README, "Routing"). */

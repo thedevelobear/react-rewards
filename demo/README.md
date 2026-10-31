@@ -61,7 +61,7 @@ Why: a dark, quiet page lets the effects carry the colour. Each text colour keep
 Why: the glow under the preview's button made the accent read as light rather than paint, so the other accent marks share it.
 
 ### Routing
-- The URL hash names the page: `#getting-started`, `#custom-effects`, `#server-rendering`, `#upgrading-from-v2`, `#stress-test`, `#use-reward`, `#fire`, `#renderers`, `#confetti`, `#emoji`, `#balloon`, `#firework`. An effect's hash is its `name`, not its label, so Balloons is `#balloon` and Fireworks `#firework`.
+- The URL hash names the page: `#getting-started`, `#custom-effects`, `#server-rendering`, `#upgrading-from-v2`, `#stress-test`, `#use-reward`, `#fire`, `#renderers`, `#confetti`, `#emoji`, `#balloon`, `#firework`, `#pop`. An effect's hash is its `name`, not its label, so Balloons is `#balloon` and Fireworks `#firework`.
 - An empty or unknown hash shows Getting started. The URL is left as it is.
 - `hooks/use-hash` reads the hash with `useSyncExternalStore` and the `hashchange` event. There is no router.
 - The document title follows the page, for example "Confetti · react-rewards".
@@ -114,6 +114,7 @@ Why: the item's text stays in text colours, which keep 4.5:1, and the accent mar
 - Pages name their icon in `src/data/`, so the type of `icon` is the list of names, and a missing icon is a type error. A new page adds its icon to `ICON_PATHS`.
 - Confetti's icon, `party-popper`, is a cone at the bottom left with a curved mouth, and the bits it throws to the top right: two curly streamers, a dash and three dots.
 - The fireworks' icon, `firework`, is Hugeicons' free fireworks icon (MIT), copied as it is: four curved strokes crossing at one point, with seven spark dots. A comment in `paths.ts` keeps its notice.
+- The pop's icon, `sparkle-burst`, is a four-point star with concave sides, the shape of the pop's stars, and a short streak off each corner. The star spans 15 units, about as far as the heart and the balloon do, so the icons match in size, and the streaks are 2.5 units long, so they still read as streaks at 16 px.
 
 Why: one set of icons and one component keeps every icon the same weight, and nothing is drawn twice.
 
@@ -147,7 +148,7 @@ Why: the white letter on the tile stays legible at 16 px on light and dark tab b
 ### Preview
 - A 320 px stage with a `--dot` grid on `--card`, and a "Reward me" button at its centre that fires the effect from there. The button is an `--accent` pill with `--ink` text and the effect's icon.
 - Its top left corner names the effect, "Live preview · confetti", after a `--success` dot. The top right corner holds what the page puts there, such as the Stress test's readout. On a narrow stage, the corner wraps under the name.
-- A caption under the button says what the settings don't: "Every call to reward() fires a new burst." on Getting started, and "Fireworks look best on dark backgrounds. Just like in real life." on the Fireworks page, since white shells are faint on the light theme. An effect's page sets it with `caption` in `src/data/effects/`.
+- A caption under the button says what the settings don't: "Every call to reward() fires a new burst." on Getting started, "Fireworks look best on dark backgrounds. Just like in real life." on the Fireworks page, since white shells are faint on the light theme, and "Sized for a like button. For a bigger button, raise the radius." on the Pop page, since the preview's button is 160 px wide, and at the default `radius` the pop's stars land 60 px from its centre, partly over it. An effect's page sets it with `caption` in `src/data/effects/`.
 - There is no replay button: "Reward me" already fires again.
 - The stage is 320 px for every effect. Bursts are drawn on the page's overlay, which the stage doesn't clip, so an effect that rises higher draws over the page above it. Fireworks' shells burst about 376 px above the button and reach about 470 px, as confetti does, far past the stage's top edge, which is kept: a taller stage for one effect would make the pages differ, and the overflow shows the bursts aren't clipped.
 
