@@ -40,6 +40,21 @@ export const snow = defineEffect({
 // useReward(ref, snow, { color: '#cce8ff' })
 `;
 
+const SHIVER = `export const snow = defineEffect({
+  // name, blend, defaults, sprites, spawn and update, as above.
+  animation: () => ({
+    keyframes: [
+      { transform: 'rotate(0deg)' },
+      { transform: 'rotate(-4deg)' },
+      { transform: 'rotate(4deg)' },
+      { transform: 'rotate(0deg)' },
+    ],
+    duration: 300,
+    easing: 'ease-in-out',
+  }),
+});
+`;
+
 /** The custom effects page, from the library's README (README, "Articles"). */
 export const CustomEffectsArticle = () => (
   <>
@@ -102,6 +117,51 @@ export const CustomEffectsArticle = () => (
           <strong>Children.</strong> The fourth argument of <code>update</code>{' '}
           has <code>spawn(init)</code>, which adds a particle, for trails and
           sub-bursts.
+        </li>
+        <li>
+          <strong>The element.</strong> An optional <code>animation</code>{' '}
+          animates the element the burst fires from, as below.
+        </li>
+      </ul>
+    </Section>
+    <Section title="Animating the element">
+      <p>
+        An effect can also move the element it fires from, as <code>pop</code>{' '}
+        shrinks its button away and springs it back. Give it{' '}
+        <code>animation(config)</code>, which returns the <code>keyframes</code>
+        , as <code>Element.animate</code> takes them, a <code>duration</code> in
+        milliseconds, and an <code>easing</code>, linear unless you give one.
+        Return <code>undefined</code> for no animation, for example when a
+        setting turns it off. Here the button shivers as the snow starts:
+      </p>
+      <CodeBlock
+        code={SHIVER}
+        filename="snow.ts"
+        lang="ts"
+        label="the animation"
+      />
+      <ul>
+        <li>
+          It plays with the Web Animations API as the burst starts, on the
+          element <code>useReward</code> fires from, or on <code>fire</code>'s{' '}
+          <code>element</code> option. A burst from a point animates nothing
+          unless it is given one.
+        </li>
+        <li>
+          The keyframes are added to the element's own transform, so an element
+          centred with <code>translate(-50%, -50%)</code> still turns and scales
+          about its centre. Inline elements, such as a <code>span</code> of
+          text, don't transform: make them <code>inline-block</code>.
+        </li>
+        <li>
+          Another burst on the same element restarts the animation rather than
+          adding to it. Cancelling the burst puts the element back, and a
+          skipped burst animates nothing.
+        </li>
+        <li>
+          An element scaled to nothing lets taps through to whatever is under
+          it. If it must stay tappable, fire from an element inside it, such as
+          a button's icon.
         </li>
       </ul>
     </Section>
