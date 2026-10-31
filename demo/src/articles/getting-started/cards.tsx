@@ -8,6 +8,7 @@ const PAINTS: Readonly<Partial<Record<string, Paint>>> = {
   emoji: 'accent',
   balloon: 'art-sky',
   firework: 'art-amber',
+  pop: 'accent',
 };
 
 /**

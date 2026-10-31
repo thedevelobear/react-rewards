@@ -76,7 +76,7 @@ Why: GitHub Pages serves static files only, so path routes such as `/emoji` woul
   1. "Install the package": the install command, with a tab per package manager (pnpm, npm, yarn, bun) and a copy button. The choice is stored under `react-rewards:package-manager`.
   2. "Fire your first reward": a line on `useReward` with a link to its page, and the first effect's snippet with its defaults, as `RewardButton.tsx`.
   3. "Pick an effect": a card per effect, linking to its page, with its label and description. Each card shows its effect's sidebar icon, through `components/icon`, at 64 px with a stroke of 1.5 on the 24 px grid (about 4 px on screen), so a new effect needs no code here.
-     - Each icon is one colour, from `articles/getting-started/cards.tsx`: Confetti `--art-violet`, Emoji `--accent`, Balloons `--art-sky` and Fireworks `--art-amber`. An effect without a colour there is `--accent`.
+     - Each icon is one colour, from `articles/getting-started/cards.tsx`: Confetti `--art-violet`, Emoji `--accent`, Balloons `--art-sky`, Fireworks `--art-amber` and Pop `--accent`. Pop shares Emoji's coral, which is the closest of the site's colours to its rose flash and ring, rather than adding a token for one card. An effect without a colour there is `--accent`.
 
 Why: the install command installs the whole library, so it is shown once rather than on every effect. The steps read in the order a newcomer works, and the preview shows the result before any of them. The cards and the sidebar show the same icon, so each effect has one picture across the site.
 
