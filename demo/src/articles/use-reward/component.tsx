@@ -89,7 +89,7 @@ export const UseRewardArticle = () => (
         </li>
         <li>
           <code>effect</code>: <code>confetti</code>, <code>emoji</code>,{' '}
-          <code>balloon</code>, <code>firework</code>, or{' '}
+          <code>balloon</code>, <code>firework</code>, <code>pop</code>, or{' '}
           <a href="#custom-effects">one of yours</a>.
         </li>
         <li>
@@ -116,10 +116,15 @@ export const UseRewardArticle = () => (
         <code>firework</code> share most of their settings, and every setting is
         optional. A firework's <code>count</code> is rockets rather than
         particles, and it has settings of its own for the rockets' spiral and
-        their shells. Each effect's page describes its settings, lists its
-        colours, and lets you try them: <a href="#confetti">Confetti</a>,{' '}
-        <a href="#emoji">Emoji</a>, <a href="#balloon">Balloons</a> and{' '}
-        <a href="#firework">Fireworks</a>.
+        their shells. A <code>pop</code> blooms in place rather than being
+        thrown, so it has no <code>angle</code>, <code>spread</code>,{' '}
+        <code>velocity</code>, <code>drag</code> or <code>gravity</code>: its{' '}
+        <code>radius</code> sets how far it reaches, and its <code>dots</code>{' '}
+        and <code>swirl</code> are its own. Each effect's page describes its
+        settings, lists its colours, and lets you try them:{' '}
+        <a href="#confetti">Confetti</a>, <a href="#emoji">Emoji</a>,{' '}
+        <a href="#balloon">Balloons</a>, <a href="#firework">Fireworks</a> and{' '}
+        <a href="#pop">Pop</a>.
       </p>
       <SettingsTable />
     </Section>
