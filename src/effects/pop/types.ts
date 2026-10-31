@@ -14,6 +14,8 @@ export interface PopConfig extends EffectConfig {
   swirl: number;
   /** How long the pop lasts, in milliseconds. Every part keeps its share of it, so a longer pop plays slower. */
   lifetime: number;
+  /** Whether the element the pop fires from shrinks away at the tap and springs back as the stars bloom. Off leaves the element still. */
+  bounce: boolean;
   /** One sprite per colour. Streaks take the colours in turn, and the flash and the ring take the first. */
   colors: readonly string[];
 }

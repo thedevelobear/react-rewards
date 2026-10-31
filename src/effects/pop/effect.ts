@@ -100,6 +100,21 @@ const FLASH_FROM = 0.6;
 /** The flash's opacity as it starts. */
 const FLASH_ALPHA = 0.85;
 
+/*
+ * The element's animation, like the heart of the CSS-Tricks recreation of
+ * Twitter's: it shrinks away at the tap by `HIDE`, stays hidden while the
+ * flash and the ring burst, then from `RETURN` springs back, overshooting,
+ * and settles at full size by `SETTLE`. Shares of lifetime.
+ */
+const HIDE = 0.03;
+const RETURN = 0.175;
+const SETTLE = 0.6;
+/**
+ * The spring back. It overshoots to 1.21 at 0.377 of lifetime, as the long
+ * stars' bloom peaks at 0.375, and settles with no jolt, since it ends flat.
+ */
+const SPRING = 'cubic-bezier(0.3, 1.9, 0.6, 1)';
+
 /** The pop's length in seconds, at least a millisecond. */
 const seconds = (config: PopConfig): number =>
   Math.max(config.lifetime, 1) / 1000;
@@ -302,6 +317,10 @@ const emit = (
  * `lifetime` plays the same pop slower. Halos are baked into the sprites,
  * so the normal blend shows on light pages as well as dark.
  *
+ * With `bounce`, the element the pop fires from shrinks away at the tap,
+ * stays hidden while the flash and the ring burst, and springs back as the
+ * stars bloom (ADR 0073).
+ *
  * `count` is the stars. On its first step each adds its streak, and the
  * first adds the flash and the ring.
  *
@@ -322,6 +341,7 @@ export const pop: Effect<PopConfig> = /* @__PURE__ */ defineEffect<PopConfig>({
     radius: 60,
     swirl: 20,
     lifetime: 1500,
+    bounce: true,
     colors: ['#FF4D79', '#F59E0B', '#8B5CF6', '#1FB2F5'],
   },
   sprites: (config) => {
@@ -335,6 +355,18 @@ export const pop: Effect<PopConfig> = /* @__PURE__ */ defineEffect<PopConfig>({
       flash(first, config.radius * FLASH_SIZE),
     ];
   },
+  animation: (config) =>
+    config.bounce
+      ? {
+          duration: seconds(config) * 1000 * SETTLE,
+          keyframes: [
+            { transform: 'scale(1)', easing: 'ease-in' },
+            { transform: 'scale(0)', offset: HIDE / SETTLE },
+            { transform: 'scale(0)', offset: RETURN / SETTLE, easing: SPRING },
+            { transform: 'scale(1)' },
+          ],
+        }
+      : undefined,
   spawn: (p, config, rng, index) => {
     const stars = Math.max(1, Math.floor(config.count));
     const colours = Math.max(1, config.colors.length);

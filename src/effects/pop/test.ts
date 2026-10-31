@@ -36,6 +36,21 @@ const sizeOf = (kind: number, seed: number) =>
 const covered = (kind: number, t: number) =>
   1 - Math.exp(-K * Math.max(0, t - (kind === LONG ? 0 : 0.06 * T)));
 
+/** A CSS `cubic-bezier` easing's value at progress `x`, by bisection. */
+const cubicBezier =
+  (x1: number, y1: number, x2: number, y2: number) => (x: number) => {
+    const at = (a: number, b: number, t: number) =>
+      3 * (1 - t) ** 2 * t * a + 3 * (1 - t) * t * t * b + t ** 3;
+    let low = 0;
+    let high = 1;
+    for (let i = 0; i < 50; i++) {
+      const mid = (low + high) / 2;
+      if (at(x1, x2, mid) < x) low = mid;
+      else high = mid;
+    }
+    return at(y1, y2, (low + high) / 2);
+  };
+
 /** Every live particle with one role, with the fields the tests read. */
 const all = (simulation: Simulation, role: number) => {
   const s0 = field(simulation, 's0');
@@ -91,6 +106,7 @@ describe('pop', () => {
       radius: 60,
       swirl: 20,
       lifetime: 1500,
+      bounce: true,
       colors: ['#FF4D79', '#F59E0B', '#8B5CF6', '#1FB2F5'],
     });
     expect(Object.isFrozen(pop.defaults)).toBe(true);
@@ -472,6 +488,46 @@ describe('pop', () => {
     }
     expect(field(run(simulate(pop, {}, 12), 0.4), 'x')).not.toEqual(
       field(a, 'x')
+    );
+  });
+
+  it('shrinks its element away at the tap and springs it back as the stars bloom', () => {
+    const animation = pop.animation?.(resolveConfig(pop));
+    // Over 0.6 of lifetime, with offsets as shares of that: gone by 0.03 of
+    // lifetime, hidden until 0.175, after the flash has gone at 0.12, and
+    // back by 0.6.
+    expect(animation).toEqual({
+      duration: 900,
+      keyframes: [
+        { transform: 'scale(1)', easing: 'ease-in' },
+        { transform: 'scale(0)', offset: 0.05 },
+        {
+          transform: 'scale(0)',
+          offset: 0.175 / 0.6,
+          easing: 'cubic-bezier(0.3, 1.9, 0.6, 1)',
+        },
+        { transform: 'scale(1)' },
+      ],
+    });
+    // The spring overshoots to 1.21 at 0.377 of lifetime, as the long stars'
+    // bloom peaks at 0.375, and ends flat, so it settles with no jolt.
+    const spring = cubicBezier(0.3, 1.9, 0.6, 1);
+    let peak = { at: 0, scale: 0 };
+    for (let i = 0; i <= 1000; i++) {
+      const scale = spring(i / 1000);
+      if (scale > peak.scale) peak = { at: 0.175 + (0.425 * i) / 1000, scale };
+    }
+    expect(peak.scale).toBeCloseTo(1.213, 3);
+    expect(peak.at).toBeCloseTo(0.377, 3);
+    expect((spring(1) - spring(0.999)) / 0.001).toBeCloseTo(0, 1);
+
+    // It plays the same share of a longer pop, and not at all without
+    // bounce.
+    expect(
+      pop.animation?.(resolveConfig(pop, { lifetime: 3000 }))
+    ).toMatchObject({ duration: 1800 });
+    expect(pop.animation?.(resolveConfig(pop, { bounce: false }))).toBe(
+      undefined
     );
   });
 
