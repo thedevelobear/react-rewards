@@ -33,6 +33,32 @@ test('"Reward me" draws on the overlay', async ({ page }) => {
   await drawn();
 });
 
+test("Pop's preview is a round icon button that springs back", async ({
+  page,
+}) => {
+  await page.goto('/#pop');
+  const button = page.getByRole('button', { name: 'Reward me' });
+  await expect(button).toHaveText('');
+  const box = await button.boundingBox();
+  expect([box?.width, box?.height]).toEqual([52, 52]);
+  await button.click();
+  // The pop's own animation, added to the button's transform (ADR 0073),
+  // not the CSS transition of its press.
+  await expect
+    .poll(() =>
+      button.evaluate((element) =>
+        element
+          .getAnimations()
+          .some(
+            (animation) =>
+              animation.effect instanceof KeyframeEffect &&
+              animation.effect.composite === 'add'
+          )
+      )
+    )
+    .toBe(true);
+});
+
 test('the hash picks the effect', async ({ page }) => {
   const heading = page.getByRole('heading', { level: 1 });
   const nav = page.getByRole('navigation', { name: 'Pages' });
