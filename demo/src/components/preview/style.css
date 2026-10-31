@@ -62,6 +62,13 @@
   transition: transform var(--duration-press) var(--ease-out);
 }
 
+/* A circle with only the icon, for an effect sized for icon buttons. */
+.preview-button-icon {
+  justify-content: center;
+  width: 52px;
+  padding: 0;
+}
+
 .preview-button:hover {
   background: var(--accent-hover);
 }

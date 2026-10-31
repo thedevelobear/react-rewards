@@ -7,7 +7,9 @@ export const popPage = effectPage({
   description:
     'Streaks that swirl out of a soft flash and shrink into twinkling stars.',
   icon: 'sparkle-burst',
-  caption: 'Sized for a like button. For a bigger button, raise the radius.',
+  caption:
+    'Sized for an icon button like this one. For a bigger button, raise the radius.',
+  button: 'icon',
   controls: {
     count: {
       kind: 'range',

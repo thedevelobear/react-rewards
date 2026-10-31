@@ -68,6 +68,12 @@ export interface EffectPage<C extends EffectConfig> {
    * (README, "Preview").
    */
   readonly caption?: string;
+  /**
+   * The preview's button: a pill with the icon and "Reward me", or a circle
+   * with only the icon, for an effect sized for icon buttons (README,
+   * "Preview"). A pill unless given.
+   */
+  readonly button?: 'label' | 'icon';
 }
 
 /**
