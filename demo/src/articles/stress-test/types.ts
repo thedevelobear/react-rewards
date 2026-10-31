@@ -9,6 +9,8 @@ export interface ReadoutProps {
  * particles (README, "Stress test").
  */
 export interface CountUnit {
+  /** The effect in the plural, which starts the line under the settings. */
+  readonly effects: string;
   /** About how many particles one makes at its busiest, at the defaults. */
   readonly particles: number;
   /** Its name, for one and for several. */

@@ -85,6 +85,21 @@ test('Fireworks turn the count into rockets, and say so', async ({ page }) => {
   });
 });
 
+test('Pops turn the count into stars, and say so', async ({ page }) => {
+  await page.goto('/#stress-test');
+  const units = page.getByTestId('stress-units');
+  await option(page, 'effect', 'Pop').click();
+  await expect(units).toHaveText(
+    'Pops count stars, which make the particles, so this count is approximate: 5000 particles is 2500 stars.'
+  );
+  await page.getByLabel('count').fill('100');
+  await expect(units).toContainText('100 particles is 50 stars.');
+  await page.getByTestId('reward').click();
+  await expect(readout(page)).toHaveAttribute('data-state', 'done', {
+    timeout: BURST_TIMEOUT,
+  });
+});
+
 test('a skipped burst reads Skipped', async ({ page }) => {
   await page.emulateMedia({ reducedMotion: 'reduce' });
   await open(page);

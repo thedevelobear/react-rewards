@@ -30,7 +30,15 @@ const DEFAULT_COUNT = 5000;
  */
 const UNITS: Readonly<Record<string, CountUnit>> = {
   // A rocket peaks at about 126 live particles at the defaults.
-  firework: { particles: 130, one: 'rocket', many: 'rockets' },
+  firework: {
+    effects: 'Fireworks',
+    particles: 130,
+    one: 'rocket',
+    many: 'rockets',
+  },
+  // A star and its streak are two particles. Each pop adds its flash and
+  // ring, 25 more at the defaults.
+  pop: { effects: 'Pops', particles: 2, one: 'star', many: 'stars' },
 };
 
 const EFFECTS = effects.map(({ name, label }) => ({ value: name, label }));
@@ -98,7 +106,7 @@ export const StressTestArticle = () => {
         </ControlGrid>
         {unit && (
           <p data-testid="stress-units">
-            {page.label} count {unit.many}, which make the particles, so this
+            {unit.effects} count {unit.many}, which make the particles, so this
             count is approximate: {count} particles is {units}{' '}
             {units === 1 ? unit.one : unit.many}.
           </p>
