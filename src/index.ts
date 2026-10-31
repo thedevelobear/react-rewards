@@ -4,6 +4,7 @@ export type {
   Effect,
   EffectConfig,
   EffectDefinition,
+  ElementAnimation,
   Particle,
   SpriteSource,
   UpdateContext,

@@ -1,7 +1,7 @@
 import type { Atlas } from '@/core/atlas';
 import type { Effect, EffectConfig } from '@/core/define-effect';
 import type { Loop } from '@/core/loop';
-import type { Origin } from '@/core/origin';
+import type { Measurable, Origin, TargetRef } from '@/core/origin';
 import type { Batch, Overlay, Renderer, RendererKind } from '@/core/renderer';
 import type { Simulation } from '@/core/simulation';
 
@@ -31,6 +31,13 @@ export interface FireOptions<C extends EffectConfig = EffectConfig> {
   readonly respectReducedMotion?: boolean;
   /** Seeds the burst's generator, so the same seed plays the same burst. */
   readonly seed?: number;
+  /**
+   * The element that plays the effect's element animation, if it has one,
+   * or a ref to it, resolved when `fire()` is called. Defaults to `origin`
+   * when that is an element or a ref, so a burst from a point animates no
+   * element unless this is given (ADR 0073).
+   */
+  readonly element?: Measurable | TargetRef;
 }
 
 /** A burst started by `fire()`. */
@@ -56,6 +63,11 @@ export interface StageOptions {
 /** Runs bursts on one loop, overlay and atlas. */
 export interface Stage {
   fire(effect: Effect, options: FireOptions): Burst;
+}
+
+/** An element that can play a Web Animations API animation. */
+export interface Animatable {
+  animate(keyframes: Keyframe[], options: KeyframeAnimationOptions): Animation;
 }
 
 /** A burst whose simulation has started. */

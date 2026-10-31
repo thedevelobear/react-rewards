@@ -3,6 +3,7 @@ import {
   type ConfigOf,
   type Effect,
   type EffectConfig,
+  type ElementAnimation,
   resolveConfig,
   type SpriteSource,
 } from '@/core/define-effect';
@@ -18,6 +19,7 @@ import {
   type RendererPreference,
 } from '@/core/renderer';
 import { createSimulation, type Simulation } from '@/core/simulation';
+import { playOn, resolveElement } from './element';
 import type {
   Burst,
   BurstEnd,
@@ -43,6 +45,9 @@ export const createStage = ({ loop, overlay, atlas }: StageOptions): Stage => {
   // Reused every frame, so drawing allocates nothing.
   const batches: Batch[] = [];
   let stop: (() => void) | undefined;
+  // The element animation each element is playing, so a burst restarts it
+  // rather than stacking another (ADR 0073).
+  const playing = new WeakMap<object, Animation>();
 
   const frame = (dt: number): void => {
     for (const burst of running) {
@@ -71,6 +76,7 @@ export const createStage = ({ loop, overlay, atlas }: StageOptions): Stage => {
     });
     let ended = false;
     let release: (() => void) | undefined;
+    let still: (() => void) | undefined;
     let entry: Running | undefined;
 
     const end = (how: BurstEnd): void => {
@@ -84,6 +90,9 @@ export const createStage = ({ loop, overlay, atlas }: StageOptions): Stage => {
         }
       }
       release?.();
+      // A cancelled burst puts its element back. One that ends on its own
+      // leaves its element animation to finish.
+      if (how === 'cancelled') still?.();
       const { onComplete } = options;
       if (onComplete && how !== 'cancelled') queueMicrotask(onComplete);
       resolve(how);
@@ -98,6 +107,7 @@ export const createStage = ({ loop, overlay, atlas }: StageOptions): Stage => {
 
     const respectReducedMotion = options.respectReducedMotion ?? true;
     const origin = resolveOrigin(options.origin);
+    const element = resolveElement(options.origin, options.element);
     if ((respectReducedMotion && prefersReducedMotion()) || !origin) {
       end('skipped');
       return burst();
@@ -116,9 +126,11 @@ export const createStage = ({ loop, overlay, atlas }: StageOptions): Stage => {
 
     let config: EffectConfig;
     let sources: readonly SpriteSource[];
+    let motion: ElementAnimation | undefined;
     try {
       config = resolveConfig(effect, options.config);
       sources = effect.sprites(config);
+      motion = element ? effect.animation?.(config) : undefined;
     } catch {
       end('skipped');
       return burst(lease.renderer);
@@ -145,6 +157,8 @@ export const createStage = ({ loop, overlay, atlas }: StageOptions): Stage => {
         };
         running.add(entry);
         stop ??= loop.add(frame);
+        // Its element animation starts with it, on the same next frame.
+        if (element && motion) still = playOn(element, motion, playing);
       },
       () => end('skipped')
     );
@@ -192,7 +206,9 @@ export const setRenderer = (next: RendererPreference): void => {
  * The burst starts once its sprites are in the atlas, at least a microtask
  * later (ADR 0021). It is skipped, and `onComplete` still called, when the
  * user prefers reduced motion, the origin is an empty ref, no renderer is
- * available, the sprites fail to load or the effect throws (ADR 0025).
+ * available, the sprites fail to load or the effect throws (ADR 0025). An
+ * effect with an element animation plays it on `options.element`, or on the
+ * origin when that is an element, as the burst starts (ADR 0073).
  */
 export const fire = <E extends Effect>(
   effect: E,
