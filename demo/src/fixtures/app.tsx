@@ -6,6 +6,7 @@ import {
   type EffectConfig,
   emoji,
   firework,
+  pop,
   type RendererKind,
   type RendererPreference,
   setRenderer,
@@ -95,6 +96,9 @@ export const App = () => {
         </RewardButton>
         <RewardButton effect={firework} testId="fire-firework" onBurst={track}>
           Firework
+        </RewardButton>
+        <RewardButton effect={pop} testId="fire-pop" onBurst={track}>
+          Pop
         </RewardButton>
         <button type="button" data-testid="cancel-all" onClick={cancelAll}>
           Cancel all

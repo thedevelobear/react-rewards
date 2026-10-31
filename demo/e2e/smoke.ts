@@ -29,9 +29,9 @@ test('a burst draws on one overlay canvas, hidden once it ends', async ({
 });
 
 // Emoji are drawn from the platform's font, balloons from an SVG that the
-// atlas decodes, and fireworks' glows from canvas gradients. A sprite that
-// fails to load skips the burst.
-for (const effect of ['emoji', 'balloon', 'firework']) {
+// atlas decodes, and fireworks' glows and pops' halos from canvas gradients.
+// A sprite that fails to load skips the burst.
+for (const effect of ['emoji', 'balloon', 'firework', 'pop']) {
   test(`${effect} draws on the overlay`, async ({ page }) => {
     const button = page.getByTestId(`fire-${effect}`);
     const { drawn } = await expectDrawn(await bandAbove(page, button, 120));
