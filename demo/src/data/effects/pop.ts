@@ -15,7 +15,7 @@ export const popPage = effectPage({
       max: 40,
       step: 1,
       description:
-        'Streaks per pop. Every other one is shorter, with a smaller star.',
+        'Stars per pop, each shot out on its own streak. Every other one is smaller and lands nearer the centre.',
     },
     dots: {
       kind: 'range',
@@ -60,6 +60,11 @@ export const popPage = effectPage({
       unit: 'ms',
       description:
         'How long the pop lasts, in milliseconds. Every part keeps its share of it, so a longer pop plays slower.',
+    },
+    bounce: {
+      kind: 'switch',
+      description:
+        'Whether the element the pop fires from shrinks away at the tap and springs back as the stars bloom. Off leaves the element still.',
     },
     colors: {
       kind: 'colors',
