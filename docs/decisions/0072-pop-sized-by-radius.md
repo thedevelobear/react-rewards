@@ -7,4 +7,4 @@ How far a pop reaches is `radius`, a setting of its config in CSS pixels: its lo
 
 **Why:** Fitting the pop to its element would change the effect contract and the API for one effect. A size in pixels is in the units the other settings use ([ADR 0024](0024-physical-config-units.md)).
 
-**Consequences:** A pop doesn't grow with its element. The default, 60 px, suits a like button, and a bigger button needs a bigger `radius`.
+**Consequences:** A pop doesn't grow with its element. The default, 80 px, suits a like button: around a 52 px round button, its stars land clear of the button's edge even as the button springs back past full size ([ADR 0069](0069-pop-blooms-in-closed-form.md)). A bigger button needs a bigger `radius`.
