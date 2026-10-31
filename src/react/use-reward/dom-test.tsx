@@ -113,6 +113,7 @@ describe('useReward', () => {
     expect(fired[0]?.effect).toBe(first);
     expect(fired[0]?.options).toEqual({
       origin: target,
+      element: target,
       config: { count: 3 },
       zIndex: 5,
       seed: 7,
@@ -255,9 +256,62 @@ describe('useReward', () => {
     expect(fired[0]?.effect).toBe(second);
     expect(fired[0]?.options).toEqual({
       origin: element,
+      element,
       config: { count: 2 },
       seed: 2,
     });
+  });
+
+  it('animates the target from the pointer and the keyboard (ADR 0073)', () => {
+    const { getByRole } = render(<HandlerButton />);
+    const button = getByRole('button');
+    fireEvent.click(button, { clientX: 30, clientY: 40, detail: 1 });
+    fireEvent.click(button, { clientX: 0, clientY: 0, detail: 0 });
+    expect(fired.map((call) => call.options.origin)).toEqual([
+      { x: 30, y: 40 },
+      handlerTarget,
+    ]);
+    for (const call of fired) expect(call.options.element).toBe(handlerTarget);
+  });
+
+  it('animates the target from no origin or a point, and leaves another element or ref to fire()', () => {
+    const target = { current: null };
+    const ref = { current: document.createElement('span') };
+    const element = document.createElement('div');
+    const { result } = renderHook(() => useReward(target, first));
+    act(() => {
+      result.current.reward();
+      result.current.reward({ x: 10, y: 20 });
+      result.current.reward(ref);
+      result.current.reward(element);
+    });
+    expect(fired.map((call) => call.options.origin)).toEqual([
+      target,
+      { x: 10, y: 20 },
+      ref,
+      element,
+    ]);
+    // fire() animates an element or a ref origin when `element` is left out.
+    expect(fired.map((call) => call.options.element)).toEqual([
+      target,
+      target,
+      undefined,
+      undefined,
+    ]);
+  });
+
+  it('animates the element in its options, from any origin', () => {
+    const icon = { current: document.createElement('span') };
+    const { result } = renderHook(() =>
+      useReward({ current: null }, first, undefined, { element: icon })
+    );
+    act(() => {
+      result.current.reward();
+      result.current.reward({ x: 10, y: 20 });
+      result.current.reward(document.createElement('div'));
+    });
+    expect(fired).toHaveLength(3);
+    for (const call of fired) expect(call.options.element).toBe(icon);
   });
 
   it('is animating until every burst has ended, however it ended', async () => {

@@ -40,10 +40,31 @@ const startOf = (
 };
 
 /**
+ * The element a reward animates, if its effect has an element animation
+ * (ADR 0073): `options.element` if given. A reward started at another
+ * element or ref leaves it out, so `fire()` animates that origin. Any other
+ * reward animates the target, so `onClick={reward}` fires from the pointer
+ * and still animates the button.
+ */
+const elementOf = (
+  start: Origin,
+  target: RewardTarget,
+  options: RewardOptions | undefined
+): RewardTarget | undefined => {
+  if (options?.element) return options.element;
+  const other =
+    start !== target &&
+    ('getBoundingClientRect' in start || 'current' in start);
+  return other ? undefined : target;
+};
+
+/**
  * Plays `effect` from `target` each time `reward()` is called. `config`
  * overrides the effect's defaults, and `options` holds the burst options
- * (ADR 0041). Bursts that are still running when the component unmounts are
- * cancelled, so `onComplete` isn't called for them (ADR 0042).
+ * (ADR 0041). An effect with an element animation plays it on `target`, or
+ * on `options.element` (ADR 0073). Bursts that are still running when the
+ * component unmounts are cancelled, so `onComplete` isn't called for them
+ * (ADR 0042).
  */
 export const useReward = <E extends Effect>(
   target: RewardTarget,
@@ -74,9 +95,11 @@ export const useReward = <E extends Effect>(
   const reward = useCallback(
     (origin?: Origin | PositionedEvent): Burst => {
       const { target, effect, config, options } = latest.current;
+      const start = startOf(origin, target);
       const burst = fire(effect, {
         ...options,
-        origin: startOf(origin, target),
+        origin: start,
+        element: elementOf(start, target, options),
         config,
       });
       bursts.add(burst);
