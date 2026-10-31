@@ -23,6 +23,10 @@ section {
   gap: 12px;
 }
 
+.row + .row {
+  margin-top: 12px;
+}
+
 button,
 select {
   font: inherit;
