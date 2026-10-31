@@ -45,7 +45,7 @@ What was decided, specifically enough to check the code against.
 | [0002](decisions/0002-docs-as-decision-record.md) | docs/ is the decision record | Accepted. Scope narrowed to the library by 0046. ADR format set by 0057 |
 | [0003](decisions/0003-integration-branch.md) | v3 lands through the `feat/v3-scaffolding` integration branch | Accepted. Work after the release set by 0056 |
 | [0004](decisions/0004-esm-only-output.md) | Publish ESM only | Accepted |
-| [0005](decisions/0005-effect-contract-scope.md) | The 3.0 effect contract has `spawn` and `update` only | Accepted |
+| [0005](decisions/0005-effect-contract-scope.md) | The 3.0 effect contract has `spawn` and `update` only | Accepted. Extended by 0073 |
 | [0006](decisions/0006-bare-demo-as-e2e-target.md) | A bare `demo/` page is the browser-test target | Accepted. The page the specs open is refined by 0045 |
 | [0007](decisions/0007-no-rename-step.md) | No rename-only step for the v2 files | Accepted |
 | [0008](decisions/0008-toolchain-version-pins.md) | Toolchain version pins (pnpm 12.15.0, Rslib 1.0.3), and how to run pnpm 12 | Accepted. CI bullet superseded by 0014 |
@@ -113,6 +113,7 @@ What was decided, specifically enough to check the code against.
 | [0070](decisions/0070-pop-effect-name.md) | The pop effect is named `pop` | Proposed |
 | [0071](decisions/0071-pop-normal-blend.md) | The pop draws with the normal blend, with halos baked into its sprites | Proposed |
 | [0072](decisions/0072-pop-sized-by-radius.md) | A pop's size is a `radius` in pixels, not its element's box | Proposed |
+| [0073](decisions/0073-effects-animate-their-element.md) | An effect may animate the element it fires from, with the Web Animations API | Proposed |
 
 ### Benchmarks
 | Benchmark | What |

@@ -1,0 +1,15 @@
+# 0073. An effect may animate the element it fires from, with the Web Animations API
+
+- **Status:** Proposed
+- **Date:** 2026-10-31
+
+- **Contract.** An effect may declare an optional method, `animation(config)`, beside `sprites`, `spawn` and `update`. It returns an `ElementAnimation`, or `undefined` for none. An `ElementAnimation` has `keyframes`, as `Element.animate` takes them, a `duration` in milliseconds, and an optional `easing` for keyframes that don't set their own (linear if left out). The main entry exports the `ElementAnimation` type.
+- **The element.** `FireOptions.element` is an element or a ref, resolved when `fire()` is called. When it is left out, it is `origin` if that is an element or a ref, so a burst from a point animates nothing unless `element` is given. `useReward` passes its target, so `onClick={reward}` fires from the pointer and still animates the button.
+- **Playing.** As the burst starts, once its sprites have loaded and on the same next frame as its particles, `fire()` calls `element.animate(keyframes, { duration, easing, composite: 'add' })`. The keyframes are added to the element's own styles, so a `transform` in them follows the element's own: an element centred with `translate(-50%, -50%)` still scales about its own centre. A browser without `composite` (Chrome before 112, Firefox before 104, Safari before 16) ignores it, and replaces the element's transform while the animation plays.
+- **Restart.** When a burst starts on an element that is still playing an earlier burst's animation, the earlier animation is cancelled first. Repeated taps restart the animation rather than stack it.
+- **Cancel.** `cancel()` cancels the burst's animation, which puts the element back as it was, unless a later burst has restarted it. A burst that ends on its own, or because the context was lost, lets its animation finish. A skipped burst animates nothing, whether it was skipped for reduced motion, for no renderer, or for sprites that fail to load. There is no separate reduced-motion check.
+- **Failures.** An element without `animate` (happy-dom, server rendering, old browsers), or one whose `animate` throws, plays the burst without the animation. An error thrown by `animation(config)` skips the burst, as one thrown by `sprites` does ([ADR 0030](0030-effect-errors-swallowed.md)).
+
+**Why:** A reward such as Twitter's heart pairs its particles with the element's own motion, and the effect is what knows that motion's timing. As data, the animation leaves effects pure, and the browser plays it off the particle loop and can put the element back when it is cancelled. Adding it to the element's own transform keeps the element's layout. Restarting stops repeated taps compounding their scales.
+
+**Consequences:** The contract grows beyond `spawn` and `update` ([ADR 0005](0005-effect-contract-scope.md)), with an optional method that existing effects don't need. An element animation that scales its element to nothing hides it from taps while it is hidden, so a tap then lands on what is under it. Inline elements don't transform. The Custom effects and useReward articles document `animation` and `element`.

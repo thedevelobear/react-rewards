@@ -1,6 +1,6 @@
 # 0005. The 3.0 effect contract has `spawn` and `update` only
 
-- **Status:** Accepted
+- **Status:** Accepted. Extended by [0073](0073-effects-animate-their-element.md)
 - **Date:** 2026-10-22
 
 `defineEffect` takes `name`, `blend`, `defaults`, `sprites`, `spawn` and `update`, and `update` can spawn child particles. There is no `onPointerDown` hook, so balloons can't be popped. There is no spawn `rate` for continuous emitters until an effect needs one.
