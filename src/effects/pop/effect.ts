@@ -338,7 +338,7 @@ export const pop: Effect<PopConfig> = /* @__PURE__ */ defineEffect<PopConfig>({
     count: 10,
     dots: 24,
     size: 18,
-    radius: 60,
+    radius: 80,
     swirl: 20,
     lifetime: 1500,
     bounce: true,

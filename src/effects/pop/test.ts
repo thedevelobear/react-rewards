@@ -15,7 +15,7 @@ const FLASH = 5;
 
 /** The defaults' lifetime in seconds, radius and size. */
 const T = 1.5;
-const R = 60;
+const R = 80;
 const SIZE = 18;
 /** A streak's and the ring's air resistance per second at the defaults. */
 const K = 6 / T;
@@ -103,7 +103,7 @@ describe('pop', () => {
       count: 10,
       dots: 24,
       size: 18,
-      radius: 60,
+      radius: 80,
       swirl: 20,
       lifetime: 1500,
       bounce: true,
@@ -156,7 +156,7 @@ describe('pop', () => {
       // Each starts 0.2 of radius out, along its direction.
       for (const [i, x] of field(simulation, 'x').entries()) {
         const y = field(simulation, 'y')[i] ?? 0;
-        expect(Math.hypot(x, y)).toBeCloseTo(12, 4);
+        expect(Math.hypot(x, y)).toBeCloseTo(16, 4);
         expect(Math.atan2(y, x)).toBeCloseTo(
           Math.atan2(Math.sin(s1[i] ?? 0), Math.cos(s1[i] ?? 0)),
           5
@@ -197,7 +197,7 @@ describe('pop', () => {
 
   it('lands each star on its closed-form path: radius out, swirled 20° counter-clockwise', () => {
     // At the defaults a star has covered 63% of its way 0.25 s after its
-    // launch and 95% after 0.75 s, so a long star is 57.6 px out by then.
+    // launch and 95% after 0.75 s, so a long star is 76.8 px out by then.
     expect(1 - Math.exp(-K * 0.25)).toBeCloseTo(0.63, 2);
     expect(1 - Math.exp(-K * 0.75)).toBeCloseTo(0.95, 2);
     for (const [swirl, hz] of [
@@ -233,7 +233,7 @@ describe('pop', () => {
   it('stretches each streak back to the start, then twice the way its star has left', () => {
     // Straight out, so the length along the path is the distance out. The
     // streak spans the last ln 3 / k seconds: 0.275 s at the defaults, when
-    // it is 2/3 of the way, 32 px for a long star.
+    // it is 2/3 of the way, 42.7 px for a long star.
     expect(Math.log(3) / K).toBeCloseTo(0.275, 3);
     const simulation = simulate(pop, { swirl: 0 }, 4);
     for (const [step, t] of [
@@ -264,10 +264,10 @@ describe('pop', () => {
     run(simulation, 0.1, 100);
     const dots = all(simulation, DOT);
     expect(dots).toHaveLength(24);
-    // 0.3 to 1.15 of radius, covering 1 - e^(-5.33 t): 39.08 px at 0.1 s.
+    // 0.3 to 1.15 of radius, covering 1 - e^(-5.33 t): 52.11 px at 0.1 s.
     const q = 1 - Math.exp(-RING_K * 0.1);
     const r = R * (0.3 + 0.85 * q);
-    expect(r).toBeCloseTo(39.08, 2);
+    expect(r).toBeCloseTo(52.11, 2);
     const angles = dots
       .map(({ x, y }) => Math.atan2(y, x))
       .sort((a, b) => a - b);
@@ -282,10 +282,10 @@ describe('pop', () => {
         );
       }
     }
-    // The ring heads for 69 px, and is 67.6 px out when it is spent, 0.675 s
+    // The ring heads for 92 px, and is 90.1 px out when it is spent, 0.675 s
     // in: its last step at 100 Hz is 0.67 s in.
     expect(R * (0.3 + 0.85 * (1 - Math.exp(-RING_K * 0.675)))).toBeCloseTo(
-      67.61,
+      90.14,
       2
     );
     run(simulation, 0.57, 100);
@@ -543,24 +543,24 @@ describe('pop', () => {
           "rotation": 3.673,
           "scale": 1.14,
           "sprite": 0,
-          "x": -31.315,
-          "y": -44.904,
+          "x": -41.753,
+          "y": -59.872,
         },
         {
           "alpha": 1,
           "rotation": 4.336,
           "scale": 0.503,
           "sprite": 1,
-          "x": 0.837,
-          "y": -33.741,
+          "x": 1.116,
+          "y": -44.987,
         },
         {
           "alpha": 1,
           "rotation": 4.977,
           "scale": 1.075,
           "sprite": 2,
-          "x": 34.053,
-          "y": -40.5,
+          "x": 45.404,
+          "y": -53.999,
         },
       ]
     `);
