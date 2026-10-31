@@ -159,6 +159,7 @@ Why: the white letter on the tile stays legible at 16 px on light and dark tab b
 - The tabs follow the WAI-ARIA tabs pattern: arrow keys, Home and End. Preview is selected on load and when the effect changes. The tab isn't kept in the URL.
 - The preview fires with the panel's settings.
 - The snippet is TSX. It calls `useReward` with a ref and fires with `reward()` from a click, as the preview does. Its config argument lists only the values that differ from the effect's defaults, and is left out when none do.
+- On a page with `button: 'icon'`, such as Pop's, the snippet's button matches the preview's: the ref is on the button, which holds only an icon and is named by `aria-label="Reward me"`. The icon is the reader's own component, named after the page's icon, so Pop's is `<SparkleBurstIcon />`, imported from `./icons`. It is a placeholder, so the snippet doesn't carry the site's path data, and like the pill, the snippet leaves styling to the reader.
 
 Why: the page follows reactbits.dev's structure, as the plan's layout does.
 

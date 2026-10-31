@@ -50,6 +50,17 @@ test('the props panel sets the snippet, and Reset restores the defaults', async 
   await expect(await openCode(page)).toContainText('useReward(ref, confetti);');
 });
 
+test("Pop's snippet is an icon button, as its preview is", async ({ page }) => {
+  await page.goto('/#pop');
+  const code = await openCode(page);
+  await expect(code).toContainText(
+    "import { SparkleBurstIcon } from './icons';"
+  );
+  await expect(code).toContainText('aria-label="Reward me"');
+  await expect(code).toContainText('<SparkleBurstIcon />');
+  await expect(code).not.toContainText('Reward me </button>');
+});
+
 test('the preview fires with the panel’s settings', async ({ page }) => {
   await page.goto('/#confetti');
   // The defaults have no pure blue, so a blue piece comes from the panel.
