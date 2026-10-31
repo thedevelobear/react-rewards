@@ -142,10 +142,10 @@ export const CustomEffectsArticle = () => (
       />
       <ul>
         <li>
-          It plays with the Web Animations API as the burst starts, on the
-          element <code>useReward</code> fires from, or on <code>fire</code>'s{' '}
-          <code>element</code> option. A burst from a point animates nothing
-          unless it is given one.
+          It plays with the Web Animations API as the burst starts, on{' '}
+          <code>useReward</code>'s target, even when it fires from the pointer,
+          or on <code>fire</code>'s <code>element</code> option, which defaults
+          to the origin when that is an element or a ref.
         </li>
         <li>
           The keyframes are added to the element's own transform, so an element
