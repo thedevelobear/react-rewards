@@ -109,6 +109,7 @@ What was decided, specifically enough to check the code against.
 | [0066](decisions/0066-firework-effect-name.md) | The fireworks effect is named `firework` | Accepted |
 | [0067](decisions/0067-fireworks-climb-in-closed-form.md) | Fireworks climb in closed form and burst as peonies, willows and crackles | Accepted |
 | [0068](decisions/0068-shared-test-helpers.md) | Helpers that more than one test file uses live in `src/test-utils/` | Accepted |
+| [0069](decisions/0069-pop-blooms-in-closed-form.md) | The pop blooms in three layers, placed in closed form and timed by its lifetime | Proposed |
 
 ### Benchmarks
 | Benchmark | What |
