@@ -4,7 +4,7 @@
 
 ❇️ **GPU-rendered**: WebGL2, with a Canvas 2D fallback
 
-🌲 **Tree-shakeable**: about 7 kB gzipped for `useReward` and confetti
+🌲 **Tree-shakeable**: about 7.5 kB gzipped for `useReward` and confetti
 
 🕵️ **Built with TypeScript**
 
