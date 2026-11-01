@@ -36,8 +36,8 @@ const UNITS: Readonly<Record<string, CountUnit>> = {
     one: 'rocket',
     many: 'rockets',
   },
-  // A star and its streak are two particles. Each pop adds its flash and
-  // ring, 25 more at the defaults.
+  // A star and its streak are two particles. Each pop adds its flash and its
+  // ring of `dots` dots on top.
   pop: { effects: 'Pops', particles: 2, one: 'star', many: 'stars' },
 };
 
