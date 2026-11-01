@@ -175,7 +175,7 @@ Why: any colour or emoji can be tried, with no presets to maintain.
 ### Props table
 - It lists every config field in the panel's order: the prop, its type (`number`, `boolean` or `string[]`, from its control), its default (from `effect.defaults`, written as in the snippet) and a description.
 - The description is the field's JSDoc from `src/effects/<name>/types.ts`, copied next to its control, without references to ADRs. Text in backticks shows as code. Nothing checks that the copies match, so a change to a field's JSDoc has to be copied by hand.
-- The burst options (`zIndex`, `onComplete`, `respectReducedMotion` and `seed`) aren't listed. The useReward page documents them.
+- The burst options (`zIndex`, `onComplete`, `respectReducedMotion`, `seed` and `element`) aren't listed. The useReward page documents them.
 - On phones the table scrolls sideways inside its frame, so the page doesn't.
 
 ### Code blocks

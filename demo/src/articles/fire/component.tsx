@@ -44,10 +44,12 @@ export const FireArticle = () => (
         </li>
       </ul>
       <p>
-        Beside them, <code>fire</code> takes the{' '}
+        Beside them, <code>fire</code> takes the other{' '}
         <a href="#use-reward">burst options</a>: <code>zIndex</code>,{' '}
         <code>onComplete</code>, <code>respectReducedMotion</code> and{' '}
-        <code>seed</code>.
+        <code>seed</code>. <code>element</code> is one too, but it is described
+        above, because <code>fire</code> has no target and defaults it to{' '}
+        <code>origin</code> instead.
       </p>
     </Section>
     <Section title="The burst">
