@@ -120,6 +120,7 @@ What was decided, specifically enough to check the code against.
 |---|---|
 | [2026-10-22-v2-baseline](benchmarks/2026-10-22-v2-baseline.md) | v2.1.0 at 50, 500 and 2000 elements per effect. The reference point for the new engine. |
 | [2026-10-23-v3-engine](benchmarks/2026-10-23-v3-engine.md) | The v3 engine at 500, 5000 and 20000 particles per effect, on WebGL and Canvas 2D. |
+| [2026-11-01-pop](benchmarks/2026-11-01-pop.md) | Every effect, fireworks and pop included, at 500, 5000 and 20000 particles, on WebGL and Canvas 2D, with pop's element animation. Compared with 2026-10-23-v3-engine. |
 
 ### Guides
 | Guide | What |
