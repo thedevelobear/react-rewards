@@ -1,6 +1,6 @@
 # 0072. A pop's size is a `radius` in pixels, not its element's box
 
-- **Status:** Proposed
+- **Status:** Accepted
 - **Date:** 2026-10-31
 
 How far a pop reaches is `radius`, a setting of its config in CSS pixels: its long streaks' stars land that far from where it starts. Neither the engine nor the API reads the size of the element a reward fires from. A pop starts where any burst does: at the element's centre, or at the pointer when `reward` is passed as an event handler ([ADR 0044](0044-reward-handles-pointer-events.md)).

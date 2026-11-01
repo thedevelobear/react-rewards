@@ -109,11 +109,11 @@ What was decided, specifically enough to check the code against.
 | [0066](decisions/0066-firework-effect-name.md) | The fireworks effect is named `firework` | Accepted |
 | [0067](decisions/0067-fireworks-climb-in-closed-form.md) | Fireworks climb in closed form and burst as peonies, willows and crackles | Accepted |
 | [0068](decisions/0068-shared-test-helpers.md) | Helpers that more than one test file uses live in `src/test-utils/` | Accepted |
-| [0069](decisions/0069-pop-blooms-in-closed-form.md) | The pop blooms in three layers, placed in closed form and timed by its lifetime | Proposed |
-| [0070](decisions/0070-pop-effect-name.md) | The pop effect is named `pop` | Proposed |
-| [0071](decisions/0071-pop-normal-blend.md) | The pop draws with the normal blend, with halos baked into its sprites | Proposed |
-| [0072](decisions/0072-pop-sized-by-radius.md) | A pop's size is a `radius` in pixels, not its element's box | Proposed |
-| [0073](decisions/0073-effects-animate-their-element.md) | An effect may animate the element it fires from, with the Web Animations API | Proposed |
+| [0069](decisions/0069-pop-blooms-in-closed-form.md) | The pop blooms in three layers, placed in closed form and timed by its lifetime | Accepted |
+| [0070](decisions/0070-pop-effect-name.md) | The pop effect is named `pop` | Accepted |
+| [0071](decisions/0071-pop-normal-blend.md) | The pop draws with the normal blend, with halos baked into its sprites | Accepted |
+| [0072](decisions/0072-pop-sized-by-radius.md) | A pop's size is a `radius` in pixels, not its element's box | Accepted |
+| [0073](decisions/0073-effects-animate-their-element.md) | An effect may animate the element it fires from, with the Web Animations API | Accepted |
 
 ### Benchmarks
 | Benchmark | What |

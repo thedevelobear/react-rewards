@@ -1,6 +1,6 @@
 # 0073. An effect may animate the element it fires from, with the Web Animations API
 
-- **Status:** Proposed
+- **Status:** Accepted
 - **Date:** 2026-10-31
 
 - **Contract.** An effect may declare an optional method, `animation(config)`, beside `sprites`, `spawn` and `update`. It returns an `ElementAnimation`, or `undefined` for none. An `ElementAnimation` has `keyframes`, as `Element.animate` takes them, a `duration` in milliseconds, and an optional `easing` for keyframes that don't set their own (linear if left out). The main entry exports the `ElementAnimation` type.

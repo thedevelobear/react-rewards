@@ -1,6 +1,6 @@
 # 0069. The pop blooms in three layers, placed in closed form and timed by its lifetime
 
-- **Status:** Proposed
+- **Status:** Accepted
 - **Date:** 2026-10-31
 
 - **Settings.** The only settings are `count`, `dots`, `size`, `radius`, `swirl`, `lifetime`, `bounce` and `colors`. A pop has no `velocity`, `drag`, `angle`, `spread` or `gravity`: it always goes all the way round, `radius` sets how far it reaches, and `lifetime` sets its pace.

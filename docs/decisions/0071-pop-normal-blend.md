@@ -1,6 +1,6 @@
 # 0071. The pop draws with the normal blend, with halos baked into its sprites
 
-- **Status:** Proposed
+- **Status:** Accepted
 - **Date:** 2026-10-31
 
 The pop's `blend` is `'normal'`. Its glow is drawn into its sprites: each star, streak and ring dot has a soft halo, a gradient of its colour, and the flash is a gradient that is paler in the middle ([ADR 0069](0069-pop-blooms-in-closed-form.md)).
