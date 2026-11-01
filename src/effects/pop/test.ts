@@ -1,5 +1,6 @@
 import { describe, expect, it } from '@rstest/core';
 import { resolveConfig } from '@/core/define-effect';
+import { createRng } from '@/core/math';
 import type { Simulation } from '@/core/simulation';
 import { pop } from '@/effects/pop';
 import { field, rounded, run, simulate } from '@/test-utils';
@@ -295,6 +296,56 @@ describe('pop', () => {
     for (const { x, y } of last) expect(Math.hypot(x, y)).toBeCloseTo(end, 3);
     simulation.step(1 / 100);
     expect(count(simulation, DOT)).toBe(0);
+  });
+
+  it('sends the dots between the long streaks, half a dot gap from the first star', () => {
+    // Where the circle of stars starts, from the draws every star shares
+    // (`SHARED` in effect.ts).
+    const startOf = (seed: number) =>
+      createRng(seed ^ 0x3c6ef372).next() * Math.PI * 2;
+    /** How far apart two angles are, either way round, in radians. */
+    const apart = (a: number, b: number) =>
+      Math.abs(Math.atan2(Math.sin(a - b), Math.cos(a - b)));
+    for (const [count, dots] of [
+      [10, 5],
+      [10, 10],
+      [10, 3],
+      [7, 4],
+      [12, 1],
+    ] as const) {
+      for (let seed = 1; seed <= 10; seed++) {
+        const simulation = simulate(pop, { count, dots }, seed);
+        simulation.step(0);
+        const turn = startOf(seed);
+        // Each star is within 0.12 of a gap of its own share of the circle.
+        for (const [i, s1] of field(simulation, 's1')
+          .slice(0, count)
+          .entries()) {
+          expect(
+            apart(s1, turn + (Math.PI * 2 * i) / count)
+          ).toBeLessThanOrEqual((0.12 * Math.PI * 2) / count + 1e-5);
+        }
+        // Dot j at turn + π (2j + 1) / dots, each once.
+        const angles = all(simulation, DOT).map(({ s1, s2 }) =>
+          Math.atan2(s2, s1)
+        );
+        expect(angles).toHaveLength(dots);
+        for (let j = 0; j < dots; j++) {
+          const expected = turn + (Math.PI * (2 * j + 1)) / dots;
+          expect(angles.filter((a) => apart(a, expected) < 1e-5)).toHaveLength(
+            1
+          );
+        }
+        // With 10 stars and 5 dots, that is the short streaks' lines.
+        if (count === 10 && dots === 5) {
+          for (const angle of angles) {
+            const share = (((angle - turn) / (Math.PI * 2)) * 10 + 20) % 10;
+            expect(Math.abs(share - Math.round(share))).toBeLessThan(1e-4);
+            expect(Math.round(share) % 2).toBe(1);
+          }
+        }
+      }
+    }
   });
 
   it('flashes at the centre for the first 0.12 of lifetime, on 6 frames at 30 Hz', () => {

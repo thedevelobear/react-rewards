@@ -278,7 +278,9 @@ const emit = (
     });
   }
 
-  // The ring's dots, evenly spaced from where the circle of stars starts.
+  // The ring's dots, evenly spaced, and turned half their spacing from the
+  // first star's line, so they fly between the long streaks: with 10 stars
+  // and 5 dots, along the short streaks' lines.
   const dots = Math.max(0, Math.floor(config.dots));
   const ringLife = RING_LIFE * time - t;
   if (ringLife <= 0) return;
@@ -286,7 +288,7 @@ const emit = (
   const covered = ringAt(RING_DRAG / time, t);
   const r = config.radius * lerp(RING_FROM, RING_TO, covered);
   for (let j = 0; j < dots; j++) {
-    const angle = turn + (Math.PI * 2 * j) / dots;
+    const angle = turn + (Math.PI * (2 * j + 1)) / dots;
     const cos = Math.cos(angle);
     const sin = Math.sin(angle);
     ctx.spawn((d) => {
