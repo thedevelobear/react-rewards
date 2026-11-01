@@ -50,8 +50,9 @@ const REACH_JITTER = 0.06;
 const SIZE_JITTER = 0.1;
 /**
  * A streak's air resistance, per lifetime rather than per second, so a pop
- * keeps its shape at any `lifetime`. At 800 ms it is 7.5 per second: a star
- * has covered 63% of its way 0.13 s after its launch and 95% after 0.4 s.
+ * keeps its shape at any `lifetime`. At 1500 ms it is 4 per second: a star
+ * has covered 63% of its way 1/4 s after its launch, and 95% after
+ * ln 20 / 4, about 0.75 s.
  */
 const STREAK_DRAG = 6;
 /** When the short streaks launch, as a share of lifetime. The long ones launch at once. */
@@ -79,7 +80,7 @@ const SPIN = 1.5;
 const TAIL_LIFE = 0.75;
 const TAIL_FADE = 0.1;
 
-/** The ring's air resistance per lifetime: 10 per second at 800 ms. */
+/** The ring's air resistance per lifetime: 16/3 per second at 1500 ms. */
 const RING_DRAG = 8;
 /** Where the ring starts and where it heads for, as shares of `radius`. */
 const RING_FROM = 0.3;
