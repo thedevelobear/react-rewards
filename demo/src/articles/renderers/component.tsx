@@ -2,7 +2,7 @@ import { CodeBlock } from '@/components/code-block';
 import { Section } from '@/components/section';
 
 const BENCHMARK =
-  'https://github.com/thedevelobear/react-rewards/blob/master/docs/benchmarks/2026-10-23-v3-engine.md';
+  'https://github.com/thedevelobear/react-rewards/blob/master/docs/benchmarks/2026-11-01-pop.md';
 
 const SET_RENDERER = `import { setRenderer } from 'react-rewards';
 
@@ -42,10 +42,11 @@ export const RenderersArticle = () => (
     </Section>
     <Section title="Performance">
       <p>
-        In the <a href={BENCHMARK}>v3 benchmark</a>, WebGL keeps 120 fps with
-        20000 particles for every effect. Canvas 2D keeps 120 fps at 5000, and
-        runs at 40 to 65 fps at 20000. Try it on your own device on the{' '}
-        <a href="#stress-test">Stress test</a>.
+        In the <a href={BENCHMARK}>benchmark</a>, on an M1 Pro MacBook Pro with
+        a 120 Hz display, WebGL keeps about 120 fps with 20000 particles for
+        every effect. Canvas 2D keeps about 120 fps at 5000, and runs at 40.5 to
+        90.7 fps at 20000, depending on the effect. Try it on your own device on
+        the <a href="#stress-test">Stress test</a>.
       </p>
     </Section>
   </>
