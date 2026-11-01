@@ -336,7 +336,7 @@ export const pop: Effect<PopConfig> = /* @__PURE__ */ defineEffect<PopConfig>({
   blend: 'normal',
   defaults: {
     count: 10,
-    dots: 24,
+    dots: 5,
     size: 18,
     radius: 80,
     swirl: 20,

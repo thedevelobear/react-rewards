@@ -101,7 +101,7 @@ describe('pop', () => {
   it('has its defaults, frozen, and the normal blend', () => {
     expect(pop.defaults).toEqual({
       count: 10,
-      dots: 24,
+      dots: 5,
       size: 18,
       radius: 80,
       swirl: 20,
@@ -168,10 +168,10 @@ describe('pop', () => {
   it('adds a streak per star, then the ring and the flash, on its first step', () => {
     const simulation = simulate(pop, {}, 2);
     simulation.step(0);
-    expect(simulation.pool.count).toBe(10 + 10 + 24 + 1);
+    expect(simulation.pool.count).toBe(10 + 10 + 5 + 1);
     expect(count(simulation, LONG_TAIL)).toBe(5);
     expect(count(simulation, SHORT_TAIL)).toBe(5);
-    expect(count(simulation, DOT)).toBe(24);
+    expect(count(simulation, DOT)).toBe(5);
     expect(count(simulation, FLASH)).toBe(1);
     // Each streak takes its star's direction, seed and colour.
     const stars = [...all(simulation, LONG), ...all(simulation, SHORT)];
@@ -188,7 +188,7 @@ describe('pop', () => {
 
     // No more on later steps.
     run(simulation, 0.05);
-    expect(simulation.pool.count).toBe(45);
+    expect(simulation.pool.count).toBe(26);
 
     const ringless = simulate(pop, { dots: 0 }, 2);
     ringless.step(0);
@@ -263,7 +263,7 @@ describe('pop', () => {
     const simulation = simulate(pop, {}, 5);
     run(simulation, 0.1, 100);
     const dots = all(simulation, DOT);
-    expect(dots).toHaveLength(24);
+    expect(dots).toHaveLength(5);
     // 0.3 to 1.15 of radius, covering 1 - e^(-5.33 t): 52.11 px at 0.1 s.
     const q = 1 - Math.exp(-RING_K * 0.1);
     const r = R * (0.3 + 0.85 * q);
@@ -277,7 +277,7 @@ describe('pop', () => {
       expect(alpha).toBeCloseTo(1 - (0.1 / (0.45 * T)) ** 2, 5);
       if (j > 0) {
         expect((angles[j] ?? 0) - (angles[j - 1] ?? 0)).toBeCloseTo(
-          (Math.PI * 2) / 24,
+          (Math.PI * 2) / 5,
           4
         );
       }
@@ -290,7 +290,7 @@ describe('pop', () => {
     );
     run(simulation, 0.57, 100);
     const last = all(simulation, DOT);
-    expect(last).toHaveLength(24);
+    expect(last).toHaveLength(5);
     const end = R * (0.3 + 0.85 * (1 - Math.exp(-RING_K * 0.67)));
     for (const { x, y } of last) expect(Math.hypot(x, y)).toBeCloseTo(end, 3);
     simulation.step(1 / 100);
@@ -533,7 +533,7 @@ describe('pop', () => {
 
   it('matches its snapshot after half a second at 60 Hz', () => {
     const simulation = run(simulate(pop), 0.5);
-    expect(simulation.pool.count).toMatchInlineSnapshot(`44`);
+    expect(simulation.pool.count).toMatchInlineSnapshot(`25`);
     expect(
       rounded(simulation, ['x', 'y', 'rotation', 'scale', 'alpha', 'sprite'], 3)
     ).toMatchInlineSnapshot(`
