@@ -36,20 +36,12 @@ Read history, and report what breaks the repo's rules, with the commits and the 
 - **A branch's commits**, from `git log --format='%h %s' origin/master..<branch>`:
   - Each subject is a conventional commit, `type(scope)?!?: subject`, with a type the repo uses: `feat`, `fix`, `refactor`, `docs`, `chore`, `test`, `build` or `ci`.
   - Each commit an agent wrote ends with the session's attribution trailer: `git log --format='%h %(trailers:key=Co-Authored-By,valueonly)'`.
-  - Each commit builds and passes lint on its own ([ADR 0009](../../docs/decisions/0009-no-squash-merges.md)). Replay them in a temporary worktree, never on the branch itself:
-    ```sh
-    WT=$(mktemp -d)
-    git worktree add --detach "$WT" <branch>
-    (cd "$WT" && git rebase --exec 'pnpm install --frozen-lockfile --prefer-offline && pnpm lint && pnpm typecheck && pnpm build && pnpm run --if-present api:check' "$(git merge-base origin/master <branch>)")
-    git worktree remove --force "$WT"
-    ```
-    `--if-present` skips the API check on commits from before it existed. On a failure, note the commit and the output, run `git -C "$WT" rebase --abort`, then remove the worktree.
 - **Merges:** PRs into `master` merge with a merge commit or a rebase, never squashed. A first-parent commit since `v3.0.0` whose subject ends `(#N)` looks like a squash merge: `git log --first-parent --no-merges --format='%h %s' v3.0.0..origin/master`.
 - **Tracking:** a work branch must not track `master` ([ADR 0056](../../docs/decisions/0056-work-after-release-branches-off-master.md)). `git for-each-ref --format='%(refname:short) %(upstream:short)' refs/heads` lists each branch's upstream, which is empty, or `origin/` and the branch's own name once pushed. Report one that tracks `origin/master` with its fix, `git branch --unset-upstream <branch>`, and leave applying it to the maintainer.
 - **Unpushed or unmerged work:** `git log --branches --not --remotes --oneline`, `git branch --no-merged origin/master`, the `%(upstream:track)` of each branch, and `git stash list`.
 
 ## Reporting
-Run `pnpm lint` and `pnpm typecheck` on any commit you make, and remove every worktree you added (`git worktree list`). Report:
+Run `pnpm lint` and `pnpm typecheck` once before you report, if you made commits, and remove every worktree you added (`git worktree list`). Report:
 - the recommendation, or the answer: the version and each change's level, with its commit or PR and the ADR 0075 rule, and the API report's diff in short;
 - the commits you made (hash and subject), and the CHANGELOG text, in full;
 - the draft release's URL, or the publish check's results;

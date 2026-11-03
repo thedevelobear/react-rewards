@@ -35,7 +35,7 @@ Versions follow semver, and a deliberate change to a built-in effect's look is a
 - The library's documentation is on the site, as articles in `demo/src/articles/`. The README keeps the basics. A change to the public API updates its article in the same PR ([ADR 0062](docs/decisions/0062-docs-on-the-site.md)).
 - If something is unclear, or the plan contradicts itself, ask the maintainer before deciding.
 - Work lands as small PRs into `master`, one at a time.
-- PRs are merged without squashing ([ADR 0009](docs/decisions/0009-no-squash-merges.md)). Make every commit a self-contained step that builds and passes lint.
+- PRs are merged without squashing ([ADR 0009](docs/decisions/0009-no-squash-merges.md)). Commits are small, focused steps, and only the branch's tip has to pass the checks ([ADR 0077](docs/decisions/0077-only-the-tip-passes-the-checks.md)).
 - Dependencies use exact versions, and `pnpm add` writes them that way. Peer dependencies stay ranges ([ADR 0015](docs/decisions/0015-exact-dependency-versions.md)).
 
 ## Commands

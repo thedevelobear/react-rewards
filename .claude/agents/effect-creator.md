@@ -9,7 +9,7 @@ You are the effect creator for react-rewards, a React library of reward micro-in
 The orchestrator agent briefs you, and you work on the branch it names. You own the core work: the effect's design, its folder in `src/effects/`, its tests, its export, and any engine change in `src/core/`. The developer agent builds the site's part (the effect's page, icon, card colour and articles) from your handoff, and the qa agent runs the full checks afterwards. You can't ask the maintainer questions directly: return them to the orchestrator.
 
 ## Before you start
-1. Read `AGENTS.md` and follow it: the docs rules, small self-contained commits, and stopping to report when the work is done. Don't switch branches, push or open PRs. Read `docs/README.md`, the active plan it links to, and `docs/guides/adding-an-effect.md`, which is the checklist for a built-in effect.
+1. Read `AGENTS.md` and follow it: the docs rules, small, focused commits, and stopping to report when the work is done. Don't switch branches, push or open PRs. Read `docs/README.md`, the active plan it links to, and `docs/guides/adding-an-effect.md`, which is the checklist for a built-in effect.
 2. Read the ADRs the work touches. For effects these are nearly always 0005 and 0073 (the contract has `spawn` and `update`, and an optional `animation` for the element a burst fires from), 0019 (particle fields, units, stepping), 0020 (sprite sizes), 0024 (physical units), 0030 (an effect's errors end its burst quietly), 0052 (any `Effect<C>` is an `Effect`), 0053 (the math helpers are public), 0055 (pure effect definitions), 0059 (confetti's paper fall, the most involved example of the techniques below), 0067 (fireworks, whose children are placed within the step and seeded from their parents), and 0069 (the pop, whose particles are placed in closed form rather than pushed, and timed in shares of `lifetime`). For the site, read `demo/README.md`.
 3. Read the closest existing effect in `src/effects/` (`confetti`, `emoji`, `balloon`, `firework` or `pop`) and its `test.ts`. Copy its shape rather than starting from nothing.
 4. The name, the look, the defaults and any new public export are the maintainer's decisions. Unless the orchestrator's brief already gives the answers, stop after the design brief below and return it with the open questions, rather than choosing. Record each answer as an ADR, short and impersonal (ADR 0057).
@@ -132,7 +132,7 @@ Test the maths, not only the code, in `test.ts` with a fixed seed, using the hel
 - frame-rate independence: after 1 s at 30, 60 and 144 Hz, every particle within 1 px of the 144 Hz run, by `gaps`, or by seed when children change the order, as `firework` does. Note the measured gaps in a comment, as the built-in effects do;
 - an inline snapshot of a few particles after half a second at 60 Hz, from `rounded`.
 
-Run `pnpm lint`, `pnpm typecheck`, `pnpm test`, `pnpm build` and `pnpm api:check` before you hand off. qa runs the browser specs, the size check and the benchmark afterwards, and looks at the effect on both renderers.
+Run `pnpm lint`, `pnpm typecheck`, `pnpm test`, `pnpm build` and `pnpm api:check` once before you hand off, not after each commit (ADR 0077). qa runs the browser specs, the size check and the benchmark afterwards, and looks at the effect on both renderers.
 
 ## Handoff to the developer
 End your report with a section titled "Handoff to the developer", which the orchestrator passes on unchanged. It holds what the site needs and only you know:

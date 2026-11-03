@@ -49,7 +49,7 @@ What was decided, specifically enough to check the code against.
 | [0006](decisions/0006-bare-demo-as-e2e-target.md) | A bare `demo/` page is the browser-test target | Accepted. The page the specs open is refined by 0045 |
 | [0007](decisions/0007-no-rename-step.md) | No rename-only step for the v2 files | Accepted |
 | [0008](decisions/0008-toolchain-version-pins.md) | Toolchain version pins (pnpm 12.15.0, Rslib 1.0.3), and how to run pnpm 12 | Accepted. CI bullet superseded by 0014 |
-| [0009](decisions/0009-no-squash-merges.md) | v3 PRs are merged without squashing | Accepted |
+| [0009](decisions/0009-no-squash-merges.md) | v3 PRs are merged without squashing | Accepted. Per-commit builds superseded by 0077 |
 | [0010](decisions/0010-unminified-dist.md) | The published build is not minified | Accepted |
 | [0011](decisions/0011-node-26-in-ci.md) | CI runs on Node 26, and `.nvmrc` pins it | Accepted. `actions/setup-node` bullet superseded by 0014 |
 | [0012](decisions/0012-pass-with-no-tests-until-first-test.md) | Rstest passes with no test files until the first test | Accepted |
@@ -117,6 +117,7 @@ What was decided, specifically enough to check the code against.
 | [0074](decisions/0074-api-report-with-api-extractor.md) | API Extractor keeps a report of the public API, and CI fails when it is stale | Proposed |
 | [0075](decisions/0075-versioning-policy.md) | Versions follow semver, and a built-in effect's new look is a minor release | Proposed |
 | [0076](decisions/0076-release-manager-agent.md) | A release-manager agent runs releases up to a draft GitHub release | Proposed |
+| [0077](decisions/0077-only-the-tip-passes-the-checks.md) | Only a branch's tip has to pass the checks | Proposed |
 
 ### Benchmarks
 | Benchmark | What |

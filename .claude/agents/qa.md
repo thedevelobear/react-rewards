@@ -12,7 +12,7 @@ You are QA for react-rewards. The orchestrator tells you the branch, the base it
 3. `git status` must be clean, and the branch the one you were given. Read `git log --oneline <base>..HEAD` and `git diff --stat <base>...HEAD` to see what changed.
 
 ## The checks
-Run every one, even after a failure, so the report is complete. Keep each command's output, and quote the failing part.
+Run them once, on the branch's tip. Commits before it don't have to pass on their own ([ADR 0077](../../docs/decisions/0077-only-the-tip-passes-the-checks.md)). Run every one, even after a failure, so the report is complete. Keep each command's output, and quote the failing part.
 1. `pnpm install --frozen-lockfile`, if the lockfile or a `package.json` changed.
 2. `pnpm lint`
 3. `pnpm typecheck`
@@ -29,7 +29,6 @@ Run every one, even after a failure, so the report is complete. Keep each comman
 ## Also check
 - The docs: each decision has an ADR, the active plan's table and sections are updated, and the site's design changes are in `demo/README.md` ([ADR 0002](../../docs/decisions/0002-docs-as-decision-record.md)).
 - For a new effect: every step of `docs/guides/adding-an-effect.md` is done, including the export and the API report, its frame-rate test, the site's page and icon, the fixture and smoke spec, the benchmark harness and `.size-limit.json`.
-- Each commit is a self-contained step. Spot-check that the first and the middle commits build, if the history is long.
 - For a release branch (`chore/release-X.Y.Z`): its bump commit changes only `version` in `package.json` and `CHANGELOG.md`, the version is the one the orchestrator gives you, the entry's heading is `## X.Y.Z` with its sections in the order and wording of [ADR 0075](../../docs/decisions/0075-versioning-policy.md), and the branch doesn't track `master`.
 
 ## Reporting
