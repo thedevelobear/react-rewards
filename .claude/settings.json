@@ -1,3 +1,26 @@
 {
-  "agent": "orchestrator"
+  "agent": "orchestrator",
+  "permissions": {
+    "deny": [
+      "Bash(git push *)",
+      "Bash(git tag -d *)",
+      "Bash(git tag --delete *)",
+      "Bash(npm publish *)",
+      "Bash(pnpm publish *)"
+    ]
+  },
+  "hooks": {
+    "PreToolUse": [
+      {
+        "matcher": "Bash",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "node",
+            "args": ["${CLAUDE_PROJECT_DIR}/.claude/hooks/release-guard.js"]
+          }
+        ]
+      }
+    ]
+  }
 }
