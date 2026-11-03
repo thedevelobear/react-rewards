@@ -2,9 +2,18 @@ import type { Atlas, Region } from '@/core/atlas';
 import type { BlendMode } from '@/core/define-effect';
 import type { Pool } from '@/core/pool';
 
+/**
+ * A renderer: WebGL2, or the Canvas 2D fallback. You receive it, as a
+ * burst's `renderer`, and don't create it, so a minor release may add a value
+ * (ADR 0075). A `switch` over it needs a `default` case.
+ */
 export type RendererKind = 'webgl' | 'canvas';
 
-/** Which renderer to use. `'auto'` prefers WebGL2 and falls back (ADR 0033). */
+/**
+ * Which renderer to use. `'auto'` prefers WebGL2 and falls back (ADR 0033).
+ * You choose it, so a minor release may add a value but never removes one
+ * (ADR 0075).
+ */
 export type RendererPreference = 'auto' | RendererKind;
 
 /** One burst's particles, ready to draw. */

@@ -1,13 +1,23 @@
-/** Maps progress in [0, 1] to eased progress. f(0) is 0 and f(1) is 1. */
+/**
+ * Maps progress in [0, 1] to eased progress. f(0) is 0 and f(1) is 1. The
+ * package's easings have this type, and you can write your own.
+ */
 export type Easing = (t: number) => number;
 
-/** A position in CSS pixels. */
+/**
+ * A position in CSS pixels. You create it, so a minor release adds only
+ * optional members (ADR 0075).
+ */
 export interface Point {
   x: number;
   y: number;
 }
 
-/** A seedable pseudo-random number generator. */
+/**
+ * A seedable pseudo-random number generator. You receive it, from
+ * `createRng` or an effect's `spawn` and `update`, and don't create it, so a
+ * minor release may add members (ADR 0075).
+ */
 export interface Rng {
   /** The seed this generator started from. */
   readonly seed: number;

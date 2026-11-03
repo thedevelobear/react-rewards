@@ -259,7 +259,7 @@ interface PositionedEvent {
     readonly type?: string;
 }
 
-// @public (undocumented)
+// @public
 export type RendererKind = 'webgl' | 'canvas';
 
 // @public

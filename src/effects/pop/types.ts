@@ -1,6 +1,10 @@
 import type { EffectConfig } from '@/core/define-effect';
 
-/** The pop's settings, in the units of ADR 0024. */
+/**
+ * The pop's settings, in the units of ADR 0024. You pass any of them, as
+ * a `Partial`, so a minor release may add a setting, with a default
+ * (ADR 0075).
+ */
 export interface PopConfig extends EffectConfig {
   /** Stars per pop, each shot out on its own streak. Every other one is smaller and lands nearer the centre. */
   count: number;
