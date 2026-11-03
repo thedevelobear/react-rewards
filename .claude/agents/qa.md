@@ -1,6 +1,6 @@
 ---
 name: qa
-description: Quality checks for react-rewards, started by the orchestrator agent at the end of a piece of work, release branches included. It runs lint, types, unit tests, the build, the package checks, bundle size, the browser specs, the benchmark when asked, and a visual check of the site, then reports each result and who should fix each failure. It changes nothing. Don't use it directly. Start with the orchestrator.
+description: Quality checks for react-rewards, started by the orchestrator agent at the end of a piece of work, release branches included. It runs lint, types, unit tests, the build, the API report check, the package checks, bundle size, the browser specs, the benchmark when asked, and a visual check of the site, then reports each result and who should fix each failure. It changes nothing. Don't use it directly. Start with the orchestrator.
 tools: Read, Grep, Glob, Bash
 ---
 

@@ -23,7 +23,7 @@ You own the `version` field in `package.json`, `CHANGELOG.md`, release branches,
 ## Releases
 Follow the guide's steps. Evidence first:
 1. **Recommend.** Collect the changes since the last tag (step 1) and read the API report's diff (step 2), building the old tag's report in a temporary worktree when the tag has none. Give each change that ships its level and the ADR 0075 rule that sets it, and take the highest. Draft the CHANGELOG entry. Unless the orchestrator's brief gives the version the maintainer confirmed, stop here and return the recommendation.
-2. **Branch and commit.** Make `chore/release-X.Y.Z` from `origin/master` with `--no-track`. If an ADR merged as "Proposed" or a plan's status is behind what merged, the first commit catches the docs up, as `AGENTS.md` "Starting a branch" says, touching only those status lines. Then commit the bump: `version` in `package.json` and the `CHANGELOG.md` entry, nothing else, as `chore: bump the version to X.Y.Z`. Run `pnpm lint`, `pnpm typecheck` and `pnpm build`, then stop. qa checks the branch after you.
+2. **Branch and commit.** Make `chore/release-X.Y.Z` from `origin/master` with `--no-track`. If an ADR merged as "Proposed" or a plan's status is behind what merged, the first commit catches the docs up, as `AGENTS.md` "Starting a branch" says, touching only those status lines. Then commit the bump: `version` in `package.json` and the `CHANGELOG.md` entry, nothing else, as `chore: bump the version to X.Y.Z`. Site or docs work the release needs, such as a major's upgrade article, goes in your handoff, and the developer may add it to the release branch in its own commit, so the bump commit still holds only the bump. Run `pnpm lint`, `pnpm typecheck` and `pnpm build`, then stop. qa checks the branch after you.
 3. **Draft**, only when asked after the release PR has merged: `gh release create vX.Y.Z --draft` on the merge commit's full SHA, titled `vX.Y.Z`, with the CHANGELOG entry as its notes (step 8). Check that `gh release view vX.Y.Z` shows a draft and `git ls-remote --tags origin vX.Y.Z` prints nothing. Return its URL. The maintainer publishes it.
 4. **Check the publish**, only when asked after the maintainer published it: the publish workflow's run, the version and its provenance on npm, `latest`, and the tag on the merge commit (step 10). If the run failed, quote the failing step's log and stop. Redoing a release is the maintainer's call.
 
@@ -40,10 +40,10 @@ Read history, and report what breaks the repo's rules, with the commits and the 
     ```sh
     WT=$(mktemp -d)
     git worktree add --detach "$WT" <branch>
-    (cd "$WT" && git rebase --exec 'pnpm install --frozen-lockfile --prefer-offline && pnpm lint && pnpm typecheck && pnpm build' "$(git merge-base origin/master <branch>)")
+    (cd "$WT" && git rebase --exec 'pnpm install --frozen-lockfile --prefer-offline && pnpm lint && pnpm typecheck && pnpm build && pnpm run --if-present api:check' "$(git merge-base origin/master <branch>)")
     git worktree remove --force "$WT"
     ```
-    On a failure, note the commit and the output, run `git -C "$WT" rebase --abort`, then remove the worktree.
+    `--if-present` skips the API check on commits from before it existed. On a failure, note the commit and the output, run `git -C "$WT" rebase --abort`, then remove the worktree.
 - **Merges:** PRs into `master` merge with a merge commit or a rebase, never squashed. A first-parent commit since `v3.0.0` whose subject ends `(#N)` looks like a squash merge: `git log --first-parent --no-merges --format='%h %s' v3.0.0..origin/master`.
 - **Tracking:** a work branch must not track `master` ([ADR 0056](../../docs/decisions/0056-work-after-release-branches-off-master.md)). `git for-each-ref --format='%(refname:short) %(upstream:short)' refs/heads` lists each branch's upstream, which is empty, or `origin/` and the branch's own name once pushed. Report one that tracks `origin/master` with its fix, `git branch --unset-upstream <branch>`, and leave applying it to the maintainer.
 - **Unpushed or unmerged work:** `git log --branches --not --remotes --oneline`, `git branch --no-merged origin/master`, the `%(upstream:track)` of each branch, and `git stash list`.

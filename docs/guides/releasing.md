@@ -68,7 +68,7 @@ Reading the diff:
 ## 3. Choose the version
 List each change that ships, with its level and the rule of ADR 0075 that sets it, and take the highest. A major resets the minor and the patch (3.1.0 to 4.0.0), and a minor resets the patch (3.1.0 to 3.2.0). If a change isn't covered by the rules, the maintainer classifies it before anything else happens.
 
-A major needs its upgrade article on the site, merged before the release, as 3.0.0 has "Upgrading from v2" (ADR 0075).
+A major needs its upgrade article on the site, merged before the release, as 3.0.0 has "Upgrading from v2" (ADR 0075). It can come from an earlier PR, or the developer may add it to the release branch in its own commit, so the bump commit still holds only the bump.
 
 ## 4. Make the release branch
 ```sh
