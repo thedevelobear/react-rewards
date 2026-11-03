@@ -6,6 +6,7 @@ import {
   type EffectConfig,
   emoji,
   firework,
+  pop,
   type RendererKind,
   type RendererPreference,
   setRenderer,
@@ -83,23 +84,39 @@ export const App = () => {
   return (
     <main>
       <h1>react-rewards</h1>
-      <section className="row">
-        <RewardButton effect={confetti} testId="fire-confetti" onBurst={track}>
-          Confetti
-        </RewardButton>
-        <RewardButton effect={emoji} testId="fire-emoji" onBurst={track}>
-          Emoji
-        </RewardButton>
-        <RewardButton effect={balloon} testId="fire-balloon" onBurst={track}>
-          Balloon
-        </RewardButton>
-        <RewardButton effect={firework} testId="fire-firework" onBurst={track}>
-          Firework
-        </RewardButton>
-        <button type="button" data-testid="cancel-all" onClick={cancelAll}>
-          Cancel all
-        </button>
-        <output data-testid="status">{status}</output>
+      <section>
+        <div className="row">
+          <RewardButton
+            effect={confetti}
+            testId="fire-confetti"
+            onBurst={track}
+          >
+            Confetti
+          </RewardButton>
+          <RewardButton effect={emoji} testId="fire-emoji" onBurst={track}>
+            Emoji
+          </RewardButton>
+          <RewardButton effect={balloon} testId="fire-balloon" onBurst={track}>
+            Balloon
+          </RewardButton>
+          <RewardButton
+            effect={firework}
+            testId="fire-firework"
+            onBurst={track}
+          >
+            Firework
+          </RewardButton>
+          <RewardButton effect={pop} testId="fire-pop" onBurst={track}>
+            Pop
+          </RewardButton>
+        </div>
+        {/* Apart from the buttons, so the status's length can't move them. */}
+        <div className="row">
+          <button type="button" data-testid="cancel-all" onClick={cancelAll}>
+            Cancel all
+          </button>
+          <output data-testid="status">{status}</output>
+        </div>
       </section>
 
       <section>

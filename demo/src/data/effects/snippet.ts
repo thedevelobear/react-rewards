@@ -14,9 +14,21 @@ const property = (key: string, value: unknown) => {
 };
 
 /**
+ * The component a snippet's icon button shows, named after the page's icon:
+ * `sparkle-burst` is `SparkleBurstIcon`.
+ */
+const iconComponent = (icon: string): string =>
+  `${icon
+    .split('-')
+    .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
+    .join('')}Icon`;
+
+/**
  * A component that fires the effect with `config`, as the preview does. The
  * config argument has only the values that differ from the effect's
- * defaults, and is left out when none do (README, "Preview and Code tabs").
+ * defaults, and is left out when none do. For a page with an icon button,
+ * the button holds only the reader's own icon component, and is named by
+ * its `aria-label` (README, "Preview and Code tabs").
  */
 export const snippet = <C extends EffectConfig>(
   page: EffectPage<C>,
@@ -35,18 +47,30 @@ export const snippet = <C extends EffectConfig>(
           '  }',
         ].join('\n');
   const imports = [name, 'useReward'].sort().join(', ');
+  const icon = page.button === 'icon' ? iconComponent(page.icon) : undefined;
+  const iconImport = icon ? `import { ${icon} } from './icons';\n` : '';
+  const button = icon
+    ? `    <button
+      ref={ref}
+      type="button"
+      aria-label="Reward me"
+      onClick={() => reward()}
+    >
+      <${icon} />
+    </button>`
+    : `    <button ref={ref} type="button" onClick={() => reward()}>
+      Reward me
+    </button>`;
 
   return `import { useRef } from 'react';
 import { ${imports} } from 'react-rewards';
-
+${iconImport}
 export const RewardButton = () => {
   const ref = useRef<HTMLButtonElement>(null);
   const { reward } = useReward(${args});
 
   return (
-    <button ref={ref} type="button" onClick={() => reward()}>
-      Reward me
-    </button>
+${button}
   );
 };
 `;

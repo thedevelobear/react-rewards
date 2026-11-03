@@ -27,5 +27,11 @@
     "path": "dist/index.js",
     "import": "{ useReward, firework }",
     "gzip": true
+  },
+  {
+    "name": "useReward + pop",
+    "path": "dist/index.js",
+    "import": "{ useReward, pop }",
+    "gzip": true
   }
 ]

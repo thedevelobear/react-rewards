@@ -13,14 +13,16 @@ const reps = Number(process.argv[2] ?? 3);
 
 /**
  * Each effect's name and its label on the Stress test page. The page turns
- * the count into rockets for fireworks, one per 130 particles, so their
- * particle counts are approximate (README, "Stress test").
+ * the count into rockets for fireworks, one per 130 particles, and into stars
+ * for pops, one per 2, so their particle counts are approximate (README,
+ * "Stress test").
  */
 const EFFECTS = [
   ['confetti', 'Confetti'],
   ['emoji', 'Emoji'],
   ['balloon', 'Balloons'],
   ['firework', 'Fireworks'],
+  ['pop', 'Pop'],
 ] as const;
 const COUNTS = [500, 5000, 20000];
 const RENDERERS = [

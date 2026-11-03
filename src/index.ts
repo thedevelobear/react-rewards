@@ -4,6 +4,7 @@ export type {
   Effect,
   EffectConfig,
   EffectDefinition,
+  ElementAnimation,
   Particle,
   SpriteSource,
   UpdateContext,
@@ -37,6 +38,8 @@ export type { EmojiConfig } from '@/effects/emoji';
 export { emoji } from '@/effects/emoji';
 export type { FireworkConfig } from '@/effects/firework';
 export { firework } from '@/effects/firework';
+export type { PopConfig } from '@/effects/pop';
+export { pop } from '@/effects/pop';
 export type {
   RewardOptions,
   RewardTarget,

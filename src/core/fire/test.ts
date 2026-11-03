@@ -366,6 +366,165 @@ describe('createStage', () => {
   });
 });
 
+/** An element that records the animations played on it. */
+const animatedElement = () => {
+  const played: {
+    keyframes: Keyframe[];
+    options: KeyframeAnimationOptions;
+    cancelled: boolean;
+  }[] = [];
+  const element = {
+    getBoundingClientRect: () => ({ left: 0, top: 0, width: 10, height: 10 }),
+    animate: (keyframes: Keyframe[], options: KeyframeAnimationOptions) => {
+      const animation = { keyframes, options, cancelled: false };
+      played.push(animation);
+      return {
+        cancel: () => {
+          animation.cancelled = true;
+        },
+      } as unknown as Animation;
+    },
+  };
+  return { element, played };
+};
+
+/** An effect that shrinks its element and grows it back over 300 ms. */
+const shrinking = (overrides = {}) =>
+  testEffect({
+    animation: () => ({
+      keyframes: [
+        { transform: 'scale(1)' },
+        { transform: 'scale(0)', offset: 0.2 },
+        { transform: 'scale(1)' },
+      ],
+      duration: 300,
+      easing: 'ease-out',
+    }),
+    ...overrides,
+  });
+
+describe('element animation (ADR 0073)', () => {
+  it('plays on the origin element as the burst starts, added to its own styles', async () => {
+    const { stage } = setup();
+    const { element, played } = animatedElement();
+    stage.fire(shrinking(), { origin: element });
+    expect(played).toEqual([]);
+    await settle();
+    expect(played).toEqual([
+      {
+        keyframes: [
+          { transform: 'scale(1)' },
+          { transform: 'scale(0)', offset: 0.2 },
+          { transform: 'scale(1)' },
+        ],
+        options: { duration: 300, easing: 'ease-out', composite: 'add' },
+        cancelled: false,
+      },
+    ]);
+  });
+
+  it('plays on element, or its ref, when the burst fires from a point', async () => {
+    const { stage } = setup();
+    const { element, played } = animatedElement();
+    const ref = { current: element };
+    stage.fire(shrinking(), { origin, element: ref });
+    // Resolved when fire() is called.
+    ref.current = null as unknown as typeof element;
+    await settle();
+    expect(played).toHaveLength(1);
+    expect(played[0]?.options.easing).toBe('ease-out');
+  });
+
+  it('animates nothing from a point alone, an empty ref, or without an animation', async () => {
+    const { stage, loop } = setup();
+    const { element, played } = animatedElement();
+    const ref = { current: null };
+    stage.fire(shrinking(), { origin });
+    stage.fire(shrinking(), { origin, element: ref });
+    stage.fire(testEffect(), { origin: element });
+    stage.fire(shrinking({ animation: () => undefined }), { origin: element });
+    await settle();
+    expect(loop.running).toBe(true);
+    expect(played).toEqual([]);
+  });
+
+  it('restarts on an element rather than stacking, and only the latest burst cancels it', async () => {
+    const { stage } = setup();
+    const { element, played } = animatedElement();
+    const first = stage.fire(shrinking(), { origin: element });
+    await settle();
+    const second = stage.fire(shrinking(), { origin: element });
+    await settle();
+    expect(played.map(({ cancelled }) => cancelled)).toEqual([true, false]);
+    first.cancel();
+    expect(played[1]?.cancelled).toBe(false);
+    second.cancel();
+    expect(played[1]?.cancelled).toBe(true);
+  });
+
+  it('cancels with its burst, and finishes on its own when the burst completes', async () => {
+    const { stage, tick } = setup();
+    const { element, played } = animatedElement();
+    const cancelled = stage.fire(shrinking(), { origin: element });
+    await settle();
+    cancelled.cancel();
+    expect(played[0]?.cancelled).toBe(true);
+
+    const other = animatedElement();
+    const completed = stage.fire(shrinking(), { origin: other.element });
+    await settle();
+    for (let i = 0; i < 10; i++) tick(1000 / 30);
+    expect(await completed.finished).toBe('complete');
+    expect(other.played[0]?.cancelled).toBe(false);
+    completed.cancel();
+    expect(other.played[0]?.cancelled).toBe(false);
+  });
+
+  it('does not animate a skipped burst', async () => {
+    rs.stubGlobal('matchMedia', () => ({ matches: true }));
+    const { stage } = setup();
+    const { element, played } = animatedElement();
+    expect(await stage.fire(shrinking(), { origin: element }).finished).toBe(
+      'skipped'
+    );
+    await settle();
+    expect(played).toEqual([]);
+  });
+
+  it('plays the burst without the animation where the element cannot animate', async () => {
+    const { stage, counts, tick } = setup();
+    const still = {
+      getBoundingClientRect: () => ({ left: 0, top: 0, width: 10, height: 10 }),
+    };
+    const refusing = {
+      ...still,
+      animate: () => {
+        throw new TypeError('Bad keyframes.');
+      },
+    };
+    stage.fire(shrinking(), { origin: still });
+    stage.fire(shrinking(), { origin: refusing });
+    await settle();
+    tick();
+    expect(counts()).toEqual([[2, 2]]);
+  });
+
+  it('skips a burst whose animation throws, as one whose sprites throw', async () => {
+    const { stage } = setup();
+    const { element, played } = animatedElement();
+    const burst = stage.fire(
+      shrinking({
+        animation: () => {
+          throw new Error('Broken.');
+        },
+      }),
+      { origin: element }
+    );
+    expect(await burst.finished).toBe('skipped');
+    expect(played).toEqual([]);
+  });
+});
+
 describe('fire', () => {
   it('types a union of effects, with the config of either (ADR 0052)', () => {
     // Only type-checked: fire() would start the page's stage, which needs a

@@ -45,7 +45,7 @@ What was decided, specifically enough to check the code against.
 | [0002](decisions/0002-docs-as-decision-record.md) | docs/ is the decision record | Accepted. Scope narrowed to the library by 0046. ADR format set by 0057 |
 | [0003](decisions/0003-integration-branch.md) | v3 lands through the `feat/v3-scaffolding` integration branch | Accepted. Work after the release set by 0056 |
 | [0004](decisions/0004-esm-only-output.md) | Publish ESM only | Accepted |
-| [0005](decisions/0005-effect-contract-scope.md) | The 3.0 effect contract has `spawn` and `update` only | Accepted |
+| [0005](decisions/0005-effect-contract-scope.md) | The 3.0 effect contract has `spawn` and `update` only | Accepted. Extended by 0073 |
 | [0006](decisions/0006-bare-demo-as-e2e-target.md) | A bare `demo/` page is the browser-test target | Accepted. The page the specs open is refined by 0045 |
 | [0007](decisions/0007-no-rename-step.md) | No rename-only step for the v2 files | Accepted |
 | [0008](decisions/0008-toolchain-version-pins.md) | Toolchain version pins (pnpm 12.15.0, Rslib 1.0.3), and how to run pnpm 12 | Accepted. CI bullet superseded by 0014 |
@@ -109,12 +109,18 @@ What was decided, specifically enough to check the code against.
 | [0066](decisions/0066-firework-effect-name.md) | The fireworks effect is named `firework` | Accepted |
 | [0067](decisions/0067-fireworks-climb-in-closed-form.md) | Fireworks climb in closed form and burst as peonies, willows and crackles | Accepted |
 | [0068](decisions/0068-shared-test-helpers.md) | Helpers that more than one test file uses live in `src/test-utils/` | Accepted |
+| [0069](decisions/0069-pop-blooms-in-closed-form.md) | The pop blooms in three layers, placed in closed form and timed by its lifetime | Accepted |
+| [0070](decisions/0070-pop-effect-name.md) | The pop effect is named `pop` | Accepted |
+| [0071](decisions/0071-pop-normal-blend.md) | The pop draws with the normal blend, with halos baked into its sprites | Accepted |
+| [0072](decisions/0072-pop-sized-by-radius.md) | A pop's size is a `radius` in pixels, not its element's box | Accepted |
+| [0073](decisions/0073-effects-animate-their-element.md) | An effect may animate the element it fires from, with the Web Animations API | Accepted |
 
 ### Benchmarks
 | Benchmark | What |
 |---|---|
 | [2026-10-22-v2-baseline](benchmarks/2026-10-22-v2-baseline.md) | v2.1.0 at 50, 500 and 2000 elements per effect. The reference point for the new engine. |
 | [2026-10-23-v3-engine](benchmarks/2026-10-23-v3-engine.md) | The v3 engine at 500, 5000 and 20000 particles per effect, on WebGL and Canvas 2D. |
+| [2026-11-01-pop](benchmarks/2026-11-01-pop.md) | Every effect, fireworks and pop included, at 500, 5000 and 20000 particles, on WebGL and Canvas 2D, with pop's element animation. Compared with 2026-10-23-v3-engine. |
 
 ### Guides
 | Guide | What |

@@ -34,26 +34,36 @@ export const FireArticle = () => (
           <code>config</code> changes the effect's settings, as{' '}
           <code>useReward</code>'s third argument does.
         </li>
+        <li>
+          <code>element</code> is the element the effect animates, if it
+          animates one, as <code>pop</code> does: an element or a ref, read when{' '}
+          <code>fire</code> is called. It defaults to <code>origin</code> when
+          that is an element or a ref, so a burst from a point animates nothing
+          unless you give one. Another burst on the same element restarts the
+          animation rather than adding to it.
+        </li>
       </ul>
       <p>
-        Beside them, <code>fire</code> takes the{' '}
+        Beside them, <code>fire</code> takes the other{' '}
         <a href="#use-reward">burst options</a>: <code>zIndex</code>,{' '}
         <code>onComplete</code>, <code>respectReducedMotion</code> and{' '}
-        <code>seed</code>.
+        <code>seed</code>. <code>element</code> is one too, but it is described
+        above, because <code>fire</code> has no target and defaults it to{' '}
+        <code>origin</code> instead.
       </p>
     </Section>
     <Section title="The burst">
       <ul>
         <li>
           <code>cancel()</code> ends the burst at once, without calling{' '}
-          <code>onComplete</code>.
+          <code>onComplete</code>, and puts back the element it was animating.
         </li>
         <li>
           <code>finished</code> resolves once the burst has ended, with how it
           ended: <code>'complete'</code>, <code>'skipped'</code> or{' '}
-          <code>'cancelled'</code>. It never rejects. A skipped burst drew
-          nothing: it was fired under reduced motion, from an empty ref, or with
-          no renderer available.
+          <code>'cancelled'</code>. It never rejects. A skipped burst drew and
+          animated nothing: it was fired under reduced motion, from an empty
+          ref, or with no renderer available.
         </li>
         <li>
           <code>renderer</code> says which renderer the burst was given:{' '}

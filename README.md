@@ -4,13 +4,13 @@
 
 ❇️ **GPU-rendered**: WebGL2, with a Canvas 2D fallback
 
-🌲 **Tree-shakeable**: about 7 kB gzipped for `useReward` and confetti
+🌲 **Tree-shakeable**: about 7.5 kB gzipped for `useReward` and confetti
 
 🕵️ **Built with TypeScript**
 
 ⏱️ **Frame-rate independent**, and quiet for people who prefer reduced motion
 
-**React-rewards** lets you add micro-interactions to your app, and rewards users with the rain of confetti, emoji, balloons or fireworks in seconds.
+**React-rewards** lets you add micro-interactions to your app, and rewards users with the rain of confetti, emoji, balloons or fireworks, or a pop of stars, in seconds.
 Firing confetti all over the page may seem like a questionable idea, but keep in mind that rewarding users for their actions is not.
 If a huge cloud of smiling emoji doesn't fit your application well, try changing the physics config to make it more subtle.
 
@@ -60,7 +60,7 @@ export const RewardButton = () => {
 };
 ```
 
-The effects are `confetti`, `emoji`, `balloon` and `firework`, and each has its settings on [its page of the docs](https://thedevelobear.github.io/react-rewards/#confetti).
+The effects are `confetti`, `emoji`, `balloon`, `firework` and `pop`, and each has its settings on [its page of the docs](https://thedevelobear.github.io/react-rewards/#confetti).
 
 ## Contributing
 

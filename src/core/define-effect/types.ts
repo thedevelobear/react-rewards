@@ -34,6 +34,20 @@ export type SpriteSource =
       ) => void;
     };
 
+/**
+ * How a burst animates the element it fires from, played with the Web
+ * Animations API (ADR 0073). The keyframes are added to the element's own
+ * styles, so a `transform` in them follows the element's own transform.
+ */
+export interface ElementAnimation {
+  /** The keyframes, as `Element.animate` takes them. */
+  readonly keyframes: readonly Keyframe[];
+  /** How long it plays, in milliseconds. */
+  readonly duration: number;
+  /** The easing between keyframes that don't set their own. Linear if left out. */
+  readonly easing?: string;
+}
+
 /** The fields every effect's config has. */
 export interface EffectConfig {
   /** Particles spawned per burst. */
@@ -117,6 +131,12 @@ export interface EffectDefinition<C extends EffectConfig> {
    * position themselves.
    */
   update(p: Particle, dt: number, config: C, ctx: UpdateContext): void;
+  /**
+   * How the burst animates the element it fires from, or `undefined` for no
+   * animation. Optional. `fire()` plays it as the burst starts, when the
+   * burst has an element and the browser can animate it (ADR 0073).
+   */
+  animation?(config: C): ElementAnimation | undefined;
 }
 
 /** An effect made with `defineEffect`. It and its defaults are frozen. */

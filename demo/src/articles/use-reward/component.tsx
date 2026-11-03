@@ -31,6 +31,23 @@ const SETTINGS = `const { reward } = useReward(
 const RUNTIME = `const { reward } = useReward(ref, party ? confetti : emoji, { count: 30 });
 `;
 
+const ICON = `import { useRef } from 'react';
+import { pop, useReward } from 'react-rewards';
+
+export const LikeButton = () => {
+  const icon = useRef<SVGSVGElement>(null);
+  const { reward } = useReward(icon, pop);
+
+  return (
+    <button type="button" aria-label="Like" onClick={() => reward()}>
+      <svg ref={icon} viewBox="0 0 24 24" aria-hidden="true">
+        <path d="M12 20 4.5 12.5a4.5 4.5 0 0 1 7.5-5 4.5 4.5 0 0 1 7.5 5Z" />
+      </svg>
+    </button>
+  );
+};
+`;
+
 const OPTION_COLUMNS: readonly DataTableColumn[] = [
   { label: 'Option', code: true },
   { label: 'Default' },
@@ -61,6 +78,12 @@ const OPTIONS: readonly BurstOption[] = [
     description:
       "Seeds the burst's random numbers, so the same seed plays the same burst.",
   },
+  {
+    name: 'element',
+    defaultValue: 'the target',
+    description:
+      'The element the effect animates, if it animates one, as `pop` does: an element or a ref.',
+  },
 ];
 
 /** The hook's page, from the library's README (README, "Articles"). */
@@ -89,7 +112,7 @@ export const UseRewardArticle = () => (
         </li>
         <li>
           <code>effect</code>: <code>confetti</code>, <code>emoji</code>,{' '}
-          <code>balloon</code>, <code>firework</code>, or{' '}
+          <code>balloon</code>, <code>firework</code>, <code>pop</code>, or{' '}
           <a href="#custom-effects">one of yours</a>.
         </li>
         <li>
@@ -116,10 +139,15 @@ export const UseRewardArticle = () => (
         <code>firework</code> share most of their settings, and every setting is
         optional. A firework's <code>count</code> is rockets rather than
         particles, and it has settings of its own for the rockets' spiral and
-        their shells. Each effect's page describes its settings, lists its
-        colours, and lets you try them: <a href="#confetti">Confetti</a>,{' '}
-        <a href="#emoji">Emoji</a>, <a href="#balloon">Balloons</a> and{' '}
-        <a href="#firework">Fireworks</a>.
+        their shells. A <code>pop</code> blooms in place rather than being
+        thrown, so it has no <code>angle</code>, <code>spread</code>,{' '}
+        <code>velocity</code>, <code>drag</code> or <code>gravity</code>: its{' '}
+        <code>radius</code> sets how far it reaches, and its <code>dots</code>,{' '}
+        <code>swirl</code> and <code>bounce</code> are its own. Each effect's
+        page describes its settings, lists its colours, and lets you try them:{' '}
+        <a href="#confetti">Confetti</a>, <a href="#emoji">Emoji</a>,{' '}
+        <a href="#balloon">Balloons</a>, <a href="#firework">Fireworks</a> and{' '}
+        <a href="#pop">Pop</a>.
       </p>
       <SettingsTable />
     </Section>
@@ -158,6 +186,31 @@ export const UseRewardArticle = () => (
         <code>{'onClick={reward}'}</code>, and the burst starts at the pointer
         instead. A click from the keyboard still starts at the element.
       </p>
+    </Section>
+    <Section title="Animating the element">
+      <p>
+        Some effects animate the element they fire from as well:{' '}
+        <code>pop</code> shrinks it away at the tap and springs it back as its
+        stars bloom. <code>useReward</code> animates its target, even when{' '}
+        <code>reward</code> fires from the pointer, or the <code>element</code>{' '}
+        option if you give one. Given another element or ref,{' '}
+        <code>reward()</code> animates that instead.
+      </p>
+      <p>
+        Another burst on the same element restarts the animation rather than
+        adding to it. Cancelling a burst, or unmounting, puts the element back,
+        and a skipped burst, such as one under reduced motion, animates nothing.
+      </p>
+      <p>
+        While the element is shrunk to nothing, a tap lands on whatever is under
+        it. If the button must stay tappable, point the ref at the icon inside
+        it, as Twitter's heart does:
+      </p>
+      <CodeBlock
+        code={ICON}
+        filename="LikeButton.tsx"
+        label="the icon example"
+      />
     </Section>
     <Section title="Picking an effect at runtime">
       <p>

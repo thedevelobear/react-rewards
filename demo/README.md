@@ -61,7 +61,7 @@ Why: a dark, quiet page lets the effects carry the colour. Each text colour keep
 Why: the glow under the preview's button made the accent read as light rather than paint, so the other accent marks share it.
 
 ### Routing
-- The URL hash names the page: `#getting-started`, `#custom-effects`, `#server-rendering`, `#upgrading-from-v2`, `#stress-test`, `#use-reward`, `#fire`, `#renderers`, `#confetti`, `#emoji`, `#balloon`, `#firework`. An effect's hash is its `name`, not its label, so Balloons is `#balloon` and Fireworks `#firework`.
+- The URL hash names the page: `#getting-started`, `#custom-effects`, `#server-rendering`, `#upgrading-from-v2`, `#stress-test`, `#use-reward`, `#fire`, `#renderers`, `#confetti`, `#emoji`, `#balloon`, `#firework`, `#pop`. An effect's hash is its `name`, not its label, so Balloons is `#balloon` and Fireworks `#firework`.
 - An empty or unknown hash shows Getting started. The URL is left as it is.
 - `hooks/use-hash` reads the hash with `useSyncExternalStore` and the `hashchange` event. There is no router.
 - The document title follows the page, for example "Confetti · react-rewards".
@@ -76,20 +76,20 @@ Why: GitHub Pages serves static files only, so path routes such as `/emoji` woul
   1. "Install the package": the install command, with a tab per package manager (pnpm, npm, yarn, bun) and a copy button. The choice is stored under `react-rewards:package-manager`.
   2. "Fire your first reward": a line on `useReward` with a link to its page, and the first effect's snippet with its defaults, as `RewardButton.tsx`.
   3. "Pick an effect": a card per effect, linking to its page, with its label and description. Each card shows its effect's sidebar icon, through `components/icon`, at 64 px with a stroke of 1.5 on the 24 px grid (about 4 px on screen), so a new effect needs no code here.
-     - Each icon is one colour, from `articles/getting-started/cards.tsx`: Confetti `--art-violet`, Emoji `--accent`, Balloons `--art-sky` and Fireworks `--art-amber`. An effect without a colour there is `--accent`.
+     - Each icon is one colour, from `articles/getting-started/cards.tsx`: Confetti `--art-violet`, Emoji `--accent`, Balloons `--art-sky`, Fireworks `--art-amber` and Pop `--accent`. Pop shares Emoji's coral, which is the closest of the site's colours to its rose flash and ring, rather than adding a token for one card. An effect without a colour there is `--accent`.
 
 Why: the install command installs the whole library, so it is shown once rather than on every effect. The steps read in the order a newcomer works, and the preview shows the result before any of them. The cards and the sidebar show the same icon, so each effect has one picture across the site.
 
 ### Stress test
 - The last page under Guides, which shows the engine's headroom. Its title is "Stress test".
-- Its Customize section has three settings: the effect (Confetti, Emoji, Balloons, Fireworks), the count (a slider from 100 to 20000 in steps of 100, starting at 5000) and the renderer (Auto, WebGL, Canvas 2D). The burst uses the effect's defaults apart from the count.
-- The count is particles. Fireworks' `count` is rockets, so for them the page asks for `max(1, round(particles / 130))` rockets: at the defaults a rocket peaks at about 126 live particles. A line under the settings says so, for example "Fireworks count rockets, which make the particles, so this count is approximate: 5000 particles is 38 rockets." Another effect whose `count` isn't particles adds its own entry to `UNITS` in `articles/stress-test/component.tsx`.
+- Its Customize section has three settings: the effect (Confetti, Emoji, Balloons, Fireworks, Pop), the count (a slider from 100 to 20000 in steps of 100, starting at 5000) and the renderer (Auto, WebGL, Canvas 2D). The burst uses the effect's defaults apart from the count.
+- The count is particles. Fireworks' `count` is rockets, so for them the page asks for `max(1, round(particles / 130))` rockets: at the defaults a rocket peaks at about 126 live particles. A line under the settings says so, for example "Fireworks count rockets, which make the particles, so this count is approximate: 5000 particles is 38 rockets." A pop's `count` is stars, and a star and its streak are two particles, with the pop's flash and its ring of `dots` dots on top, so for pops the page asks for `max(1, round(particles / 2))` stars, and the line reads "Pops count stars, which make the particles, so this count is approximate: 5000 particles is 2500 stars." Another effect whose `count` isn't particles adds its own entry to `UNITS` in `articles/stress-test/component.tsx`, with the effect's name in the plural to start the line.
 - The renderer calls `setRenderer`, which applies to the whole page, so leaving the Stress test sets it back to Auto. Effect pages always use Auto.
 - The preview is the effect pages' preview. Its top right corner holds the readout, a small mono tag. Before a burst it reads "Ready". While a burst runs, it shows the burst's renderer ([ADR 0047](../docs/decisions/0047-burst-renderer.md)) and the fps over the last half second. After the burst, it shows the average fps over the whole burst, followed by "avg". Bursts fired while one runs are counted with it. A burst that is skipped reads "Skipped", for example under reduced motion, or when the forced renderer isn't available.
 - The fps is the number of `requestAnimationFrame` callbacks a second. The page counts them only while a burst runs.
 - The effect pages have no readout and no renderer setting. Their count sliders keep their own ranges.
 - The site has no card showing that bursts aren't clipped. The fixture page has one, which the smoke spec checks ([ADR 0045](../docs/decisions/0045-fixture-page.md)).
-- The benchmark harness drives this page through its controls ([ADR 0048](../docs/decisions/0048-benchmark-script-in-demo.md)), so it gets the same rockets for its particle counts. A change to the page has to keep the settings' names, the button's and the readout's `data-testid`s, and the readout's `data-state`, or update the harness.
+- The benchmark harness drives this page through its controls ([ADR 0048](../docs/decisions/0048-benchmark-script-in-demo.md)), so it gets the same rockets and stars for its particle counts. A change to the page has to keep the settings' names, the button's and the readout's `data-testid`s, and the readout's `data-state`, or update the harness.
 
 Why: one page for performance keeps the effect pages about the API, and keeps their sliders fine enough for everyday counts.
 
@@ -114,6 +114,7 @@ Why: the item's text stays in text colours, which keep 4.5:1, and the accent mar
 - Pages name their icon in `src/data/`, so the type of `icon` is the list of names, and a missing icon is a type error. A new page adds its icon to `ICON_PATHS`.
 - Confetti's icon, `party-popper`, is a cone at the bottom left with a curved mouth, and the bits it throws to the top right: two curly streamers, a dash and three dots.
 - The fireworks' icon, `firework`, is Hugeicons' free fireworks icon (MIT), copied as it is: four curved strokes crossing at one point, with seven spark dots. A comment in `paths.ts` keeps its notice.
+- The pop's icon, `sparkle-burst`, is a four-point star with concave sides, the shape of the pop's stars, and a short streak off each corner. The star spans 15 units, about as far as the heart and the balloon do, so the icons match in size, and the streaks are 2.5 units long, so they still read as streaks at 16 px.
 
 Why: one set of icons and one component keeps every icon the same weight, and nothing is drawn twice.
 
@@ -146,8 +147,9 @@ Why: the white letter on the tile stays legible at 16 px on light and dark tab b
 
 ### Preview
 - A 320 px stage with a `--dot` grid on `--card`, and a "Reward me" button at its centre that fires the effect from there. The button is an `--accent` pill with `--ink` text and the effect's icon.
+- Pop's button is a 52 px `--accent` circle instead, with only its icon, 24 px across, and the pill's glow. It has no text, so `aria-label` keeps its name, "Reward me". A pop is sized for an icon button such as a like button, and shrinks away and springs back the element it fires from, so the circle shows it on the button it is made for. Pop's page sets this with `button: 'icon'` in `src/data/effects/`, so the Stress test shows the circle too when Pop is chosen. The other effects keep the 160×52 px pill.
 - Its top left corner names the effect, "Live preview · confetti", after a `--success` dot. The top right corner holds what the page puts there, such as the Stress test's readout. On a narrow stage, the corner wraps under the name.
-- A caption under the button says what the settings don't: "Every call to reward() fires a new burst." on Getting started, and "Fireworks look best on dark backgrounds. Just like in real life." on the Fireworks page, since white shells are faint on the light theme. An effect's page sets it with `caption` in `src/data/effects/`.
+- A caption under the button says what the settings don't: "Every call to reward() fires a new burst." on Getting started, "Fireworks look best on dark backgrounds. Just like in real life." on the Fireworks page, since white shells are faint on the light theme, and "Sized for an icon button like this one. For a bigger button, raise the radius." on the Pop page, since a pop doesn't grow with the element it fires from. An effect's page sets it with `caption` in `src/data/effects/`.
 - There is no replay button: "Reward me" already fires again.
 - The stage is 320 px for every effect. Bursts are drawn on the page's overlay, which the stage doesn't clip, so an effect that rises higher draws over the page above it. Fireworks' shells burst about 376 px above the button and reach about 470 px, as confetti does, far past the stage's top edge, which is kept: a taller stage for one effect would make the pages differ, and the overflow shows the bursts aren't clipped.
 
@@ -157,6 +159,7 @@ Why: the white letter on the tile stays legible at 16 px on light and dark tab b
 - The tabs follow the WAI-ARIA tabs pattern: arrow keys, Home and End. Preview is selected on load and when the effect changes. The tab isn't kept in the URL.
 - The preview fires with the panel's settings.
 - The snippet is TSX. It calls `useReward` with a ref and fires with `reward()` from a click, as the preview does. Its config argument lists only the values that differ from the effect's defaults, and is left out when none do.
+- On a page with `button: 'icon'`, such as Pop's, the snippet's button matches the preview's: the ref is on the button, which holds only an icon and is named by `aria-label="Reward me"`. The icon is the reader's own component, named after the page's icon, so Pop's is `<SparkleBurstIcon />`, imported from `./icons`. It is a placeholder, so the snippet doesn't carry the site's path data, and like the pill, the snippet leaves styling to the reader.
 
 Why: the page follows reactbits.dev's structure, as the plan's layout does.
 
@@ -172,7 +175,7 @@ Why: any colour or emoji can be tried, with no presets to maintain.
 ### Props table
 - It lists every config field in the panel's order: the prop, its type (`number`, `boolean` or `string[]`, from its control), its default (from `effect.defaults`, written as in the snippet) and a description.
 - The description is the field's JSDoc from `src/effects/<name>/types.ts`, copied next to its control, without references to ADRs. Text in backticks shows as code. Nothing checks that the copies match, so a change to a field's JSDoc has to be copied by hand.
-- The burst options (`zIndex`, `onComplete`, `respectReducedMotion` and `seed`) aren't listed. The useReward page documents them.
+- The burst options (`zIndex`, `onComplete`, `respectReducedMotion`, `seed` and `element`) aren't listed. The useReward page documents them.
 - On phones the table scrolls sideways inside its frame, so the page doesn't.
 
 ### Code blocks
@@ -200,7 +203,7 @@ Why: every colour is a token, so code follows the theme like the rest of the pag
 
 ### Articles
 - The pages that aren't effects are articles: the guides and the API's pages. Each is an entry in `src/data/articles/list.ts`, with its name, label, description, icon and content, and its content is a component in `src/articles/<name>/`. The site's own pages, Getting started and the Stress test, are articles too.
-- The library's documentation lives in the articles, and the root README keeps the basics and links to them ([ADR 0062](../docs/decisions/0062-docs-on-the-site.md)). The guides are Custom effects, Server rendering and Upgrading from v2. The API's pages are useReward (its arguments, settings, burst options, return value, the pointer, and picking an effect at runtime), fire, and Renderers (how bursts are drawn, `setRenderer`, and the benchmark).
+- The library's documentation lives in the articles, and the root README keeps the basics and links to them ([ADR 0062](../docs/decisions/0062-docs-on-the-site.md)). The guides are Custom effects, Server rendering and Upgrading from v2. The API's pages are useReward (its arguments, settings, burst options, return value, the pointer, animating the element, and picking an effect at runtime), fire, and Renderers (how bursts are drawn, `setRenderer`, and the benchmark).
 - An article is TSX, with no Markdown step. It is a series of `components/section` blocks, each an `h2` with paragraphs, lists, code blocks and tables. Paragraphs and lists directly in a section are prose: `--text-muted`, 15.5 px at 1.6 line height, at most 680 px wide, with bold leads in `--text`. Code inside text is a chip, which keeps its border when it wraps.
 - Tables are `components/data-table`, as the props table is. Cells in a table's data can hold code in backticks, which `components/code-text` turns into chips.
 - The settings table on the useReward page is generated from the effects' pages, with each effect's default, so it can't drift from the library. It counts colours instead of listing them, and links to each effect's page for the rest.
