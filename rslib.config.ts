@@ -4,7 +4,15 @@ export default defineConfig({
   lib: [
     {
       format: 'esm',
-      syntax: 'es2022',
+      // The supported browsers (ADR 0079). Syntax one of them lacks is
+      // lowered, so new code can't raise the floor.
+      syntax: [
+        'chrome >= 87',
+        'edge >= 87',
+        'firefox >= 79',
+        'safari >= 14.1',
+        'ios_saf >= 14.5',
+      ],
       dts: true,
       // For React Server Components. The build is one file, so this marks
       // every export as client code, not just the hook.
@@ -18,5 +26,9 @@ export default defineConfig({
   },
   output: {
     target: 'web',
+  },
+  tools: {
+    // Lowers only the forms those browsers get wrong, not whole features.
+    swc: { env: { bugfixes: true } },
   },
 });
