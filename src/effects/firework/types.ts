@@ -2,6 +2,9 @@ import type { EffectConfig } from '@/core/define-effect';
 
 /**
  * The firework's settings, in the units of ADR 0024.
+ *
+ * You pass any of them, as a `Partial`, so a minor release may add a setting
+ * (ADR 0075).
  */
 export interface FireworkConfig extends EffectConfig {
   /** Rockets per burst. They launch from the same spot, a moment apart. */

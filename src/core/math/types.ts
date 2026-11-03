@@ -6,6 +6,8 @@ export type Easing = (t: number) => number;
 
 /**
  * A position in CSS pixels.
+ *
+ * You create it, so a minor release adds only optional members (ADR 0075).
  */
 export interface Point {
   x: number;
@@ -14,6 +16,9 @@ export interface Point {
 
 /**
  * A seedable pseudo-random number generator.
+ *
+ * You only receive it, from `createRng` or an effect, so a minor release may
+ * add members (ADR 0075).
  */
 export interface Rng {
   /** The seed this generator started from. */

@@ -2,6 +2,9 @@ import type { EffectConfig } from '@/core/define-effect';
 
 /**
  * Confetti's settings, in the units of ADR 0024.
+ *
+ * You pass any of them, as a `Partial`, so a minor release may add a setting
+ * (ADR 0075).
  */
 export interface ConfettiConfig extends EffectConfig {
   /** Pieces per burst. */
