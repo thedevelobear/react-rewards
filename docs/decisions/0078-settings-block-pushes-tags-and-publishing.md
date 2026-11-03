@@ -1,6 +1,6 @@
 # 0078. Claude Code's settings block pushes, tags and publishing
 
-- **Status:** Proposed
+- **Status:** Accepted
 - **Date:** 2026-11-03
 
 - `.claude/settings.json` denies the plain forms: `Bash(git push *)`, `Bash(git tag -d *)`, `Bash(git tag --delete *)`, `Bash(npm publish *)` and `Bash(pnpm publish *)`. A deny rule matches each command of a compound command, but not the same program written another way, such as `git -C . push`.

@@ -114,13 +114,13 @@ What was decided, specifically enough to check the code against.
 | [0071](decisions/0071-pop-normal-blend.md) | The pop draws with the normal blend, with halos baked into its sprites | Accepted |
 | [0072](decisions/0072-pop-sized-by-radius.md) | A pop's size is a `radius` in pixels, not its element's box | Accepted |
 | [0073](decisions/0073-effects-animate-their-element.md) | An effect may animate the element it fires from, with the Web Animations API | Accepted |
-| [0074](decisions/0074-api-report-with-api-extractor.md) | API Extractor keeps a report of the public API, and CI fails when it is stale | Proposed |
-| [0075](decisions/0075-versioning-policy.md) | Versions follow semver, and a built-in effect's new look is a minor release | Proposed |
-| [0076](decisions/0076-release-manager-agent.md) | A release-manager agent runs releases up to a draft GitHub release | Proposed |
-| [0077](decisions/0077-only-the-tip-passes-the-checks.md) | Only a branch's tip has to pass the checks | Proposed |
-| [0078](decisions/0078-settings-block-pushes-tags-and-publishing.md) | Claude Code's settings block pushes, tags and publishing | Proposed |
-| [0079](decisions/0079-build-targets-the-supported-browsers.md) | The build targets the supported browsers: Chrome and Edge 87, Firefox 79, Safari 14.1 | Proposed |
-| [0080](decisions/0080-unit-tests-on-react-18.md) | The unit tests also run on React 18, the lowest supported React | Proposed |
+| [0074](decisions/0074-api-report-with-api-extractor.md) | API Extractor keeps a report of the public API, and CI fails when it is stale | Accepted |
+| [0075](decisions/0075-versioning-policy.md) | Versions follow semver, and a built-in effect's new look is a minor release | Accepted |
+| [0076](decisions/0076-release-manager-agent.md) | A release-manager agent runs releases up to a draft GitHub release | Accepted |
+| [0077](decisions/0077-only-the-tip-passes-the-checks.md) | Only a branch's tip has to pass the checks | Accepted |
+| [0078](decisions/0078-settings-block-pushes-tags-and-publishing.md) | Claude Code's settings block pushes, tags and publishing | Accepted |
+| [0079](decisions/0079-build-targets-the-supported-browsers.md) | The build targets the supported browsers: Chrome and Edge 87, Firefox 79, Safari 14.1 | Accepted |
+| [0080](decisions/0080-unit-tests-on-react-18.md) | The unit tests also run on React 18, the lowest supported React | Accepted |
 
 ### Benchmarks
 | Benchmark | What |

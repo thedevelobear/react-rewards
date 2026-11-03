@@ -1,6 +1,6 @@
 # 0075. Versions follow semver, and a built-in effect's new look is a minor release
 
-- **Status:** Proposed
+- **Status:** Accepted
 - **Date:** 2026-11-03
 
 A release's version is the highest level among the changes since the last tag. Each change takes the highest level whose rules it matches:

@@ -1,6 +1,6 @@
 # 0080. The unit tests also run on React 18, the lowest supported React
 
-- **Status:** Proposed
+- **Status:** Accepted
 - **Date:** 2026-11-03
 
 - CI has a second job, `react-18`. After the usual install from the lockfile, it runs `pnpm add -D -w react@18.3.1 react-dom@18.3.1 @types/react@18.3.31 @types/react-dom@18.3.7` on the runner, then `pnpm test`. Nothing it changes is committed: the lockfile, the main job, the demo and the browser specs stay on React 19. Testing Library 16 supports both.

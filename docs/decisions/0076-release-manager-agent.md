@@ -1,6 +1,6 @@
 # 0076. A release-manager agent runs releases up to a draft GitHub release
 
-- **Status:** Proposed
+- **Status:** Accepted
 - **Date:** 2026-11-03
 
 - A fifth agent, `release-manager` in `.claude/agents/`, joins those of [ADR 0064](0064-orchestrated-agents.md). It owns the `version` field in `package.json`, `CHANGELOG.md`, release branches (`chore/release-X.Y.Z`, made from `origin/master` with `--no-track`), draft GitHub releases, and the check after a publish. It follows `docs/guides/releasing.md`.

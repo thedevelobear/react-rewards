@@ -1,6 +1,6 @@
 # 0077. Only a branch's tip has to pass the checks
 
-- **Status:** Proposed
+- **Status:** Accepted
 - **Date:** 2026-11-03
 
 - A branch's commits are small, focused steps, but only its tip has to build and pass the checks. Nothing requires or checks that each commit passes on its own, and no agent replays commits to find out. This supersedes the sentence of [ADR 0009](0009-no-squash-merges.md) that each commit builds and passes lint on its own. PRs still merge without squashing.
