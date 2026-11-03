@@ -115,6 +115,7 @@ What was decided, specifically enough to check the code against.
 | [0072](decisions/0072-pop-sized-by-radius.md) | A pop's size is a `radius` in pixels, not its element's box | Accepted |
 | [0073](decisions/0073-effects-animate-their-element.md) | An effect may animate the element it fires from, with the Web Animations API | Accepted |
 | [0074](decisions/0074-api-report-with-api-extractor.md) | API Extractor keeps a report of the public API, and CI fails when it is stale | Proposed |
+| [0075](decisions/0075-versioning-policy.md) | Versions follow semver, and a built-in effect's new look is a minor release | Proposed |
 
 ### Benchmarks
 | Benchmark | What |
@@ -127,3 +128,4 @@ What was decided, specifically enough to check the code against.
 | Guide | What |
 |---|---|
 | [adding-an-effect](guides/adding-an-effect.md) | Adding a built-in effect: the contract, the folder, the tests, the export and the site. |
+| [releasing](guides/releasing.md) | Releasing a version: the policy, the changes and API diff since the last tag, the release branch and CHANGELOG entry, the draft GitHub release and the publish. |

@@ -25,7 +25,7 @@ Work too big for one PR gets a plan in `docs/plans/`, with a progress table, as 
 Fixes to a merged PR of a plan take no number. List them in the plan's "Follow-up fixes" table, not in the progress table.
 
 ## Releasing
-A release PR bumps the version in `package.json` and adds an entry to `CHANGELOG.md`. Once it merges, the maintainer publishes a GitHub release tagged `v` and the version, and a workflow publishes the package to npm ([ADR 0054](docs/decisions/0054-publish-from-github-release.md)).
+Versions follow semver, and a deliberate change to a built-in effect's look is a minor ([ADR 0075](docs/decisions/0075-versioning-policy.md)). A release PR, from `chore/release-X.Y.Z`, bumps the version in `package.json` and adds an entry to `CHANGELOG.md`. Once it merges, a draft GitHub release tagged `v` and the version is made, the maintainer publishes it, and a workflow publishes the package to npm ([ADR 0054](docs/decisions/0054-publish-from-github-release.md)). [`docs/guides/releasing.md`](docs/guides/releasing.md) is the checklist.
 
 ## While you work
 - Record decisions and plan changes in `docs/`, in the same PR as the code: a new ADR for each decision, and an update to the active plan's progress table and to any section the work changes. Nothing that matters should live only in chat or in PR comments.
