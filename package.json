@@ -43,6 +43,8 @@
     "test": "rstest run",
     "lint:package": "publint --pack npm && attw --pack . --profile esm-only",
     "size": "size-limit",
+    "api:report": "api-extractor run --local",
+    "api:check": "api-extractor run --print-api-report-diff",
     "e2e": "pnpm build && pnpm --filter demo build && pnpm --filter demo e2e",
     "bench": "pnpm build && pnpm --filter demo build && pnpm --filter demo bench",
     "prepublishOnly": "pnpm typecheck && pnpm test && pnpm build"
@@ -53,6 +55,7 @@
   "devDependencies": {
     "@arethetypeswrong/cli": "0.18.5",
     "@biomejs/biome": "2.6.2",
+    "@microsoft/api-extractor": "7.60.1",
     "@rslib/core": "1.0.3",
     "@rstest/adapter-rslib": "0.12.4",
     "@rstest/core": "0.12.4",

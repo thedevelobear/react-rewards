@@ -1,0 +1,28 @@
+// Writes the API report, etc/react-rewards.api.md, from the built
+// declarations, and nothing else: no rollup, no doc model (ADR 0074).
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/api-extractor/v7/api-extractor.schema.json",
+  "mainEntryPointFilePath": "<projectFolder>/dist/index.d.ts",
+  "newlineKind": "lf",
+  "apiReport": {
+    "enabled": true,
+    // Types that public signatures use but the entry doesn't export, such as
+    // `Point` (ADR 0053), are written out too, so a change to them shows.
+    "includeForgottenExports": true,
+    "reportTempFolder": "<projectFolder>/node_modules/.cache/api-extractor/"
+  },
+  "docModel": { "enabled": false },
+  "dtsRollup": { "enabled": false },
+  // On by default, it would write tsdoc-metadata.json into dist/.
+  "tsdocMetadata": { "enabled": false },
+  "messages": {
+    "extractorMessageReporting": {
+      // Everything exported is public. There are no release tags.
+      "ae-missing-release-tag": { "logLevel": "none" },
+      "ae-forgotten-export": {
+        "logLevel": "none",
+        "addToApiReportFile": false
+      }
+    }
+  }
+}

@@ -18,16 +18,17 @@ Run every one, even after a failure, so the report is complete. Keep each comman
 3. `pnpm typecheck`
 4. `pnpm test`. Note the number of tests.
 5. `pnpm build`
-6. `pnpm lint:package` (publint and attw)
-7. `pnpm --filter demo typecheck`
-8. `pnpm size`. Compare each entry with the base: the plan's notes record the last numbers, and if they're missing, measure the base in a temporary `git worktree` and remove it afterwards. Flag any entry that grew by more than 0.3 kB without a reason in the change. Flag any `useReward + <effect>` entry close to the whole package's size, which means an effect stopped tree-shaking ([ADR 0055](../../docs/decisions/0055-pure-effect-definitions.md)).
-9. `pnpm e2e`. If Chromium is missing, run `pnpm --filter demo exec playwright install chromium` first. Note the number of tests.
-10. `pnpm bench`, only when the orchestrator says so. It drives a headed Chromium for several minutes. Compare its table with the newest benchmark in `docs/benchmarks/`, and flag any effect, count and renderer that lost more than 10% of its frame rate, or a burst that ran longer than its lifetime.
-11. A visual check, when `demo/` or an effect's look changed. Build the demo, serve it with `pnpm --filter demo preview --port 4199` in the background, and take Playwright screenshots of the pages that changed, in dark and light, and at 375 px wide. Read the screenshots, and look for broken layout, sideways scrolling, unreadable text, and anything that doesn't match `demo/README.md`. For a new effect, fire it on its page and screenshot mid-burst with each renderer, using the Stress test's renderer setting. Stop the server afterwards, and keep the screenshots outside the repo.
+6. `pnpm api:check`. A failure means a change to the exports or public types didn't update `etc/react-rewards.api.md` ([ADR 0074](../../docs/decisions/0074-api-report-with-api-extractor.md)). Quote the diff it prints. It belongs to the agent that made the change: the **effect-creator** for an effect's export or a type in `src/core/`, and the **developer** for any other.
+7. `pnpm lint:package` (publint and attw)
+8. `pnpm --filter demo typecheck`
+9. `pnpm size`. Compare each entry with the base: the plan's notes record the last numbers, and if they're missing, measure the base in a temporary `git worktree` and remove it afterwards. Flag any entry that grew by more than 0.3 kB without a reason in the change. Flag any `useReward + <effect>` entry close to the whole package's size, which means an effect stopped tree-shaking ([ADR 0055](../../docs/decisions/0055-pure-effect-definitions.md)).
+10. `pnpm e2e`. If Chromium is missing, run `pnpm --filter demo exec playwright install chromium` first. Note the number of tests.
+11. `pnpm bench`, only when the orchestrator says so. It drives a headed Chromium for several minutes. Compare its table with the newest benchmark in `docs/benchmarks/`, and flag any effect, count and renderer that lost more than 10% of its frame rate, or a burst that ran longer than its lifetime.
+12. A visual check, when `demo/` or an effect's look changed. Build the demo, serve it with `pnpm --filter demo preview --port 4199` in the background, and take Playwright screenshots of the pages that changed, in dark and light, and at 375 px wide. Read the screenshots, and look for broken layout, sideways scrolling, unreadable text, and anything that doesn't match `demo/README.md`. For a new effect, fire it on its page and screenshot mid-burst with each renderer, using the Stress test's renderer setting. Stop the server afterwards, and keep the screenshots outside the repo.
 
 ## Also check
 - The docs: each decision has an ADR, the active plan's table and sections are updated, and the site's design changes are in `demo/README.md` ([ADR 0002](../../docs/decisions/0002-docs-as-decision-record.md)).
-- For a new effect: every step of `docs/guides/adding-an-effect.md` is done, including the export, its frame-rate test, the site's page and icon, the fixture and smoke spec, the benchmark harness and `.size-limit.json`.
+- For a new effect: every step of `docs/guides/adding-an-effect.md` is done, including the export and the API report, its frame-rate test, the site's page and icon, the fixture and smoke spec, the benchmark harness and `.size-limit.json`.
 - Each commit is a self-contained step. Spot-check that the first and the middle commits build, if the history is long.
 
 ## Reporting

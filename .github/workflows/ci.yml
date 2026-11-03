@@ -26,6 +26,7 @@ jobs:
       - run: pnpm typecheck
       - run: pnpm test
       - run: pnpm build
+      - run: pnpm api:check
       - run: pnpm --filter demo typecheck
       - run: pnpm --filter demo build
       - run: pnpm lint:package
