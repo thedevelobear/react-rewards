@@ -11,8 +11,8 @@ Pre-releases aren't supported. The workflow skips a release marked as one, and e
 ## The policy, in brief
 [ADR 0075](../decisions/0075-versioning-policy.md) has the rules, specific enough to classify each change. In short:
 
-- **Major:** a change that can break code or a setup that worked: an export, option, setting or member removed or renamed; a type that accepts less, or hands back more; a documented behaviour changed; the stepping or a math helper changed, which custom effects rely on; a higher lowest React; or an environment dropped.
-- **Minor:** an addition, such as an export, an optional option, a setting or an optional contract method; a deliberate change to a built-in effect's look or defaults; or a deprecation.
+- **Major:** a change that can break code or a setup that worked: an export, option, setting or member removed or renamed; a type that accepts less; a documented behaviour changed; the stepping or a math helper changed, which custom effects rely on; a higher lowest React; or an environment dropped.
+- **Minor:** an addition, such as an export, an optional option, a setting, an optional contract method, or a new value the library hands back, such as a new `BurstEnd`; a deliberate change to a built-in effect's look or defaults; or a deprecation.
 - **Patch:** a fix that makes something look or behave as intended, or a change users can't see.
 - **No release:** the site, docs, tests, CI, the agents, and dev dependencies that leave `dist/` unchanged.
 
@@ -60,7 +60,7 @@ The tag's own `pnpm install` is needed, so its declarations find the React types
 
 Reading the diff:
 - Only added lines, for a new `export` or an optional member (`?`): an addition, so a minor.
-- A removed or changed line: check it against the major rules. A member or parameter that gained `?` accepts more, and one that lost it accepts less. A union the library hands back, such as `BurstEnd`, that gained a member hands back more.
+- A removed or changed line: check it against the major rules. A member or parameter that gained `?` accepts more, and one that lost it accepts less. A union the library hands back, such as `BurstEnd` or `RendererKind`, that gained a member is a minor, whose entry goes under "Added" and says how to handle the new value.
 - Blocks without `export`, such as `interface Point`, are types that public signatures use without exporting. A change to one counts as a change to the signatures that use it.
 - `// (undocumented)` marks, and comments inside a type, are documentation, not API.
 - The report doesn't show defaults, looks, behaviour, the stepping, peer dependencies or environments. Those come from step 1.
@@ -81,7 +81,7 @@ git switch --no-track -c chore/release-X.Y.Z origin/master
 ## 5. Bump the version and write the CHANGELOG entry
 One commit, `chore: bump the version to X.Y.Z`, whose body says what the entry covers:
 - `version` in `package.json` becomes `X.Y.Z`. Nothing else in `package.json` changes, and the lockfile doesn't record it.
-- `CHANGELOG.md` gets a `## X.Y.Z` section above the last release's. Its sections are "Breaking changes", "Added", "Changed" and "Fixed", in that order, without empty ones (ADR 0075). A major's entry opens with a line linking its upgrade article, as 3.0.0's does.
+- `CHANGELOG.md` gets a `## X.Y.Z` section above the last release's. Its sections are "Breaking changes", "Added", "Changed" and "Fixed", in that order, without empty ones (ADR 0075). A new value the library hands back, such as a new `BurstEnd`, goes under "Added" and says how to handle it. A major's entry opens with a line linking its upgrade article, as 3.0.0's does.
 
 Write each entry for someone upgrading, not as a list of commits: what they get or must change, the export or setting in code, and a link to its page on the site. Leave out what users can't see. For two made-up effects, a new `sparkle` and a changed `glitter`:
 
