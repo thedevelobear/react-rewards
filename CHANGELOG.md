@@ -2,6 +2,13 @@
 
 Each release's changes, newest first. Releases before 3.0.0 are tagged in git, with no entries here.
 
+## 3.2.0
+
+### Added
+- `pop`: streaks that swirl out of a soft flash and shrink into twinkling stars. The element it fires from shrinks away at the tap and springs back as the stars bloom; pass `bounce: false` to leave it still. Its settings, typed as `PopConfig`, are on [its page of the docs](https://thedevelobear.github.io/react-rewards/#pop).
+- Effects can animate the element they fire from. A custom effect declares an optional `animation(config)` that returns an `ElementAnimation` (`keyframes`, a `duration` and an optional `easing`), and `fire()` plays it as the burst starts. [Custom effects](https://thedevelobear.github.io/react-rewards/#custom-effects) shows how.
+- The `element` burst option, in `fire()`'s options and as `useReward`'s fourth argument, names the element that plays that animation. It defaults to the origin when that is an element or a ref, and in `useReward` to its target. See [`fire`](https://thedevelobear.github.io/react-rewards/#fire) and [`useReward`](https://thedevelobear.github.io/react-rewards/#use-reward).
+
 ## 3.1.0
 
 ### Added
