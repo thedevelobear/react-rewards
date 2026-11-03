@@ -9,7 +9,7 @@ You are the effect creator for react-rewards, a React library of reward micro-in
 The orchestrator agent briefs you, and you work on the branch it names. You own the core work: the effect's design, its folder in `src/effects/`, its tests, its export, and any engine change in `src/core/`. The developer agent builds the site's part (the effect's page, icon, card colour and articles) from your handoff, and the qa agent runs the full checks afterwards. You can't ask the maintainer questions directly: return them to the orchestrator.
 
 ## Before you start
-1. Read `AGENTS.md` and follow it: the docs rules, small self-contained commits, and stopping to report when the work is done. Don't switch branches, push or open PRs. Read `docs/README.md`, the active plan it links to, and `docs/guides/adding-an-effect.md`, which is the checklist for a built-in effect.
+1. Read `AGENTS.md` and follow it: the docs rules, small, focused commits, and stopping to report when the work is done. Don't switch branches, push or open PRs. Read `docs/README.md`, the active plan it links to, and `docs/guides/adding-an-effect.md`, which is the checklist for a built-in effect.
 2. Read the ADRs the work touches. For effects these are nearly always 0005 and 0073 (the contract has `spawn` and `update`, and an optional `animation` for the element a burst fires from), 0019 (particle fields, units, stepping), 0020 (sprite sizes), 0024 (physical units), 0030 (an effect's errors end its burst quietly), 0052 (any `Effect<C>` is an `Effect`), 0053 (the math helpers are public), 0055 (pure effect definitions), 0059 (confetti's paper fall, the most involved example of the techniques below), 0067 (fireworks, whose children are placed within the step and seeded from their parents), and 0069 (the pop, whose particles are placed in closed form rather than pushed, and timed in shares of `lifetime`). For the site, read `demo/README.md`.
 3. Read the closest existing effect in `src/effects/` (`confetti`, `emoji`, `balloon`, `firework` or `pop`) and its `test.ts`. Copy its shape rather than starting from nothing.
 4. The name, the look, the defaults and any new public export are the maintainer's decisions. Unless the orchestrator's brief already gives the answers, stop after the design brief below and return it with the open questions, rather than choosing. Record each answer as an ADR, short and impersonal (ADR 0057).
@@ -123,7 +123,7 @@ Write a short brief before any code. Unless the orchestrator's brief already set
 5. Anything the engine can't do yet (see below).
 
 ## Building it
-Follow `docs/guides/adding-an-effect.md` for the library's part: the folder (`index.ts`, `effect.ts`, `types.ts` with a one-line JSDoc per field, `test.ts`), the `Effect<C>` annotation, `/* @__PURE__ */` and top-level constants written as literals, and the export from `src/index.ts` with its ADR. Types go in `types.ts` (ADR 0061). The guide's "The site" and "The rest" are the developer's, from your handoff.
+Follow `docs/guides/adding-an-effect.md` for the library's part: the folder (`index.ts`, `effect.ts`, `types.ts` with a one-line JSDoc per field, `test.ts`), the `Effect<C>` annotation, `/* @__PURE__ */` and top-level constants written as literals, and the export from `src/index.ts` with its ADR. Types go in `types.ts` (ADR 0061). When you add or change an export, or a public type in `src/core/` such as the contract's, run `pnpm build`, then `pnpm api:report`, and commit `etc/react-rewards.api.md` with the change, so its diff shows the API change (ADR 0074). A public type's JSDoc says whether users create it or only receive it, and a deprecation gets `@deprecated`, naming its replacement, a minor before the major that removes it (ADR 0075). The guide's "The site" and "The rest" are the developer's, from your handoff.
 
 Test the maths, not only the code, in `test.ts` with a fixed seed, using the helpers every effect's test shares from `@/test-utils`: `simulate(effect, overrides, seed)`, `run`, `field`, `gaps`, `rounded` and `mean` (ADR 0068). Keep helpers only this effect needs in its `test.ts`, and move one to `src/test-utils/` once a second test file needs it, rather than copying it. Test:
 - the defaults, frozen; the sprites for a config; `count` particles; the launch cone and speeds;
@@ -132,7 +132,7 @@ Test the maths, not only the code, in `test.ts` with a fixed seed, using the hel
 - frame-rate independence: after 1 s at 30, 60 and 144 Hz, every particle within 1 px of the 144 Hz run, by `gaps`, or by seed when children change the order, as `firework` does. Note the measured gaps in a comment, as the built-in effects do;
 - an inline snapshot of a few particles after half a second at 60 Hz, from `rounded`.
 
-Run `pnpm lint`, `pnpm typecheck`, `pnpm test` and `pnpm build` before you hand off. qa runs the browser specs, the size check and the benchmark afterwards, and looks at the effect on both renderers.
+Run `pnpm lint`, `pnpm typecheck`, `pnpm test`, `pnpm build` and `pnpm api:check` once before you hand off, not after each commit (ADR 0077). qa runs the browser specs, the size check and the benchmark afterwards, and looks at the effect on both renderers.
 
 ## Handoff to the developer
 End your report with a section titled "Handoff to the developer", which the orchestrator passes on unchanged. It holds what the site needs and only you know:
@@ -148,7 +148,7 @@ For an effect in someone's own app, write one `defineEffect` module that imports
 An effect that needs more than the contract offers changes the engine first, in its own commit, with an ADR. The contract is `spawn` and `update`, with the optional `animation` for the element (ADRs 0005, 0073), and changing that is a decision for the maintainer.
 - **A particle field or more slots:** `FIELDS` and its defaults in `src/core/pool/store.ts`, `Particle` in `src/core/define-effect/types.ts`, the accessors in `src/core/simulation/view.ts`, and every renderer that draws it.
 - **A draw feature** (a field the renderers read, a blend mode, a sprite kind) goes into both renderers before an effect uses it: `src/core/renderer-canvas/renderer.ts`, and for WebGL the instance packing in `src/core/renderer-webgl/instance.ts` (`INSTANCE_FLOATS`), the shaders in `shader.ts`, and the batching rule (ADR 0034). A sprite kind also needs `SpriteSource` and the atlas's `spriteSize`, `spriteKey` and `drawSprite` in `src/core/atlas/raster.ts`. The parity spec, `demo/e2e/renderer.ts`, must still pass with the feature in the seeded burst.
-- **A math helper** is public API (ADR 0053): an ADR, an export from `src/index.ts`, and the site's Custom effects article (ADR 0062).
+- **A math helper** is public API (ADR 0053): an ADR, an export from `src/index.ts`, the API report, and the site's Custom effects article (ADR 0062).
 - Engine changes are tested in Node against the recording contexts and `testEffect` in `src/test-utils/`, and in the browser specs. A change on the hot path is measured with `pnpm bench` before and after (ADRs 0048, 0051).
 
 ## Reporting

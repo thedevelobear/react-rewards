@@ -1,6 +1,8 @@
 import type { EffectConfig } from '@/core/define-effect';
 
-/** The balloon's settings, in the units of ADR 0024. */
+/**
+ * The balloon's settings, in the units of ADR 0024.
+ */
 export interface BalloonConfig extends EffectConfig {
   /** Balloons per burst. */
   count: number;

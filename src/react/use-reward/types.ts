@@ -1,7 +1,9 @@
 import type { Burst, FireOptions } from '@/core/fire';
 import type { Measurable, Origin, TargetRef } from '@/core/origin';
 
-/** What a reward fires from: an element, or a ref to one. */
+/**
+ * What a reward fires from: an element, or a ref to one.
+ */
 export type RewardTarget = Measurable | TargetRef;
 
 /**
@@ -21,7 +23,9 @@ export interface PositionedEvent {
   readonly detail?: number;
 }
 
-/** What `useReward` returns. */
+/**
+ * What `useReward` returns.
+ */
 export interface UseRewardResult {
   /**
    * Fires the effect from `origin`, or from the target's centre, and returns

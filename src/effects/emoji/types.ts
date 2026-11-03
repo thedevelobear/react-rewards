@@ -1,6 +1,8 @@
 import type { EffectConfig } from '@/core/define-effect';
 
-/** Emoji's settings, in the units of ADR 0024. */
+/**
+ * Emoji's settings, in the units of ADR 0024.
+ */
 export interface EmojiConfig extends EffectConfig {
   /** Emoji per burst. */
   count: number;

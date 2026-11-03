@@ -63,12 +63,15 @@ export const FireArticle = () => (
           ended: <code>'complete'</code>, <code>'skipped'</code> or{' '}
           <code>'cancelled'</code>. It never rejects. A skipped burst drew and
           animated nothing: it was fired under reduced motion, from an empty
-          ref, or with no renderer available.
+          ref, or with no renderer available. A minor release may add a value,
+          so code that checks each one needs a fallback, such as a{' '}
+          <code>switch</code>'s <code>default</code> case.
         </li>
         <li>
           <code>renderer</code> says which renderer the burst was given:{' '}
           <code>'webgl'</code>, <code>'canvas'</code>, or <code>undefined</code>{' '}
-          if it was skipped before getting one.
+          if it was skipped before getting one. A minor release may add a
+          renderer, so code that checks each one needs a fallback too.
         </li>
       </ul>
     </Section>

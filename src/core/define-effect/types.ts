@@ -1,6 +1,8 @@
 import type { Rng } from '@/core/math';
 
-/** How a particle combines with what is drawn under it. */
+/**
+ * How a particle combines with what is drawn under it.
+ */
 export type BlendMode = 'normal' | 'additive';
 
 /**
@@ -48,7 +50,9 @@ export interface ElementAnimation {
   readonly easing?: string;
 }
 
-/** The fields every effect's config has. */
+/**
+ * The fields every effect's config has.
+ */
 export interface EffectConfig {
   /** Particles spawned per burst. */
   count: number;
@@ -91,7 +95,9 @@ export interface Particle {
   s3: number;
 }
 
-/** What `update` can do besides changing its own particle. */
+/**
+ * What `update` can do besides changing its own particle.
+ */
 export interface UpdateContext {
   /** The burst's generator. Using it keeps seeded bursts deterministic. */
   readonly rng: Rng;
@@ -139,7 +145,9 @@ export interface EffectDefinition<C extends EffectConfig> {
   animation?(config: C): ElementAnimation | undefined;
 }
 
-/** An effect made with `defineEffect`. It and its defaults are frozen. */
+/**
+ * An effect made with `defineEffect`. It and its defaults are frozen.
+ */
 export interface Effect<C extends EffectConfig = EffectConfig>
   extends Omit<EffectDefinition<C>, 'defaults'> {
   readonly defaults: Readonly<C>;

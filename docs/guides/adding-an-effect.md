@@ -40,12 +40,16 @@ export type { SparkleConfig } from './types';
 ### `types.ts`
 The config extends `EffectConfig`, which brings `count` and `lifetime`. Reuse the existing names and units where they fit: `size`, `colors`, `angle`, `spread`, `velocity`, `drag` and `gravity`, in CSS pixels, px/s, px/s², per second, milliseconds and degrees ([ADR 0024](../decisions/0024-physical-config-units.md)).
 
-Give every field a one-line JSDoc. The site's props table and panel show the same sentence, so copy it there word for word.
+Give every field a one-line JSDoc. The site's props table and panel show the same sentence, so copy it there word for word. The interface's own JSDoc says that users pass its settings as a `Partial`, as every public type says whether users create it or only receive it ([ADR 0075](../decisions/0075-versioning-policy.md)).
 
 ```ts
 import type { EffectConfig } from '@/core/define-effect';
 
-/** Sparkle's settings, in the units of ADR 0024. */
+/**
+ * Sparkle's settings, in the units of ADR 0024. You pass any of them, as a
+ * `Partial`, so a minor release may add a setting, with a default
+ * (ADR 0075).
+ */
 export interface SparkleConfig extends EffectConfig {
   /** Sparks per burst. */
   count: number;
@@ -155,6 +159,8 @@ Then test, as `src/effects/emoji/test.ts` does:
 ## The public API
 Export the effect and its config type from `src/index.ts`, next to the others. That adds to the public API, so the PR records it in an ADR, as [ADR 0037](../decisions/0037-balloon-effect-name.md) did for `balloon`.
 
+The PR also updates the API report: run `pnpm build`, then `pnpm api:report`, and commit `etc/react-rewards.api.md` with the export ([ADR 0074](../decisions/0074-api-report-with-api-extractor.md)).
+
 ## The site
 The site imports the built package ([ADR 0031](../decisions/0031-demo-imports-built-package.md)), so run `pnpm dev` next to `pnpm --filter demo dev` while you work on it.
 
@@ -186,5 +192,5 @@ The site imports the built package ([ADR 0031](../decisions/0031-demo-imports-bu
 ## The rest
 - Name the effect where the README and the useReward page's prose list the effects (`demo/src/articles/use-reward/component.tsx`), and in the site's description and Open Graph tags in `demo/index.html`. Add it to the share card, `demo/og-image/card.html`, and render the card again ([demo README](../../demo/README.md), "Favicon and link previews").
 - Add `useReward + sparkle` to `.size-limit.json`, and note the size in the PR. A size close to the whole package's means the effect stopped tree-shaking.
-- Run `pnpm lint`, `pnpm typecheck`, `pnpm test`, `pnpm build`, `pnpm --filter demo typecheck` and `pnpm e2e`.
+- Run `pnpm lint`, `pnpm typecheck`, `pnpm test`, `pnpm build`, `pnpm api:check`, `pnpm --filter demo typecheck` and `pnpm e2e`.
 - Look at the effect on the site with both renderers, using the renderer setting on the Stress test page. They should look the same.

@@ -11,7 +11,9 @@ import type { Simulation } from '@/core/simulation';
  */
 export type BurstEnd = 'complete' | 'skipped' | 'cancelled';
 
-/** One burst's options. The effect's own settings go in `config` (ADR 0023). */
+/**
+ * One burst's options. The effect's own settings go in `config` (ADR 0023).
+ */
 export interface FireOptions<C extends EffectConfig = EffectConfig> {
   /**
    * Where the burst starts: a point in viewport CSS pixels, an element or a
@@ -40,7 +42,9 @@ export interface FireOptions<C extends EffectConfig = EffectConfig> {
   readonly element?: Measurable | TargetRef;
 }
 
-/** A burst started by `fire()`. */
+/**
+ * A burst started by `fire()`.
+ */
 export interface Burst {
   /** Ends the burst at once, without calling `onComplete`. */
   cancel(): void;

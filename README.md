@@ -62,6 +62,15 @@ export const RewardButton = () => {
 
 The effects are `confetti`, `emoji`, `balloon`, `firework` and `pop`, and each has its settings on [its page of the docs](https://thedevelobear.github.io/react-rewards/#confetti).
 
+## Support
+
+- React 18 or later.
+- Chrome and Edge 87, Firefox 79, and Safari 14.1 (iOS 14.5), or later. Bursts draw with WebGL2 where it's available, and with Canvas 2D elsewhere.
+- The package can be imported on the server: nothing touches `window` until a burst fires.
+- Only the latest major version gets fixes.
+
+Versions follow [semver](https://github.com/thedevelobear/react-rewards/blob/master/docs/decisions/0075-versioning-policy.md). A patch fixes something. A minor adds something, or changes how a built-in effect looks, and the changelog gives the old settings to keep the old look. A major can break your code, and whatever it removes is deprecated in a minor first.
+
 ## Contributing
 
 The repo uses pnpm, and records its decisions in [`docs/`](docs/README.md). Start with [`AGENTS.md`](AGENTS.md) for the commands.

@@ -43,6 +43,9 @@
     "test": "rstest run",
     "lint:package": "publint --pack npm && attw --pack . --profile esm-only",
     "size": "size-limit",
+    "api:report": "api-extractor run --local",
+    "api:check": "api-extractor run --print-api-report-diff",
+    "compat:check": "es-check checkBrowser 'dist/**/*.js' --module --checkFeatures --browserslistPath browsers.browserslistrc",
     "e2e": "pnpm build && pnpm --filter demo build && pnpm --filter demo e2e",
     "bench": "pnpm build && pnpm --filter demo build && pnpm --filter demo bench",
     "prepublishOnly": "pnpm typecheck && pnpm test && pnpm build"
@@ -53,6 +56,7 @@
   "devDependencies": {
     "@arethetypeswrong/cli": "0.18.5",
     "@biomejs/biome": "2.6.2",
+    "@microsoft/api-extractor": "7.60.1",
     "@rslib/core": "1.0.3",
     "@rstest/adapter-rslib": "0.12.4",
     "@rstest/core": "0.12.4",
@@ -61,6 +65,7 @@
     "@testing-library/react": "16.3.3",
     "@types/react": "19.3.0",
     "@types/react-dom": "19.3.0",
+    "es-check": "9.8.1",
     "happy-dom": "20.14.6",
     "publint": "0.3.25",
     "react": "19.3.1",

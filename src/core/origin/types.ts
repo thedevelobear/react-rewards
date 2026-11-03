@@ -1,6 +1,8 @@
 import type { Point } from '@/core/math';
 
-/** Anything with a layout box, such as a DOM element. */
+/**
+ * Anything with a layout box, such as a DOM element.
+ */
 export interface Measurable {
   getBoundingClientRect(): {
     left: number;
@@ -10,7 +12,9 @@ export interface Measurable {
   };
 }
 
-/** A React-style ref to an element. */
+/**
+ * A React-style ref to an element.
+ */
 export interface TargetRef {
   readonly current: Measurable | null;
 }

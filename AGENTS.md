@@ -12,9 +12,9 @@ Every change is a branch made from `master`, merged into it through a PR ([ADR 0
    ```sh
    git switch --no-track -c feat/topic origin/master
    ```
-   Without `--no-track`, git makes `master` the branch's upstream. A plain push, including VS Code's Push button, then lands the commits on `master` with no PR. When the maintainer asks for a push, use `git push -u origin feat/topic`.
+   Without `--no-track`, git makes `master` the branch's upstream. A plain push, including VS Code's Push button, then lands the commits on `master` with no PR. The maintainer pushes a branch, outside Claude Code, with `git push -u origin feat/topic`. Agents can't push: Claude Code's settings block it ([ADR 0078](docs/decisions/0078-settings-block-pushes-tags-and-publishing.md)).
 2. Bring the docs up to date with what has merged, in the first commit of the new branch. Set any ADR left as "Proposed" by a merged PR to "Accepted" (unless the maintainer changed it). If a plan lists a merged PR as "In review", mark it "Merged" with its PR number. If that was the plan's last PR, mark the plan done.
-3. When the work is done, stop and report to the maintainer. Don't push branches or open PRs unless the maintainer asks.
+3. When the work is done, stop and report to the maintainer. Agents can't push branches, and open a PR only when the maintainer asks, once the branch is pushed.
 
 ## Work over several PRs
 Work too big for one PR gets a plan in `docs/plans/`, with a progress table, as v3 did. Each PR in the table is usually done in a fresh session:
@@ -25,17 +25,17 @@ Work too big for one PR gets a plan in `docs/plans/`, with a progress table, as 
 Fixes to a merged PR of a plan take no number. List them in the plan's "Follow-up fixes" table, not in the progress table.
 
 ## Releasing
-A release PR bumps the version in `package.json` and adds an entry to `CHANGELOG.md`. Once it merges, the maintainer publishes a GitHub release tagged `v` and the version, and a workflow publishes the package to npm ([ADR 0054](docs/decisions/0054-publish-from-github-release.md)).
+Versions follow semver, and a deliberate change to a built-in effect's look is a minor ([ADR 0075](docs/decisions/0075-versioning-policy.md)). A release PR, from `chore/release-X.Y.Z`, bumps the version in `package.json` and adds an entry to `CHANGELOG.md`. Once it merges, a draft GitHub release for the tag `v` and the version is made, the maintainer publishes it, which creates the tag, and a workflow publishes the package to npm ([ADR 0054](docs/decisions/0054-publish-from-github-release.md)). [`docs/guides/releasing.md`](docs/guides/releasing.md) is the checklist.
 
 ## While you work
 - Record decisions and plan changes in `docs/`, in the same PR as the code: a new ADR for each decision, and an update to the active plan's progress table and to any section the work changes. Nothing that matters should live only in chat or in PR comments.
 - ADRs and docs state what was decided and why, briefly. They don't say who decided or asked, retell how a decision was reached, or name the PR something happened in. Only a plan's progress table numbers PRs ([ADR 0057](docs/decisions/0057-short-impersonal-adrs.md)).
 - ADRs are for the library: its API, engine, build and tests, and the repo's process. Decisions about the preview site's design and content go in `demo/README.md`, edited in place, not in ADRs ([ADR 0046](docs/decisions/0046-adrs-cover-the-library.md)). How the library is tested in a browser, and how `demo/` builds against it, are still ADRs.
-- In Claude Code, sessions start with the `orchestrator` agent (`.claude/settings.json`). It hands a new effect or an engine change to the `effect-creator` agent and then to the `developer` agent for the site, sends everything else to the `developer`, and has the `qa` agent run every check at the end ([ADRs 0063](docs/decisions/0063-effect-creator-agent.md), [0064](docs/decisions/0064-orchestrated-agents.md)). The agents are in `.claude/agents/`. Keep them true when the process, the effect contract, the stepping, the math helpers or the renderers change.
+- In Claude Code, sessions start with the `orchestrator` agent (`.claude/settings.json`). It hands a new effect or an engine change to the `effect-creator` agent and then to the `developer` agent for the site, sends a release, or a question about versions or the CHANGELOG, to the `release-manager`, sends everything else to the `developer`, and has the `qa` agent run every check at the end ([ADRs 0063](docs/decisions/0063-effect-creator-agent.md), [0064](docs/decisions/0064-orchestrated-agents.md), [0076](docs/decisions/0076-release-manager-agent.md)). The settings block pushes, tags and publishing for all of them ([ADR 0078](docs/decisions/0078-settings-block-pushes-tags-and-publishing.md)). The agents are in `.claude/agents/`. Keep them true when the process, the effect contract, the stepping, the math helpers or the renderers change.
 - The library's documentation is on the site, as articles in `demo/src/articles/`. The README keeps the basics. A change to the public API updates its article in the same PR ([ADR 0062](docs/decisions/0062-docs-on-the-site.md)).
 - If something is unclear, or the plan contradicts itself, ask the maintainer before deciding.
 - Work lands as small PRs into `master`, one at a time.
-- PRs are merged without squashing ([ADR 0009](docs/decisions/0009-no-squash-merges.md)). Make every commit a self-contained step that builds and passes lint.
+- PRs are merged without squashing ([ADR 0009](docs/decisions/0009-no-squash-merges.md)). Commits are small, focused steps, and only the branch's tip has to pass the checks ([ADR 0077](docs/decisions/0077-only-the-tip-passes-the-checks.md)).
 - Dependencies use exact versions, and `pnpm add` writes them that way. Peer dependencies stay ranges ([ADR 0015](docs/decisions/0015-exact-dependency-versions.md)).
 
 ## Commands
@@ -54,6 +54,9 @@ Use Node 26, as pinned in `.nvmrc`. CI runs on the same version ([ADR 0011](docs
 | `pnpm dev` | Rslib build in watch mode. |
 | `pnpm lint:package` | publint and attw (`--profile esm-only`) on the packed package. Run `pnpm build` first. |
 | `pnpm size` | size-limit: the minified, gzipped size of `dist/index.js`, and of `useReward` with each effect, without React. Reports only, no budget ([ADR 0013](docs/decisions/0013-size-limit-report-only.md), [ADR 0055](docs/decisions/0055-pure-effect-definitions.md)). Run `pnpm build` first. |
+| `pnpm api:report` | API Extractor: rewrites the public API's report, `etc/react-rewards.api.md`, from the built declarations. A change to the exports or public types commits the new report with it ([ADR 0074](docs/decisions/0074-api-report-with-api-extractor.md)). Run `pnpm build` first. |
+| `pnpm api:check` | API Extractor: fails when `etc/react-rewards.api.md` doesn't match the built declarations, and prints the difference. CI runs it after the build. Run `pnpm build` first. |
+| `pnpm compat:check` | es-check: fails when the built JavaScript uses syntax or an ES built-in that a supported browser in `browsers.browserslistrc` lacks. It doesn't check web APIs, such as `structuredClone`, or CSS. CI runs it after the build ([ADR 0079](docs/decisions/0079-build-targets-the-supported-browsers.md)). Run `pnpm build` first. |
 | `pnpm e2e` | Builds the library and `demo/`, then runs the Playwright specs in headless Chromium, against the site and the fixture page ([ADR 0006](docs/decisions/0006-bare-demo-as-e2e-target.md), [ADR 0045](docs/decisions/0045-fixture-page.md)). Install the browser once with `pnpm --filter demo exec playwright install chromium`. |
 | `pnpm bench [reps]` | Builds the library and `demo/`, then runs the benchmark harness: every effect at 500, 5000 and 20000 particles, on each renderer, in a headed Chromium driving the site's Stress test page. It prints the table for `docs/benchmarks/`. Keep the window uncovered. Not run in CI ([ADR 0048](docs/decisions/0048-benchmark-script-in-demo.md)). |
 | `pnpm --filter demo dev` | The demo's dev server: the site at `/`, and the browser-test fixtures at `/fixtures.html` ([ADR 0045](docs/decisions/0045-fixture-page.md)). The demo uses the built package, so run `pnpm dev` next to it ([ADR 0031](docs/decisions/0031-demo-imports-built-package.md)). |

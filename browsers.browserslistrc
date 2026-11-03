@@ -1,0 +1,9 @@
+# The supported browsers, one browserslist query a line (ADR 0079).
+# rslib.config.ts lowers syntax to them, and `pnpm compat:check` checks
+# dist/ against them. It isn't named .browserslistrc, which demo/'s build
+# would find in this parent folder and take as its own.
+chrome >= 87
+edge >= 87
+firefox >= 79
+safari >= 14.1
+ios_saf >= 14.5
