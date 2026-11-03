@@ -40,12 +40,16 @@ export type { SparkleConfig } from './types';
 ### `types.ts`
 The config extends `EffectConfig`, which brings `count` and `lifetime`. Reuse the existing names and units where they fit: `size`, `colors`, `angle`, `spread`, `velocity`, `drag` and `gravity`, in CSS pixels, px/s, px/s², per second, milliseconds and degrees ([ADR 0024](../decisions/0024-physical-config-units.md)).
 
-Give every field a one-line JSDoc. The site's props table and panel show the same sentence, so copy it there word for word.
+Give every field a one-line JSDoc. The site's props table and panel show the same sentence, so copy it there word for word. The interface's own JSDoc says that users pass its settings as a `Partial`, as every public type says whether users create it or only receive it ([ADR 0075](../decisions/0075-versioning-policy.md)).
 
 ```ts
 import type { EffectConfig } from '@/core/define-effect';
 
-/** Sparkle's settings, in the units of ADR 0024. */
+/**
+ * Sparkle's settings, in the units of ADR 0024. You pass any of them, as a
+ * `Partial`, so a minor release may add a setting, with a default
+ * (ADR 0075).
+ */
 export interface SparkleConfig extends EffectConfig {
   /** Sparks per burst. */
   count: number;
