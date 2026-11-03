@@ -1,18 +1,22 @@
+import { readFileSync } from 'node:fs';
 import { defineConfig } from '@rslib/core';
+
+// The supported browsers, which `pnpm compat:check` reads too (ADR 0079).
+const browsers = readFileSync(
+  new URL('./browsers.browserslistrc', import.meta.url),
+  'utf8'
+)
+  .split('\n')
+  .map((line) => line.replace(/#.*/, '').trim())
+  .filter(Boolean);
 
 export default defineConfig({
   lib: [
     {
       format: 'esm',
-      // The supported browsers (ADR 0079). Syntax one of them lacks is
-      // lowered, so new code can't raise the floor.
-      syntax: [
-        'chrome >= 87',
-        'edge >= 87',
-        'firefox >= 79',
-        'safari >= 14.1',
-        'ios_saf >= 14.5',
-      ],
+      // Syntax one of the supported browsers lacks is lowered, so new code
+      // can't raise the floor.
+      syntax: browsers,
       dts: true,
       // For React Server Components. The build is one file, so this marks
       // every export as client code, not just the hook.

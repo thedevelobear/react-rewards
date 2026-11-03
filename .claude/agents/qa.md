@@ -1,6 +1,6 @@
 ---
 name: qa
-description: Quality checks for react-rewards, started by the orchestrator agent at the end of a piece of work, release branches included. It runs lint, types, unit tests, the build, the API report check, the package checks, bundle size, the browser specs, the benchmark when asked, and a visual check of the site, then reports each result and who should fix each failure. It changes nothing. Don't use it directly. Start with the orchestrator.
+description: Quality checks for react-rewards, started by the orchestrator agent at the end of a piece of work, release branches included. It runs lint, types, unit tests, the build, the API report check, the browser check, the package checks, bundle size, the browser specs, the benchmark when asked, and a visual check of the site, then reports each result and who should fix each failure. It changes nothing. Don't use it directly. Start with the orchestrator.
 tools: Read, Grep, Glob, Bash
 ---
 
@@ -19,12 +19,13 @@ Run them once, on the branch's tip. Commits before it don't have to pass on thei
 4. `pnpm test`. Note the number of tests. Then run them on React 18, as CI's `react-18` job does, in a temporary `git worktree` that you remove afterwards ([ADR 0080](../../docs/decisions/0080-unit-tests-on-react-18.md)).
 5. `pnpm build`
 6. `pnpm api:check`. A failure means a change to the exports or public types didn't update `etc/react-rewards.api.md` ([ADR 0074](../../docs/decisions/0074-api-report-with-api-extractor.md)). Quote the diff it prints. It belongs to the agent that made the change: the **effect-creator** for an effect's export or a type in `src/core/`, and the **developer** for any other.
-7. `pnpm lint:package` (publint and attw)
-8. `pnpm --filter demo typecheck`
-9. `pnpm size`. Compare each entry with the base: the plan's notes record the last numbers, and if they're missing, measure the base in a temporary `git worktree` and remove it afterwards. Flag any entry that grew by more than 0.3 kB without a reason in the change. Flag any `useReward + <effect>` entry close to the whole package's size, which means an effect stopped tree-shaking ([ADR 0055](../../docs/decisions/0055-pure-effect-definitions.md)).
-10. `pnpm e2e`. If Chromium is missing, run `pnpm --filter demo exec playwright install chromium` first. Note the number of tests.
-11. `pnpm bench`, only when the orchestrator says so. It drives a headed Chromium for several minutes. Compare its table with the newest benchmark in `docs/benchmarks/`, and flag any effect, count and renderer that lost more than 10% of its frame rate, or a burst that ran longer than its lifetime.
-12. A visual check, when `demo/` or an effect's look changed. Build the demo, serve it with `pnpm --filter demo preview --port 4199` in the background, and take Playwright screenshots of the pages that changed, in dark and light, and at 375 px wide. Read the screenshots, and look for broken layout, sideways scrolling, unreadable text, and anything that doesn't match `demo/README.md`. For a new effect, fire it on its page and screenshot mid-burst with each renderer, using the Stress test's renderer setting. Stop the server afterwards, and keep the screenshots outside the repo.
+7. `pnpm compat:check`. A failure means the built JavaScript uses syntax or an ES built-in that a browser in `browsers.browserslistrc` lacks ([ADR 0079](../../docs/decisions/0079-build-targets-the-supported-browsers.md)). Quote the feature and browsers it names. It belongs to the **effect-creator** when the feature is in an effect's or the engine's code, and to the **developer** otherwise.
+8. `pnpm lint:package` (publint and attw)
+9. `pnpm --filter demo typecheck`
+10. `pnpm size`. Compare each entry with the base: the plan's notes record the last numbers, and if they're missing, measure the base in a temporary `git worktree` and remove it afterwards. Flag any entry that grew by more than 0.3 kB without a reason in the change. Flag any `useReward + <effect>` entry close to the whole package's size, which means an effect stopped tree-shaking ([ADR 0055](../../docs/decisions/0055-pure-effect-definitions.md)).
+11. `pnpm e2e`. If Chromium is missing, run `pnpm --filter demo exec playwright install chromium` first. Note the number of tests.
+12. `pnpm bench`, only when the orchestrator says so. It drives a headed Chromium for several minutes. Compare its table with the newest benchmark in `docs/benchmarks/`, and flag any effect, count and renderer that lost more than 10% of its frame rate, or a burst that ran longer than its lifetime.
+13. A visual check, when `demo/` or an effect's look changed. Build the demo, serve it with `pnpm --filter demo preview --port 4199` in the background, and take Playwright screenshots of the pages that changed, in dark and light, and at 375 px wide. Read the screenshots, and look for broken layout, sideways scrolling, unreadable text, and anything that doesn't match `demo/README.md`. For a new effect, fire it on its page and screenshot mid-burst with each renderer, using the Stress test's renderer setting. Stop the server afterwards, and keep the screenshots outside the repo.
 
 ## Also check
 - The docs: each decision has an ADR, the active plan's table and sections are updated, and the site's design changes are in `demo/README.md` ([ADR 0002](../../docs/decisions/0002-docs-as-decision-record.md)).
