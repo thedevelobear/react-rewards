@@ -1,6 +1,6 @@
 # 0074. API Extractor keeps a report of the public API, and CI fails when it is stale
 
-- **Status:** Proposed
+- **Status:** Accepted
 - **Date:** 2026-11-03
 
 - `@microsoft/api-extractor` is a dev dependency. `api-extractor.json` reads `dist/index.d.ts` and writes only the API report, `etc/react-rewards.api.md`, which is committed. There is no declaration rollup, doc model or `tsdoc-metadata.json`, so `dist/` doesn't change. The published `package.json` gains only the two scripts and the dev dependency. The report's working copy goes in `node_modules/.cache/api-extractor/`.

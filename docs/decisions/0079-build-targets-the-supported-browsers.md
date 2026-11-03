@@ -1,6 +1,6 @@
 # 0079. The build targets the supported browsers: Chrome and Edge 87, Firefox 79, Safari 14.1
 
-- **Status:** Proposed
+- **Status:** Accepted
 - **Date:** 2026-11-03
 
 - `browsers.browserslistrc` holds the supported browsers as a browserslist query: `chrome >= 87`, `edge >= 87`, `firefox >= 79`, `safari >= 14.1` and `ios_saf >= 14.5`. It isn't named `.browserslistrc`, because `demo/`'s build looks for one in its parent folders and would take it as its own.
