@@ -33,3 +33,19 @@ jobs:
       - run: pnpm size
       - run: pnpm --filter demo exec playwright install --with-deps chromium
       - run: pnpm --filter demo e2e
+
+  react-18:
+    name: Tests on React 18
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+      - uses: pnpm/setup@v3
+        with:
+          node-version-file: .nvmrc
+          cache: true
+          require-lockfile: true
+      # Swaps the lowest supported React in on the runner only. The lockfile
+      # stays on React 19 (ADR 0080).
+      - name: Install React 18
+        run: pnpm add -D -w react@18.3.1 react-dom@18.3.1 @types/react@18.3.31 @types/react-dom@18.3.7
+      - run: pnpm test

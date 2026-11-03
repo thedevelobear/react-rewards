@@ -16,7 +16,7 @@ Run them once, on the branch's tip. Commits before it don't have to pass on thei
 1. `pnpm install --frozen-lockfile`, if the lockfile or a `package.json` changed.
 2. `pnpm lint`
 3. `pnpm typecheck`
-4. `pnpm test`. Note the number of tests.
+4. `pnpm test`. Note the number of tests. Then run them on React 18, as CI's `react-18` job does, in a temporary `git worktree` that you remove afterwards ([ADR 0080](../../docs/decisions/0080-unit-tests-on-react-18.md)).
 5. `pnpm build`
 6. `pnpm api:check`. A failure means a change to the exports or public types didn't update `etc/react-rewards.api.md` ([ADR 0074](../../docs/decisions/0074-api-report-with-api-extractor.md)). Quote the diff it prints. It belongs to the agent that made the change: the **effect-creator** for an effect's export or a type in `src/core/`, and the **developer** for any other.
 7. `pnpm lint:package` (publint and attw)

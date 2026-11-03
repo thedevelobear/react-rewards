@@ -120,6 +120,7 @@ What was decided, specifically enough to check the code against.
 | [0077](decisions/0077-only-the-tip-passes-the-checks.md) | Only a branch's tip has to pass the checks | Proposed |
 | [0078](decisions/0078-settings-block-pushes-tags-and-publishing.md) | Claude Code's settings block pushes, tags and publishing | Proposed |
 | [0079](decisions/0079-build-targets-the-supported-browsers.md) | The build targets the supported browsers: Chrome and Edge 87, Firefox 79, Safari 14.1 | Proposed |
+| [0080](decisions/0080-unit-tests-on-react-18.md) | The unit tests also run on React 18, the lowest supported React | Proposed |
 
 ### Benchmarks
 | Benchmark | What |
