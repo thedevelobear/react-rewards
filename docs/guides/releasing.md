@@ -118,10 +118,10 @@ gh release view vX.Y.Z
 
 A PR merged by rebase has no merge commit, so `SHA` is then the bump commit, found with `-F --grep='chore: bump the version to X.Y.Z'`.
 
-A draft runs nothing, since the workflow runs on `release: published`, and has no tag yet: `git ls-remote --tags origin vX.Y.Z` prints nothing. Publishing creates the tag on `--target`. A full SHA tags the release PR's merge, where `--target master` would tag whatever `master` holds when the release is published.
+The settings let an agent create a release only with `--draft` (ADR 0078). A draft runs nothing, since the workflow runs on `release: published`, and has no tag yet: `git ls-remote --tags origin vX.Y.Z` prints nothing. Publishing creates the tag on `--target`. A full SHA tags the release PR's merge, where `--target master` would tag whatever `master` holds when the release is published.
 
 ## 9. Publish
-The maintainer opens the draft (`gh release view vX.Y.Z --web`), reads the notes, leaves "Set as a pre-release" unticked, and publishes it. That creates the tag `vX.Y.Z` and runs `.github/workflows/publish.yml`, which fails unless the tag is `v` and the `package.json` version, then publishes with npm 11 and provenance ([ADR 0065](../decisions/0065-publish-with-pinned-npm.md)). Agents never publish a release (ADR 0076).
+The maintainer opens the draft (`gh release view vX.Y.Z --web`), reads the notes, leaves "Set as a pre-release" unticked, and publishes it. That creates the tag `vX.Y.Z` and runs `.github/workflows/publish.yml`, which fails unless the tag is `v` and the `package.json` version, then publishes with npm 11 and provenance ([ADR 0065](../decisions/0065-publish-with-pinned-npm.md)). Agents never publish a release, and Claude Code's settings block it ([ADR 0078](../decisions/0078-settings-block-pushes-tags-and-publishing.md)).
 
 ## 10. Check the publish
 ```sh

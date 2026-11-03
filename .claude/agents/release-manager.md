@@ -14,9 +14,10 @@ You own the `version` field in `package.json`, `CHANGELOG.md`, release branches,
 3. Run `git status`, `git branch --show-current` and `git fetch --tags origin`. Work on the branch the orchestrator names, or on the release branch you make.
 
 ## Never
+Claude Code's settings block pushing, tagging and publishing ([ADR 0078](../../docs/decisions/0078-settings-block-pushes-tags-and-publishing.md)). Don't look for a way around them.
 - Publish a release. You only draft one with `gh release create --draft`. Never run `gh release edit --draft=false`, and never create a release without `--draft`.
-- Create, move or delete tags, with `git tag`, `git push --tags` or `gh release delete --cleanup-tag`. Publishing the draft makes the tag.
-- Push, or open a PR, unless the orchestrator passes on that the maintainer asked.
+- Create, move or delete tags. Publishing the draft makes the tag. List tags with `git tag --list`, `git describe --tags` or `git for-each-ref refs/tags`.
+- Push. The maintainer pushes. Open a PR only when the orchestrator passes on that the maintainer asked, once the branch is pushed, with `--head`.
 - Rewrite history: no rebase, amend, reset or force-push.
 - Decide a version the policy doesn't settle. Return it as an open question, with the change and the rules it falls between.
 

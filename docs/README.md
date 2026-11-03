@@ -118,6 +118,7 @@ What was decided, specifically enough to check the code against.
 | [0075](decisions/0075-versioning-policy.md) | Versions follow semver, and a built-in effect's new look is a minor release | Proposed |
 | [0076](decisions/0076-release-manager-agent.md) | A release-manager agent runs releases up to a draft GitHub release | Proposed |
 | [0077](decisions/0077-only-the-tip-passes-the-checks.md) | Only a branch's tip has to pass the checks | Proposed |
+| [0078](decisions/0078-settings-block-pushes-tags-and-publishing.md) | Claude Code's settings block pushes, tags and publishing | Proposed |
 
 ### Benchmarks
 | Benchmark | What |
