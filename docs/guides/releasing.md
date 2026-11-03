@@ -6,14 +6,14 @@ In Claude Code, ask the session's `orchestrator` agent for the release. Its `rel
 
 The examples use `X.Y.Z` for the new version, and `$LAST` for the last release's tag, such as `v3.1.0`.
 
-Pre-releases aren't supported. The workflow skips a release marked as one, and every release goes on npm's `latest`. Supporting them needs a new ADR (ADR 0054).
+There are no pre-releases. Every release goes on npm's `latest`, and the workflow skips a release marked as a pre-release (ADRs 0054, 0075). Only the latest major gets fixes. A security fix backported to the previous major is the maintainer's call, and isn't covered here: it needs the publish workflow to pass `--tag vN-latest` first (ADR 0075).
 
 ## The policy, in brief
 [ADR 0075](../decisions/0075-versioning-policy.md) has the rules, specific enough to classify each change. In short:
 
-- **Major:** a change that can break code or a setup that worked, other than a new value the library hands back: an export, option, setting or member removed or renamed; a type that accepts less; a documented behaviour changed; the stepping or a math helper changed, which custom effects rely on; a higher lowest React; or an environment dropped.
-- **Minor:** an addition, such as an export, an optional option, a setting, an optional contract method, or a new value the library hands back, such as a new `BurstEnd`; a deliberate change to a built-in effect's look or defaults; or a deprecation.
-- **Patch:** a fix that makes something look or behave as intended, or a change users can't see.
+- **Major:** a change that can break code or a setup that worked, other than a new member or value in a type users only receive: an export, option, setting or member removed or renamed; a type that accepts less; a documented behaviour changed; the stepping or a math helper changed, which custom effects rely on; a higher lowest React; or a supported browser, the Canvas 2D fallback or server imports dropped.
+- **Minor:** an addition, such as an export, an optional option, a setting, an optional contract method, or a new member or value in a type users only receive, such as a new `BurstEnd`; a deliberate change to a built-in effect's look or defaults; or a deprecation, which comes a minor before the major that removes it.
+- **Patch:** a fix that makes something look or behave as intended, a fix to a type that doesn't match the code, or a change users can't see.
 - **No release:** the site, docs, tests, CI, the agents, and dev dependencies that leave `dist/` unchanged.
 
 The release takes the highest level among its changes. A change the rules don't cover is the maintainer's to classify.
@@ -60,7 +60,8 @@ The tag's own `pnpm install` is needed, so its declarations find the React types
 
 Reading the diff:
 - Only added lines, for a new `export` or an optional member (`?`): an addition, so a minor.
-- A removed or changed line: check it against the major rules. A member or parameter that gained `?` accepts more, and one that lost it accepts less. A union the library hands back, such as `BurstEnd` or `RendererKind`, that gained a member is a minor, whose entry goes under "Added" and says how to handle the new value.
+- A removed or changed line: check it against the major rules. A member or parameter that gained `?` accepts more, and one that lost it accepts less. A union users only receive, such as `BurstEnd` or `RendererKind`, that gained a member is a minor, whose entry goes under "Added" and says how to handle the new value. Each type's JSDoc says whether users create it or only receive it.
+- `// @public @deprecated` marks a deprecation. A newly marked member goes under "Deprecated", with its replacement. A deprecated member that is gone makes the release a major, and its upgrade article lists it.
 - Blocks without `export`, such as `interface Point`, are types that public signatures use without exporting. A change to one counts as a change to the signatures that use it.
 - `// (undocumented)` marks, and comments inside a type, are documentation, not API.
 - The report doesn't show defaults, looks, behaviour, the stepping, peer dependencies or environments. Those come from step 1.
@@ -81,9 +82,9 @@ git switch --no-track -c chore/release-X.Y.Z origin/master
 ## 5. Bump the version and write the CHANGELOG entry
 One commit, `chore: bump the version to X.Y.Z`, whose body says what the entry covers:
 - `version` in `package.json` becomes `X.Y.Z`. Nothing else in `package.json` changes, and the lockfile doesn't record it.
-- `CHANGELOG.md` gets a `## X.Y.Z` section above the last release's. Its sections are "Breaking changes", "Added", "Changed" and "Fixed", in that order, without empty ones (ADR 0075). A new value the library hands back, such as a new `BurstEnd`, goes under "Added" and says how to handle it. A major's entry opens with a line linking its upgrade article, as 3.0.0's does.
+- `CHANGELOG.md` gets a `## X.Y.Z` section above the last release's. Its sections are "Breaking changes", "Added", "Changed", "Deprecated" and "Fixed", in that order, without empty ones (ADR 0075). A new value in a type users only receive, such as a new `BurstEnd`, goes under "Added" and says how to handle it. A change to a built-in effect's default settings goes under "Changed" and gives the old values. A deprecation goes under "Deprecated", with its replacement. A major's entry opens with a line linking its upgrade article, as 3.0.0's does.
 
-Write each entry for someone upgrading, not as a list of commits: what they get or must change, the export or setting in code, and a link to its page on the site. Leave out what users can't see. For two made-up effects, a new `sparkle` and a changed `glitter`:
+Write each entry for someone upgrading, not as a list of commits: what they get or must change, the export or setting in code, and a link to its page on the site. Leave out what users can't see. For made-up effects, a new `sparkle`, a changed `glitter` and a deprecated setting:
 
 ```md
 ## X.Y.Z
@@ -92,7 +93,10 @@ Write each entry for someone upgrading, not as a list of commits: what they get 
 - `sparkle`: sparks that burst out in every direction and fade. Its settings, typed as `SparkleConfig`, are on [its page of the docs](https://thedevelobear.github.io/react-rewards/#sparkle).
 
 ### Changed
-- `glitter` twinkles as it fades. Set `twinkle` to `0` for the steady fade.
+- `glitter` launches faster by default: `velocity` is 1800, from 1500. Pass `velocity: 1500` to keep the old launch.
+
+### Deprecated
+- `glitter`'s `shine` setting is now `twinkle`. `shine` keeps working until the next major.
 ```
 
 ## 6. Check the branch
