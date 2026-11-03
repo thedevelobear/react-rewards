@@ -4,11 +4,16 @@ import type { Pool } from '@/core/pool';
 
 /**
  * A renderer: WebGL2, or the Canvas 2D fallback.
+ *
+ * You only receive it, as a burst's `renderer`, so a minor release may add a
+ * value (ADR 0075). A `switch` over it needs a `default` case.
  */
 export type RendererKind = 'webgl' | 'canvas';
 
 /**
  * Which renderer to use. `'auto'` prefers WebGL2 and falls back (ADR 0033).
+ *
+ * You create it, so a minor release may add a value (ADR 0075).
  */
 export type RendererPreference = 'auto' | RendererKind;
 

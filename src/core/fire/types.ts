@@ -8,11 +8,16 @@ import type { Simulation } from '@/core/simulation';
 /**
  * How a burst ended. `'skipped'` means it ended before its simulation
  * started, so nothing was drawn (ADR 0025).
+ *
+ * You only receive it, so a minor release may add a value (ADR 0075). A
+ * `switch` over it needs a `default` case.
  */
 export type BurstEnd = 'complete' | 'skipped' | 'cancelled';
 
 /**
  * One burst's options. The effect's own settings go in `config` (ADR 0023).
+ *
+ * You create it, so a minor release adds only optional members (ADR 0075).
  */
 export interface FireOptions<C extends EffectConfig = EffectConfig> {
   /**
@@ -44,6 +49,8 @@ export interface FireOptions<C extends EffectConfig = EffectConfig> {
 
 /**
  * A burst started by `fire()`.
+ *
+ * You only receive it, so a minor release may add members (ADR 0075).
  */
 export interface Burst {
   /** Ends the burst at once, without calling `onComplete`. */

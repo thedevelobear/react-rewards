@@ -3,18 +3,24 @@ import type { Measurable, Origin, TargetRef } from '@/core/origin';
 
 /**
  * What a reward fires from: an element, or a ref to one.
+ *
+ * You create it, so a minor release may add a kind (ADR 0075).
  */
 export type RewardTarget = Measurable | TargetRef;
 
 /**
  * The burst options of `fire()`, without `origin` and `config`, which the
  * hook takes as arguments (ADR 0041).
+ *
+ * You create it, so a minor release adds only optional members (ADR 0075).
  */
 export type RewardOptions = Omit<FireOptions, 'origin' | 'config'>;
 
 /**
  * An event with a pointer position, such as a click. `reward` fires from
  * the pointer when it handles one (ADR 0044).
+ *
+ * You create it, so a minor release adds only optional members (ADR 0075).
  */
 export interface PositionedEvent {
   readonly clientX: number;
@@ -25,6 +31,8 @@ export interface PositionedEvent {
 
 /**
  * What `useReward` returns.
+ *
+ * You only receive it, so a minor release may add members (ADR 0075).
  */
 export interface UseRewardResult {
   /**

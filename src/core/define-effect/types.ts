@@ -2,6 +2,8 @@ import type { Rng } from '@/core/math';
 
 /**
  * How a particle combines with what is drawn under it.
+ *
+ * You create it, so a minor release may add a mode (ADR 0075).
  */
 export type BlendMode = 'normal' | 'additive';
 
@@ -10,6 +12,8 @@ export type BlendMode = 'normal' | 'additive';
  * this size times its scale. Colour is baked into the sprite, because
  * particles have no tint. The atlas rasterises each source once per size and
  * pixel ratio (ADR 0020).
+ *
+ * You create it, so a minor release may add a kind (ADR 0075).
  */
 export type SpriteSource =
   | {
@@ -40,6 +44,8 @@ export type SpriteSource =
  * How a burst animates the element it fires from, played with the Web
  * Animations API (ADR 0073). The keyframes are added to the element's own
  * styles, so a `transform` in them follows the element's own transform.
+ *
+ * You create it, so a minor release adds only optional members (ADR 0075).
  */
 export interface ElementAnimation {
   /** The keyframes, as `Element.animate` takes them. */
@@ -52,6 +58,8 @@ export interface ElementAnimation {
 
 /**
  * The fields every effect's config has.
+ *
+ * You create it, so a minor release adds only optional members (ADR 0075).
  */
 export interface EffectConfig {
   /** Particles spawned per burst. */
@@ -67,6 +75,8 @@ export interface EffectConfig {
  *
  * The object is a view over the particle pool and is reused for the next
  * particle. Don't keep a reference to it after `spawn` or `update` returns.
+ *
+ * You only receive it, so a minor release may add members (ADR 0075).
  */
 export interface Particle {
   x: number;
@@ -97,6 +107,8 @@ export interface Particle {
 
 /**
  * What `update` can do besides changing its own particle.
+ *
+ * You only receive it, so a minor release may add members (ADR 0075).
  */
 export interface UpdateContext {
   /** The burst's generator. Using it keeps seeded bursts deterministic. */
@@ -113,6 +125,8 @@ export interface UpdateContext {
  * What an effect is made of. `sprites`, `spawn` and `update` are methods, so
  * TypeScript compares their config parameters bivariantly and any `Effect<C>`
  * is an `Effect` (ADR 0052).
+ *
+ * You create it, so a minor release adds only optional members (ADR 0075).
  */
 export interface EffectDefinition<C extends EffectConfig> {
   readonly name: string;
@@ -147,6 +161,9 @@ export interface EffectDefinition<C extends EffectConfig> {
 
 /**
  * An effect made with `defineEffect`. It and its defaults are frozen.
+ *
+ * You only receive it, from `defineEffect` or the package, so a minor release
+ * may add members (ADR 0075).
  */
 export interface Effect<C extends EffectConfig = EffectConfig>
   extends Omit<EffectDefinition<C>, 'defaults'> {
