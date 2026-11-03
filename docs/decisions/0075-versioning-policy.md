@@ -7,7 +7,7 @@ A release's version is the highest level among the changes since the last tag. E
 
 - **Major:** a change that can stop code or a setup that worked with the last release:
   - removing or renaming an export, a parameter, a burst option, an effect's setting, or a member of a public type;
-  - a type change that can stop code that type-checked: something optional made required, a new required parameter or option, a new required member in a type that users implement (`EffectDefinition`, `EffectConfig`), or a narrower type for what users pass in;
+  - a type change that can stop code that type-checked: something optional made required, a new required parameter or option, a new required member in a type that users implement (`EffectDefinition`, `EffectConfig`), or a narrower type for what users pass in (a new value in a type the library hands back is a minor, below);
   - changing what an existing function or option does, as its article on the site documents it, such as a burst option's default, a setting's units, or when `onComplete` runs;
   - changing what custom effects rely on: what `spawn`, `update` and `animation` are given, how particles are stepped or drawn, or what a math helper returns ([ADR 0019](0019-particle-contract.md), [ADR 0053](0053-public-math-helpers.md));
   - peer dependencies: a higher lowest React, or a new peer dependency;

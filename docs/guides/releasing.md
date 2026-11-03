@@ -2,7 +2,7 @@
 
 How a version of react-rewards gets from `master` to npm: choose the version from what changed, bump it on a release branch, merge that, then publish a GitHub release, which runs the publish workflow ([ADR 0054](../decisions/0054-publish-from-github-release.md)).
 
-In Claude Code, ask the session's `orchestrator` agent for the release. Its `release-manager` agent does steps 1 to 5, 8 and 10, its `qa` agent does step 6, and the maintainer confirms the version, merges and publishes ([ADR 0076](../decisions/0076-release-manager-agent.md)).
+In Claude Code, ask the session's `orchestrator` agent for the release. Its `release-manager` agent does steps 1 to 5, 8 and 10, its `qa` agent does step 6, its `developer` agent may add a major's upgrade article to the release branch in its own commit (step 3), and the maintainer confirms the version, merges and publishes ([ADR 0076](../decisions/0076-release-manager-agent.md)).
 
 The examples use `X.Y.Z` for the new version, and `$LAST` for the last release's tag, such as `v3.1.0`.
 
@@ -11,7 +11,7 @@ Pre-releases aren't supported. The workflow skips a release marked as one, and e
 ## The policy, in brief
 [ADR 0075](../decisions/0075-versioning-policy.md) has the rules, specific enough to classify each change. In short:
 
-- **Major:** a change that can break code or a setup that worked: an export, option, setting or member removed or renamed; a type that accepts less; a documented behaviour changed; the stepping or a math helper changed, which custom effects rely on; a higher lowest React; or an environment dropped.
+- **Major:** a change that can break code or a setup that worked, other than a new value the library hands back: an export, option, setting or member removed or renamed; a type that accepts less; a documented behaviour changed; the stepping or a math helper changed, which custom effects rely on; a higher lowest React; or an environment dropped.
 - **Minor:** an addition, such as an export, an optional option, a setting, an optional contract method, or a new value the library hands back, such as a new `BurstEnd`; a deliberate change to a built-in effect's look or defaults; or a deprecation.
 - **Patch:** a fix that makes something look or behave as intended, or a change users can't see.
 - **No release:** the site, docs, tests, CI, the agents, and dev dependencies that leave `dist/` unchanged.
@@ -66,7 +66,7 @@ Reading the diff:
 - The report doesn't show defaults, looks, behaviour, the stepping, peer dependencies or environments. Those come from step 1.
 
 ## 3. Choose the version
-List each change that ships, with its level and the rule of ADR 0075 that sets it, and take the highest. A major resets the minor and the patch (3.1.0 to 4.0.0), and a minor resets the patch (3.1.0 to 3.2.0). If a change isn't covered by the rules, the maintainer classifies it before anything else happens.
+List each change that ships, with its level and the rule of ADR 0075 that sets it, and take the highest. A major resets the minor and the patch (3.1.0 to 4.0.0), and a minor resets the patch (3.1.0 to 3.2.0). If a change isn't covered by the rules, the maintainer classifies it before anything else happens. Then the maintainer confirms the version, before the release branch is made.
 
 A major needs its upgrade article on the site, merged before the release, as 3.0.0 has "Upgrading from v2" (ADR 0075). It can come from an earlier PR, or the developer may add it to the release branch in its own commit, so the bump commit still holds only the bump.
 
