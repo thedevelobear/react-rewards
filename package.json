@@ -66,7 +66,7 @@
     "@types/react": "19.3.0",
     "@types/react-dom": "19.3.0",
     "es-check": "9.8.1",
-    "happy-dom": "20.14.6",
+    "happy-dom": "21.0.4",
     "publint": "0.3.25",
     "react": "19.3.1",
     "react-dom": "19.3.1",
