@@ -104,7 +104,7 @@ What was decided, specifically enough to check the code against.
 | [0061](decisions/0061-types-in-types-files.md) | Types are declared in each folder's `types.ts` | Accepted |
 | [0062](decisions/0062-docs-on-the-site.md) | The site holds the docs, and the README keeps the basics | Accepted |
 | [0063](decisions/0063-effect-creator-agent.md) | An effect-creator agent for Claude Code lives in the repo | Accepted |
-| [0064](decisions/0064-orchestrated-agents.md) | Claude Code works through an orchestrator agent, with an effect creator, a developer and QA | Accepted |
+| [0064](decisions/0064-orchestrated-agents.md) | Claude Code works through an orchestrator agent, with an effect creator, a developer and QA | Accepted. Extended by 0076 |
 | [0065](decisions/0065-publish-with-pinned-npm.md) | The publish workflow runs a pinned npm 11 | Accepted |
 | [0066](decisions/0066-firework-effect-name.md) | The fireworks effect is named `firework` | Accepted |
 | [0067](decisions/0067-fireworks-climb-in-closed-form.md) | Fireworks climb in closed form and burst as peonies, willows and crackles | Accepted |
@@ -116,6 +116,7 @@ What was decided, specifically enough to check the code against.
 | [0073](decisions/0073-effects-animate-their-element.md) | An effect may animate the element it fires from, with the Web Animations API | Accepted |
 | [0074](decisions/0074-api-report-with-api-extractor.md) | API Extractor keeps a report of the public API, and CI fails when it is stale | Proposed |
 | [0075](decisions/0075-versioning-policy.md) | Versions follow semver, and a built-in effect's new look is a minor release | Proposed |
+| [0076](decisions/0076-release-manager-agent.md) | A release-manager agent runs releases up to a draft GitHub release | Proposed |
 
 ### Benchmarks
 | Benchmark | What |

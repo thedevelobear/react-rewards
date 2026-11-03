@@ -36,5 +36,8 @@ The effect-creator builds the effect in `src/effects/` and exports it. Its hando
 
 If the handoff leaves something out that you need, return a question rather than guessing.
 
+## From the release-manager
+The release-manager owns the `version` field in `package.json`, `CHANGELOG.md` and the release itself. Leave them to it. Its "Handoff to the developer" lists the site or docs work a release needs, such as an upgrade article for a major or an article missing for a new API. Do that on the branch the orchestrator names.
+
 ## Reporting
 Run `pnpm lint`, `pnpm typecheck` and the tests for what you touched before you stop, and `pnpm build` then `pnpm api:check` if you touched `src/`. qa runs the full suite after you. Report what you changed, the commits, what you checked and how, any choice you made that the docs don't cover (so the orchestrator can confirm it with the maintainer), and open questions.

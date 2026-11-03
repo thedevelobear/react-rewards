@@ -2,6 +2,8 @@
 
 How a version of react-rewards gets from `master` to npm: choose the version from what changed, bump it on a release branch, merge that, then publish a GitHub release, which runs the publish workflow ([ADR 0054](../decisions/0054-publish-from-github-release.md)).
 
+In Claude Code, ask the session's `orchestrator` agent for the release. Its `release-manager` agent does steps 1 to 5, 8 and 10, its `qa` agent does step 6, and the maintainer confirms the version, merges and publishes ([ADR 0076](../decisions/0076-release-manager-agent.md)).
+
 The examples use `X.Y.Z` for the new version, and `$LAST` for the last release's tag, such as `v3.1.0`.
 
 Pre-releases aren't supported. The workflow skips a release marked as one, and every release goes on npm's `latest`. Supporting them needs a new ADR (ADR 0054).
@@ -119,7 +121,7 @@ A PR merged by rebase has no merge commit, so `SHA` is then the bump commit, fou
 A draft runs nothing, since the workflow runs on `release: published`, and has no tag yet: `git ls-remote --tags origin vX.Y.Z` prints nothing. Publishing creates the tag on `--target`. A full SHA tags the release PR's merge, where `--target master` would tag whatever `master` holds when the release is published.
 
 ## 9. Publish
-The maintainer opens the draft (`gh release view vX.Y.Z --web`), reads the notes, leaves "Set as a pre-release" unticked, and publishes it. That creates the tag `vX.Y.Z` and runs `.github/workflows/publish.yml`, which fails unless the tag is `v` and the `package.json` version, then publishes with npm 11 and provenance ([ADR 0065](../decisions/0065-publish-with-pinned-npm.md)). Agents never publish a release.
+The maintainer opens the draft (`gh release view vX.Y.Z --web`), reads the notes, leaves "Set as a pre-release" unticked, and publishes it. That creates the tag `vX.Y.Z` and runs `.github/workflows/publish.yml`, which fails unless the tag is `v` and the `package.json` version, then publishes with npm 11 and provenance ([ADR 0065](../decisions/0065-publish-with-pinned-npm.md)). Agents never publish a release (ADR 0076).
 
 ## 10. Check the publish
 ```sh

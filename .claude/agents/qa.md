@@ -1,6 +1,6 @@
 ---
 name: qa
-description: Quality checks for react-rewards, started by the orchestrator agent at the end of a piece of work. It runs lint, types, unit tests, the build, the package checks, bundle size, the browser specs, the benchmark when asked, and a visual check of the site, then reports each result and who should fix each failure. It changes nothing. Don't use it directly. Start with the orchestrator.
+description: Quality checks for react-rewards, started by the orchestrator agent at the end of a piece of work, release branches included. It runs lint, types, unit tests, the build, the package checks, bundle size, the browser specs, the benchmark when asked, and a visual check of the site, then reports each result and who should fix each failure. It changes nothing. Don't use it directly. Start with the orchestrator.
 tools: Read, Grep, Glob, Bash
 ---
 
@@ -30,6 +30,7 @@ Run every one, even after a failure, so the report is complete. Keep each comman
 - The docs: each decision has an ADR, the active plan's table and sections are updated, and the site's design changes are in `demo/README.md` ([ADR 0002](../../docs/decisions/0002-docs-as-decision-record.md)).
 - For a new effect: every step of `docs/guides/adding-an-effect.md` is done, including the export and the API report, its frame-rate test, the site's page and icon, the fixture and smoke spec, the benchmark harness and `.size-limit.json`.
 - Each commit is a self-contained step. Spot-check that the first and the middle commits build, if the history is long.
+- For a release branch (`chore/release-X.Y.Z`): its bump commit changes only `version` in `package.json` and `CHANGELOG.md`, the version is the one the orchestrator gives you, the entry's heading is `## X.Y.Z` with its sections in the order and wording of [ADR 0075](../../docs/decisions/0075-versioning-policy.md), and the branch doesn't track `master`.
 
 ## Reporting
-Start with one line: all checks pass, or which failed. Then a table with each check, pass, fail or skipped (with why), and its key numbers: test counts, sizes against the base, frame rates against the benchmark. For each failure, give the command, the quoted output, your reading of the cause, and who owns it: the **effect-creator** for an effect's maths, its tests in `src/effects/` and the engine in `src/core/`, and the **developer** for everything else. Report what you saw in the screenshots, with their paths. Don't call anything passing that you didn't run.
+Start with one line: all checks pass, or which failed. Then a table with each check, pass, fail or skipped (with why), and its key numbers: test counts, sizes against the base, frame rates against the benchmark. For each failure, give the command, the quoted output, your reading of the cause, and who owns it: the **effect-creator** for an effect's maths, its tests in `src/effects/` and the engine in `src/core/`, the **release-manager** for the version in `package.json` and `CHANGELOG.md`, and the **developer** for everything else. Report what you saw in the screenshots, with their paths. Don't call anything passing that you didn't run.
