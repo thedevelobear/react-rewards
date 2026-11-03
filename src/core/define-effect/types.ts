@@ -1,8 +1,7 @@
 import type { Rng } from '@/core/math';
 
 /**
- * How a particle combines with what is drawn under it. You choose it, so a
- * minor release may add a mode but never removes one (ADR 0075).
+ * How a particle combines with what is drawn under it.
  */
 export type BlendMode = 'normal' | 'additive';
 
@@ -11,9 +10,6 @@ export type BlendMode = 'normal' | 'additive';
  * this size times its scale. Colour is baked into the sprite, because
  * particles have no tint. The atlas rasterises each source once per size and
  * pixel ratio (ADR 0020).
- *
- * You create it, so a minor release may add a kind but never removes one
- * (ADR 0075).
  */
 export type SpriteSource =
   | {
@@ -44,8 +40,6 @@ export type SpriteSource =
  * How a burst animates the element it fires from, played with the Web
  * Animations API (ADR 0073). The keyframes are added to the element's own
  * styles, so a `transform` in them follows the element's own transform.
- *
- * You create it, so a minor release adds only optional members (ADR 0075).
  */
 export interface ElementAnimation {
   /** The keyframes, as `Element.animate` takes them. */
@@ -57,8 +51,7 @@ export interface ElementAnimation {
 }
 
 /**
- * The fields every effect's config has. A custom effect's config extends it,
- * so a minor release adds only optional fields (ADR 0075).
+ * The fields every effect's config has.
  */
 export interface EffectConfig {
   /** Particles spawned per burst. */
@@ -74,9 +67,6 @@ export interface EffectConfig {
  *
  * The object is a view over the particle pool and is reused for the next
  * particle. Don't keep a reference to it after `spawn` or `update` returns.
- *
- * Effects receive it and don't create it, so a minor release may add fields
- * (ADR 0075).
  */
 export interface Particle {
   x: number;
@@ -106,8 +96,7 @@ export interface Particle {
 }
 
 /**
- * What `update` can do besides changing its own particle. Effects receive it
- * and don't create it, so a minor release may add members (ADR 0075).
+ * What `update` can do besides changing its own particle.
  */
 export interface UpdateContext {
   /** The burst's generator. Using it keeps seeded bursts deterministic. */
@@ -124,8 +113,6 @@ export interface UpdateContext {
  * What an effect is made of. `sprites`, `spawn` and `update` are methods, so
  * TypeScript compares their config parameters bivariantly and any `Effect<C>`
  * is an `Effect` (ADR 0052).
- *
- * You create it, so a minor release adds only optional members (ADR 0075).
  */
 export interface EffectDefinition<C extends EffectConfig> {
   readonly name: string;
@@ -159,9 +146,7 @@ export interface EffectDefinition<C extends EffectConfig> {
 }
 
 /**
- * An effect made with `defineEffect`. It and its defaults are frozen. You
- * receive it from `defineEffect` or the package, and don't create it
- * yourself, so a minor release may add members (ADR 0075).
+ * An effect made with `defineEffect`. It and its defaults are frozen.
  */
 export interface Effect<C extends EffectConfig = EffectConfig>
   extends Omit<EffectDefinition<C>, 'defaults'> {
